@@ -16,6 +16,10 @@
 - Untuk data belum diketahui gunakan `null`. Untuk daftar yang kosong gunakan `[]`.
 - Bedakan **observasi langsung** (contoh: pintu warna hijau) dengan **interpretasi** (contoh: American Cottage atau gerakan dolly). Simpan `confidence` dan `uncertainties`.
 - Durasi dan batas shot ditulis dalam detik; gunakan nilai perkiraan bila belum diketahui frame presisinya.
-- Simpan minimal 1 keyframe asli per shot, dengan path relatif terhadap folder library.
+- Gunakan ID shot `S1`, `S2`, `S3`, dan seterusnya (tanpa angka nol di depan), sesuai nama gambar `S1.jpg`, `S2.jpg`, dan sebagainya.
+- Simpan **tepat satu keyframe asli untuk setiap shot**, dalam folder `references/VID-XXX/` dan rujuk melalui `shots[].keyframe` sebagai path relatif terhadap root repository.
+- Simpan `storyboard.jpg` yang menggabungkan keyframe semua shot dalam folder video yang sama. Storyboard disiapkan untuk dokumentasi visual `analysis.md` di masa depan; file Markdown tersebut belum perlu dibuat sekarang.
+- `analysis.yaml` tetap menjadi sumber data utama untuk AI. `storyboard.jpg` digunakan sebagai ringkasan visual, bukan pengganti keyframe masing-masing shot.
+- Analisis hanya berfokus pada **visual**; tidak perlu mencatat audio, musik, voiceover, atau membuat prompt dan ide konten.
 - Audit jika `shot_count` tidak sesuai jumlah elemen `shots` atau urutan waktu tidak menyambung.
 - Semua analisis hanya bersumber dari isi video; asal negara tempat rumah itu berdiri tidak dapat dipastikan hanya dari gaya arsitektur.
