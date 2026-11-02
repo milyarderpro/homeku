@@ -19,7 +19,8 @@ homeku/
 │       ├── shot-05.jpg
 │       └── storyboard.jpg      # gabungan keyframe untuk dibaca manusia
 ├── rules/
-│   └── analysis.md             # standar pengamatan dan pencatatan
+│   ├── analysis.md             # standar pengamatan dan pencatatan
+│   └── workflow-analysis.md    # tahapan analisis, review, save, dan penyimpanan paralel
 └── templates/
     ├── video-analysis.yaml     # template baku data terstruktur
     └── analysis.md             # template baku laporan visual
@@ -36,6 +37,23 @@ Folder `references/VID-002/`, `VID-003/` dan seterusnya menggunakan struktur yan
 - **`templates/video-analysis.yaml`** menjadi format data analisis baku.
 - **`templates/analysis.md`** menjadi format laporan GitHub untuk semua video.
 - **`rules/analysis.md`** menjelaskan prinsip analisis, sinkronisasi dua format, dan aturan penayangan gambar.
+- **`rules/workflow-analysis.md`** mengatur alur upload video → analisis → review/revisi → `save now` → penyimpanan atomik dan verifikasi, termasuk beberapa chat paralel.
+
+## Workflow analisis video (v1.0)
+
+**Alur:** upload video di chat → AI analisis dan tampilkan hasil lengkap → pengguna bisa merevisi → pengguna mengirim pesan tersendiri `save now` → AI menyimpan dan memverifikasi commit GitHub.
+
+**Sebelum `save now`, AI hanya boleh membaca repo untuk mengambil rules/template; tidak boleh mengubah GitHub.** ID `VID-XXX` final diberikan **saat menyimpan** berdasarkan folder yang masih tersedia, bukan ketika mulai menganalisis.
+
+Workflow mendukung beberapa chat menganalisis **video berbeda** secara paralel. Masing-masing chat hanya menangani satu draft aktif. Ketika dua chat menyimpan bersamaan, penyimpanan menggunakan satu commit atomik dan pemeriksaan HEAD GitHub; jika terjadi konflik, ID dihitung ulang dari kondisi branch terbaru dan penyimpanan diulang tanpa menimpa data video lama. Jangan mengirim `save now` di chat lain yang tidak memiliki draft videonya.
+
+Untuk setiap video yang berhasil disimpan, folder `references/VID-XXX/` berisi **`analysis.yaml`, `analysis.md`, `storyboard.jpg`, dan satu `shot-NN.jpg` untuk tiap shot**. File video MP4 asli tidak diwajibkan disimpan di repository.
+
+**Lihat prosedur lengkap:** [rules/workflow-analysis.md](rules/workflow-analysis.md).
+
+**Agar berlaku otomatis pada chat baru:** tambahkan instruksi berikut ke **Project Instructions Homeku** (konfigurasi proyek ChatGPT, **bukan** file GitHub):
+
+> Saat pengguna mengunggah video di Project Homeku, baca versi terbaru `rules/workflow-analysis.md`, `rules/analysis.md`, `templates/video-analysis.yaml`, dan `templates/analysis.md` dari repository GitHub `milyarderpro/homeku`. Jalankan ANALYZE dan REVIEW di chat. Jangan menulis ke GitHub sebelum pengguna mengirim pesan tersendiri `save now`. Setelah perintah valid, terapkan SAFE PARALLEL SAVE dan verifikasi commit sebelum mengklaim tersimpan.
 
 ## Estimasi ukuran dan proporsi rumah (schema 2.1)
 
@@ -62,8 +80,8 @@ Semua kategori dan angka di atas adalah **estimasi berdasarkan gambar video**; t
 6. Isi hanya hal yang diamati dari video. Jika tidak diketahui, gunakan `null`; jika data bersifat perkiraan, cantumkan pada `analysis_quality` / `confidence`.
 7. Pastikan `video.shot_count` sesuai jumlah entri `shots`, waktunya berurutan, dan setiap path gambar memang ada.
 
-Untuk menganalisis video berikutnya, isi [template YAML](templates/video-analysis.yaml) ke `references/VID-002/analysis.yaml` terlebih dahulu. Simpan satu gambar untuk setiap shot (`shot-01.jpg`, `shot-02.jpg`, dst.) dan `storyboard.jpg` ke folder yang sama. Kemudian susun `references/VID-002/analysis.md` memakai [template Markdown](templates/analysis.md), **menyalin data dari YAML tanpa mengarang informasi baru**. Gambar storyboard dan seluruh gambar shot wajib tampil secara langsung di Markdown GitHub.
+Setelah perintah `save now` diterima dan ID ditetapkan dari HEAD GitHub terbaru, isi [template YAML](templates/video-analysis.yaml) ke `references/VID-XXX/analysis.yaml`. Simpan satu gambar untuk setiap shot (`shot-01.jpg`, `shot-02.jpg`, dst.) dan `storyboard.jpg` ke folder yang sama. Kemudian susun `references/VID-XXX/analysis.md` memakai [template Markdown](templates/analysis.md), **menyalin data dari YAML tanpa mengarang informasi baru**. Gambar storyboard dan seluruh gambar shot wajib tampil secara langsung di Markdown GitHub.
 
 Jika isi YAML berubah, perbarui Markdown agar informasi tetap identik; YAML adalah sumber kebenaran utama. Tidak ada analisis audio atau prompt generatif pada tahap ini.
 
-**Dokumen acuan:** [Aturan analisis](rules/analysis.md) · [Contoh data YAML](references/VID-001/analysis.yaml) · [Contoh laporan visual Markdown](references/VID-001/analysis.md).
+**Dokumen acuan:** [Workflow analisis](rules/workflow-analysis.md) · [Aturan analisis](rules/analysis.md) · [Contoh data YAML](references/VID-001/analysis.yaml) · [Contoh laporan visual Markdown](references/VID-001/analysis.md).

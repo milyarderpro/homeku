@@ -1,3 +1,7 @@
+# Aturan Analisis Visual Homeku
+
+> Dokumen ini menjelaskan **isi dan standar mutu analisis**. Untuk alur menerima video, menampilkan hasil, meminta revisi, dan menyimpan hanya setelah `save now`, ikuti [workflow-analysis.md](workflow-analysis.md). Jangan melakukan penulisan GitHub pada tahap analisis/review. Pengamanan penyimpanan beberapa chat diatur sepenuhnya dalam dokumen workflow.
+
 ## Bagian penting
 
 1. `video`: identitas file dan metadata teknis.
