@@ -9,7 +9,7 @@ import shutil
 import subprocess
 from pathlib import Path
 import yaml
-from PIL import Image, ImageOps, ImageDraw
+from storyboard import generate_storyboard
 from validate_analysis import validate
 
 def git(*args):
@@ -101,18 +101,6 @@ def markdown(d, rid):
               "---","","*Laporan ini diturunkan dari [analysis.yaml](analysis.yaml).*",""]
     return "\n".join(lines)
 
-def storyboard(frames, dest):
-    w,h,cols = 360,340,2
-    canvas = Image.new("RGB",(cols*w,math.ceil(len(frames)/cols)*h),"white")
-    draw = ImageDraw.Draw(canvas)
-    for i,path in enumerate(frames):
-        with Image.open(path) as img:
-            thumb = ImageOps.contain(img.convert("RGB"),(w-18,h-36))
-        x,y=(i%cols)*w,(i//cols)*h
-        canvas.paste(thumb,(x+(w-thumb.width)//2,y+(h-36-thumb.height)//2))
-        draw.text((x+12,y+h-24),"Shot %02d"%(i+1),fill="black")
-    canvas.save(dest,"JPEG",quality=90)
-
 def process(root,branch):
     require(branch in ("main","actions-jpg-test"),"Unexpected branch")
     req = json.loads((root/"requests/save.json").read_text(encoding="utf-8"))
@@ -161,7 +149,7 @@ def process(root,branch):
                             "-ss","%.3f"%t,"-i",str(source),"-frames:v","1","-q:v","2",str(jpg)],check=True)
             require(jpg.is_file() and jpg.stat().st_size>0,"FFmpeg failed for "+jpg.name)
             frames.append(jpg)
-        storyboard(frames,dest/"storyboard.jpg")
+        generate_storyboard(frames, dest/"storyboard.jpg", video=data["video"], architecture=data["architecture"], shots=shots)
         (dest/"analysis.yaml").write_text(yaml.safe_dump(data,sort_keys=False,allow_unicode=True),encoding="utf-8")
         (dest/"analysis.md").write_text(markdown(data,rid),encoding="utf-8")
         info=validate(dest,vid)
