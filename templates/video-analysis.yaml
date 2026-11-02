@@ -2,6 +2,8 @@
 # Duplicate the shots[] item for every shot. Use null for unknown information.
 # ID format: VID-001, VID-002, etc.; shot IDs: S1, S2, S3, etc.
 # Technical labels: English snake_case; descriptive notes may be Indonesian.
+# Pair each analysis.yaml with analysis.md using templates/analysis.md.
+# Keep analysis.yaml as source of truth; inline image previews in Markdown must use the shot keyframe paths.
 schema_version: "2.0"
 video:
   id: VID-XXX
