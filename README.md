@@ -12,11 +12,11 @@ homeku/
 │   └── VID-001/
 │       ├── analysis.yaml       # data analisis terstruktur (sumber utama)
 │       ├── analysis.md         # laporan visual untuk dibaca di GitHub
-│       ├── S1.jpg              # 1 keyframe asli untuk shot S1
-│       ├── S2.jpg              # 1 keyframe asli untuk shot S2
-│       ├── S3.jpg
-│       ├── S4.jpg
-│       ├── S5.jpg
+│       ├── shot-01.jpg              # 1 keyframe asli untuk shot S1
+│       ├── shot-02.jpg              # 1 keyframe asli untuk shot S2
+│       ├── shot-03.jpg
+│       ├── shot-04.jpg
+│       ├── shot-05.jpg
 │       └── storyboard.jpg      # gabungan keyframe untuk dibaca manusia
 ├── rules/
 │   └── analysis.md             # standar pengamatan dan pencatatan
@@ -25,12 +25,12 @@ homeku/
     └── analysis.md             # template baku laporan visual
 ```
 
-Folder `references/VID-002/`, `VID-003/` dan seterusnya menggunakan struktur yang sama, dengan jumlah file `S1.jpg`, `S2.jpg`, dan lain-lain mengikuti jumlah shot video.
+Folder `references/VID-002/`, `VID-003/` dan seterusnya menggunakan struktur yang sama, dengan jumlah file `shot-01.jpg`, `shot-02.jpg`, dan lain-lain mengikuti jumlah shot video.
 
 ## Peran tiap file
 
 - **`analysis.yaml`** adalah sumber data utama; satu file berisi seluruh metadata video, ciri arsitektur, gaya visual, struktur video, rincian setiap shot, dan catatan kualitas analisis.
-- **`S1.jpg`, `S2.jpg`, ...** adalah **tepat satu gambar keyframe asli per shot**. Setiap `shots[].keyframe` di YAML menunjuk ke file tersebut dengan path relatif terhadap root repository, misalnya `references/VID-001/S1.jpg`.
+- **`shot-01.jpg`, `shot-02.jpg`, ...** adalah **tepat satu gambar keyframe asli per shot**. Setiap `shots[].keyframe` di YAML menunjuk ke file tersebut dengan path relatif terhadap root repository, misalnya `references/VID-001/shot-01.jpg`.
 - **`analysis.md`** adalah laporan untuk manusia, **berdasarkan `analysis.yaml`**, dengan storyboard di bagian atas dan **setiap gambar shot ditampilkan langsung** (inline), bukan tautan gambar saja. Lihat [contoh VID-001](references/VID-001/analysis.md).
 - **`storyboard.jpg`** adalah gabungan gambar semua shot, langsung ditampilkan di bagian atas laporan Markdown. Gambar per shot tetap disimpan dan ditampilkan di setiap uraian shot.
 - **`templates/video-analysis.yaml`** menjadi format data analisis baku.
@@ -40,14 +40,14 @@ Folder `references/VID-002/`, `VID-003/` dan seterusnya menggunakan struktur yan
 ## Konvensi penamaan dan pengisian
 
 1. ID video: `VID-001`, `VID-002`, `VID-003`, dan seterusnya.
-2. ID shot: `S1`, `S2`, `S3`, dan seterusnya, tanpa nol di depan.
+2. ID shot: `S1`, `S2`, `S3`, dan seterusnya, tanpa nol di depan. Nama gambar: `shot-01.jpg`, `shot-02.jpg`, dst. (dua digit).
 3. Satu video = satu folder di `references/` = **`analysis.yaml` + `analysis.md` + `storyboard.jpg` + gambar setiap shot**.
-4. Satu shot = satu entri `shots[]` = satu keyframe `S<n>.jpg` **yang ditampilkan langsung pada bagian shot di `analysis.md`**.
+4. Satu shot = satu entri `shots[]` = satu keyframe `shot-NN.jpg` **yang ditampilkan langsung pada bagian shot di `analysis.md`**.
 5. Gunakan `snake_case` untuk label teknis; catatan bebas boleh berbahasa Indonesia.
 6. Isi hanya hal yang diamati dari video. Jika tidak diketahui, gunakan `null`; jika data bersifat perkiraan, cantumkan pada `analysis_quality` / `confidence`.
 7. Pastikan `video.shot_count` sesuai jumlah entri `shots`, waktunya berurutan, dan setiap path gambar memang ada.
 
-Untuk menganalisis video berikutnya, isi [template YAML](templates/video-analysis.yaml) ke `references/VID-002/analysis.yaml` terlebih dahulu. Simpan satu gambar untuk setiap shot (`S1.jpg`, `S2.jpg`, dst.) dan `storyboard.jpg` ke folder yang sama. Kemudian susun `references/VID-002/analysis.md` memakai [template Markdown](templates/analysis.md), **menyalin data dari YAML tanpa mengarang informasi baru**. Gambar storyboard dan seluruh gambar shot wajib tampil secara langsung di Markdown GitHub.
+Untuk menganalisis video berikutnya, isi [template YAML](templates/video-analysis.yaml) ke `references/VID-002/analysis.yaml` terlebih dahulu. Simpan satu gambar untuk setiap shot (`shot-01.jpg`, `shot-02.jpg`, dst.) dan `storyboard.jpg` ke folder yang sama. Kemudian susun `references/VID-002/analysis.md` memakai [template Markdown](templates/analysis.md), **menyalin data dari YAML tanpa mengarang informasi baru**. Gambar storyboard dan seluruh gambar shot wajib tampil secara langsung di Markdown GitHub.
 
 Jika isi YAML berubah, perbarui Markdown agar informasi tetap identik; YAML adalah sumber kebenaran utama. Tidak ada analisis audio atau prompt generatif pada tahap ini.
 

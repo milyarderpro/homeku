@@ -1,6 +1,7 @@
 # VIDEO ANALYSIS ONLY — no ideas, prompts, or generation instructions.
 # Duplicate the shots[] item for every shot. Use null for unknown information.
 # ID format: VID-001, VID-002, etc.; shot IDs: S1, S2, S3, etc.
+# Image filenames: shot-01.jpg, shot-02.jpg, etc. (always two digits for shots 1-99).
 # Technical labels: English snake_case; descriptive notes may be Indonesian.
 # Pair each analysis.yaml with analysis.md using templates/analysis.md.
 # Keep analysis.yaml as source of truth; inline image previews in Markdown must use the shot keyframe paths.
@@ -50,7 +51,7 @@ shots:
       environment: []
     lighting: null
     transition_out: null
-    keyframe: null # relative path to a real screenshot
+    keyframe: null # root-relative path, e.g. references/VID-001/shot-01.jpg
     confidence: { camera: null, visual_details: null }
     observation_note: null
 

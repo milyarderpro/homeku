@@ -64,7 +64,7 @@
 
 ### S1 — Exterior Front
 
-<img src="S1.jpg" alt="Shot S1 — Tampak depan cottage" width="360">
+<img src="shot-01.jpg" alt="Shot S1 — Tampak depan cottage" width="360">
 
 **Waktu:** 0,00–6,20 detik · **Durasi:** 6,20 detik
 
@@ -90,7 +90,7 @@
 
 ### S2 — Living Room
 
-<img src="S2.jpg" alt="Shot S2 — Ruang keluarga dan perapian" width="360">
+<img src="shot-02.jpg" alt="Shot S2 — Ruang keluarga dan perapian" width="360">
 
 **Waktu:** 6,20–9,60 detik · **Durasi:** 3,40 detik
 
@@ -116,7 +116,7 @@
 
 ### S3 — Kitchen
 
-<img src="S3.jpg" alt="Shot S3 — Dapur country cottage" width="360">
+<img src="shot-03.jpg" alt="Shot S3 — Dapur country cottage" width="360">
 
 **Waktu:** 9,60–13,10 detik · **Durasi:** 3,50 detik
 
@@ -142,7 +142,7 @@
 
 ### S4 — Bedroom
 
-<img src="S4.jpg" alt="Shot S4 — Kamar tidur cottage" width="360">
+<img src="shot-04.jpg" alt="Shot S4 — Kamar tidur cottage" width="360">
 
 **Waktu:** 13,10–16,57 detik · **Durasi:** 3,47 detik
 
@@ -168,7 +168,7 @@
 
 ### S5 — Bathroom
 
-<img src="S5.jpg" alt="Shot S5 — Kamar mandi cottage" width="360">
+<img src="shot-05.jpg" alt="Shot S5 — Kamar mandi cottage" width="360">
 
 **Waktu:** 16,57–20,03 detik · **Durasi:** 3,46 detik
 

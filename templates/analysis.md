@@ -4,7 +4,7 @@ HOMEKU: TEMPLATE LAPORAN VISUAL
 - Jangan menambah fakta, audio, ide konten, atau prompt yang tidak ada di YAML.
 - Ulangi bagian "Analisis per Shot" sebanyak video.shot_count.
 - Gambar tampil langsung (inline), bukan hanya tautan.
-- File ini berada di references/VID-XXX/analysis.md bersama storyboard.jpg dan S1.jpg dst.
+- File ini berada di references/VID-XXX/analysis.md bersama storyboard.jpg dan shot-01.jpg dst.
 -->
 # {{video.id}} — {{architecture.primary_style | humanize}}
 
@@ -68,7 +68,7 @@ HOMEKU: TEMPLATE LAPORAN VISUAL
 <!-- Ulangi SELURUH blok ### ... hingga confidence untuk S2, S3, dst. -->
 ### {{shots[].id}} — {{shots[].scene | humanize}}
 
-<img src="S1.jpg" alt="Keyframe {{shots[].id}} — {{shots[].scene | humanize}}" width="360">
+<img src="shot-01.jpg" alt="Keyframe {{shots[].id}} — {{shots[].scene | humanize}}" width="360">
 
 **Waktu:** {{shots[].start_s}}–{{shots[].end_s}} detik · **Durasi:** {{end_s - start_s}} detik
 
@@ -92,7 +92,7 @@ HOMEKU: TEMPLATE LAPORAN VISUAL
 
 **Confidence:** Kamera {{shots[].confidence.camera}} · Detail visual {{shots[].confidence.visual_details}}
 
-<!-- Untuk shot berikutnya: gunakan <img src="S2.jpg" ...>, <img src="S3.jpg" ...> dst. Sesuaikan dengan shots[].keyframe di YAML. -->
+<!-- Untuk shot berikutnya: gunakan <img src="shot-02.jpg" ...>, <img src="shot-03.jpg" ...> dst. Nomor gambar tetap dua digit dan harus sesuai dengan shots[].keyframe di YAML. -->
 
 ## 7. Kualitas dan Ketidakpastian Analisis
 
