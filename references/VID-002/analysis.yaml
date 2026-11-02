@@ -1,0 +1,158 @@
+schema_version: '2.1'
+video:
+  id: VID-002
+  filename: dreamsHouse002.mp4
+  duration_s: 20.9
+  resolution: 720x1280
+  fps: 60.04
+  aspect_ratio: '9:16'
+  shot_count: 4
+architecture:
+  primary_style: modern_rustic_cottage
+  building_scale:
+    perceived_size: small
+    building_form: compact_rectangular_with_partial_upper_volume
+    vertical_scale: partial_two_story
+    footprint: compact
+    estimated_floor_area_m2:
+      min: 55
+      max: 95
+    confidence: low
+  secondary_influences:
+  - rustic_cottage
+  exterior_features:
+  - stone_cladding
+  interior_style:
+  - rustic_modern
+  style_confidence: medium
+visual_style:
+  dominant_colors:
+  - name: warm_beige
+    hex_approx: '#C5AF97'
+  lighting:
+  - soft_daylight
+  setting: []
+  season_appearance: null
+  mood:
+  - cozy
+video_structure:
+  type: home_tour
+  scene_sequence:
+  - exterior_front
+  - living_room
+  - bedroom
+  - bathroom
+  overall_pace: slow
+  transition_pattern: hard_cut
+shots:
+- id: shot-01
+  start_s: 0
+  end_s: 6.31
+  scene: exterior_front
+  framing:
+    start: wide
+    end: medium
+    view_angle: eye_level
+  camera:
+    movements:
+    - slow_dolly_in
+    speed: slow
+  focal_subject: exterior_front
+  visible_details:
+    architectural:
+    - visible architectural features
+    furniture_and_props: []
+    environment: []
+  lighting: soft_daylight
+  transition_out: cut
+  keyframe: references/VID-002/shot-01.jpg
+  confidence:
+    camera: medium
+    visual_details: medium
+  observation_note: Technical integration test fixture on isolated test branch; not
+    the reviewed full production analysis.
+- id: shot-02
+  start_s: 6.31
+  end_s: 11.92
+  scene: living_room
+  framing:
+    start: wide
+    end: medium
+    view_angle: eye_level
+  camera:
+    movements:
+    - slow_dolly_in
+    speed: slow
+  focal_subject: living_room
+  visible_details:
+    architectural:
+    - visible architectural features
+    furniture_and_props: []
+    environment: []
+  lighting: soft_daylight
+  transition_out: cut
+  keyframe: references/VID-002/shot-02.jpg
+  confidence:
+    camera: medium
+    visual_details: medium
+  observation_note: Technical integration test fixture on isolated test branch; not
+    the reviewed full production analysis.
+- id: shot-03
+  start_s: 11.92
+  end_s: 15.27
+  scene: bedroom
+  framing:
+    start: wide
+    end: medium
+    view_angle: eye_level
+  camera:
+    movements:
+    - slow_dolly_in
+    speed: slow
+  focal_subject: bedroom
+  visible_details:
+    architectural:
+    - visible architectural features
+    furniture_and_props: []
+    environment: []
+  lighting: soft_daylight
+  transition_out: cut
+  keyframe: references/VID-002/shot-03.jpg
+  confidence:
+    camera: medium
+    visual_details: medium
+  observation_note: Technical integration test fixture on isolated test branch; not
+    the reviewed full production analysis.
+- id: shot-04
+  start_s: 15.27
+  end_s: 20.9
+  scene: bathroom
+  framing:
+    start: wide
+    end: medium
+    view_angle: eye_level
+  camera:
+    movements:
+    - slow_dolly_in
+    speed: slow
+  focal_subject: bathroom
+  visible_details:
+    architectural:
+    - visible architectural features
+    furniture_and_props: []
+    environment: []
+  lighting: soft_daylight
+  transition_out: end
+  keyframe: references/VID-002/shot-04.jpg
+  confidence:
+    camera: medium
+    visual_details: medium
+  observation_note: Technical integration test fixture on isolated test branch; not
+    the reviewed full production analysis.
+analysis_quality:
+  status: draft
+  human_verified: false
+  timestamp_precision: estimated
+  uncertainties:
+  - integration test data only
+  notes: Synthetic metadata for testing Actions; not a production video analysis.
