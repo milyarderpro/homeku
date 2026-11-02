@@ -39,7 +39,7 @@ Folder `references/VID-002/`, `VID-003/` dan seterusnya menggunakan struktur yan
 - **`rules/analysis.md`** menjelaskan prinsip analisis, sinkronisasi dua format, dan aturan penayangan gambar.
 - **`rules/workflow-analysis.md`** mengatur alur upload video → analisis → review/revisi → `save now` → penyimpanan atomik dan verifikasi, termasuk beberapa chat paralel.
 
-## Workflow analisis video (v1.0)
+## Workflow analisis video (v1.1)
 
 **Alur:** upload video di chat → AI analisis dan tampilkan hasil lengkap → pengguna bisa merevisi → pengguna mengirim pesan tersendiri `save now` → AI menyimpan dan memverifikasi commit GitHub.
 
@@ -50,6 +50,8 @@ Workflow mendukung beberapa chat menganalisis **video berbeda** secara paralel. 
 Untuk setiap video yang berhasil disimpan, folder `references/VID-XXX/` berisi **`analysis.yaml`, `analysis.md`, `storyboard.jpg`, dan satu `shot-NN.jpg` untuk tiap shot**. File video MP4 asli tidak diwajibkan disimpan di repository.
 
 **Lihat prosedur lengkap:** [rules/workflow-analysis.md](rules/workflow-analysis.md).
+
+**Integrasi Python + konektor GitHub:** Lihat [docs/github-connector-save.md](docs/github-connector-save.md) dan [scripts/](scripts/). Validasi, penyiapan payload dan simulasi Safe Parallel Save tersedia, tetapi otomatisasi penuh transfer JPEG dari Python ke konektor **belum aktif** sampai lulus tes byte asli berukuran nyata. Jangan menganggap `save now` pasti berhasil sebelum commit dan file diverifikasi.
 
 **Agar berlaku otomatis pada chat baru:** tambahkan instruksi berikut ke **Project Instructions Homeku** (konfigurasi proyek ChatGPT, **bukan** file GitHub):
 

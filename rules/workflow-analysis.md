@@ -1,4 +1,4 @@
-# Homeku — Workflow Analisis Video v1.0
+# Homeku — Workflow Analisis Video v1.1
 
 > **Status:** standar operasional analisis video di ChatGPT. **Repository:** `milyarderpro/homeku`. **Branch:** `main`.
 >
@@ -136,6 +136,31 @@ Jika gagal, tampilkan **Not saved** beserta penyebab konkret dan tindakan yang d
 Dokumen GitHub **tidak otomatis dieksekusi oleh ChatGPT**. Agar diterapkan secara konsisten pada chat baru, masukkan instruksi singkat ke **Project Instructions Homeku** agar AI membaca file ini beserta rules dan template pada awal setiap analisis. Koneksi GitHub harus menyediakan izin tulis untuk tahap `save now`.
 
 Setiap chat tetap bekerja atas konteks video dan berkasnya sendiri; aturan ini tidak menyediakan antrean latar belakang, penyimpanan lintas chat, atau kemampuan mengakses file yang sudah tidak tersedia.
+
+## 10. Python + GitHub Connector integration (v1.1)
+
+The runtime orchestration uses the existing GitHub connector, not GitHub Actions or a private MCP plugin. Use `scripts/validate_analysis.py`, `scripts/prepare_git_payload.py`, and `scripts/verify_analysis.py` when the local runtime makes these files accessible. `scripts/save_analysis.py` documents an injected connector interface and implements a testable transaction engine; it **cannot call ChatGPT connector tools by itself**. Details and setup: [docs/github-connector-save.md](../docs/github-connector-save.md).
+
+### 10.1 Analysis / review behavior remains unchanged
+
+Continue to read all four latest rules and templates on each new video. Extract one original JPEG per shot, create one storyboard, and produce YAML schema 2.1 and Markdown from the same observations. While awaiting review, keep a local `references/PENDING/` bundle. No repository writes during UPLOAD, ANALYZE, REVIEW, or REVISE. The `save now` permission in `5 applies unchanged.
+
+### 10.2 Before any video save
+
+Preflight check: verify that all original bytes are available, correct JPEG format, all keyframe files and references, timestamps, fields, schema, storyboard and Markdown inline images. Calculate SHA-256 plus Git blob SHA-1 on *original bytes*. Every candidate ID requires regenerated YAML and Markdown, with JPEG bytes unchanged. An incomplete package or unavailable binary data path is a **hard stop** (no partial save).
+
+### 10.3 Git connector transaction and parallel behavior
+
+After exact standalone `save now` only: read a consistent HEAD/tree snapshot, find the lowest unused `VID-XXX`, prepare verified blobs (text UTF-8 and images Base64), compare blob SHAs, create one tree on the selected base tree, create one commit parented to that HEAD, then use a non-force `update_ref` with the selected `expected_sha`. If HEAD conflict occurs, reread HEAD/tree, reallocate ID, regenerate paths and try again (maximum 3). Never force, overwrite an existing folder, or create one commit per file. If update outcome is unknown, **inspect branch/commit first before any retry**. Read back commit and all files; compare byte hashes and YAML/Markdown references. Only then report `Saved`.
+
+### 10.4 Connector transport capability gate
+
+The GitHub connector accepts a Base64 blob argument but does not open `/mnt/data/...` itself. Python can prepare the payload locally; this does **not automatically bridge bytes into a connector invocation**. A small synthetic JPEG has passed a manual Base64/blob SHA test, but realistic unmodified JPEG transfer is not yet proven. Do not claim the automated save implementation is ready or attempt to copy incomplete/truncated Base64 through model context. When transport cannot preserve bytes, return `Not saved` and explain the missing bridge. Do not change the video analysis rules or commit a partial video to work around the limitation.
+
+### 10.5 Tests and quality gate
+
+Use `python -m unittest discover -s tests -v` and local draft validation to check structure, JPEG integrity, preparation and concurrency simulation. These tests are necessary but not sufficient for activation: require a real-size end-to-end test of binary transport, one atomic commit, and remote readback before describing the flow as production-ready. Never use scripts uploaded to the repository as evidence that ChatGPT automatically executed them.
+
 
 ---
 
