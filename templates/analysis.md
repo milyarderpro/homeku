@@ -1,26 +1,30 @@
 <!--
-HOMEKU: TEMPLATE LAPORAN VISUAL
-- Isi setiap nilai dari analysis.yaml (sumber data utama).
-- Jangan menambah fakta, audio, ide konten, atau prompt yang tidak ada di YAML.
-- Ulangi bagian "Analisis per Shot" sebanyak video.shot_count.
-- Gambar tampil langsung (inline), bukan hanya tautan.
-- Label shot yang ditampilkan: Shot 01, Shot 02, ... (ID YAML: shot-01, shot-02, ...).
-- File ini berada di references/VID-XXX/analysis.md bersama storyboard.jpg dan shot-01.jpg dst.
-- Tampilkan ukuran rumah berdasarkan architecture.building_scale; rentang m² adalah estimasi, bukan ukuran terukur.
+HOMEKU: ACUAN STRUKTUR LAPORAN VISUAL, bukan template yang dieksekusi langsung.
+Workflow v1.2 membuat analysis.md melalui fungsi markdown() dalam
+scripts/save_analysis_action.py. Jika ingin mengubah output otomatis,
+ubah kode generator DAN acuan ini secara konsisten.
+
+- Semua fakta berasal dari analysis.yaml schema 2.1 yang sama.
+- ChatGPT menampilkan draft saat review; tampilan final bisa berbeda.
+- Runner menambahkan marker request_id untuk deduplikasi.
+- Gambar JPEG dihasilkan FFmpeg dari MP4 video/, lalu ditampilkan inline.
+- Ulangi tabel timeline dan bagian per-shot sesuai shots[].
+- Jika perkiraan luas null, tampilkan "Tidak diketahui".
+- Label manusia: Shot 01, Shot 02; ID data: shot-01, shot-02.
 -->
-# {{video.id}} — {{architecture.primary_style | humanize}}
+# {{video.id}} — {{architecture.primary_style | humanize_and_title}}
 
-> {{ringkasan_visual_berdasarkan_YAML}}
+<!-- homeku_request_id: {{request_id}} -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** `{{analysis_quality.status}}` · **Diverifikasi manusia:** {{analysis_quality.human_verified}}
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** {{analysis_quality.status}} · **Diverifikasi manusia:** {{analysis_quality.human_verified | humanize}}
 
 ## 1. Informasi Video
 
 | Informasi | Nilai |
 |---|---|
-| ID | `{{video.id}}` |
-| File asli | `{{video.filename}}` |
-| Durasi | {{video.duration_s}} detik |
+| ID | {{video.id}} |
+| File asli | {{video.filename}} |
+| Durasi | {{video.duration_s}} |
 | Resolusi | {{video.resolution}} |
 | FPS | {{video.fps}} |
 | Rasio | {{video.aspect_ratio}} |
@@ -28,18 +32,16 @@ HOMEKU: TEMPLATE LAPORAN VISUAL
 
 ## 2. Storyboard Gabungan
 
-![Storyboard {{video.id}}](storyboard.jpg)
-
-> Storyboard merangkum semua shot. Setiap gambar shot juga ditampilkan langsung pada bagian rincian di bawah.
+![Storyboard](storyboard.jpg)
 
 ## 3. Identitas Desain
 
 | Aspek | Hasil analisis |
 |---|---|
 | Gaya utama | {{architecture.primary_style | humanize}} |
-| Pengaruh gaya | {{architecture.secondary_influences | join}} |
-| Ciri eksterior | {{architecture.exterior_features | join}} |
-| Gaya interior | {{architecture.interior_style | join}} |
+| Pengaruh gaya | {{architecture.secondary_influences | join_humanize}} |
+| Ciri eksterior | {{architecture.exterior_features | join_humanize}} |
+| Gaya interior | {{architecture.interior_style | join_humanize}} |
 | Confidence gaya | {{architecture.style_confidence}} |
 
 ## 4. Ukuran & Proporsi Bangunan
@@ -50,76 +52,74 @@ HOMEKU: TEMPLATE LAPORAN VISUAL
 | Bentuk bangunan | {{architecture.building_scale.building_form | humanize}} |
 | Skala vertikal | {{architecture.building_scale.vertical_scale | humanize}} |
 | Tapak bangunan | {{architecture.building_scale.footprint | humanize}} |
-| Perkiraan luas lantai | {{architecture.building_scale.estimated_floor_area_m2.min}}–{{architecture.building_scale.estimated_floor_area_m2.max}} m² |
+| Perkiraan luas lantai | {{architecture.building_scale.estimated_floor_area_m2 | range_or_unknown}} |
 | Confidence | {{architecture.building_scale.confidence}} |
 
-> Luas adalah **estimasi visual**, bukan ukuran pasti. Jika tidak bisa diperkirakan, tampilkan "Tidak diketahui" (bukan `null–null` m²). Tidak perlu memeriksa konsistensi dimensi eksterior–interior.
+> Luas adalah perkiraan visual, bukan ukuran terukur.
 
 ## 5. Warna, Pencahayaan, dan Atmosfer
 
 | Warna dominan | HEX (perkiraan) |
 |---|---|
-| {{visual_style.dominant_colors[].name}} | `{{visual_style.dominant_colors[].hex_approx}}` |
-<!-- Ulangi baris ini untuk setiap warna. -->
+| {{visual_style.dominant_colors[].name}} | {{visual_style.dominant_colors[].hex_approx}} |
+<!-- Ulangi baris warna untuk semua warna yang ada; jika kosong, tidak ada baris data. -->
 
 | Aspek | Hasil analisis |
 |---|---|
-| Pencahayaan | {{visual_style.lighting | join}} |
-| Lingkungan | {{visual_style.setting | join}} |
-| Musim yang tampak | {{visual_style.season_appearance}} |
-| Mood | {{visual_style.mood | join}} |
+| Pencahayaan | {{visual_style.lighting | join_humanize}} |
+| Lingkungan | {{visual_style.setting | join_humanize}} |
+| Musim yang tampak | {{visual_style.season_appearance | humanize}} |
+| Mood | {{visual_style.mood | join_humanize}} |
 
 ## 6. Struktur dan Timeline Video
 
-**Jenis:** {{video_structure.type | humanize}} · **Tempo:** {{video_structure.overall_pace}} · **Pola transisi:** {{video_structure.transition_pattern | humanize}}
+**Jenis:** {{video_structure.type | humanize}} · **Tempo:** {{video_structure.overall_pace | humanize}} · **Transisi:** {{video_structure.transition_pattern | humanize}}
 
 | Shot | Waktu (detik) | Durasi | Area/Scene | Gerakan Kamera |
 |---|---|---|---|---|
-| {{shots[].id | humanize}} | {{shots[].start_s}}–{{shots[].end_s}} | {{end_s - start_s}} dtk | {{shots[].scene | humanize}} | {{shots[].camera.movements | join}} |
-<!-- Ulangi baris ini untuk setiap shot. -->
+| Shot {{shots[].id | number_2digit}} | {{shots[].start_s}}–{{shots[].end_s}} | {{shots[].end_s - shots[].start_s}} | {{shots[].scene | humanize}} | {{shots[].camera.movements | join_humanize}} |
+<!-- Ulangi satu baris per shot. -->
 
 ## 7. Analisis per Shot
 
-<!-- Ulangi SELURUH blok untuk Shot 02, Shot 03, dst. Label tampilan 'Shot 01' berasal dari ID YAML 'shot-01'. -->
-### {{shots[].id | humanize}} — {{shots[].scene | humanize}}
+<!-- Ulangi blok ini untuk setiap shot, dengan nomor gambar/label yang sesuai. -->
+### Shot {{shots[].id | number_2digit}} — {{shots[].scene | humanize}}
 
-<img src="shot-01.jpg" alt="Keyframe {{shots[].id | humanize}} — {{shots[].scene | humanize}}" width="360">
+<img src="shot-01.jpg" alt="Shot 01" width="360">
 
-**Waktu:** {{shots[].start_s}}–{{shots[].end_s}} detik · **Durasi:** {{end_s - start_s}} detik
+**Waktu:** {{shots[].start_s}}–{{shots[].end_s}} detik
 
 | Komponen | Pengamatan |
 |---|---|
 | Fokus utama | {{shots[].focal_subject | humanize}} |
-| Framing awal → akhir | {{shots[].framing.start}} → {{shots[].framing.end}} |
+| Framing awal → akhir | {{shots[].framing.start | humanize}} → {{shots[].framing.end | humanize}} |
 | Sudut pandang | {{shots[].framing.view_angle | humanize}} |
-| Gerakan kamera | {{shots[].camera.movements | join}} |
-| Kecepatan kamera | {{shots[].camera.speed}} |
+| Gerakan kamera | {{shots[].camera.movements | join_humanize}} |
+| Kecepatan kamera | {{shots[].camera.speed | humanize}} |
 | Pencahayaan | {{shots[].lighting | humanize}} |
 | Transisi keluar | {{shots[].transition_out | humanize}} |
 
 **Detail yang terlihat**
 
-- **Arsitektur:** {{shots[].visible_details.architectural | join}}
-- **Furnitur dan properti:** {{shots[].visible_details.furniture_and_props | join}}
-- **Lingkungan:** {{shots[].visible_details.environment | join}}
+- **Arsitektur:** {{shots[].visible_details.architectural | join_humanize}}
+- **Furnitur dan properti:** {{shots[].visible_details.furniture_and_props | join_humanize}}
+- **Lingkungan:** {{shots[].visible_details.environment | join_humanize}}
 
-**Catatan pengamatan:** {{shots[].observation_note}}
+**Catatan pengamatan:** {{shots[].observation_note | humanize}}
 
-**Confidence:** Kamera {{shots[].confidence.camera}} · Detail visual {{shots[].confidence.visual_details}}
-
-<!-- Untuk shot berikutnya: gunakan <img src="shot-02.jpg" ...>, <img src="shot-03.jpg" ...> dst. Nomor gambar tetap dua digit dan harus sesuai dengan shots[].keyframe di YAML. -->
+**Confidence:** Kamera {{shots[].confidence.camera | humanize}} · Detail visual {{shots[].confidence.visual_details | humanize}}
 
 ## 8. Kualitas dan Ketidakpastian Analisis
 
 | Parameter | Hasil |
 |---|---|
 | Status | {{analysis_quality.status}} |
-| Verifikasi manusia | {{analysis_quality.human_verified}} |
-| Ketepatan timestamp | {{analysis_quality.timestamp_precision}} |
-| Ketidakpastian | {{analysis_quality.uncertainties | join}} |
+| Verifikasi manusia | {{analysis_quality.human_verified | humanize}} |
+| Ketepatan timestamp | {{analysis_quality.timestamp_precision | humanize}} |
+| Ketidakpastian | {{analysis_quality.uncertainties | join_humanize}} |
 
-**Catatan:** {{analysis_quality.notes}}
+**Catatan:** {{analysis_quality.notes | humanize}}
 
 ---
 
-*Laporan ini merupakan representasi visual dari [analysis.yaml](analysis.yaml), bukan sumber fakta atau analisis yang terpisah.*
+*Laporan ini diturunkan dari [analysis.yaml](analysis.yaml).*

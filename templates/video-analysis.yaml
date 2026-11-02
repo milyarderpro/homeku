@@ -1,15 +1,16 @@
 # VIDEO ANALYSIS ONLY — no ideas, prompts, or generation instructions.
 # Duplicate the shots[] item for every shot. Use null for unknown information.
-# ID format: VID-001, VID-002, etc.; shot IDs: shot-01, shot-02, shot-03, etc.
+# Draft chat: video.id=PENDING. GitHub Actions assigns final VID-001, VID-002, etc. on save.
+# Shot IDs: shot-01, shot-02, shot-03, etc. (maximum 99 per video in v1.2).
 # Image filenames: shot-01.jpg, shot-02.jpg, etc. (always two digits for shots 1-99).
 # Technical labels: English snake_case; descriptive notes may be Indonesian.
-# Pair each analysis.yaml with analysis.md using templates/analysis.md.
-# Keep analysis.yaml as source of truth; inline image previews in Markdown must use the shot keyframe paths.
+# v1.2: scripts/save_analysis_action.py generates analysis.md from YAML; templates/analysis.md is a structure reference, not an executed template.
+# Keep analysis.yaml as source of truth; final Markdown uses relative shot-NN.jpg image src. Runner fills final keyframe paths.
 # building_scale stores visual impressions and approximate area ranges (m²); do not imply measured dimensions.
 schema_version: "2.1"
 video:
-  id: VID-XXX
-  filename: video_XXXX.mp4
+  id: PENDING # draft only; finalized to VID-XXX by GitHub Actions after save now
+  filename: video_XXXX.mp4 # must exactly match the basename of main/video/<filename>.mp4
   duration_s: null
   resolution: null # e.g. "720x1280"
   fps: null
@@ -62,7 +63,7 @@ shots:
       environment: []
     lighting: null
     transition_out: null
-    keyframe: null # root-relative path, e.g. references/VID-001/shot-01.jpg
+    keyframe: null # draft can be null; runner generates references/VID-XXX/shot-01.jpg at save
     confidence: { camera: null, visual_details: null }
     observation_note: null
 

@@ -1,7 +1,15 @@
-# Video sumber Homeku
+# Folder MP4 sumber Homeku
 
-Unggah video MP4 ke folder `video/` pada branch `main` **sebelum** meminta ChatGPT menganalisis video tersebut.
+Sebelum meminta ChatGPT menganalisis sebuah video, unggah **MP4 yang sama** ke **branch `main`**, langsung di dalam folder `video/`, misalnya:
 
-Contoh: `video/dreamsHouse002.mp4`.
+```text
+video/dreamsHouse002.mp4
+```
 
-File MP4 asli disimpan sebagai sumber untuk GitHub Actions; upload MP4 saja **tidak** menyimpan hasil analisis atau memicu workflow Save. Hanya pembaruan `requests/save.json` setelah pesan persis `save now` yang mengizinkan proses penyimpanan.
+- Jangan hanya mengunggah MP4 ke chat atau branch uji `actions-jpg-test`: workflow produksi hanya membaca `main/video/`.
+- Simpan satu MP4 dengan **nama yang sama persis** (termasuk huruf besar/kecil) seperti `video.filename` di YAML. Runner saat ini hanya menerima `video/<nama>.mp4`, bukan subfolder `video/xxx/file.mp4`.
+- ChatGPT akan mencari video berdasarkan nama, lalu membandingkan **Git blob SHA-1** dengan file upload chat bila byte lokal tersedia. Nama yang sama saja tidak menjamin isi video sama; jika belum bisa dibandingkan, sumber perlu dikonfirmasi.
+- **Upload video tidak memicu proses penyimpanan analisis.** Hanya update `main/requests/save.json` setelah pesan tersendiri persis `save now` yang memicu GitHub Actions.
+- MP4 tidak dihapus oleh Actions setelah hasil disimpan. Perhatikan ukuran dan riwayat Git jika menyimpan banyak video berukuran besar.
+
+Lihat [workflow v1.2](../rules/workflow-analysis.md) dan [panduan Actions](../docs/github-actions-save.md).

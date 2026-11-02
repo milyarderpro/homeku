@@ -1,51 +1,54 @@
-# Homeku — Library Analisis Video Rumah
+# Homeku — Library Analisis Visual Video Rumah
 
-Homeku menyimpan hasil **analisis visual video desain rumah** sebagai YAML schema 2.1 dan laporan Markdown bergambar. Tidak termasuk audio, ide konten, maupun prompt generatif.
+Homeku menyimpan analisis **visual** video desain rumah sebagai **YAML schema 2.1** (sumber fakta) dan laporan Markdown dengan satu JPEG per shot serta satu storyboard. Tidak mencakup audio, ide konten, atau prompt generatif.
 
-## Struktur
+## Alur aktif: v1.2 — Sequential Save
 
-    video/                        # MP4 asli, unggah manual ke branch main
-    references/VID-XXX/            # Paket hasil satu video
-      analysis.yaml                # sumber data terstruktur
-      analysis.md                  # laporan inline storyboard + gambar shot
-      storyboard.jpg               # gabungan semua shot
-      shot-01.jpg, shot-02.jpg...  # satu keyframe per shot
-    requests/save.json             # satu request teks, awalnya idle
-    requests/result.json           # hasil penyimpanan terakhir (cek request_id)
-    .github/workflows/save-analysis.yml
-    scripts/save_analysis_action.py
-    scripts/validate_analysis.py
-    rules/workflow-analysis.md
-    rules/analysis.md
-    templates/video-analysis.yaml
-    templates/analysis.md
-    docs/github-actions-save.md
+1. **Pengguna lebih dulu mengunggah MP4 ke branch `main`, folder `video/`**, misalnya `video/dreamsHouse002.mp4`. File MP4 tetap disimpan setelah analisis; upload MP4 saja **tidak** menjalankan proses save.
+2. Pengguna mengunggah **video yang sama** ke ChatGPT. AI membaca aturan dan template terbaru, mencari sumber di `main/video/`, melakukan analisis visual, dan menampilkan draft untuk review/revisi. Selama tahap ini akses GitHub **read-only**. Bila memungkinkan, cocokkan Git blob SHA video lokal dengan GitHub; kecocokan nama saja tidak membuktikan byte identik.
+3. Hanya pesan pengguna **tersendiri** yang persis `save now` mengizinkan ChatGPT menulis **satu file teks** `requests/save.json` melalui konektor GitHub. Isinya: YAML lengkap, path dan Git blob SHA MP4 di repo, satu timestamp keyframe untuk setiap shot, dan request_id unik serta stabil.
+4. Perubahan file request melalui konektor GitHub memicu **GitHub Actions** di `main`. Runner mengambil MP4 dari repo, mengekstrak satu JPEG per shot menggunakan FFmpeg, membuat storyboard dengan Pillow, menyusun YAML dan Markdown dari fakta YAML, memvalidasi, lalu melakukan satu commit berisi `references/VID-XXX/` serta `requests/result.json`. Tidak ada pengiriman file biner dari ChatGPT ke konektor.
+5. ChatGPT boleh mengatakan **Saved** hanya setelah memastikan run terkait sukses, result.json sesuai **request_id aktif**, dan semua file serta commit sudah tersedia di `main`. Jika run masih berjalan: **Processing**. Jika gagal: **Not saved**. Pengguna menunggu satu save selesai sebelum save lain.
 
-## Alur v1.2 (sequential, no parallel save)
+**Catatan penting:** `requests/result.json` berisi **hasil sukses terakhir**, bukan status real-time. Bila Actions gagal, file ini dapat berisi request video sebelumnya; jangan menyatakan Saved hanya karena isinya bertuliskan saved. Format `analysis.md` dibuat oleh `scripts/save_analysis_action.py`, sedangkan `templates/analysis.md` adalah acuan struktur, **bukan template yang dieksekusi langsung**. Laporan yang tersimpan bisa berbeda tata letak dari preview chat, tetapi fakta tidak boleh berbeda dari YAML.
 
-1. Unggah MP4 ke **main/video/<file>.mp4** sebelum meminta analisis.
-2. Unggah video yang sama ke ChatGPT. ChatGPT membaca rules dan template, memverifikasi file di main/video/, menganalisis seluruh shot dan menampilkan hasil. Sampai tahap review/revisi, GitHub **READ ONLY**.
-3. Hanya ketika pengguna mengirim pesan tersendiri **save now**, ChatGPT memakai konektor GitHub untuk memperbarui **requests/save.json** dengan YAML lengkap, path & Git blob SHA MP4, satu timestamp keyframe tiap shot, dan request_id stabil.
-4. Push request memicu GitHub Actions. Runner membaca MP4 yang sudah ada di repo, menghasilkan JPG, storyboard, YAML dan Markdown, memvalidasi lalu membuat **satu commit** ke references/VID-XXX/ serta requests/result.json.
-5. ChatGPT memeriksa status Actions, request_id, semua file dan commit sebelum menyatakan **Saved**. Simpan satu video hingga selesai sebelum video selanjutnya.
+## Struktur repo
 
-**Tidak ada lagi transport Base64 JPEG melalui konektor GitHub.** Runner melakukan ekstraksi JPG langsung dari video di repository yang sama. Source MP4 tidak dihapus sesudah save.
+```text
+video/                              # pengguna unggah MP4 di main
+references/VID-XXX/
+  analysis.yaml                     # sumber fakta, schema 2.1
+  analysis.md                       # laporan Markdown yang dirender dari YAML
+  storyboard.jpg
+  shot-01.jpg ... shot-NN.jpg        # satu frame video/JPEG per shot
+requests/save.json                  # satu request, awalnya status=idle
+requests/result.json                # hasil sukses terbaru, awalnya idle
+.github/workflows/save-analysis.yml
+scripts/save_analysis_action.py
+scripts/validate_analysis.py
+rules/workflow-analysis.md
+rules/analysis.md
+templates/video-analysis.yaml
+templates/analysis.md
+docs/github-actions-save.md
+```
 
-## Sumber aturan
+Video sumber hanya dikenali runner pada path **`video/<nama-file>.mp4` langsung di dalam folder video**, bukan subfolder bertingkat. Nama harus sama persis (case-sensitive).
 
-- [Workflow v1.2](rules/workflow-analysis.md)
+## Dokumentasi utama
+
+- [Alur, izin GitHub, dan status save](rules/workflow-analysis.md)
 - [Standar analisis visual](rules/analysis.md)
 - [Template YAML schema 2.1](templates/video-analysis.yaml)
-- [Template laporan Markdown](templates/analysis.md)
-- [Dokumentasi integrasi Actions](docs/github-actions-save.md)
-- [Contoh VID-001](references/VID-001/analysis.md)
+- [Template acuan Markdown](templates/analysis.md)
+- [Operasi GitHub Actions dan troubleshooting](docs/github-actions-save.md)
+- [Cara menaruh MP4](video/README.md)
+- [Contoh hasil lama VID-001](references/VID-001/analysis.md)
 
-Luas bangunan disimpan sebagai perkiraan visual (rentang m² dan confidence), bukan ukuran terukur. YAML adalah satu-satunya sumber fakta; Markdown dibentuk dari YAML. Setiap shot punya satu JPG dan storyboard merangkum semuanya.
+**Bukti pengujian:** Run [41454322381](https://github.com/milyarderpro/homeku/actions/runs/41454322381) di **branch uji** berhasil menghasilkan dan menyimpan 7 file dari MP4 asli menggunakan **data analisis uji, bukan laporan review final**. Run [41454495367](https://github.com/milyarderpro/homeku/actions/runs/41454495367) tidak menghasilkan duplikat setelah request yang sama diputar ulang. Run [41454647109](https://github.com/milyarderpro/homeku/actions/runs/41454647109) di **main** lulus 8 tes dan memproses request `idle` tanpa commit video. **Belum ada penyimpanan video produksi pertama di main melalui save now yang teruji.**
 
-## Project Instructions ChatGPT
+## Project Instructions ChatGPT (diatur terpisah)
 
-Agar berlaku konsisten di semua chat dalam Project Homeku, tambahkan instruksi berikut ke konfigurasi proyek ChatGPT:
+Agar aturan ini konsisten untuk setiap chat baru dalam Project Homeku, salin instruksi berikut ke pengaturan **Project Instructions ChatGPT**. Mengedit README atau rules di GitHub **tidak otomatis** mengubah pengaturan tersebut.
 
-> Untuk video yang diunggah, baca versi terbaru rules/workflow-analysis.md, rules/analysis.md, templates/video-analysis.yaml, dan templates/analysis.md dari GitHub milyarderpro/homeku. Cari MP4 yang sama di main/video/; lakukan ANALYZE dan REVIEW tanpa write GitHub. Hanya pesan pengguna tersendiri save now yang mengizinkan update requests/save.json via konektor GitHub. Tunggu GitHub Actions memproses request, cek requests/result.json, status run dan semua file di references/ sebelum menyatakan Saved. Jangan menyimpan paralel.
-
-**Catatan:** Dokumen GitHub tidak otomatis mengeksekusi tool di ChatGPT. Request harus dibuat ChatGPT melalui konektor ketika pengguna sudah memberi izin yang sah.
+> Untuk analisis video Homeku, baca versi terbaru rules/workflow-analysis.md, rules/analysis.md, templates/video-analysis.yaml dan templates/analysis.md dari repo GitHub milyarderpro/homeku. Cocokkan video yang diunggah ke chat dengan main/video/<filename>.mp4; jika identitas sumber belum pasti, jelaskan sebelum menyimpan. Selama ANALYZE/REVIEW akses GitHub read-only. Hanya pesan pengguna tersendiri persis save now yang mengizinkan update requests/save.json melalui konektor GitHub. Jangan mengunggah JPEG/MP4 melalui konektor. Setelah request dibuat, cek run GitHub Actions, request_id, requests/result.json, dan references/VID-XXX/ sebelum menyatakan Saved. Simpan satu video sampai tuntas sebelum menyimpan berikutnya.
