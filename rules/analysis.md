@@ -1,11 +1,21 @@
 ## Bagian penting
 
 1. `video`: identitas file dan metadata teknis.
-2. `architecture`: gaya arsitektur serta ciri eksterior dan interior yang diamati.
+2. `architecture`: gaya arsitektur, karakteristik eksterior/interior, serta **estimasi ukuran dan proporsi bangunan** melalui `building_scale`.
 3. `visual_style`: warna, pencahayaan, lingkungan, musim yang *tampak*, suasana.
 4. `video_structure`: pola urutan adegan dan tempo keseluruhan.
 5. `shots`: catatan per shot (waktu, scene, framing, gerakan kamera, detail terlihat, transisi, keyframe).
 6. `analysis_quality`: ketidakpastian, estimasi, dan status verifikasi.
+
+## Estimasi visual ukuran bangunan (schema 2.1)
+
+- `architecture.building_scale` wajib ada dalam setiap YAML: `perceived_size`, `building_form`, `vertical_scale`, `footprint`, `estimated_floor_area_m2.min`, `estimated_floor_area_m2.max`, dan `confidence`.
+- `perceived_size` gunakan kategori `tiny`, `small`, `medium`, `large`, atau `estate` berdasarkan kesan visual; tidak ada ambang luas baku untuk kategori ini.
+- `building_form` mencatat bentuk massa bangunan yang tampak (misalnya `narrow_elongated` atau `l_shaped`), `vertical_scale` tingkat/loft yang tampak atau diperkirakan, `footprint` kesan tapak `compact`, `moderate`, atau `expansive`.
+- Luas lantai dalam m² adalah **rentang perkiraan visual** (`min`–`max`), bukan pengukuran atau klaim angka pasti; pilih rentang masuk akal berdasarkan petunjuk proporsi yang terlihat. Pastikan `min <= max`. Jika tidak mungkin diperkirakan secara wajar, keduanya `null`.
+- `confidence` wajib mencatat `low`, `medium`, atau `high`; turunkan confidence untuk estimasi luas tanpa referensi skala yang kuat.
+- Tidak perlu melakukan pemeriksaan konsistensi ukuran eksterior dan interior. Analisis tetap bersifat deskriptif terhadap video yang ada, bukan audit kelayakan arsitektur.
+- Informasi ukuran pada `analysis.md` harus sama dengan `analysis.yaml`, diletakkan setelah **Identitas Desain** dan sebelum **Warna, Pencahayaan, dan Atmosfer**. Jika rentang luas `null`, tampilkan **Tidak diketahui** pada laporan Markdown.
 
 ## Aturan yang menjaga kualitas data untuk ratusan video
 
@@ -22,7 +32,7 @@
 - Setiap folder video **wajib** memiliki `analysis.yaml` (sumber data terstruktur AI) dan `analysis.md` (laporan visual untuk manusia), selain `storyboard.jpg` dan tepat satu gambar per shot. Gunakan `templates/video-analysis.yaml` serta `templates/analysis.md`.
 - `analysis.yaml` tetap menjadi **satu-satunya sumber fakta**. Isi `analysis.md` harus mengikuti YAML yang sama; tidak boleh menambahkan observasi/interpretasi baru, angka, atau detail yang tidak tercatat dalam YAML. Jika YAML berubah, sinkronkan `analysis.md`.
 - Pada `analysis.md`, tampilkan **gambar setiap shot secara langsung** di bawah heading masing-masing, bukan tautan ke gambar. Gunakan contoh `<img src="shot-01.jpg" alt="Shot 01" width="360">` dengan nama berurutan (`shot-02.jpg`, dst.); gambar akan terlihat di GitHub tanpa membuka file terpisah. ID di YAML mengikuti nama file tanpa ekstensi: `shot-01`, `shot-02`, dst.; file gambar memakai format `shot-NN.jpg` (dua digit, dimulai dari `shot-01.jpg`). Path HTML di Markdown relatif terhadap folder video, sedangkan `shots[].keyframe` dalam YAML relatif terhadap root repository.
-- `analysis.md` mengikuti urutan: **judul dan sumber data → informasi video → storyboard gabungan → identitas arsitektur → warna/pencahayaan/atmosfer → timeline → analisis per shot dengan gambar inline → kualitas/ketidakpastian**.
+- `analysis.md` mengikuti urutan: **judul dan sumber data → informasi video → storyboard gabungan → identitas arsitektur → ukuran & proporsi bangunan → warna/pencahayaan/atmosfer → timeline → analisis per shot dengan gambar inline → kualitas/ketidakpastian**.
 - Timeline `analysis.md` wajib sesuai `shots[]` di YAML (ID, urutan, start/end, gerakan kamera, scene, dan durasi). Cantumkan catatan confidence dan batas ketidakpastian, serta status verifikasi.
 - `storyboard.jpg` merupakan ringkasan seluruh shot, **bukan pengganti gambar individual**. Tidak perlu menambah gambar lain di luar kebutuhan yang telah disepakati.
 - Analisis hanya berfokus pada **visual**; tidak perlu mencatat audio, musik, voiceover, atau membuat prompt dan ide konten.

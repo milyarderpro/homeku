@@ -32,7 +32,20 @@
 | Gaya interior | Cozy Country Cottage, Modern Farmhouse |
 | Confidence klasifikasi gaya | Medium |
 
-## 4. Warna, Pencahayaan, dan Atmosfer
+## 4. Ukuran & Proporsi Bangunan
+
+| Aspek | Estimasi visual |
+|---|---|
+| Ukuran yang terlihat | Tiny |
+| Bentuk bangunan | Sempit dan memanjang (`narrow_elongated`) |
+| Skala vertikal | Satu tingkat utama dengan kemungkinan loft |
+| Tapak bangunan | Compact |
+| Perkiraan luas lantai | **25–45 m²** |
+| Confidence | **Low** |
+
+> Ukuran dan luas merupakan perkiraan kasar berdasarkan tampilan video, bukan pengukuran aktual. Penilaian ini tidak menguji kesesuaian ukuran interior dengan eksterior.
+
+## 5. Warna, Pencahayaan, dan Atmosfer
 
 | Warna dominan | HEX (perkiraan visual) |
 |---|---|
@@ -48,7 +61,7 @@
 | Musim yang tampak | Early autumn |
 | Mood | Cozy, peaceful, nostalgic, inviting |
 
-## 5. Struktur dan Timeline Video
+## 6. Struktur dan Timeline Video
 
 **Jenis:** Exterior-to-interior home tour · **Tempo:** Slow · **Pola transisi:** Soft blur pada perpindahan awal, kemudian cut
 
@@ -60,7 +73,7 @@
 | Shot 04 | 13,10–16,57 | 3,47 dtk | Bedroom | Dolly-out + pan left |
 | Shot 05 | 16,57–20,03 | 3,46 dtk | Bathroom | Dolly-in |
 
-## 6. Analisis per Shot
+## 7. Analisis per Shot
 
 ### Shot 01 — Exterior Front
 
@@ -192,7 +205,7 @@
 
 **Confidence:** Kamera medium · Detail visual high
 
-## 7. Kualitas dan Ketidakpastian Analisis
+## 8. Kualitas dan Ketidakpastian Analisis
 
 | Parameter | Hasil |
 |---|---|

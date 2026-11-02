@@ -5,7 +5,8 @@
 # Technical labels: English snake_case; descriptive notes may be Indonesian.
 # Pair each analysis.yaml with analysis.md using templates/analysis.md.
 # Keep analysis.yaml as source of truth; inline image previews in Markdown must use the shot keyframe paths.
-schema_version: "2.0"
+# building_scale stores visual impressions and approximate area ranges (m²); do not imply measured dimensions.
+schema_version: "2.1"
 video:
   id: VID-XXX
   filename: video_XXXX.mp4
@@ -17,6 +18,16 @@ video:
 
 architecture:
   primary_style: null # inferred style, not a verified geographic origin
+  building_scale:
+    perceived_size: null # tiny / small / medium / large / estate
+    building_form: null # e.g. narrow_elongated, rectangular, l_shaped
+    vertical_scale: null # e.g. single_story, single_story_with_possible_loft
+    footprint: null # compact / moderate / expansive
+    estimated_floor_area_m2:
+      min: null # rough visual estimate in m², not actual measurement
+      max: null
+    confidence: null # low / medium / high
+
   secondary_influences: []
   exterior_features: [] # roof, walls, porch, windows, doors, materials
   interior_style: []

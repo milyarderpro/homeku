@@ -6,6 +6,7 @@ HOMEKU: TEMPLATE LAPORAN VISUAL
 - Gambar tampil langsung (inline), bukan hanya tautan.
 - Label shot yang ditampilkan: Shot 01, Shot 02, ... (ID YAML: shot-01, shot-02, ...).
 - File ini berada di references/VID-XXX/analysis.md bersama storyboard.jpg dan shot-01.jpg dst.
+- Tampilkan ukuran rumah berdasarkan architecture.building_scale; rentang m² adalah estimasi, bukan ukuran terukur.
 -->
 # {{video.id}} — {{architecture.primary_style | humanize}}
 
@@ -41,7 +42,20 @@ HOMEKU: TEMPLATE LAPORAN VISUAL
 | Gaya interior | {{architecture.interior_style | join}} |
 | Confidence gaya | {{architecture.style_confidence}} |
 
-## 4. Warna, Pencahayaan, dan Atmosfer
+## 4. Ukuran & Proporsi Bangunan
+
+| Aspek | Estimasi visual |
+|---|---|
+| Ukuran yang terlihat | {{architecture.building_scale.perceived_size | humanize}} |
+| Bentuk bangunan | {{architecture.building_scale.building_form | humanize}} |
+| Skala vertikal | {{architecture.building_scale.vertical_scale | humanize}} |
+| Tapak bangunan | {{architecture.building_scale.footprint | humanize}} |
+| Perkiraan luas lantai | {{architecture.building_scale.estimated_floor_area_m2.min}}–{{architecture.building_scale.estimated_floor_area_m2.max}} m² |
+| Confidence | {{architecture.building_scale.confidence}} |
+
+> Luas adalah **estimasi visual**, bukan ukuran pasti. Jika tidak bisa diperkirakan, tampilkan "Tidak diketahui" (bukan `null–null` m²). Tidak perlu memeriksa konsistensi dimensi eksterior–interior.
+
+## 5. Warna, Pencahayaan, dan Atmosfer
 
 | Warna dominan | HEX (perkiraan) |
 |---|---|
@@ -55,7 +69,7 @@ HOMEKU: TEMPLATE LAPORAN VISUAL
 | Musim yang tampak | {{visual_style.season_appearance}} |
 | Mood | {{visual_style.mood | join}} |
 
-## 5. Struktur dan Timeline Video
+## 6. Struktur dan Timeline Video
 
 **Jenis:** {{video_structure.type | humanize}} · **Tempo:** {{video_structure.overall_pace}} · **Pola transisi:** {{video_structure.transition_pattern | humanize}}
 
@@ -64,7 +78,7 @@ HOMEKU: TEMPLATE LAPORAN VISUAL
 | {{shots[].id | humanize}} | {{shots[].start_s}}–{{shots[].end_s}} | {{end_s - start_s}} dtk | {{shots[].scene | humanize}} | {{shots[].camera.movements | join}} |
 <!-- Ulangi baris ini untuk setiap shot. -->
 
-## 6. Analisis per Shot
+## 7. Analisis per Shot
 
 <!-- Ulangi SELURUH blok untuk Shot 02, Shot 03, dst. Label tampilan 'Shot 01' berasal dari ID YAML 'shot-01'. -->
 ### {{shots[].id | humanize}} — {{shots[].scene | humanize}}
@@ -95,7 +109,7 @@ HOMEKU: TEMPLATE LAPORAN VISUAL
 
 <!-- Untuk shot berikutnya: gunakan <img src="shot-02.jpg" ...>, <img src="shot-03.jpg" ...> dst. Nomor gambar tetap dua digit dan harus sesuai dengan shots[].keyframe di YAML. -->
 
-## 7. Kualitas dan Ketidakpastian Analisis
+## 8. Kualitas dan Ketidakpastian Analisis
 
 | Parameter | Hasil |
 |---|---|
