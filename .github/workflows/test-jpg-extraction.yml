@@ -1,6 +1,9 @@
 name: Homeku - Test JPG Extraction
 
 on:
+  push:
+    branches:
+      - actions-jpg-test
   workflow_dispatch:
 
 permissions:
@@ -18,7 +21,7 @@ jobs:
         shell: bash
         run: |
           if [[ "$GITHUB_REF" != "refs/heads/actions-jpg-test" ]]; then
-            echo "ERROR: Select branch actions-jpg-test, not main."
+            echo "ERROR: Run on actions-jpg-test only (not main)."
             exit 1
           fi
 
@@ -26,6 +29,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: actions-jpg-test
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -40,19 +44,43 @@ jobs:
             sudo apt-get update && sudo apt-get install -y ffmpeg
           fi
 
+      - name: Select MP4 or generate synthetic test video
+        shell: bash
+        run: |
+          if [[ -s tests/dreamsHouse002.mp4 ]]; then
+            echo "SOURCE_KIND=uploaded-real-mp4" >> "$GITHUB_ENV"
+            echo "SOURCE_MP4=tests/dreamsHouse002.mp4" >> "$GITHUB_ENV"
+            echo "Using uploaded MP4 from tests/dreamsHouse002.mp4."
+          else
+            echo "SOURCE_KIND=synthetic-video" >> "$GITHUB_ENV"
+            echo "SOURCE_MP4=$RUNNER_TEMP/homeku-synthetic.mp4" >> "$GITHUB_ENV"
+            ffmpeg -hide_banner -loglevel error -nostdin -y \
+              -f lavfi -i 'testsrc2=size=720x1280:rate=2:duration=21' \
+              -c:v mpeg4 -q:v 5 "$RUNNER_TEMP/homeku-synthetic.mp4"
+            echo "Created a synthetic video for infrastructure-only JPG test."
+          fi
+
       - name: Extract and verify JPGs
         shell: bash
         run: |
-          test -s tests/dreamsHouse002.mp4 || { echo 'Upload tests/dreamsHouse002.mp4 into branch actions-jpg-test first'; exit 1; }
+          echo "Source: $SOURCE_KIND"
           python scripts/action_jpg_smoke.py \
-            --video tests/dreamsHouse002.mp4 \
+            --video "$SOURCE_MP4" \
             --output "tests/output/jpg-smoke-${GITHUB_RUN_ID}"
 
-      - name: Commit JPGs to test branch only
+      - name: Upload generated JPGs as run artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: homeku-jpg-smoke-${{ github.run_id }}
+          path: tests/output/jpg-smoke-${{ github.run_id }}/
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Commit five JPGs to test branch
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add "tests/output/jpg-smoke-${GITHUB_RUN_ID}/"
-          git commit -m "test: verify five JPGs extracted by GitHub Actions (run ${GITHUB_RUN_ID})"
+          git commit -m "test: extract five JPGs from ${SOURCE_KIND} (run ${GITHUB_RUN_ID})"
           git push origin HEAD:actions-jpg-test
