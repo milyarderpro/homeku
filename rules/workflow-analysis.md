@@ -1,167 +1,87 @@
-# Homeku — Workflow Analisis Video v1.1
+# Homeku — Workflow Analisis Video v1.2 (Sequential GitHub Actions Save)
 
-> **Status:** standar operasional analisis video di ChatGPT. **Repository:** `milyarderpro/homeku`. **Branch:** `main`.
->
-> **Alur:** **UPLOAD → ANALYZE → REVIEW / REVISE → `save now` → SAFE SAVE → VERIFY**.
+> Repository: milyarderpro/homeku; branch produksi: main.
+> **UPLOAD MP4 → ANALYZE → REVIEW/REVISE → exact save now → REQUEST → ACTIONS → VERIFY.**
 
-## 1. Tujuan dan pembagian aturan
+## 1. Sumber aturan
 
-File ini mengatur **proses kerja dan izin menulis ke GitHub**, termasuk beberapa chat yang menganalisis video berbeda secara paralel.
+Baca versi terbaru dari GitHub sebelum analisis video:
+- rules/workflow-analysis.md — proses dan izin GitHub.
+- rules/analysis.md — kualitas observasi visual, estimasi, keyframe, dan ketidakpastian.
+- templates/video-analysis.yaml — sumber data YAML schema_version 2.1 (tidak berubah).
+- templates/analysis.md — struktur laporan manusia; harus mengikuti YAML.
 
-- `rules/workflow-analysis.md` (file ini): kapan melakukan analisis, review, revisi, dan penyimpanan.
-- `rules/analysis.md`: apa yang harus diamati, bagaimana melakukan estimasi, dan standar kualitas analisis visual.
-- `templates/video-analysis.yaml`: struktur `analysis.yaml`, sumber data utama; gunakan `schema_version` aktif (saat ini **2.1**).
-- `templates/analysis.md`: format laporan visual yang diturunkan dari YAML.
+Analisis hanya mencakup visual. Jangan menghasilkan ide video, prompt produksi, atau analisis audio.
 
-**Batasan:** hanya analisis video yang diberikan; tidak membuat ide konten, prompt produksi, atau analisis audio. Jangan mengubah skema/template hanya untuk memenuhi workflow ini.
+## 2. Phase 1: UPLOAD / ANALYZE / REVIEW — GitHub READ ONLY
 
-## 2. Konteks satu chat dan keadaan analisis
+1. Pengguna **sudah mengunggah MP4 ke main/video/** sebelum mengirim video yang sama ke ChatGPT.
+2. Baca rules dan templates terbaru, cari video/<nama-file>.mp4 di main. Cocokkan nama dan, jika byte video lokal tersedia, **Git blob SHA-1** dari video yang diunggah dengan SHA blob dalam tree GitHub. Bila berbeda, jangan menganggap file sama. Jika tidak bisa memverifikasi identitas, jelaskan keterbatasan dan minta konfirmasi sumber video.
+3. Catat nama path, Git blob SHA, serta metadata video. File di main/video/ tetap tersimpan sebagai sumber; jangan memindahkan/menghapusnya.
+4. Analisis video sepenuhnya menurut rules/analysis.md: shot awal/akhir, scene, pergerakan kamera, pencahayaan, properti, desain rumah, estimasi luas m² dan confidence. Buat **satu timestamp keyframe per shot**, di dalam rentang shot; **bukan** timestamp hardcoded.
+5. Tampilkan hasil lengkap di chat: storyboard jika tersedia, gaya, ukuran, warna, timeline, semua detail shot, ketidakpastian, draft YAML schema 2.1, dan laporan. Draft id adalah PENDING.
+6. Izinkan revisi pada draft yang sama. Satu chat hanya memiliki satu draft analisis aktif.
+7. **Sebelum pesan valid save now: hanya boleh MEMBACA GitHub.** Jangan menulis request, blob, file, commit, atau menjalankan job penyimpanan. Pembaruan kode/rules oleh instruksi eksplisit terpisah dari penyimpanan analisis.
 
-Satu chat menangani **maksimal satu draft analisis aktif yang belum disimpan**. Draft mencakup metadata video, data YAML, laporan yang ditampilkan di chat, storyboard, dan gambar setiap shot.
+Bila MP4 tidak ditemukan di main/video/, berhenti dan jelaskan cara upload, jangan mengarang path.
 
-Keadaan yang digunakan:
+## 3. Phase 2: exact save now — kirim SATU request teks
 
-1. **`no_draft`** — belum ada analisis yang menunggu review.
-2. **`review_pending`** — analisis selesai ditampilkan, menunggu revisi atau perintah penyimpanan.
-3. **`saving`** — proses validasi dan commit GitHub sedang dijalankan.
-4. **`saved`** — seluruh file sudah diverifikasi di GitHub.
+Hanya pesan pengguna tersendiri yang setelah trim dan case-insensitive sama persis dengan **save now** merupakan persetujuan menyimpan draft terbaru di chat yang sama. Penyebutan sebagai kutipan, contoh, atau pertanyaan **tidak sah**. Perintah ulang pada draft yang sudah tersimpan tidak membuat request baru.
 
-Keadaan ini adalah **konsep operasional percakapan**, bukan status baru dalam skema YAML. `analysis_quality.status` dan `human_verified` tetap mengikuti makna yang ditentukan aturan analisis; mengirim `save now` **tidak otomatis** mengubah status menjadi `reviewed` atau `human_verified: true`.
+Lakukan preflight: draft YAML lengkap (schema 2.1), file sumber di main/video/, blob SHA GitHub, shot_count sesuai shots[], timestamp frame di dalam setiap shot, dan user sudah melihat review. Jangan menyimpan jika sumber berbeda/hilang.
 
-Jika pengguna mengirim video baru saat draft lama masih `review_pending`, jangan menggantinya diam-diam. Mintalah pengguna memilih untuk menyimpan atau mengabaikan draft lama, atau memproses video baru di chat lain. Draft dan file sementara **tidak otomatis terbagi antarchat**; untuk menyimpan, gunakan chat yang memiliki video dan hasil analisisnya.
+ChatGPT menggunakan konektor GitHub yang sudah ada untuk **membuat atau memperbarui UTF-8 requests/save.json** di main. Schema:
 
-## 3. Tahap UPLOAD dan ANALYZE
+    {
+      "schema_version": "1.0",
+      "status": "approved",
+      "request_id": "unique-stable-id-8chars-min",
+      "video": {"path": "video/example.mp4", "blob_sha": "<40 hex Git blob SHA>"},
+      "keyframe_times_s": [2.5, 7.3],
+      "analysis_yaml": "<SELURUH YAML schema 2.1 sebagai string>"
+    }
 
-Saat pengguna mengirim video baru:
+Request_id harus unik antarvideo dan STABIL untuk retries/reviews; jangan membuat ID baru hanya karena panggilan API tidak pasti. Bila responses GitHub ambigu, baca requests/save.json sebelum retry. Satu request aktif pada satu waktu; jangan mengganti request saat Actions belum selesai. Saat pertama kali repo diinisialisasi, requests/save.json berisi status idle. Setelahnya gunakan GitHub connector **update_file** dengan blob SHA terbaru; jangan membuat file baru untuk setiap video. Format teks YAML boleh tetap berisi video.id PENDING karena ID final ditetapkan runner.
 
-1. Baca versi terbaru empat dokumen di bagian 1 dari GitHub sebelum mulai.
-2. Periksa apakah file video dapat diakses/dibaca. Catat metadata teknis yang tersedia: nama, durasi, resolusi, FPS, rasio, dan jumlah shot.
-3. Identifikasi seluruh shot beserta waktu awal/akhir. Analisis tiap shot sesuai `rules/analysis.md`: scene, framing, pergerakan kamera, pencahayaan, detail arsitektur/properti/lingkungan, dan transisi.
-4. Analisis gaya rumah, warna, suasana, serta `architecture.building_scale` termasuk rentang perkiraan luas m² dan tingkat keyakinannya. Estimasi visual yang masuk akal diperbolehkan; jangan menyatakan angka perkiraan sebagai ukuran pasti dan jangan memeriksa konsistensi dimensi interior-eksterior.
-5. Ekstrak **tepat satu keyframe asli per shot** dalam JPEG; siapkan `storyboard.jpg` yang menggabungkan semua shot.
-6. Susun draft `analysis.yaml` berdasarkan template, dan draft `analysis.md` **dari data YAML yang sama**. Semua rujukan gambar disiapkan mengikuti nama `shot-01.jpg`, `shot-02.jpg`, dst.
-7. ID akhir `VID-XXX` **belum ditetapkan** pada tahap ini; gunakan label sementara `PENDING` dalam preview atau tunjukkan bahwa ID akan diberikan saat penyimpanan.
+**ChatGPT TIDAK mengunggah JPEG, ZIP, MP4, atau data biner ke konektor.** Hanya teks request.
 
-**Larangan tegas:** pada tahap upload, analyze, review, dan revise, **jangan membuat/memperbarui/menghapus file maupun commit di GitHub**. Hanya membaca repo diperbolehkan.
+Setelah update berhasil, sampaikan status **Processing/Queued**, bukan Saved. Periksa GitHub Actions run pada branch main, requests/result.json, dan files references; jangan menganggap commit request sama dengan commit video.
 
-Jika video tidak dapat dibaca, jelaskan keterbatasan; jangan mengarang hasil analisis seolah-olah video sudah diperiksa.
+## 4. Phase 3: GitHub Actions memproses request
 
-## 4. Tahap REVIEW dan REVISE (di chat)
+.github/workflows/save-analysis.yml dipicu oleh push pada main yang mengubah **hanya requests/save.json** (path filter). Actions memeriksa status approved, request_id, video path aman, SHA MP4, data YAML dan timestamps. Tanpa MP4/tidak cocok, job gagal tanpa menyimpan paket parsial.
 
-Setelah analisis, tampilkan laporan **lengkap dan nyaman ditinjau** di chat:
+scripts/save_analysis_action.py:
+1. Periksa request_id pada marker Markdown video yang sudah tersimpan, untuk mencegah duplikasi meski request diulang.
+2. Baca MP4 yang sudah ada di main/video/. Pastikan SHA Git blob sesuai request.
+3. Ambil ID terkecil yang kosong dari references/VID-XXX/ pada HEAD branch terbaru.
+4. Finalisasi video.id dan shots[].keyframe. Ekstrak tepat satu JPG per shot dari timestamp request via FFmpeg.
+5. Buat storyboard.jpg melalui Pillow; susun analysis.yaml dan analysis.md dari YAML yang sama.
+6. Jalankan scripts/validate_analysis.py untuk memeriksa semua file/JPEG/shot.
+7. Simpan references/VID-XXX/ dan requests/result.json dalam **satu commit** lalu push main tanpa force.
+8. Verifikasi commit ada di branch dan file tersedia. Action GitHub token commit tidak boleh memicu simpan ulang. Kesalahan validasi/push dilaporkan lewat log Actions; hasil sebelumnya pada result.json tidak boleh dianggap hasil terbaru.
 
-- metadata teknis dan ringkasan video;
-- storyboard gabungan;
-- gaya arsitektur, ukuran dan proporsi, rentang luas perkiraan beserta confidence;
-- warna, pencahayaan, suasana, lingkungan;
-- urutan scene dan tabel timeline seluruh shot;
-- detail **setiap** shot beserta gambar keyframe (jika tampilan media memungkinkan), gerakan kamera, properti, transisi, dan confidence;
-- ketidakpastian, status analisis, dan catatan kualitas.
+Tidak ada penyimpanan paralel (pengguna menunggu satu penyimpanan selesai). Tidak ada sistem antrean khusus dan tidak ada transfer file JPEG Base64 dari Python ChatGPT.
 
-Nyatakan secara jelas: **“Belum disimpan ke GitHub. Kirim `save now` untuk menyimpan hasil analisis ini.”**
+## 5. Phase 4: VERIFY / status
 
-Jika pengguna meminta revisi, ubah **draft aktif yang sama**, sinkronkan YAML dan laporan visual, lalu tampilkan hasil terbaru. Tidak ada penulisan GitHub sebelum perintah yang valid.
+- **Saved** hanya jika run Actions sukses, result.json.status=saved, result.request_id sama dengan request aktif, dan seluruh file references/VID-XXX/ dapat ditemukan pada main; tampilkan ID, shot_count, analysis.md, analysis.yaml, serta commit Actions.
+- **Processing** jika Actions masih queued/in progress.
+- **Not saved** jika Actions gagal, file tidak lengkap, result.json tidak sesuai atau penyimpanan tidak terjadi. Jangan mengklaim sukses hanya karena requests/save.json berhasil diperbarui.
+- Jika request sebelumnya tersimpan, gunakan ID sama; jangan melakukan penyimpanan baru.
+- Jangan memulai save video lain sebelum status video sebelumnya telah dikonfirmasi.
 
-## 5. Otorisasi `save now`
+## 6. Batas teknis
 
-**Satu-satunya pemicu penyimpanan standar** adalah pesan pengguna tersendiri yang setelah menghapus spasi awal/akhir bernilai persis `save now` (abaikan perbedaan huruf besar/kecil).
+GitHub Actions mengambil MP4 dari **main/video/**; ChatGPT tidak dapat otomatis memindahkan MP4 upload chat ke GitHub. MP4 wajib diunggah pengguna terlebih dahulu. File besar membuat riwayat Git membesar. Upload browser GitHub punya batas ukuran; jangan menggunakan Git LFS tanpa adaptasi downloader.
 
-- Penyebutan kata `save now` dalam contoh, kutipan, pertanyaan, atau pesan yang memuat teks lain **bukan izin menyimpan**.
-- Perintah berlaku hanya untuk **draft terbaru di chat yang sama** dan berstatus `review_pending`. Jangan mengambil draft chat lain, video lain, atau versi lama.
-- Jika tidak ada draft aktif, minta video/analisis yang perlu disimpan; jangan membuat data baru.
-- Jika draft sudah `saved` dan perintah diulang, laporkan tautan hasil lama bila diketahui, **jangan membuat folder duplikat**.
-- `save now` adalah persetujuan untuk **menyimpan draft yang sudah ditampilkan**, bukan verifikasi bahwa seluruh pengukuran/estimasi telah diperiksa secara manual.
+GitHub Project Instructions harus mengarahkan AI membaca keempat file aturan/template terbaru. Dokumen ini tidak otomatis mengeksekusi tool.
 
-## 6. SAFE PARALLEL SAVE — wajib untuk beberapa chat
+## 7. Mode uji dan rujukan
 
-**Jangan mengunci ID terlalu awal.** Semua chat berbagi branch `main` dan dapat mencoba menyimpan bersamaan.
+Runner juga mengizinkan branch actions-jpg-test khusus untuk tes isolasi yang nyata, tanpa menulis references di main. Data produksi hanya berasal dari request main dengan persetujuan save now.
 
-Saat perintah valid diterima:
+Detail teknis dan troubleshoot: docs/github-actions-save.md.
 
-1. **Preflight**: pastikan draft lengkap dan seluruh byte gambar keyframe serta storyboard masih tersedia. Bila tidak, berhenti; jangan menyimpan paket parsial. Jika media hilang, minta upload ulang.
-2. **Ambil HEAD terbaru** dari `main` dan daftar folder `references/VID-XXX/` pada HEAD yang sama. Tentukan **ID terkecil yang masih kosong** (umumnya nomor setelah ID terbesar) dengan format `VID-001`, `VID-002`, dst. **Jangan menimpa folder yang sudah ada.**
-3. **Finalisasi ID dan seluruh path** pada `analysis.yaml`, `analysis.md`, serta nama file folder berdasarkan ID terpilih. Nama gambar: `shot-01.jpg`, `shot-02.jpg`, ...; YAML memakai path root-relative `references/VID-XXX/shot-01.jpg`; Markdown memakai src relatif `shot-01.jpg`.
-4. **Validasi seluruh paket** (bagian 7). Semua byte JPEG tetap utuh. Untuk API GitHub Git Data, gambar perlu dibuat sebagai **blob binary melalui encoding base64**, bukan dikirim sebagai teks biasa.
-5. Buat **satu tree Git** berisi dua dokumen dan seluruh gambar yang akan disimpan, dengan base tree dari commit HEAD terpilih; kemudian buat **satu commit** dengan parent commit HEAD yang sama. **Jangan menyimpan tiap file sebagai commit terpisah.**
-6. Perbarui ref `main` menggunakan pemeriksaan HEAD yang diharapkan (**compare-and-swap / expected SHA**) dan **tanpa force**. Jangan menggunakan `force push` atau menimpa commit pihak lain.
-7. Jika pembaruan ref ditolak/HEAD berubah, **jangan menggunakan commit yang sudah basi**. Ambil ulang HEAD dan daftar folder, tentukan ID yang tersedia lagi, perbarui path, susun ulang tree+commit dari HEAD baru, lalu coba lagi (maksimal **3 percobaan**).
-8. Jika setelah 3 percobaan tetap konflik, atau layanan GitHub mengalami kesalahan, hentikan penyimpanan dan jelaskan kegagalannya. **Jangan menyatakan sukses.** Pertahankan draft jika masih tersedia.
-9. Setelah update ref berhasil, **baca kembali repository** dan pastikan semua file ada, setiap gambar dapat dirujuk, ID dan isi YAML sesuai, serta commit terlihat di branch. Hanya setelah verifikasi ini status menjadi `saved`.
-
-**Penting:** pembuatan object blob/tree/commit di GitHub sebelum pembaruan ref tidak membuat file terlihat di branch `main`. Namun, seluruh proses write ini **hanya boleh dimulai setelah perintah `save now`**.
-
-## 7. Checklist validasi sebelum commit
-
-Paket akhir `references/VID-XXX/` **wajib** berisi:
-
-```text
-references/VID-XXX/
-├── analysis.yaml
-├── analysis.md
-├── storyboard.jpg
-├── shot-01.jpg
-├── shot-02.jpg
-└── ... (tepat satu gambar per shot)
-```
-
-Periksa seluruh hal berikut:
-
-- Versi skema YAML sesuai `templates/video-analysis.yaml`.
-- `video.id` sesuai folder `VID-XXX`; `video.shot_count` sama dengan jumlah `shots[]`.
-- ID shot berurutan `shot-01`, `shot-02`, ... dan tanpa duplikasi.
-- Awal/akhir shot masuk akal, berurutan, serta mencakup durasi video dengan toleransi estimasi.
-- Setiap `shots[].keyframe` mengarah ke gambar JPEG yang **benar-benar disimpan**, bukan nama path kosong.
-- `storyboard.jpg` ada dan merangkum seluruh shot.
-- `analysis.md` memakai storyboard inline dan gambar **setiap** shot inline (`<img src="shot-01.jpg" ...>`).
-- Ringkasan, scene, timeline, ukuran bangunan, rentang luas, catatan, dan confidence di Markdown konsisten dengan YAML.
-- Rentang `estimated_floor_area_m2` berisi `min <= max`, atau keduanya `null` jika tidak dapat diperkirakan.
-- Label Markdown menggunakan `Shot 01`, `Shot 02`, ...; tidak menggunakan label lama `S1`, `S2`.
-- Tidak ada konten audio, ide generatif, prompt, atau tambahan fakta yang tidak bersumber dari pengamatan.
-- ID/folder target belum ada pada HEAD yang dipakai untuk commit.
-
-## 8. Hasil yang harus ditampilkan setelah penyimpanan
-
-Jika berhasil, jawab dengan ringkas:
-
-- **Status:** Saved (terverifikasi).
-- **Video ID:** `VID-XXX`.
-- **Jumlah shot:** sesuai file.
-- **Tautan:** `references/VID-XXX/analysis.md` dan `analysis.yaml` di GitHub.
-- **Commit:** tautan commit yang sudah menjadi bagian branch `main`.
-
-Jika gagal, tampilkan **Not saved** beserta penyebab konkret dan tindakan yang diperlukan. Jangan membuat tautan file seolah-olah sudah tersedia jika commit gagal.
-
-## 9. Batas penerapan
-
-Dokumen GitHub **tidak otomatis dieksekusi oleh ChatGPT**. Agar diterapkan secara konsisten pada chat baru, masukkan instruksi singkat ke **Project Instructions Homeku** agar AI membaca file ini beserta rules dan template pada awal setiap analisis. Koneksi GitHub harus menyediakan izin tulis untuk tahap `save now`.
-
-Setiap chat tetap bekerja atas konteks video dan berkasnya sendiri; aturan ini tidak menyediakan antrean latar belakang, penyimpanan lintas chat, atau kemampuan mengakses file yang sudah tidak tersedia.
-
-## 10. Python + GitHub Connector integration (v1.1)
-
-The runtime orchestration uses the existing GitHub connector, not GitHub Actions or a private MCP plugin. Use `scripts/validate_analysis.py`, `scripts/prepare_git_payload.py`, and `scripts/verify_analysis.py` when the local runtime makes these files accessible. `scripts/save_analysis.py` documents an injected connector interface and implements a testable transaction engine; it **cannot call ChatGPT connector tools by itself**. Details and setup: [docs/github-connector-save.md](../docs/github-connector-save.md).
-
-### 10.1 Analysis / review behavior remains unchanged
-
-Continue to read all four latest rules and templates on each new video. Extract one original JPEG per shot, create one storyboard, and produce YAML schema 2.1 and Markdown from the same observations. While awaiting review, keep a local `references/PENDING/` bundle. No repository writes during UPLOAD, ANALYZE, REVIEW, or REVISE. The `save now` permission in `5 applies unchanged.
-
-### 10.2 Before any video save
-
-Preflight check: verify that all original bytes are available, correct JPEG format, all keyframe files and references, timestamps, fields, schema, storyboard and Markdown inline images. Calculate SHA-256 plus Git blob SHA-1 on *original bytes*. Every candidate ID requires regenerated YAML and Markdown, with JPEG bytes unchanged. An incomplete package or unavailable binary data path is a **hard stop** (no partial save).
-
-### 10.3 Git connector transaction and parallel behavior
-
-After exact standalone `save now` only: read a consistent HEAD/tree snapshot, find the lowest unused `VID-XXX`, prepare verified blobs (text UTF-8 and images Base64), compare blob SHAs, create one tree on the selected base tree, create one commit parented to that HEAD, then use a non-force `update_ref` with the selected `expected_sha`. If HEAD conflict occurs, reread HEAD/tree, reallocate ID, regenerate paths and try again (maximum 3). Never force, overwrite an existing folder, or create one commit per file. If update outcome is unknown, **inspect branch/commit first before any retry**. Read back commit and all files; compare byte hashes and YAML/Markdown references. Only then report `Saved`.
-
-### 10.4 Connector transport capability gate
-
-The GitHub connector accepts a Base64 blob argument but does not open `/mnt/data/...` itself. Python can prepare the payload locally; this does **not automatically bridge bytes into a connector invocation**. A small synthetic JPEG has passed a manual Base64/blob SHA test, but realistic unmodified JPEG transfer is not yet proven. Do not claim the automated save implementation is ready or attempt to copy incomplete/truncated Base64 through model context. When transport cannot preserve bytes, return `Not saved` and explain the missing bridge. Do not change the video analysis rules or commit a partial video to work around the limitation.
-
-### 10.5 Tests and quality gate
-
-Use `python -m unittest discover -s tests -v` and local draft validation to check structure, JPEG integrity, preparation and concurrency simulation. These tests are necessary but not sufficient for activation: require a real-size end-to-end test of binary transport, one atomic commit, and remote readback before describing the flow as production-ready. Never use scripts uploaded to the repository as evidence that ChatGPT automatically executed them.
-
-
----
-
-**Prinsip kerja:** *Analyze first. Review in chat. Save only on explicit approval. Commit atomically. Verify before declaring success.*
+**Prinsip:** Analyze = Read Only. Exact save now = Write Authorized. Actions = Generate and commit. Verify before Saved.

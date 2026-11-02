@@ -1,0 +1,100 @@
+"""Tests Homeku v1.2 processing, including FFmpeg and idempotent request IDs."""
+import json
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+import yaml
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from save_analysis_action import process, markdown
+from test_validation import make_package
+
+
+class ActionSaveTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        (self.root / "requests").mkdir()
+        (self.root / "references").mkdir()
+        (self.root / "video").mkdir()
+        self.origin_cwd = Path.cwd()
+        package = make_package(self.root)
+        data = yaml.safe_load((package / "analysis.yaml").read_text())
+        data["architecture"]["primary_style"] = "country_cottage"
+        data["architecture"]["secondary_influences"] = []
+        data["architecture"]["exterior_features"] = []
+        data["architecture"]["interior_style"] = []
+        data["architecture"]["style_confidence"] = "low"
+        data["visual_style"] = {
+            "dominant_colors": [{"name": "sage_green", "hex_approx": "#AABBCC"}],
+            "lighting": ["daylight"], "setting": [], "season_appearance": None, "mood": ["calm"]
+        }
+        data["video_structure"] = {"type": "home_tour", "overall_pace": "slow", "transition_pattern": "hard_cut"}
+        for s in data["shots"]:
+            s.update({
+                "scene": "living_room",
+                "framing": {"start": "wide", "end": "medium", "view_angle": "eye_level"},
+                "camera": {"movements": ["dolly_in"], "speed": "slow"},
+                "focal_subject": "window",
+                "visible_details": {"architectural": ["window"], "furniture_and_props": [], "environment": []},
+                "lighting": "daylight", "transition_out": "cut",
+                "confidence": {"camera": "medium", "visual_details": "high"},
+                "observation_note": "test fixture",
+            })
+        self.data = data
+        shutil.rmtree(package)
+        self.source = self.root / "video/test.mp4"
+        subprocess.run([
+            "ffmpeg", "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+            "-f", "lavfi", "-i", "testsrc2=size=320x240:rate=2:duration=6",
+            "-c:v", "mpeg4", "-q:v", "4", str(self.source)
+        ], check=True)
+        subprocess.run(["git", "init", "-q"], cwd=self.root, check=True)
+        subprocess.run(["git", "config", "user.name", "Unit Test"], cwd=self.root, check=True)
+        subprocess.run(["git", "config", "user.email", "test@example.invalid"], cwd=self.root, check=True)
+        subprocess.run(["git", "add", "video/test.mp4"], cwd=self.root, check=True)
+        subprocess.run(["git", "commit", "-qm", "initial video"], cwd=self.root, check=True)
+        sha = subprocess.check_output(["git", "rev-parse", "HEAD:video/test.mp4"], cwd=self.root, text=True).strip()
+        self.req = {
+            "schema_version": "1.0", "status": "approved",
+            "request_id": "test-video-00001",
+            "video": {"path": "video/test.mp4", "blob_sha": sha},
+            "analysis_yaml": yaml.safe_dump(data, allow_unicode=True),
+            "keyframe_times_s": [1.0, 4.0],
+        }
+        (self.root / "requests/save.json").write_text(json.dumps(self.req), encoding="utf-8")
+        os.chdir(self.root)
+
+    def tearDown(self):
+        os.chdir(self.origin_cwd)
+        self.tmp.cleanup()
+
+    def test_complete_package_and_replay(self):
+        out = process(self.root, "actions-jpg-test")
+        self.assertEqual(out["status"], "saved")
+        self.assertEqual(out["video_id"], "VID-001")
+        self.assertEqual(out["file_count"], 5)
+        self.assertEqual(json.loads((self.root/"requests/result.json").read_text())["request_id"],self.req["request_id"])
+        repeat = process(self.root, "actions-jpg-test")
+        self.assertEqual(repeat["status"], "already_saved")
+        self.assertEqual(len(list((self.root/"references").glob("VID-*"))), 1)
+
+    def test_reject_sha_mismatch_without_folder(self):
+        self.req["video"]["blob_sha"] = "0"*40
+        (self.root / "requests/save.json").write_text(json.dumps(self.req))
+        with self.assertRaisesRegex(ValueError, "SHA mismatch"):
+            process(self.root, "actions-jpg-test")
+        self.assertFalse(any((self.root/"references").iterdir()))
+
+    def test_idle_request_does_nothing(self):
+        (self.root / "requests/save.json").write_text('{"schema_version":"1.0","status":"idle"}')
+        self.assertEqual(process(self.root, "main"), {"status": "idle"})
+
+if __name__=="__main__":
+    unittest.main()
