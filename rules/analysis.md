@@ -39,6 +39,7 @@
 - `analysis.md` mengikuti urutan: **judul dan sumber data → informasi video → storyboard gabungan → identitas arsitektur → ukuran & proporsi bangunan → warna/pencahayaan/atmosfer → timeline → analisis per shot dengan gambar inline → kualitas/ketidakpastian**.
 - Timeline `analysis.md` wajib sesuai `shots[]` di YAML (ID, urutan, start/end, gerakan kamera, scene, dan durasi). Cantumkan catatan confidence dan batas ketidakpastian, serta status verifikasi.
 - `storyboard.jpg` merupakan ringkasan seluruh shot, **bukan pengganti gambar individual**. Tidak perlu menambah gambar lain di luar kebutuhan yang telah disepakati.
+- Tampilan storyboard v1.2 mengikuti **referensi editorial yang disepakati**: judul besar memakai nama video, subtitle durasi/jumlah shot/gaya utama, frame portrait seragam dengan margin konsisten, dan tiga baris caption di bawah tiap frame (nomor + scene, rentang waktu, gerakan kamera). **1–5 shot:** satu baris, jumlah kolom sama dengan jumlah shot. **6+ shot:** tiga kolom, jumlah baris otomatis. Gambar asli shot tidak di-crop/distorsi; generator menambahkan padding bila rasio frame berbeda. Scene dan camera berasal dari YAML, bukan teks buatan.
 - Analisis hanya berfokus pada **visual**; tidak perlu mencatat audio, musik, voiceover, atau membuat prompt dan ide konten.
 - Audit jika `shot_count` tidak sesuai jumlah elemen `shots` atau urutan waktu tidak menyambung.
 - Semua analisis hanya bersumber dari isi video; asal negara tempat rumah itu berdiri tidak dapat dipastikan hanya dari gaya arsitektur.

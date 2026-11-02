@@ -10,6 +10,8 @@ Homeku menyimpan analisis **visual** video desain rumah sebagai **YAML schema 2.
 4. Perubahan file request melalui konektor GitHub memicu **GitHub Actions** di `main`. Runner mengambil MP4 dari repo, mengekstrak satu JPEG per shot menggunakan FFmpeg, membuat storyboard dengan Pillow, menyusun YAML dan Markdown dari fakta YAML, memvalidasi, lalu melakukan satu commit berisi `references/VID-XXX/` serta `requests/result.json`. Tidak ada pengiriman file biner dari ChatGPT ke konektor.
 5. ChatGPT boleh mengatakan **Saved** hanya setelah memastikan run terkait sukses, result.json sesuai **request_id aktif**, dan semua file serta commit sudah tersedia di `main`. Jika run masih berjalan: **Processing**. Jika gagal: **Not saved**. Pengguna menunggu satu save selesai sebelum save lain.
 
+**Storyboard otomatis:** 1–5 shot ditampilkan dalam **satu baris** (kolom = jumlah shot), 6 shot atau lebih menggunakan **3 kolom**. Desain mengikuti referensi pengguna: judul/subtitle, frame portrait sejajar, label scene, waktu shot, dan gerakan kamera. Kode render: [`scripts/storyboard.py`](scripts/storyboard.py). Pembaruan generator berlaku untuk penyimpanan berikutnya; **storyboard VID yang sudah disimpan tidak diubah otomatis**.
+
 **Catatan penting:** `requests/result.json` berisi **hasil sukses terakhir**, bukan status real-time. Bila Actions gagal, file ini dapat berisi request video sebelumnya; jangan menyatakan Saved hanya karena isinya bertuliskan saved. Format `analysis.md` dibuat oleh `scripts/save_analysis_action.py`, sedangkan `templates/analysis.md` adalah acuan struktur, **bukan template yang dieksekusi langsung**. Laporan yang tersimpan bisa berbeda tata letak dari preview chat, tetapi fakta tidak boleh berbeda dari YAML.
 
 ## Struktur repo

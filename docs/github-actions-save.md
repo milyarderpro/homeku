@@ -59,7 +59,7 @@ Saat request `approved` ditemukan, `scripts/save_analysis_action.py`:
 1. Menghindari penyimpanan ulang dari request_id yang sudah memiliki marker di `references/VID-*/analysis.md`.
 2. Memastikan `video/` path aman, file ada, Git blob SHA dari checkout sesuai request, serta jumlah shot dan waktu keyframe konsisten.
 3. Menentukan ID terkecil yang masih kosong `VID-XXX` berdasarkan folder yang ada pada checkout.
-4. Mengambil frame video dari waktu yang dipilih, mengodekannya menjadi JPEG melalui FFmpeg, dan membuat storyboard JPEG dengan Pillow. **Keyframe berasal dari frame video**, bukan file JPEG byte-identik dengan file preview ChatGPT; kompresi/ukuran gambar dapat berbeda.
+4. Mengambil frame video dari waktu yang dipilih dan mengodekannya menjadi JPEG melalui FFmpeg. Generator [`scripts/storyboard.py`](../scripts/storyboard.py) menyusun storyboard dengan Pillow mengikuti acuan gambar pengguna: **1–5 shot = 1 baris dengan jumlah kolom sesuai shot; >5 shot = 3 kolom, baris otomatis**. Tiap frame memakai rasio asli (padding bila perlu), margin seragam, judul/subtitle, dan caption scene/waktu/kamera. **Keyframe berasal dari frame video**, bukan file JPEG byte-identik dengan file preview ChatGPT; kompresi/ukuran gambar dapat berbeda.
 5. Memperbarui `video.id` dan `shots[].keyframe` di YAML; membentuk laporan Markdown lewat fungsi `markdown()` dalam script. `templates/analysis.md` adalah **referensi susunan**, bukan mesin template yang dipakai otomatis.
 6. Memanggil `scripts/validate_analysis.py`, lalu menulis `requests/result.json` dengan status `saved` dan request_id.
 7. GitHub Actions meng-commit paket `references/VID-XXX/` dan `requests/result.json` **bersamaan**, push tanpa force, serta memverifikasi keberadaan file dan hasil validator pada runner.
@@ -78,6 +78,8 @@ Saat request sudah tersimpan, eksekusi ulang menghasilkan `already_saved` dan me
 **Penting:** `requests/result.json` hanya diperbarui pada *save baru yang berhasil*, bukan saat antre/gagal dan bukan status live. Field `run_id` dalam hasil berasal dari lingkungan Actions dan membantu menghubungkan status dengan run yang benar. Jika file result berisi request_id lama, statusnya **bukan** Saved untuk request baru.
 
 Catatan: GitHub-generated push menggunakan GITHUB_TOKEN tidak memicu workflow push baru. Tindakan berhasilnya update request melalui connector sudah diuji di branch uji, tetapi pengguna harus memastikan run baru pada branch main saat save produksi.
+
+**Perubahan layout tidak retroaktif:** update kode generator hanya berlaku untuk request yang menghasilkan paket baru. Folder `references/VID-XXX/` yang sudah tersimpan tidak disentuh oleh revisi script; jika ingin mengganti storyboard lama, perlu instruksi eksplisit terpisah dan verifikasi ulang.
 
 ## Troubleshooting cepat
 

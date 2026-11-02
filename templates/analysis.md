@@ -8,6 +8,7 @@ ubah kode generator DAN acuan ini secara konsisten.
 - ChatGPT menampilkan draft saat review; tampilan final bisa berbeda.
 - Runner menambahkan marker request_id untuk deduplikasi.
 - Gambar JPEG dihasilkan FFmpeg dari MP4 video/, lalu ditampilkan inline.
+- storyboard.jpg dibuat oleh scripts/storyboard.py: 1–5 shot dalam satu baris (kolom sejumlah shot), lebih dari 5 shot dalam tiga kolom; judul, metadata, gambar portrait, serta label scene/waktu/kamera sesuai YAML.
 - Ulangi tabel timeline dan bagian per-shot sesuai shots[].
 - Jika perkiraan luas null, tampilkan "Tidak diketahui".
 - Label manusia: Shot 01, Shot 02; ID data: shot-01, shot-02.
