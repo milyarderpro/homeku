@@ -1,0 +1,59 @@
+# VIDEO ANALYSIS ONLY — no ideas, prompts, or generation instructions.
+# Duplicate the shots[] item for every shot. Use null for unknown information.
+# Technical labels: English snake_case; descriptive notes may be Indonesian.
+schema_version: "2.0"
+video:
+  id: COT_XXXX
+  filename: video_XXXX.mp4
+  duration_s: null
+  resolution: null # e.g. "720x1280"
+  fps: null
+  aspect_ratio: null # e.g. "9:16"
+  shot_count: null
+
+architecture:
+  primary_style: null # inferred style, not a verified geographic origin
+  secondary_influences: []
+  exterior_features: [] # roof, walls, porch, windows, doors, materials
+  interior_style: []
+  style_confidence: null # low / medium / high
+
+visual_style:
+  dominant_colors: [] # e.g. [{name: sage_green, hex_approx: "#A6B2A0"}]
+  lighting: [] # e.g. [soft_daylight, warm_practical_lamps]
+  setting: [] # environment and landscaping, visibly supported
+  season_appearance: null # visually suggested season; not a confirmed date
+  mood: [] # e.g. [cozy, calm, nostalgic]
+
+video_structure:
+  type: null # e.g. home_tour
+  scene_sequence: [] # same order as shots[]
+  overall_pace: null # slow / moderate / fast
+  transition_pattern: null
+
+shots:
+  - id: S01
+    start_s: null
+    end_s: null
+    scene: null # exterior_front / living_room / kitchen / ...
+    framing: { start: null, end: null, view_angle: null }
+    camera:
+      movements: [] # dolly_in, tracking_right, pan_left, etc.
+      speed: null
+    focal_subject: null
+    visible_details:
+      architectural: []
+      furniture_and_props: []
+      environment: []
+    lighting: null
+    transition_out: null
+    keyframe: null # relative path to a real screenshot
+    confidence: { camera: null, visual_details: null }
+    observation_note: null
+
+analysis_quality:
+  status: draft # draft / reviewed
+  human_verified: false
+  timestamp_precision: estimated
+  uncertainties: []
+  notes: null

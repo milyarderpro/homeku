@@ -1,0 +1,247 @@
+schema_version: "2.0"
+video:
+  id: VID-001
+  filename: dreamshome01.mp4
+  duration_s: 20.03
+  resolution: 720x1280
+  fps: 30
+  aspect_ratio: "9:16"
+  shot_count: 5
+architecture:
+  primary_style: american_storybook_cottage
+  secondary_influences:
+    - american_country_cottage
+    - modern_farmhouse_interior
+  exterior_features:
+    - sage_green_siding
+    - curved_front_gable
+    - covered_front_porch
+    - white_shutters
+    - stone_chimney
+  interior_style:
+    - cozy_country_cottage
+    - modern_farmhouse
+  style_confidence: medium
+visual_style:
+  dominant_colors:
+    - name: sage_green
+      hex_approx: "#A6B2A0"
+    - name: warm_cream
+      hex_approx: "#F0E6D4"
+    - name: natural_oak
+      hex_approx: "#B88C61"
+    - name: olive_green
+      hex_approx: "#788269"
+  lighting:
+    - soft_natural_daylight
+    - warm_interior_lamps
+  setting:
+    - leafy_countryside
+    - mature_trees
+    - flower_garden
+  season_appearance: early_autumn
+  mood:
+    - cozy
+    - peaceful
+    - nostalgic
+    - inviting
+video_structure:
+  type: exterior_to_interior_home_tour
+  scene_sequence:
+    - exterior_front
+    - living_room
+    - kitchen
+    - bedroom
+    - bathroom
+  overall_pace: slow
+  transition_pattern: soft_blur_first_then_cuts
+shots:
+  - id: S1
+    start_s: 0.0
+    end_s: 6.2
+    scene: exterior_front
+    framing:
+      start: wide
+      end: medium_wide
+      view_angle: three_quarter_front
+    camera:
+      movements:
+        - dolly_in
+        - tracking_right
+      speed: slow
+    focal_subject: cottage_front_and_porch
+    visible_details:
+      architectural:
+        - sage_green_siding
+        - curved_front_gable
+        - white_shutters
+        - covered_front_porch
+        - stone_chimney
+      furniture_and_props:
+        - rocking_chair
+        - american_flag
+        - porch_lantern
+        - pumpkins
+      environment:
+        - large_trees
+        - white_flowers
+        - gravel_driveway
+    lighting: soft_daylight
+    transition_out: soft_blur
+    keyframe: references/VID-001/S1.jpg
+    confidence:
+      camera: medium
+      visual_details: high
+    observation_note:
+      Kamera tampak maju perlahan dan bergeser sedikit ke kanan; arah gerak adalah estimasi
+      visual.
+  - id: S2
+    start_s: 6.2
+    end_s: 9.6
+    scene: living_room
+    framing:
+      start: medium
+      end: wide
+      view_angle: toward_fireplace_and_seating
+    camera:
+      movements:
+        - dolly_out
+        - pan_left
+      speed: slow
+    focal_subject: fireplace_and_living_seating
+    visible_details:
+      architectural:
+        - stone_fireplace
+        - wood_mantel
+        - large_windows
+      furniture_and_props:
+        - cream_sofa
+        - sage_green_armchair
+        - wood_coffee_table
+        - woven_basket
+        - textured_rug
+        - botanical_art
+        - table_lamps
+      environment: []
+    lighting: window_daylight_and_warm_lamps
+    transition_out: cut
+    keyframe: references/VID-001/S2.jpg
+    confidence:
+      camera: medium
+      visual_details: high
+    observation_note: Framing semakin luas sehingga area duduk lebih terlihat; lintasan kamera diperkirakan.
+  - id: S3
+    start_s: 9.6
+    end_s: 13.1
+    scene: kitchen
+    framing:
+      start: medium_wide
+      end: medium
+      view_angle: toward_sink
+    camera:
+      movements:
+        - dolly_in
+        - tracking_right
+      speed: slow
+    focal_subject: farmhouse_sink_and_cabinets
+    visible_details:
+      architectural:
+        - sage_green_lower_cabinets
+        - cream_upper_cabinets
+        - farmhouse_sink
+        - divided_pane_window
+      furniture_and_props:
+        - wood_dining_table
+        - vintage_rug
+        - pendant_lighting
+        - flowers
+        - kitchenware
+      environment: []
+    lighting: window_daylight_and_warm_pendant
+    transition_out: cut
+    keyframe: references/VID-001/S3.jpg
+    confidence:
+      camera: medium
+      visual_details: high
+    observation_note: Pandangan mendekati area sink dan kabinet, sedikit bergeser ke kanan.
+  - id: S4
+    start_s: 13.1
+    end_s: 16.57
+    scene: bedroom
+    framing:
+      start: medium
+      end: wide
+      view_angle: bed_toward_window
+    camera:
+      movements:
+        - dolly_out
+        - pan_left
+      speed: slow
+    focal_subject: bed_and_bedroom_layout
+    visible_details:
+      architectural:
+        - sage_accent_wall
+        - large_windows
+      furniture_and_props:
+        - oak_bed
+        - white_bedding
+        - sage_knitted_throw
+        - botanical_pillows
+        - bedside_lamps
+        - cream_curtains
+      environment:
+        - trees_outside_window
+    lighting: soft_window_daylight_and_warm_lamps
+    transition_out: cut
+    keyframe: references/VID-001/S4.jpg
+    confidence:
+      camera: medium
+      visual_details: high
+    observation_note: Kamera memperluas pandangan kamar dari posisi dekat ke lebih lebar.
+  - id: S5
+    start_s: 16.57
+    end_s: 20.03
+    scene: bathroom
+    framing:
+      start: wide
+      end: medium
+      view_angle: toward_window
+    camera:
+      movements:
+        - dolly_in
+      speed: slow
+    focal_subject: bathroom_vanity_and_window
+    visible_details:
+      architectural:
+        - sage_green_vanity
+        - glass_shower
+        - white_tile
+        - large_window
+      furniture_and_props:
+        - mirror
+        - wall_sconce
+        - white_towels
+        - woven_baskets
+        - small_plants
+      environment:
+        - trees_outside_window
+    lighting: soft_window_daylight_and_warm_sconce
+    transition_out: end
+    keyframe: references/VID-001/S5.jpg
+    confidence:
+      camera: medium
+      visual_details: high
+    observation_note: Pandangan maju perlahan ke arah jendela dan area vanity.
+analysis_quality:
+  status: draft
+  human_verified: false
+  timestamp_precision: estimated
+  uncertainties:
+    - exact_shot_boundaries
+    - exact_camera_trajectories
+    - exact_paint_colors
+    - audio_content
+    - architectural_style_taxonomy
+  notes:
+    Analisis deskriptif berdasarkan pemeriksaan visual; nama gaya, musim dan gerak kamera merupakan interpretasi,
+    bukan fakta produksi yang telah diverifikasi.
