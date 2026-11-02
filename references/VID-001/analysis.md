@@ -54,17 +54,17 @@
 
 | Shot | Waktu (detik) | Durasi | Area/Scene | Gerakan Kamera |
 |---|---|---|---|---|
-| S1 | 0,00–6,20 | 6,20 dtk | Exterior front | Dolly-in + tracking right |
-| S2 | 6,20–9,60 | 3,40 dtk | Living room | Dolly-out + pan left |
-| S3 | 9,60–13,10 | 3,50 dtk | Kitchen | Dolly-in + tracking right |
-| S4 | 13,10–16,57 | 3,47 dtk | Bedroom | Dolly-out + pan left |
-| S5 | 16,57–20,03 | 3,46 dtk | Bathroom | Dolly-in |
+| Shot 01 | 0,00–6,20 | 6,20 dtk | Exterior front | Dolly-in + tracking right |
+| Shot 02 | 6,20–9,60 | 3,40 dtk | Living room | Dolly-out + pan left |
+| Shot 03 | 9,60–13,10 | 3,50 dtk | Kitchen | Dolly-in + tracking right |
+| Shot 04 | 13,10–16,57 | 3,47 dtk | Bedroom | Dolly-out + pan left |
+| Shot 05 | 16,57–20,03 | 3,46 dtk | Bathroom | Dolly-in |
 
 ## 6. Analisis per Shot
 
-### S1 — Exterior Front
+### Shot 01 — Exterior Front
 
-<img src="shot-01.jpg" alt="Shot S1 — Tampak depan cottage" width="360">
+<img src="shot-01.jpg" alt="Shot Shot 01 — Tampak depan cottage" width="360">
 
 **Waktu:** 0,00–6,20 detik · **Durasi:** 6,20 detik
 
@@ -88,9 +88,9 @@
 
 **Confidence:** Kamera medium · Detail visual high
 
-### S2 — Living Room
+### Shot 02 — Living Room
 
-<img src="shot-02.jpg" alt="Shot S2 — Ruang keluarga dan perapian" width="360">
+<img src="shot-02.jpg" alt="Shot Shot 02 — Ruang keluarga dan perapian" width="360">
 
 **Waktu:** 6,20–9,60 detik · **Durasi:** 3,40 detik
 
@@ -114,9 +114,9 @@
 
 **Confidence:** Kamera medium · Detail visual high
 
-### S3 — Kitchen
+### Shot 03 — Kitchen
 
-<img src="shot-03.jpg" alt="Shot S3 — Dapur country cottage" width="360">
+<img src="shot-03.jpg" alt="Shot Shot 03 — Dapur country cottage" width="360">
 
 **Waktu:** 9,60–13,10 detik · **Durasi:** 3,50 detik
 
@@ -140,9 +140,9 @@
 
 **Confidence:** Kamera medium · Detail visual high
 
-### S4 — Bedroom
+### Shot 04 — Bedroom
 
-<img src="shot-04.jpg" alt="Shot S4 — Kamar tidur cottage" width="360">
+<img src="shot-04.jpg" alt="Shot Shot 04 — Kamar tidur cottage" width="360">
 
 **Waktu:** 13,10–16,57 detik · **Durasi:** 3,47 detik
 
@@ -166,9 +166,9 @@
 
 **Confidence:** Kamera medium · Detail visual high
 
-### S5 — Bathroom
+### Shot 05 — Bathroom
 
-<img src="shot-05.jpg" alt="Shot S5 — Kamar mandi cottage" width="360">
+<img src="shot-05.jpg" alt="Shot Shot 05 — Kamar mandi cottage" width="360">
 
 **Waktu:** 16,57–20,03 detik · **Durasi:** 3,46 detik
 

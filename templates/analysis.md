@@ -4,6 +4,7 @@ HOMEKU: TEMPLATE LAPORAN VISUAL
 - Jangan menambah fakta, audio, ide konten, atau prompt yang tidak ada di YAML.
 - Ulangi bagian "Analisis per Shot" sebanyak video.shot_count.
 - Gambar tampil langsung (inline), bukan hanya tautan.
+- Label shot yang ditampilkan: Shot 01, Shot 02, ... (ID YAML: shot-01, shot-02, ...).
 - File ini berada di references/VID-XXX/analysis.md bersama storyboard.jpg dan shot-01.jpg dst.
 -->
 # {{video.id}} — {{architecture.primary_style | humanize}}
@@ -60,15 +61,15 @@ HOMEKU: TEMPLATE LAPORAN VISUAL
 
 | Shot | Waktu (detik) | Durasi | Area/Scene | Gerakan Kamera |
 |---|---|---|---|---|
-| {{shots[].id}} | {{shots[].start_s}}–{{shots[].end_s}} | {{end_s - start_s}} dtk | {{shots[].scene | humanize}} | {{shots[].camera.movements | join}} |
+| {{shots[].id | humanize}} | {{shots[].start_s}}–{{shots[].end_s}} | {{end_s - start_s}} dtk | {{shots[].scene | humanize}} | {{shots[].camera.movements | join}} |
 <!-- Ulangi baris ini untuk setiap shot. -->
 
 ## 6. Analisis per Shot
 
-<!-- Ulangi SELURUH blok ### ... hingga confidence untuk S2, S3, dst. -->
-### {{shots[].id}} — {{shots[].scene | humanize}}
+<!-- Ulangi SELURUH blok untuk Shot 02, Shot 03, dst. Label tampilan 'Shot 01' berasal dari ID YAML 'shot-01'. -->
+### {{shots[].id | humanize}} — {{shots[].scene | humanize}}
 
-<img src="shot-01.jpg" alt="Keyframe {{shots[].id}} — {{shots[].scene | humanize}}" width="360">
+<img src="shot-01.jpg" alt="Keyframe {{shots[].id | humanize}} — {{shots[].scene | humanize}}" width="360">
 
 **Waktu:** {{shots[].start_s}}–{{shots[].end_s}} detik · **Durasi:** {{end_s - start_s}} detik
 

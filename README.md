@@ -12,8 +12,8 @@ homeku/
 │   └── VID-001/
 │       ├── analysis.yaml       # data analisis terstruktur (sumber utama)
 │       ├── analysis.md         # laporan visual untuk dibaca di GitHub
-│       ├── shot-01.jpg              # 1 keyframe asli untuk shot S1
-│       ├── shot-02.jpg              # 1 keyframe asli untuk shot S2
+│       ├── shot-01.jpg              # 1 keyframe asli untuk Shot 01
+│       ├── shot-02.jpg              # 1 keyframe asli untuk Shot 02
 │       ├── shot-03.jpg
 │       ├── shot-04.jpg
 │       ├── shot-05.jpg
@@ -40,7 +40,7 @@ Folder `references/VID-002/`, `VID-003/` dan seterusnya menggunakan struktur yan
 ## Konvensi penamaan dan pengisian
 
 1. ID video: `VID-001`, `VID-002`, `VID-003`, dan seterusnya.
-2. ID shot: `S1`, `S2`, `S3`, dan seterusnya, tanpa nol di depan. Nama gambar: `shot-01.jpg`, `shot-02.jpg`, dst. (dua digit).
+2. ID shot di YAML: `shot-01`, `shot-02`, `shot-03`, dst. Nama gambar: `shot-01.jpg`, `shot-02.jpg`, dst. Di `analysis.md`, label yang terlihat: **Shot 01**, **Shot 02**, dst.
 3. Satu video = satu folder di `references/` = **`analysis.yaml` + `analysis.md` + `storyboard.jpg` + gambar setiap shot**.
 4. Satu shot = satu entri `shots[]` = satu keyframe `shot-NN.jpg` **yang ditampilkan langsung pada bagian shot di `analysis.md`**.
 5. Gunakan `snake_case` untuk label teknis; catatan bebas boleh berbahasa Indonesia.

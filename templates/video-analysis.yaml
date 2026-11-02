@@ -1,6 +1,6 @@
 # VIDEO ANALYSIS ONLY — no ideas, prompts, or generation instructions.
 # Duplicate the shots[] item for every shot. Use null for unknown information.
-# ID format: VID-001, VID-002, etc.; shot IDs: S1, S2, S3, etc.
+# ID format: VID-001, VID-002, etc.; shot IDs: shot-01, shot-02, shot-03, etc.
 # Image filenames: shot-01.jpg, shot-02.jpg, etc. (always two digits for shots 1-99).
 # Technical labels: English snake_case; descriptive notes may be Indonesian.
 # Pair each analysis.yaml with analysis.md using templates/analysis.md.
@@ -36,7 +36,7 @@ video_structure:
   transition_pattern: null
 
 shots:
-  - id: S1
+  - id: shot-01
     start_s: null
     end_s: null
     scene: null # exterior_front / living_room / kitchen / ...
