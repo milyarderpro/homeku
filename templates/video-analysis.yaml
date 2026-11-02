@@ -1,9 +1,10 @@
 # VIDEO ANALYSIS ONLY — no ideas, prompts, or generation instructions.
 # Duplicate the shots[] item for every shot. Use null for unknown information.
+# ID format: VID-001, VID-002, etc.; shot IDs: S1, S2, S3, etc.
 # Technical labels: English snake_case; descriptive notes may be Indonesian.
 schema_version: "2.0"
 video:
-  id: COT_XXXX
+  id: VID-XXX
   filename: video_XXXX.mp4
   duration_s: null
   resolution: null # e.g. "720x1280"
@@ -32,7 +33,7 @@ video_structure:
   transition_pattern: null
 
 shots:
-  - id: S01
+  - id: S1
     start_s: null
     end_s: null
     scene: null # exterior_front / living_room / kitchen / ...
