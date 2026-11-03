@@ -62,7 +62,7 @@ def validate(package: Path, expected_id: str | None = None) -> dict[str, Any]:
               "architecture.common_regions differs from Markdown")
     if "<!-- homeku_detail_narratives: chat-reviewed -->" in markdown:
         for label in ("Arsitektur", "Furnitur dan properti", "Lingkungan"):
-            check(markdown.count("\\n**" + label + "**\\n") == len(shots),
+            check(markdown.count("\n**" + label + "**\n") == len(shots),
                   f"Incomplete narrative category in Markdown: {label}")
     check(vid in markdown, "Video ID missing from Markdown")
     check(re.search(r"!\[[^\]]*\]\(storyboard\.jpg\)", markdown) is not None, "Storyboard must appear inline")
