@@ -90,6 +90,52 @@ def validate(package: Path, expected_id: str | None = None) -> dict[str, Any]:
     return {"video_id": vid, "shot_count": len(shots), "files": sorted(expected_files), "duration_s": duration}
 
 
+
+NARRATIVE_CATEGORIES = ("architectural", "furniture_and_props", "environment")
+MAX_NARRATIVE_CHARS = 4000
+
+
+def validate_narratives(data: dict[str, Any], narratives: Any) -> None:
+    """Validate ChatGPT-reviewed presentation text against YAML item coverage.
+
+    This proves structural coverage, NOT semantic equivalence. ChatGPT must
+    review fidelity to the visible evidence and YAML before 'save now'.
+    """
+    shots = data.get("shots")
+    check(isinstance(shots, list) and bool(shots), "Missing shots for narratives")
+    check(isinstance(narratives, dict), "shot_narratives must be an object")
+    shot_ids = [s.get("id") for s in shots]
+    check(set(narratives) == set(shot_ids) and len(shot_ids) == len(set(shot_ids)),
+          "shot_narratives shot IDs must match YAML shots exactly")
+    for shot in shots:
+        sid = shot["id"]
+        details = shot.get("visible_details")
+        check(isinstance(details, dict), f"Missing visible_details: {sid}")
+        entry = narratives[sid]
+        check(isinstance(entry, dict) and set(entry) == set(NARRATIVE_CATEGORIES),
+              f"Missing/extra narrative categories: {sid}")
+        for category in NARRATIVE_CATEGORIES:
+            source = details.get(category)
+            check(isinstance(source, list) and all(isinstance(x, str) for x in source),
+                  f"Invalid YAML source details: {sid}.{category}")
+            cell = entry[category]
+            check(isinstance(cell, dict) and set(cell) == {"text", "covered_indices"},
+                  f"Invalid narrative cell keys: {sid}.{category}")
+            indices = cell["covered_indices"]
+            check(isinstance(indices, list) and
+                  all(type(i) is int for i in indices) and
+                  len(indices) == len(source) and
+                  set(indices) == set(range(len(source))),
+                  f"Invalid covered_indices: {sid}.{category}")
+            value = cell["text"]
+            if not source:
+                check(value is None, f"Empty YAML category must have null text: {sid}.{category}")
+            else:
+                check(isinstance(value, str) and bool(value.strip()) and
+                      len(value) <= MAX_NARRATIVE_CHARS and
+                      all(ord(char) >= 32 or char in "\t\n\r" for char in value),
+                      f"Invalid narrative text: {sid}.{category}")
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("package", type=Path, help="references/PENDING or references/VID-XXX")
