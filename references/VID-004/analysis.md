@@ -2,6 +2,8 @@
 
 <!-- homeku_request_id: edh001-20261103-reviewed-001 -->
 
+<!-- homeku_detail_narratives: chat-reviewed -->
+
 **Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** reviewed · **Diverifikasi manusia:** Tidak
 
 ## 1. Informasi Video
@@ -26,9 +28,9 @@
 |---|---|
 | Gaya utama | organic modern cottage |
 | Wilayah terkait gaya desain | north america, europe |
-| Pengaruh gaya | scandinavian contemporary, modern farmhouse, minimalist interior |
-| Ciri eksterior | white textured masonry facade, curved building mass, black curved roof fascia, rounded entry canopy, black entry door, large curved bay window, front stairs, warm wall sconces |
-| Gaya interior | warm neutral palette, light wood accents, soft textiles, black metal accents, built in storage, large black framed windows |
+| Pengaruh gaya | contemporary scandinavian, modern farmhouse, cozy minimalist interior |
+| Ciri eksterior | compact rounded white stone look facade, multiple cylindrical or curved front masses, smooth black curved roof fascia, black framed curved bay window, rounded entry canopy with warm downlights, black front door with festive wreath, short wide entry staircase, warm black wall sconces |
+| Gaya interior | warm neutral color palette, curved black framed windows, white and cream walls, pale natural wood appearance finishes, soft cream textiles, black metal accents, warm recessed and accent lighting, compact built in storage |
 | Confidence gaya | medium |
 
 ## 4. Ukuran & Proporsi Bangunan
@@ -37,7 +39,7 @@
 |---|---|
 | Ukuran yang terlihat | small |
 | Bentuk bangunan | compact curvilinear |
-| Skala vertikal | single story with raised roof form |
+| Skala vertikal | single story with raised rounded roof form |
 | Tapak bangunan | compact |
 | Perkiraan luas lantai | 60–90 m² |
 | Confidence | low |
@@ -48,28 +50,29 @@
 
 | Warna dominan | HEX (perkiraan) |
 |---|---|
-| warm white | #EDE8DF |
-| charcoal black | #252725 |
-| natural oak | #B88D64 |
-| sage grey | #A9B9B3 |
-| snow white | #E2E7E8 |
+| warm white stone | #E8E5DD |
+| matte black | #232525 |
+| cream beige | #D6CBBB |
+| natural light wood | #B98F66 |
+| sage green tile | #9CAFA6 |
+| snow white | #E5E9E9 |
 
 | Aspek | Hasil analisis |
 |---|---|
-| Pencahayaan | overcast winter daylight, warm wall sconces, warm recessed ceiling lights, warm practical lamps, soft window daylight |
-| Lingkungan | snow covered yard, bare deciduous trees, snowy suburban neighborhood, front garden plantings |
-| Musim yang tampak | winter appearance |
-| Mood | cozy, warm, calm, intimate, winter retreat |
+| Pencahayaan | soft overcast daylight, warm exterior wall sconces, warm interior recessed ceiling lights, warm under shelf lighting, soft daylight from large windows |
+| Lingkungan | snow covered residential yard, bare deciduous trees and some evergreens, nearby light colored houses, winter front garden with small conifers, paved front path bordered by snow, holiday decorations on front entry |
+| Musim yang tampak | snowy winter appearance |
+| Mood | cozy, warm, calm, festive winter, intimate modern cottage |
 
 ## 6. Struktur dan Timeline Video
 
-**Jenis:** home tour · **Tempo:** moderate · **Transisi:** hard cuts between rooms with slow intra shot camera motion
+**Jenis:** home tour · **Tempo:** moderate · **Transisi:** four hard cuts with slow intra shot camera motion
 
 | Shot | Waktu (detik) | Durasi | Area/Scene | Gerakan Kamera |
 |---|---|---|---|---|
-| Shot 01 | 0.0–4.73 | 4.73 | exterior front | dolly in, tracking right |
+| Shot 01 | 0.0–4.73 | 4.73 | exterior front | dolly in, slight tracking right |
 | Shot 02 | 4.73–8.3 | 3.57 | living room | tracking right, pan right |
-| Shot 03 | 8.3–11.57 | 3.27 | kitchen | tracking right |
+| Shot 03 | 8.3–11.57 | 3.27 | kitchen | tracking left, pan left |
 | Shot 04 | 11.57–15.0 | 3.43 | bedroom | tracking right, pan right |
 | Shot 05 | 15.0–18.4 | 3.40 | bathroom laundry | tracking right, dolly in |
 
@@ -83,21 +86,29 @@
 
 | Komponen | Pengamatan |
 |---|---|
-| Fokus utama | front facade and entry |
-| Framing awal → akhir | wide shot → medium wide shot |
-| Sudut pandang | eye level frontal slight left |
-| Gerakan kamera | dolly in, tracking right |
+| Fokus utama | rounded front facade and black entry |
+| Framing awal → akhir | wide exterior → medium wide front entry |
+| Sudut pandang | eye level slightly from left |
+| Gerakan kamera | dolly in, slight tracking right |
 | Kecepatan kamera | slow |
-| Pencahayaan | cool overcast daylight and warm exterior lights |
+| Pencahayaan | cool overcast daylight with warm wall sconces and canopy spotlights |
 | Transisi keluar | hard cut |
 
 **Detail yang terlihat**
 
-- **Arsitektur:** white textured masonry, rounded exterior walls, black curved roof trim, curved entry canopy, black front door, bay window with black frames, short entry staircase
-- **Furnitur dan properti:** decorative door wreath, small illuminated conical trees, warm wall lights
-- **Lingkungan:** snow covered ground, snowy path, bare trees, winter sky
+**Arsitektur**
 
-**Catatan pengamatan:** Observasi: kamera semakin mendekat pada fasad dan pintu; interpretasi gerak dolly in dengan pergeseran ringan ke kanan.
+Fasad rumah tampil kompak dengan beberapa bidang dinding membulat dan susunan permukaan bertekstur menyerupai blok batu atau masonry berwarna putih keabu\-abuan. Di atasnya terdapat massa atap membulat yang lebih tinggi, dibatasi lis atap hitam lebar dan melengkung. Pintu masuk dinaungi kanopi melengkung bertepi hitam, dengan bagian bawah putih dan lampu tanam hangat. Sebelah kiri pintu terdapat jendela bay tinggi berbingkai logam hitam yang mengikuti lengkung dinding. Pintu hitam memiliki bidang kaca kecil di bagian atas, sementara anak tangga depan yang lebar diapit dinding pembatas rendah berwarna putih. Lampu dinding hitam dengan pancaran ke atas dan ke bawah menyala di dekat pintu. Di belakang sisi kiri atap terlihat cerobong berbentuk kotak berwarna gelap.
+
+**Furnitur dan properti**
+
+Pintu hitam dihiasi karangan daun melingkar dengan lampu kecil hangat dan aksen merah. Sejumlah pohon konifer berukuran kecil berbentuk kerucut dan semak hijau rendah di dekat tangga serta dasar fasad dibalut lampu hias kuning hangat. Melalui jendela bay tampak tirai berwarna krem dan beberapa lampu gantung yang menyala di dalam rumah.
+
+**Lingkungan**
+
+Hamparan salju putih tebal menutupi halaman depan dan area tanaman. Jalan setapak dari paving abu\-abu terlihat sebagian dibersihkan, dengan tumpukan salju di sisi jalur dan tepi tangga. Pohon gugur yang tinggi tumbuh di sebelah kiri rumah, dengan cabang\-cabang tanpa daun membentang di atas atap; semak hijau kecil di bawah fasad juga tersaput salju. Bagian atap rumah tetangga yang gelap tampak di sisi kiri. Langit terlihat pucat mendung di sela ranting, dan beberapa butiran salju kecil tampak turun di depan bagian atap berwarna hitam.
+
+**Catatan pengamatan:** Kamera mendekati fasad dari sisi sedikit kiri dan bergeser perlahan ke kanan. Potongan lebih dekat memperlihatkan tekstur batu, wreath pada pintu hitam, lampu teras, deretan konifer kecil dan jejak salju di tepi jalan setapak.
 
 **Confidence:** Kamera medium · Detail visual high
 
@@ -109,21 +120,29 @@
 
 | Komponen | Pengamatan |
 |---|---|
-| Fokus utama | sofa and bay window |
-| Framing awal → akhir | wide interior → medium wide interior |
+| Fokus utama | cream sectional seating and curved bay window |
+| Framing awal → akhir | medium wide interior → wide interior showing sofa |
 | Sudut pandang | eye level three quarter |
 | Gerakan kamera | tracking right, pan right |
 | Kecepatan kamera | slow |
-| Pencahayaan | mixed soft window daylight and warm accent lights |
+| Pencahayaan | soft cool window daylight with warm recessed and sconce lighting |
 | Transisi keluar | hard cut |
 
 **Detail yang terlihat**
 
-- **Arsitektur:** white textured stone accent wall, large black framed bay windows, built in linear fireplace or dark insert, ceiling recessed lights
-- **Furnitur dan properti:** cream sectional sofa, textured throw pillows, rectangular wood coffee table, large wall mounted television, patterned area rug, potted plant, long floating shelf
-- **Lingkungan:** snowy trees visible through windows, neighboring house visible
+**Arsitektur**
 
-**Catatan pengamatan:** Observasi: komposisi bergeser ke kanan dan menonjolkan sofa serta jendela lengkung; elemen gelap di bawah TV tampak menyerupai perapian linear.
+Ruang tamu memiliki bidang dinding aksen putih bertekstur menyerupai batu di sisi kiri dan jendela bay panorama setinggi hampir seluruh dinding pada sisi lainnya. Jendela terdiri atas beberapa panel berbingkai hitam yang mengikuti lekukan dinding. Garis cekung plafon putih juga melengkung mengikuti bentuk jendela, dilengkapi lampu tanam bulat yang memancarkan cahaya hangat. Di dekat dinding aksen terdapat lampu dinding hitam berwarna cahaya hangat. Tepat di bawah area televisi terlihat bidang horizontal gelap yang menyerupai sisipan perapian linear, tetapi fungsinya belum dapat dipastikan. Lantai terlihat berpenampilan papan kayu berwarna abu\-abu terang.
+
+**Furnitur dan properti**
+
+Sofa sectional besar berlapis kain krem mengelilingi area duduk, dengan bagian chaise yang memanjang di dekat jendela. Sofa dihiasi bantal bertekstur krem dan taupe, bantal berbulu lembut serta selimut rajut. Di tengah area duduk ada meja kopi kayu alami yang rendah, tebal, dan berbentuk persegi panjang, ditempatkan di atas karpet bermotif rumit berwarna beige keabu\-abuan. Di atas meja terlihat buku serta ornamen kecil berkilau keemasan. Televisi layar datar hitam berukuran besar dipasang di dinding kiri, dengan rak media kayu panjang yang terbuka di bawahnya dan memuat buku serta pajangan kecil. Tanaman hijau berdaun lebar berada dalam pot abu\-abu tinggi di dekat jendela.
+
+**Lingkungan**
+
+Dari panel\-panel jendela besar terlihat halaman tertutup salju, batang serta cabang pepohonan gugur yang tidak berdaun, dan sebuah pohon cemara hijau gelap. Lebih jauh terdapat rumah tetangga berwarna terang yang tampak bertingkat di seberang halaman bersalju. Langit di belakang atap rumah tampak pucat dan mendung.
+
+**Catatan pengamatan:** Kamera bergerak ke kanan sehingga sofa krem dengan chaise, meja kopi kayu dan jendela panorama melengkung semakin memenuhi frame. Bidang gelap di bawah TV tampak menyerupai sisipan perapian linear; fungsi sebenarnya belum pasti.
 
 **Confidence:** Kamera medium · Detail visual high
 
@@ -135,21 +154,29 @@
 
 | Komponen | Pengamatan |
 |---|---|
-| Fokus utama | kitchen stove counter and window |
-| Framing awal → akhir | medium wide interior → medium interior |
+| Fokus utama | cooking range large window and tall refrigerator |
+| Framing awal → akhir | wide single wall kitchen → medium kitchen refrigerator and counter |
 | Sudut pandang | eye level three quarter |
-| Gerakan kamera | tracking right |
+| Gerakan kamera | tracking left, pan left |
 | Kecepatan kamera | slow |
-| Pencahayaan | soft cool daylight with warm pendant and under cabinet lights |
+| Pencahayaan | soft cool winter daylight mixed with warm recessed pendant and under shelf lights |
 | Transisi keluar | hard cut |
 
 **Detail yang terlihat**
 
-- **Arsitektur:** white cabinetry, black cabinet handles, white subway tile backsplash, large kitchen window, open wall shelves, recessed ceiling lights
-- **Furnitur dan properti:** stainless steel refrigerator, freestanding range oven, dark metal kettle, coffee machine, potted small cactus, wooden utensils, hanging metal pendants
-- **Lingkungan:** snowy yard and neighboring buildings seen through window
+**Arsitektur**
 
-**Catatan pengamatan:** Observasi: perpindahan kamera ke kanan melewati area kompor menuju kabinet, rak dan kulkas. Bahan countertop terlihat terang tetapi tidak dapat dipastikan.
+Dapur tersusun kompak mengikuti satu sisi dinding, dengan kabinet dan laci putih berpanel sederhana serta pegangan panjang berwarna hitam. Dinding belakang meja kerja menggunakan ubin putih persegi panjang berpola susunan bata horizontal, sedangkan countertop berwarna putih dengan corak abu\-abu menyerupai marmer. Kabinet tinggi mengapit area kulkas, sementara rak ceruk terbuka putih berada di sisi jendela. Di sisi kanan dapur terdapat rak dinding melayang berwarna gelap. Jendela utama berbentuk persegi panjang dengan trim putih dan bagian bingkai gelap, sedangkan di sisi kiri kulkas tampak jendela besar dengan tepian melengkung. Penerangan terdiri atas lampu plafon tanam, lampu pada rak dan ceruk, serta satu lampu vertikal bernuansa kuningan di atas jendela. Lantai terlihat berpenampilan papan kayu abu\-abu kecokelatan.
+
+**Furnitur dan properti**
+
+Kompor gas berukuran besar dengan kisi hitam dan oven berbahan tampak stainless steel berada tepat di bawah jendela utama. Di atas kompor terdapat teko logam gelap. Kulkas stainless steel berpintu ganda ditempatkan di sisi kiri area memasak, dan mesin kopi hitam berada pada countertop di sebelahnya, ditemani nampan putih. Di dekat jendela ada kaktus kecil dalam pot putih. Pada sisi kanan kompor terlihat wadah putih berisi sendok dan spatula kayu, serta talenan kayu yang disandarkan ke backsplash. Rak terbuka memuat tumpukan piring putih, tanaman hijau menjuntai, dan beberapa stoples penyimpanan. Karpet lorong kecil bertekstur beige terletak di depan kompor.
+
+**Lingkungan**
+
+Jendela dapur memperlihatkan halaman yang tertutup salju, batang dan ranting pohon tanpa daun yang cukup dekat dengan rumah, serta pagar kayu yang membentang di bagian belakang. Di luar pagar terlihat beberapa rumah terang dan pepohonan cemara hijau gelap. Pemandangan lingkungan bersalju juga tampak melalui jendela melengkung di sisi kulkas.
+
+**Catatan pengamatan:** Pandangan dapur berubah dari kompor serta rak terbuka di kanan menuju kulkas dan sudut mesin kopi di kiri. Arah pergeseran objek mendukung pan/tracking ke kiri, bukan tracking ke kanan seperti analisis lama; klasifikasi gerak tetap perkiraan.
 
 **Confidence:** Kamera medium · Detail visual high
 
@@ -161,21 +188,29 @@
 
 | Komponen | Pengamatan |
 |---|---|
-| Fokus utama | bed and large curved window |
-| Framing awal → akhir | medium wide interior → wide interior |
+| Fokus utama | low platform bed and large arched window |
+| Framing awal → akhir | medium wide view from doorway → wide bedroom with arch window |
 | Sudut pandang | eye level from doorway |
 | Gerakan kamera | tracking right, pan right |
 | Kecepatan kamera | slow |
-| Pencahayaan | soft cool window daylight with warm bedside and recessed lights |
+| Pencahayaan | cool diffused window light with warm bedside and built in shelf lighting |
 | Transisi keluar | hard cut |
 
 **Detail yang terlihat**
 
-- **Arsitektur:** large curved black framed window, built in wardrobe and open closet, wood flooring, slatted ceiling accent, recessed ceiling lights
-- **Furnitur dan properti:** low platform bed, cream bedding, plaid throw and cushions, bedside table, small warm bedside lamp, striped area rug, open shelves, hanging clothes, potted plant
-- **Lingkungan:** snowy neighborhood and bare tree branches visible outside
+**Arsitektur**
 
-**Catatan pengamatan:** Observasi: kamera bergeser ke kanan dari balik bukaan pintu; ranjang tetap pusat perhatian sementara jendela lengkung semakin terlihat.
+Kamar tidur menggunakan dinding putih halus dan bidang headboard beraksen kayu hangat. Sebagian plafon di atas ranjang diberi panel garis\-garis putih dengan beberapa lampu tanam kecil. Lantai tersusun dari papan berpenampilan kayu bernuansa madu terang. Tiang\-tiang kayu tegak tampak membingkai bukaan kamar dari sisi pintu. Pada dinding kanan terdapat jendela besar berbingkai hitam dengan bagian atas melengkung. Di sebelah kiri ranjang dibangun rak terbuka berwarna putih dengan lampu hangat tersembunyi di bawah ambalan, bersebelahan dengan ceruk lemari gantung terbuka. Ranjang sendiri berdiri rendah pada rangka platform kayu terang.
+
+**Furnitur dan properti**
+
+Ranjang platform besar ditata dengan duvet tebal warna krem dan bantal putih, ditambah bantal motif kotak\-kotak cokelat, hitam, dan krem serta bantal kecil beige. Selimut motif kotak\-kotak cokelat keabu\-abuan membentang di bagian kaki ranjang. Karpet panjang bermotif garis\-garis sempit warna beige dan cokelat sebagian berada di bawah ranjang. Di samping kiri ada meja kecil berbentuk silinder menyerupai batang kayu, memuat lampu baca hitam dan tanaman mungil. Rak bagian atas menyimpan handuk atau tekstil terlipat serta keranjang anyaman; pada lemari terbuka tergantung pakaian berwarna netral. Dua karya seni kecil berbingkai hitam tersusun vertikal pada dinding. Tirai krem panjang serta tanaman hijau tinggi dalam pot mengapit jendela melengkung, dan sebuah lampu samping ranjang lain memancarkan cahaya hangat dari sisi seberang.
+
+**Lingkungan**
+
+Melalui jendela melengkung terlihat tanah dan atap bangunan yang diselimuti salju. Ranting\-ranting pohon tanpa daun membentang di luar, sementara sebuah rumah tetangga berwarna terang dengan atap miring berada di seberang jendela.
+
+**Catatan pengamatan:** Awalnya kamera melihat ranjang dari arah pintu; pergerakan ke kanan membuka lebih banyak jendela besar melengkung, lantai kayu terang, karpet, lemari terbuka, dan tirai. Tekstur plaid tampak jelas pada bantal serta selimut.
 
 **Confidence:** Kamera medium · Detail visual high
 
@@ -187,21 +222,29 @@
 
 | Komponen | Pengamatan |
 |---|---|
-| Fokus utama | glass shower and stacked laundry |
-| Framing awal → akhir | wide interior → medium wide interior |
+| Fokus utama | sage tile curved glass shower and stacked laundry |
+| Framing awal → akhir | wide bathroom including vanity toilet shower and laundry → medium tight shower and stacked laundry |
 | Sudut pandang | eye level three quarter |
 | Gerakan kamera | tracking right, dolly in |
 | Kecepatan kamera | slow |
-| Pencahayaan | mixed cool window daylight and warm ceiling lights |
+| Pencahayaan | cool window daylight with warm recessed ceiling spotlights |
 | Transisi keluar | end of video |
 
 **Detail yang terlihat**
 
-- **Arsitektur:** curved glass shower enclosure, sage green wall tiles, circular porthole window, dark wood ceiling accent, recessed ceiling lights, built in recessed wall niches
-- **Furnitur dan properti:** black shower hardware, rain shower and handheld shower, white toilet, white vanity counter, stacked front loading washer dryer, folded towels on upper shelf
-- **Lingkungan:** snowy tree branches visible through windows
+**Arsitektur**
 
-**Catatan pengamatan:** Observasi: kamar mandi sekaligus area laundry; kamera mendekat dan bergeser ke kanan sehingga dinding shower, jendela bulat, dan mesin laundry bertumpuk tampak lebih besar.
+Area kamar mandi dan laundry memiliki dinding shower yang dilapisi ubin persegi panjang hijau sage dengan permukaan mengilap. Bilik shower berbentuk melengkung dan dibatasi panel kaca bening dengan pegangan logam hitam, berdiri di atas dasar shower putih membulat dengan saluran air berbentuk kotak kecil. Pada dinding keramik terdapat jendela bundar menyerupai porthole berbingkai putih, serta ceruk penyimpanan mendatar tepat di bawahnya. Di sebelah kiri toilet ada jendela tinggi persegi panjang berbingkai gelap. Sebagian plafon memperlihatkan panel kayu cokelat gelap beralur, sedangkan bidang plafon putih dilengkapi lampu tanam hangat. Lantai berpenampilan papan kayu abu\-abu pucat. Wastafel countertop krem muda berbentuk persegi panjang tampak sebagian di sisi kiri depan, sedangkan ceruk vertikal di sisi kanan menampung perangkat laundry bertumpuk.
+
+**Furnitur dan properti**
+
+Toilet putih ditempatkan di bawah jendela persegi panjang, dekat vanity krem dengan keran hitam. Di dalam shower terlihat rel hitam vertikal dan perlengkapan shower genggam. Mesin pengering dan mesin cuci putih tipe bukaan depan ditumpuk secara vertikal dalam satu ceruk, masing\-masing dengan pintu kaca bundar gelap yang besar. Di atas perangkat laundry terdapat rak kayu gelap berisi handuk putih dan kain netral terlipat. Ceruk pada dinding shower menyimpan botol kecil berwarna gelap serta beberapa wadah produk berwarna cokelat muda, sementara benda dekorasi putih kecil terlihat di ambang jendela persegi panjang.
+
+**Lingkungan**
+
+Dari jendela persegi panjang terlihat tanah permukiman yang bersalju, batang dan cabang pohon tanpa daun, serta bagian rumah terang dan pagar di seberangnya. Ranting tanpa daun juga terlihat melalui jendela bundar pada dinding shower.
+
+**Catatan pengamatan:** Kamera perlahan mendekat dan bergeser ke kanan dari vanity dan toilet menuju bilik shower melengkung, jendela bundar, niche penyimpanan, dan mesin cuci-pengering bertumpuk. Keramik tampak hijau sage berpermukaan mengilap.
 
 **Confidence:** Kamera medium · Detail visual high
 
@@ -211,10 +254,10 @@
 |---|---|
 | Status | reviewed |
 | Verifikasi manusia | Tidak |
-| Ketepatan timestamp | estimated |
-| Ketidakpastian | Gaya organic modern cottage adalah interpretasi visual, bukan identifikasi gaya resmi atau asal geografis., Perkiraan luas 60-90 m2 bersifat kasar tanpa ukuran skala dan tidak dapat digunakan sebagai ukuran aktual., Massa atap yang tinggi tidak membuktikan adanya lantai kedua atau loft., Klasifikasi camera dolly in/tracking right/pan right didasarkan pada perubahan perspektif, sehingga teknik pengambilan sebenarnya belum terverifikasi., Elemen gelap di bawah TV mungkin perapian linear atau panel dekoratif dan tidak dapat dipastikan., Koherensi denah atau kesinambungan ruang interior-eksterior tidak dapat dipastikan hanya dari rangkaian video., Kawasan North America dan Europe adalah asosiasi gaya desain saja, bukan lokasi aktual bangunan atau statistik popularitas. |
+| Ketepatan timestamp | frame confirmed for cuts keyframes estimated |
+| Ketidakpastian | Primary architectural style is a visual interpretation, not an official design or geographic identification., Curved exterior wall finish looks like pale textured stone or masonry; precise construction material is unknown., Estimated building floor area 60-90 m2 is a broad visual estimate without measured scale., The raised rounded roof masses do not establish an upper floor or loft., Dark rectangular unit beneath the living-room television looks like a linear fireplace insert; functionality is unverified., Camera tracking versus panning is estimated from apparent perspective shift, not capture metadata., The first kitchen camera move is interpreted as leftward panning/tracking, differing from the older VID-004 rightward label., Pale kitchen and bathroom surfaces are described by appearance rather than verified wood, stone or tile product types., North America and Europe are stylistic associations only, not the location of the house., Interior continuity and exact room dimensions cannot be confirmed from independently edited shots. |
 
-**Catatan:** Analisis hanya visual. Empat hard cut terdeteksi sekitar 4.73, 8.30, 11.57 dan 15.00 detik. Durasi visual trek gambar 18.40 detik (container termasuk trek audio 18.53 detik). File sumber di chat cocok secara Git blob SHA-1 dengan main/video/edh001.mp4: ba844313b645b154566a08a56ba500295ed4f021.
+**Catatan:** Re-analysis of the same edh001.mp4 source for existing VID-004 using Homeku v1.3. Updated 126 technical visible-detail labels and Indonesian per-shot narratives. The 5-shot 18.40 s timeline and original video identity are preserved. Git source blob: ba844313b645b154566a08a56ba500295ed4f021. Human verification of visual facts is not claimed; material, style, scale, and camera uncertainties remain estimations.
 
 ---
 
