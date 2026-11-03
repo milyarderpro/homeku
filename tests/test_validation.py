@@ -88,6 +88,20 @@ class ValidateTests(unittest.TestCase):
         with self.assertRaisesRegex(InvalidPackage, "differs from Markdown"):
             validate(self.folder)
 
+    def test_chat_narrative_markdown_marker_requires_three_categories(self):
+        md_path = self.folder / "analysis.md"
+        md = md_path.read_text(encoding="utf-8")
+        md += "\n<!-- homeku_detail_narratives: chat-reviewed -->\n"
+        for _ in range(2):
+            md += "\n**Arsitektur**\n\nDetail arsitektur.\n"
+            md += "\n**Furnitur dan properti**\n\nDetail furnitur.\n"
+            md += "\n**Lingkungan**\n\nDetail lingkungan.\n"
+        md_path.write_text(md, encoding="utf-8")
+        self.assertEqual(validate(self.folder)["shot_count"], 2)
+        md_path.write_text(md.replace("\n**Lingkungan**\n", "", 1), encoding="utf-8")
+        with self.assertRaisesRegex(InvalidPackage, "Incomplete narrative category"):
+            validate(self.folder)
+
     def test_missing_jpeg(self):
         (self.folder / "shot-02.jpg").unlink()
         with self.assertRaises(InvalidPackage):
