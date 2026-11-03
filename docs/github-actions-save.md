@@ -1,6 +1,6 @@
 # Homeku v1.3 — Pengoperasian GitHub Actions (Sequential Save)
 
-Dokumen ini menjelaskan kontrak workflow v1.3 untuk implementasi melalui PR #1. Setelah PR digabung, ini menjadi petunjuk produksi pada `main`. Selama PR belum di-merge, jalur produksi masih mengikuti kode `main`.
+Dokumen ini menjelaskan kontrak Homeku v1.3 yang dibahas pada [Issue #1](https://github.com/milyarderpro/homeku/issues/1) dan diajukan melalui [PR #2](https://github.com/milyarderpro/homeku/pull/2). Perilaku produksi yang berlaku selalu ditentukan oleh kode yang telah di-merge ke `main`; isi branch PR belum otomatis aktif di produksi.
 
 ## Yang sudah dan belum dibuktikan
 
