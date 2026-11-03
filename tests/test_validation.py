@@ -39,8 +39,54 @@ class ValidateTests(unittest.TestCase):
     def tearDown(self):
         self.tmp.cleanup()
 
+    def set_regions(self, regions):
+        path = self.folder / "analysis.yaml"
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+        data["architecture"]["common_regions"] = regions
+        path.write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
+        if isinstance(regions, list) and all(isinstance(item, str) for item in regions):
+            label = ", ".join(item.replace("_", " ") for item in regions) or "Tidak diketahui"
+        else:
+            label = "Tidak diketahui"
+        md_path = self.folder / "analysis.md"
+        md_path.write_text(md_path.read_text(encoding="utf-8") +
+                           f"| Wilayah terkait gaya desain | {label} |\n", encoding="utf-8")
+
     def test_valid(self):
+        # Historical schema 2.1 packages without common_regions remain valid.
         self.assertEqual(validate(self.folder)["shot_count"], 2)
+
+    def test_multiple_common_regions(self):
+        self.set_regions(["north_america", "europe"])
+        self.assertEqual(validate(self.folder)["shot_count"], 2)
+
+    def test_empty_common_regions(self):
+        self.set_regions([])
+        self.assertEqual(validate(self.folder)["shot_count"], 2)
+
+    def test_invalid_region_value(self):
+        self.set_regions(["antarctica"])
+        with self.assertRaisesRegex(InvalidPackage, "Invalid architecture.common_regions"):
+            validate(self.folder)
+
+    def test_duplicate_regions(self):
+        self.set_regions(["europe", "europe"])
+        with self.assertRaisesRegex(InvalidPackage, "Duplicate architecture.common_regions"):
+            validate(self.folder)
+
+    def test_common_regions_must_be_list(self):
+        self.set_regions("europe")
+        with self.assertRaisesRegex(InvalidPackage, "architecture.common_regions must be a list"):
+            validate(self.folder)
+
+    def test_region_markdown_parity(self):
+        self.set_regions(["europe"])
+        path = self.folder / "analysis.md"
+        path.write_text(path.read_text(encoding="utf-8").replace(
+            "| Wilayah terkait gaya desain | europe |",
+            "| Wilayah terkait gaya desain | asia |"), encoding="utf-8")
+        with self.assertRaisesRegex(InvalidPackage, "differs from Markdown"):
+            validate(self.folder)
 
     def test_missing_jpeg(self):
         (self.folder / "shot-02.jpg").unlink()

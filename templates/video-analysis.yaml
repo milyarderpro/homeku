@@ -7,6 +7,7 @@
 # v1.2: scripts/save_analysis_action.py generates analysis.md from YAML; templates/analysis.md is a structure reference, not an executed template.
 # Keep analysis.yaml as source of truth; final Markdown uses relative shot-NN.jpg image src. Runner fills final keyframe paths.
 # building_scale stores visual impressions and approximate area ranges (m²); do not imply measured dimensions.
+# common_regions is a broad stylistic association, never a verified home location or regional prevalence ranking.
 schema_version: "2.1"
 video:
   id: PENDING # draft only; finalized to VID-XXX by GitHub Actions after save now
@@ -19,6 +20,7 @@ video:
 
 architecture:
   primary_style: null # inferred style, not a verified geographic origin
+  common_regions: [] # north_america / south_america / europe / asia / africa / oceania; [] when unknown
   building_scale:
     perceived_size: null # tiny / small / medium / large / estate
     building_form: null # e.g. narrow_elongated, rectangular, l_shaped

@@ -11,6 +11,7 @@ ubah kode generator DAN acuan ini secara konsisten.
 - storyboard.jpg dibuat oleh scripts/storyboard.py: 1–5 shot dalam satu baris (kolom sejumlah shot), lebih dari 5 shot dalam tiga kolom; judul, metadata, gambar portrait, serta label scene/waktu/kamera sesuai YAML.
 - Ulangi tabel timeline dan bagian per-shot sesuai shots[].
 - Jika perkiraan luas null, tampilkan "Tidak diketahui".
+- `architecture.common_regions` adalah asosiasi gaya (bukan lokasi bangunan); jika kosong atau absen pada data lama, tampilkan "Tidak diketahui".
 - Label manusia: Shot 01, Shot 02; ID data: shot-01, shot-02.
 -->
 # {{video.id}} — {{architecture.primary_style | humanize_and_title}}
@@ -40,6 +41,7 @@ ubah kode generator DAN acuan ini secara konsisten.
 | Aspek | Hasil analisis |
 |---|---|
 | Gaya utama | {{architecture.primary_style | humanize}} |
+| Wilayah terkait gaya desain | {{architecture.common_regions | join_humanize_or_unknown}} |
 | Pengaruh gaya | {{architecture.secondary_influences | join_humanize}} |
 | Ciri eksterior | {{architecture.exterior_features | join_humanize}} |
 | Gaya interior | {{architecture.interior_style | join_humanize}} |

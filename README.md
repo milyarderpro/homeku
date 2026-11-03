@@ -2,6 +2,8 @@
 
 Homeku menyimpan analisis **visual** video desain rumah sebagai **YAML schema 2.1** (sumber fakta) dan laporan Markdown dengan satu JPEG per shot serta satu storyboard. Tidak mencakup audio, ide konten, atau prompt generatif.
 
+**Asosiasi kawasan gaya:** draft baru mencantumkan `architecture.common_regions` (`north_america`, `south_america`, `europe`, `asia`, `africa`, `oceania`), misalnya `[north_america, europe]`. Beberapa kawasan boleh dipilih; gunakan `[]` jika tidak diketahui. Ini **bukan** lokasi aktual rumah atau klaim popularitas terukur. Arsip lama tanpa field tetap valid; pada Markdown nilainya ditampilkan sebagai **Tidak diketahui**.
+
 ## Alur aktif: v1.2 — Sequential Save
 
 1. **Pengguna lebih dulu mengunggah MP4 ke branch `main`, folder `video/`**, misalnya `video/dreamsHouse002.mp4`. File MP4 tetap disimpan setelah analisis; upload MP4 saja **tidak** menjalankan proses save.
@@ -53,4 +55,4 @@ Video sumber hanya dikenali runner pada path **`video/<nama-file>.mp4` langsung 
 
 Agar aturan ini konsisten untuk setiap chat baru dalam Project Homeku, salin instruksi berikut ke pengaturan **Project Instructions ChatGPT**. Mengedit README atau rules di GitHub **tidak otomatis** mengubah pengaturan tersebut.
 
-> Untuk analisis video Homeku, baca versi terbaru rules/workflow-analysis.md, rules/analysis.md, templates/video-analysis.yaml dan templates/analysis.md dari repo GitHub milyarderpro/homeku. Cocokkan video yang diunggah ke chat dengan main/video/<filename>.mp4; jika identitas sumber belum pasti, jelaskan sebelum menyimpan. Selama ANALYZE/REVIEW akses GitHub read-only. Hanya pesan pengguna tersendiri persis save now yang mengizinkan update requests/save.json melalui konektor GitHub. Jangan mengunggah JPEG/MP4 melalui konektor. Setelah request dibuat, cek run GitHub Actions, request_id, requests/result.json, dan references/VID-XXX/ sebelum menyatakan Saved. Simpan satu video sampai tuntas sebelum menyimpan berikutnya.
+> Untuk analisis video Homeku, baca versi terbaru rules/workflow-analysis.md, rules/analysis.md, templates/video-analysis.yaml dan templates/analysis.md dari repo GitHub milyarderpro/homeku. Pada analisis baru isi architecture.common_regions sebagai list kawasan asosiasi gaya (atau [] jika tidak diketahui), bukan lokasi asli rumah. Cocokkan video yang diunggah ke chat dengan main/video/<filename>.mp4; jika identitas sumber belum pasti, jelaskan sebelum menyimpan. Selama ANALYZE/REVIEW akses GitHub read-only. Hanya pesan pengguna tersendiri persis save now yang mengizinkan update requests/save.json melalui konektor GitHub. Jangan mengunggah JPEG/MP4 melalui konektor. Setelah request dibuat, cek run GitHub Actions, request_id, requests/result.json, dan references/VID-XXX/ sebelum menyatakan Saved. Simpan satu video sampai tuntas sebelum menyimpan berikutnya.

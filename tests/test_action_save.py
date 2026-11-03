@@ -27,6 +27,7 @@ class ActionSaveTests(unittest.TestCase):
         package = make_package(self.root)
         data = yaml.safe_load((package / "analysis.yaml").read_text())
         data["architecture"]["primary_style"] = "country_cottage"
+        data["architecture"]["common_regions"] = ["north_america", "europe"]
         data["architecture"]["secondary_influences"] = []
         data["architecture"]["exterior_features"] = []
         data["architecture"]["interior_style"] = []
@@ -80,6 +81,11 @@ class ActionSaveTests(unittest.TestCase):
         self.assertEqual(out["status"], "saved")
         self.assertEqual(out["video_id"], "VID-001")
         self.assertEqual(out["file_count"], 5)
+        package = self.root / "references" / out["video_id"]
+        stored = yaml.safe_load((package / "analysis.yaml").read_text(encoding="utf-8"))
+        self.assertEqual(stored["architecture"]["common_regions"], ["north_america", "europe"])
+        self.assertIn("| Wilayah terkait gaya desain | north america, europe |",
+                      (package / "analysis.md").read_text(encoding="utf-8"))
         self.assertEqual(json.loads((self.root/"requests/result.json").read_text())["request_id"],self.req["request_id"])
         repeat = process(self.root, "actions-jpg-test")
         self.assertEqual(repeat["status"], "already_saved")
@@ -91,6 +97,15 @@ class ActionSaveTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "SHA mismatch"):
             process(self.root, "actions-jpg-test")
         self.assertFalse(any((self.root/"references").iterdir()))
+
+    def test_legacy_request_without_regions(self):
+        self.data["architecture"].pop("common_regions", None)
+        self.req["analysis_yaml"] = yaml.safe_dump(self.data, allow_unicode=True)
+        (self.root / "requests/save.json").write_text(json.dumps(self.req), encoding="utf-8")
+        out = process(self.root, "actions-jpg-test")
+        self.assertEqual(out["status"], "saved")
+        md = (self.root / "references" / out["video_id"] / "analysis.md").read_text(encoding="utf-8")
+        self.assertIn("| Wilayah terkait gaya desain | Tidak diketahui |", md)
 
     def test_idle_request_does_nothing(self):
         (self.root / "requests/save.json").write_text('{"schema_version":"1.0","status":"idle"}')

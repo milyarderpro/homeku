@@ -47,7 +47,8 @@ def markdown(d, rid):
         lines.append(row(k,value))
     lines += ["","## 2. Storyboard Gabungan","","![Storyboard](storyboard.jpg)","",
               "## 3. Identitas Desain","","| Aspek | Hasil analisis |","|---|---|"]
-    for k,value in [("Gaya utama",a["primary_style"]),("Pengaruh gaya",a.get("secondary_influences")),
+    for k,value in [("Gaya utama",a["primary_style"]),("Wilayah terkait gaya desain",a.get("common_regions") or None),
+                    ("Pengaruh gaya",a.get("secondary_influences")),
                     ("Ciri eksterior",a.get("exterior_features")),("Gaya interior",a.get("interior_style")),
                     ("Confidence gaya",a.get("style_confidence"))]:
         lines.append(row(k,value))

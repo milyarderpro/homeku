@@ -8,7 +8,7 @@
 
 Sebelum analisis, baca versi terbaru:
 - `rules/workflow-analysis.md` (dokumen ini): izin menulis, sumber MP4, request, Actions, dan verifikasi.
-- `rules/analysis.md`: isi, estimasi, label, dan standar visual.
+- `rules/analysis.md`: isi, estimasi, label, standar visual, dan aturan asosiasi kawasan `common_regions`.
 - `templates/video-analysis.yaml`: struktur YAML, `schema_version: "2.1"`.
 - `templates/analysis.md`: **acuan struktur** laporan; implementasi Actions membentuk Markdown sendiri dari YAML melalui `scripts/save_analysis_action.py`.
 
@@ -32,6 +32,7 @@ Satu-satunya perintah save standar ialah pesan pengguna yang setelah trim spasi 
 **Preflight:**
 - MP4 tersedia di `main/video/<nama>.mp4` dan file sumber serta Git blob SHA diketahui; cocokkan byte dengan video chat bila memungkinkan, jangan mengklaim sudah cocok tanpa bukti.
 - YAML lengkap schema 2.1, `video.filename` sama dengan basename MP4, shot_count benar, shot berurutan, durasi masuk akal, kamera/properti/catatan mengikuti rules analisis.
+- Draft **baru** mencantumkan `architecture.common_regions` sebagai daftar kawasan gaya yang valid (boleh `[]`); jangan menyimpulkan lokasi asli bangunan. Data lama tanpa field tersebut tetap kompatibel.
 - `keyframe_times_s` satu angka per shot, terletak di dalam [start_s, end_s) dan berasal dari review video tersebut.
 - Request terdahulu selesai atau sudah dipastikan tidak sedang berjalan. **Tidak ada penguncian otomatis** yang menjamin dua request tidak bertabrakan.
 

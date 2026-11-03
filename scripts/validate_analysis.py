@@ -11,6 +11,7 @@ from PIL import Image
 
 ID_RE = re.compile(r"(?:VID-\d{3,}|PENDING)\Z")
 SHOT_RE = re.compile(r"shot-(\d{2,})\Z")
+COMMON_REGIONS = frozenset({"north_america", "south_america", "europe", "asia", "africa", "oceania"})
 
 
 class InvalidPackage(ValueError):
@@ -40,14 +41,25 @@ def validate(package: Path, expected_id: str | None = None) -> dict[str, Any]:
     check(video.get("shot_count") == len(shots), "video.shot_count differs from shots length")
     duration = video.get("duration_s")
     check(isinstance(duration, (float, int)) and not isinstance(duration, bool) and duration > 0, "Invalid video duration")
-    scale = (data.get("architecture") or {}).get("building_scale") or {}
+    architecture = data.get("architecture") or {}
+    scale = architecture.get("building_scale") or {}
     check(all(k in scale for k in ("perceived_size", "building_form", "vertical_scale", "footprint", "estimated_floor_area_m2", "confidence")), "Missing architecture.building_scale fields")
     area = scale["estimated_floor_area_m2"]
     check(isinstance(area, dict) and "min" in area and "max" in area, "Missing area range")
     lo, hi = area["min"], area["max"]
     check((lo is None and hi is None) or (isinstance(lo, (int, float)) and not isinstance(lo, bool) and isinstance(hi, (int, float)) and not isinstance(hi, bool) and 0 < lo <= hi), "Invalid estimated area range")
     check(scale["confidence"] in ("low", "medium", "high"), "Invalid area confidence")
+    if "common_regions" in architecture:
+        regions = architecture["common_regions"]
+        check(isinstance(regions, list), "architecture.common_regions must be a list")
+        check(all(isinstance(region, str) and region in COMMON_REGIONS for region in regions),
+              "Invalid architecture.common_regions value")
+        check(len(regions) == len(set(regions)), "Duplicate architecture.common_regions value")
     markdown = md_path.read_text(encoding="utf-8")
+    if "common_regions" in architecture:
+        region_text = ", ".join(region.replace("_", " ") for region in regions) if regions else "Tidak diketahui"
+        check(f"| Wilayah terkait gaya desain | {region_text} |" in markdown,
+              "architecture.common_regions differs from Markdown")
     check(vid in markdown, "Video ID missing from Markdown")
     check(re.search(r"!\[[^\]]*\]\(storyboard\.jpg\)", markdown) is not None, "Storyboard must appear inline")
     expected_files = {"analysis.yaml", "analysis.md", "storyboard.jpg"}

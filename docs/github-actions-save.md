@@ -11,6 +11,13 @@ Dokumen ini menjelaskan **implementasi yang sudah ada** pada branch `main`, buka
 
 Workflow produksi `.github/workflows/save-analysis.yml` sekarang hanya memicu pada **push ke main yang mengubah `requests/save.json`**. Workflow tidak memiliki `workflow_dispatch` dan tidak dipicu hanya oleh upload MP4. Jangan menyuruh pengguna memilih `actions-jpg-test` untuk prosedur produksi; itu branch pengujian historis.
 
+## Asosiasi kawasan gaya (`common_regions`)
+
+- Pada draft baru dalam YAML schema `2.1`, sertakan `architecture.common_regions` sebagai list nilai `north_america`, `south_america`, `europe`, `asia`, `africa`, atau `oceania` (boleh lebih dari satu, tanpa duplikat, `[]` jika tidak diketahui).
+- Field ini hanya asosiasi gaya desain, **bukan** negara tempat bangunan berada, bukan peringkat prevalensi, dan bukan hasil identifikasi lokasi berdasarkan salju/lanskap.
+- `scripts/validate_analysis.py` memeriksa field ketika hadir; analisis lama tanpa field tetap valid. `scripts/save_analysis_action.py` merender **Wilayah terkait gaya desain** pada Identitas Desain, dengan **Tidak diketahui** untuk list kosong atau field absen.
+- Perubahan ini hanya menambah metadata visual: format request, trigger Actions, ID, ekstraksi JPEG, dan prosedur `save now` tidak berubah.
+
 ## Prasyarat pengguna
 
 1. Unggah MP4 ke `main/video/<nama-file>.mp4` sebelum analisis, **langsung** di dalam folder `video` (tanpa subfolder). Contoh: `video/dreamsHouse002.mp4`. Saat ini README di folder video hanya petunjuk; keberadaan folder bukan berarti semua MP4 sudah tersedia.

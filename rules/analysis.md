@@ -21,6 +21,14 @@
 - Tidak perlu melakukan pemeriksaan konsistensi ukuran eksterior dan interior. Analisis tetap bersifat deskriptif terhadap video yang ada, bukan audit kelayakan arsitektur.
 - Informasi ukuran pada `analysis.md` harus sama dengan `analysis.yaml`, diletakkan setelah **Identitas Desain** dan sebelum **Warna, Pencahayaan, dan Atmosfer**. Jika rentang luas `null`, tampilkan **Tidak diketahui** pada laporan Markdown.
 
+## Asosiasi Wilayah Gaya Arsitektur (schema 2.1)
+
+- `architecture.common_regions` wajib dicantumkan pada **analisis baru**, sebagai daftar kawasan luas yang lazim diasosiasikan dengan karakter gaya desain rumah yang terlihat, **bukan** lokasi asli bangunan, asal negara, atau peringkat prevalensi.
+- Nilai yang diizinkan: `north_america`, `south_america`, `europe`, `asia`, `africa`, `oceania`. Boleh memilih lebih dari satu tanpa duplikat, gunakan English `snake_case`.
+- Gunakan `[]` jika tidak ada asosiasi kawasan yang cukup masuk akal. Jangan mengisi hanya karena lanskap, musim, cuaca, atau gaya dekorasi tampak mirip wilayah tertentu; utamakan pengetahuan karakter arsitektur dan ungkapkan bahwa ini interpretasi.
+- Pada analisis historis yang tidak memiliki field tersebut, data tetap valid. Validator memeriksa tipe, nilai dan duplikasi **jika field hadir**; kewajiban untuk draft baru ditegakkan melalui template dan review, bukan dengan menolak arsip lama.
+- Dalam laporan Markdown tampilkan sebagai **Wilayah terkait gaya desain** pada Identitas Desain. Jika kosong atau tidak ada, tampilkan **Tidak diketahui**. Jangan mengklaim rumah di video benar-benar berlokasi di kawasan itu.
+
 ## Aturan yang menjaga kualitas data untuk ratusan video
 
 - Satu file YAML = satu video, satu item `shots` = satu shot.
