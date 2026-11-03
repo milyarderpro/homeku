@@ -107,6 +107,67 @@ class ActionSaveTests(unittest.TestCase):
         md = (self.root / "references" / out["video_id"] / "analysis.md").read_text(encoding="utf-8")
         self.assertIn("| Wilayah terkait gaya desain | Tidak diketahui |", md)
 
+
+    def add_narratives(self):
+        self.req["shot_narratives"] = {
+            s["id"]: {
+                "architectural": {
+                    "text": "Sebuah jendela terlihat di ruangan.",
+                    "covered_indices": [0],
+                },
+                "furniture_and_props": {"text": None, "covered_indices": []},
+                "environment": {"text": None, "covered_indices": []},
+            }
+            for s in self.data["shots"]
+        }
+        (self.root / "requests/save.json").write_text(
+            json.dumps(self.req, ensure_ascii=False), encoding="utf-8")
+
+    def test_natural_narrative_save_without_changing_yaml_facts(self):
+        self.add_narratives()
+        out = process(self.root, "actions-jpg-test")
+        self.assertEqual(out["status"], "saved")
+        package = self.root / "references" / out["video_id"]
+        final_yaml = yaml.safe_load((package / "analysis.yaml").read_text(encoding="utf-8"))
+        self.assertEqual(
+            [s["visible_details"] for s in final_yaml["shots"]],
+            [s["visible_details"] for s in self.data["shots"]])
+        self.assertNotIn("shot_narratives", final_yaml)
+        md = (package / "analysis.md").read_text(encoding="utf-8")
+        self.assertEqual(md.count("Sebuah jendela terlihat di ruangan."), 2)
+        self.assertEqual(md.count("Tidak ada detail yang tercatat."), 4)
+        self.assertEqual(md.count("**Arsitektur**"), 2)
+        self.assertIn("<img src=\"shot-02.jpg\"", md)
+        self.assertNotIn("- **Arsitektur:** window", md)
+        self.assertEqual(len(list(package.glob("*.jpg"))), 3)
+
+    def test_invalid_present_narratives_fail_before_any_files(self):
+        self.add_narratives()
+        self.req["shot_narratives"]["shot-02"]["architectural"]["covered_indices"] = []
+        (self.root / "requests/save.json").write_text(json.dumps(self.req), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "covered_indices"):
+            process(self.root, "actions-jpg-test")
+        self.assertFalse(any((self.root / "references").iterdir()))
+        self.assertFalse((self.root / "requests/result.json").exists())
+
+    def test_null_narratives_do_not_fallback(self):
+        self.req["shot_narratives"] = None
+        (self.root / "requests/save.json").write_text(json.dumps(self.req))
+        with self.assertRaisesRegex(ValueError, "shot_narratives must be an object"):
+            process(self.root, "actions-jpg-test")
+
+    def test_html_and_markdown_are_escaped_as_literal_prose(self):
+        self.add_narratives()
+        self.req["shot_narratives"]["shot-01"]["architectural"]["text"] = (
+            "Jendela <script>alert(1)</script> dan **bingkai** [klik](https://example.com).")
+        (self.root / "requests/save.json").write_text(json.dumps(self.req), encoding="utf-8")
+        out = process(self.root, "actions-jpg-test")
+        md = (self.root / "references" / out["video_id"] / "analysis.md").read_text(encoding="utf-8")
+        self.assertNotIn("<script>", md)
+        self.assertIn("&lt;script&gt;", md)
+        self.assertIn(r"\*\*bingkai\*\*", md)
+        self.assertIn(r"\[klik\]\(https://example.com\)", md)
+
     def test_idle_request_does_nothing(self):
         (self.root / "requests/save.json").write_text('{"schema_version":"1.0","status":"idle"}')
         self.assertEqual(process(self.root, "main"), {"status": "idle"})
