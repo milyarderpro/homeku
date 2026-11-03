@@ -1,7 +1,6 @@
 """Homeku v1.3: process ChatGPT-reviewed requests without AI in Actions."""
 from __future__ import annotations
 import argparse
-import html
 import json
 import math
 import os
@@ -11,7 +10,7 @@ import subprocess
 from pathlib import Path
 import yaml
 from storyboard import generate_storyboard
-from validate_analysis import validate, validate_narratives
+from validate_analysis import validate, validate_narratives, narrative_text
 
 def git(*args):
     return subprocess.check_output(["git", *args], text=True).strip()
@@ -31,13 +30,6 @@ def fmt(x):
 
 def row(a, b):
     return "| " + fmt(a) + " | " + fmt(b) + " |"
-
-def narrative_text(text):
-    """Render reviewed prose as literal text, never executable Markdown or HTML."""
-    if text is None:
-        return "Tidak ada detail yang tercatat."
-    escaped = html.escape(" ".join(text.split()), quote=False)
-    return re.sub(r'([\\`*_{}\[\]()#+!|>~-])', r'\\\1', escaped)
 
 def markdown(d, rid, narratives=None):
     v, a, vs, st, q = (d[k] for k in ["video","architecture","visual_style","video_structure","analysis_quality"])
@@ -174,7 +166,7 @@ def process(root,branch):
         generate_storyboard(frames, dest/"storyboard.jpg", video=data["video"], architecture=data["architecture"], shots=shots)
         (dest/"analysis.yaml").write_text(yaml.safe_dump(data,sort_keys=False,allow_unicode=True),encoding="utf-8")
         (dest/"analysis.md").write_text(markdown(data,rid,narratives),encoding="utf-8")
-        info=validate(dest,vid)
+        info=validate(dest,vid,narratives)
         result={"status":"saved","request_id":rid,"video_id":vid,"video_path":path,
                 "source_blob_sha":sha,"shot_count":len(shots),"file_count":len(info["files"]),
                 "run_id":os.getenv("GITHUB_RUN_ID")}
