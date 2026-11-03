@@ -1,4 +1,4 @@
-"""Tests Homeku v1.2 processing, including FFmpeg and idempotent request IDs."""
+"""Tests Homeku v1.3 processing, including FFmpeg, narratives and legacy replay."""
 import json
 import os
 import shutil
@@ -122,6 +122,139 @@ class ActionSaveTests(unittest.TestCase):
         }
         (self.root / "requests/save.json").write_text(
             json.dumps(self.req, ensure_ascii=False), encoding="utf-8")
+
+    def add_detailed_scenes(self):
+        """Hypothetical exterior + interior fixture; checks YAML/narrative parity."""
+        exterior, interior = self.data["shots"]
+        exterior["scene"] = "exterior_front"
+        exterior["focal_subject"] = "house_facade"
+        exterior["visible_details"] = {
+            "architectural": [
+                "steep_gabled_roof",
+                "white_horizontal_wood_siding",
+                "tall_black_framed_windows",
+            ],
+            "furniture_and_props": [
+                "two_wooden_chairs_on_front_porch",
+                "small_round_table_between_chairs",
+            ],
+            "environment": [
+                "large_tree_with_yellow_leaves_left_of_house",
+                "green_rice_field_beside_house",
+                "distant_mountain_range_behind_roofline",
+                "clear_blue_sky",
+            ],
+        }
+        interior["scene"] = "living_room"
+        interior["focal_subject"] = "seating_area"
+        interior["visible_details"] = {
+            "architectural": [
+                "exposed_wood_ceiling_beams",
+                "tall_black_framed_windows",
+                "light_wood_appearance_flooring",
+            ],
+            "furniture_and_props": [
+                "cream_fabric_sofa_facing_stone_fireplace",
+                "natural_wood_coffee_table_in_front_of_sofa",
+                "beige_area_rug_under_coffee_table",
+                "potted_green_plant_beside_window",
+            ],
+            "environment": ["green_leafy_trees_visible_through_windows"],
+        }
+        texts = {
+            "shot-01": {
+                "architectural": (
+                    "Atap rumah berbentuk pelana dengan kemiringan curam. "
+                    "Fasad memakai panel kayu horizontal berwarna putih, "
+                    "serta jendela-jendela tinggi dengan bingkai hitam."),
+                "furniture_and_props": (
+                    "Di teras depan terlihat dua kursi kayu. "
+                    "Sebuah meja bundar kecil berada di antara kedua kursi."),
+                "environment": (
+                    "Di sebelah kiri rumah terdapat pohon besar dengan dedaunan kuning. "
+                    "Hamparan sawah hijau berada di samping rumah, "
+                    "sementara pegunungan terlihat di kejauhan di balik garis atap. "
+                    "Langit tampak biru cerah."),
+            },
+            "shot-02": {
+                "architectural": (
+                    "Ruang tamu memiliki balok kayu terekspos pada plafon, "
+                    "jendela-jendela tinggi dengan bingkai hitam, "
+                    "dan lantai berpenampilan kayu berwarna terang."),
+                "furniture_and_props": (
+                    "Sofa berlapis kain krem menghadap perapian batu. "
+                    "Di depan sofa terdapat meja kopi kayu alami dengan "
+                    "karpet berwarna beige di bawahnya. "
+                    "Tanaman hijau dalam pot ditempatkan di samping jendela."),
+                "environment": (
+                    "Pepohonan berdaun hijau terlihat melalui jendela ruang tamu."),
+            },
+        }
+        self.req["analysis_yaml"] = yaml.safe_dump(self.data, allow_unicode=True)
+        self.req["shot_narratives"] = {
+            s["id"]: {
+                category: {
+                    "text": texts[s["id"]][category],
+                    "covered_indices": list(range(len(source))),
+                }
+                for category, source in s["visible_details"].items()
+            }
+            for s in self.data["shots"]
+        }
+        (self.root / "requests/save.json").write_text(
+            json.dumps(self.req, ensure_ascii=False), encoding="utf-8")
+        return texts
+
+    def test_rich_exterior_interior_end_to_end_and_semantic_spot_check(self):
+        """Test pipeline parity with visually plausible, explicitly fictional observations."""
+        texts = self.add_detailed_scenes()
+        out = process(self.root, "actions-jpg-test")
+        self.assertEqual(out["status"], "saved")
+        self.assertEqual(out["shot_count"], 2)
+        self.assertEqual(out["file_count"], 5)
+        folder = self.root / "references" / out["video_id"]
+        self.assertTrue((folder / "storyboard.jpg").is_file())
+        self.assertTrue((folder / "shot-01.jpg").is_file())
+        self.assertTrue((folder / "shot-02.jpg").is_file())
+        stored = yaml.safe_load((folder / "analysis.yaml").read_text(encoding="utf-8"))
+        self.assertNotIn("shot_narratives", stored)
+        for before, after in zip(self.data["shots"], stored["shots"]):
+            self.assertEqual(after["visible_details"], before["visible_details"])
+            self.assertEqual(after["scene"], before["scene"])
+        self.assertEqual([s["scene"] for s in stored["shots"]],
+                         ["exterior_front", "living_room"])
+        self.assertEqual([s["keyframe"] for s in stored["shots"]],
+                         ["references/VID-001/shot-01.jpg",
+                          "references/VID-001/shot-02.jpg"])
+        md = (folder / "analysis.md").read_text(encoding="utf-8")
+        exterior = md.split("### Shot 01 —", 1)[1].split("### Shot 02 —", 1)[0]
+        interior = md.split("### Shot 02 —", 1)[1].split(
+            "## 8. Kualitas dan Ketidakpastian Analisis", 1)[0]
+        for index, section in enumerate((exterior, interior), 1):
+            sid = f"shot-{index:02d}"
+            self.assertEqual(section.count("**Detail yang terlihat**"), 1)
+            for category, label in (("architectural", "Arsitektur"),
+                                    ("furniture_and_props", "Furnitur dan properti"),
+                                    ("environment", "Lingkungan")):
+                self.assertEqual(section.count("**" + label + "**"), 1)
+                self.assertIn(texts[sid][category], section)
+            self.assertNotIn("Tidak ada detail yang tercatat.", section)
+        # Manual source/target spot-check assertions: relative position, color,
+        # object count and material remain present in the correct shot.
+        for term in ("atap rumah", "panel kayu horizontal berwarna putih",
+                     "dua kursi kayu", "pohon besar dengan dedaunan kuning",
+                     "sawah hijau", "pegunungan", "langit tampak biru cerah"):
+            self.assertIn(term.lower(), exterior.lower())
+            self.assertNotIn(term.lower(), interior.lower())
+        for term in ("balok kayu", "lantai berpenampilan kayu",
+                     "sofa berlapis kain krem menghadap perapian batu",
+                     "karpet berwarna beige", "di samping jendela",
+                     "Pepohonan berdaun hijau"):
+            self.assertIn(term.lower(), interior.lower())
+        self.assertEqual(
+            json.loads((self.root / "requests/result.json").read_text())["request_id"],
+            self.req["request_id"])
+        self.assertEqual(process(self.root, "actions-jpg-test")["status"], "already_saved")
 
     def test_natural_narrative_save_without_changing_yaml_facts(self):
         self.add_narratives()
