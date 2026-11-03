@@ -1,4 +1,4 @@
-"""Homeku v1.2: process one reviewed request inside GitHub Actions."""
+"""Homeku v1.3: process ChatGPT-reviewed requests without AI in Actions."""
 from __future__ import annotations
 import argparse
 import json
@@ -10,7 +10,7 @@ import subprocess
 from pathlib import Path
 import yaml
 from storyboard import generate_storyboard
-from validate_analysis import validate
+from validate_analysis import validate, validate_narratives, narrative_text
 
 def git(*args):
     return subprocess.check_output(["git", *args], text=True).strip()
@@ -31,7 +31,7 @@ def fmt(x):
 def row(a, b):
     return "| " + fmt(a) + " | " + fmt(b) + " |"
 
-def markdown(d, rid):
+def markdown(d, rid, narratives=None):
     v, a, vs, st, q = (d[k] for k in ["video","architecture","visual_style","video_structure","analysis_quality"])
     b = a["building_scale"]
     area = b["estimated_floor_area_m2"]
@@ -41,6 +41,8 @@ def markdown(d, rid):
              "**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** " + fmt(q["status"]) +
              " · **Diverifikasi manusia:** " + fmt(q["human_verified"]), "",
              "## 1. Informasi Video", "", "| Informasi | Nilai |", "|---|---|"]
+    if narratives is not None:
+        lines[4:4] = ["<!-- homeku_detail_narratives: chat-reviewed -->", ""]
     for k, value in [("ID",v["id"]),("File asli",v["filename"]),("Durasi",v["duration_s"]),
                      ("Resolusi",v.get("resolution")),("FPS",v.get("fps")),
                      ("Rasio",v.get("aspect_ratio")),("Jumlah shot",v["shot_count"])]:
@@ -85,11 +87,19 @@ def markdown(d, rid):
                         ("Kecepatan kamera",cam.get("speed")),("Pencahayaan",s.get("lighting")),
                         ("Transisi keluar",s.get("transition_out"))]:
             lines.append(row(k,value))
-        lines += ["","**Detail yang terlihat**","",
-                  "- **Arsitektur:** "+fmt(details.get("architectural")),
-                  "- **Furnitur dan properti:** "+fmt(details.get("furniture_and_props")),
-                  "- **Lingkungan:** "+fmt(details.get("environment")),"",
-                  "**Catatan pengamatan:** "+fmt(s.get("observation_note")),"",
+        lines += ["","**Detail yang terlihat**",""]
+        if narratives is None:
+            # Backward compatibility for approved requests predating v1.3.
+            lines += ["- **Arsitektur:** "+fmt(details.get("architectural")),
+                      "- **Furnitur dan properti:** "+fmt(details.get("furniture_and_props")),
+                      "- **Lingkungan:** "+fmt(details.get("environment")),""]
+        else:
+            for category, label in (("architectural", "Arsitektur"),
+                                    ("furniture_and_props", "Furnitur dan properti"),
+                                    ("environment", "Lingkungan")):
+                lines += ["**"+label+"**", "",
+                          narrative_text(narratives[s["id"]][category]["text"]), ""]
+        lines += ["**Catatan pengamatan:** "+fmt(s.get("observation_note")),"",
                   "**Confidence:** Kamera "+fmt(s["confidence"].get("camera"))+
                   " · Detail visual "+fmt(s["confidence"].get("visual_details")),""]
     lines += ["## 8. Kualitas dan Ketidakpastian Analisis","",
@@ -132,6 +142,9 @@ def process(root,branch):
     for i,(s,t) in enumerate(zip(shots,times),1):
         require(isinstance(t,(int,float)) and not isinstance(t,bool) and math.isfinite(t),"Invalid keyframe time")
         require(s["id"]=="shot-%02d"%i and float(s["start_s"])<=t<float(s["end_s"]),"Keyframe outside shot")
+    narratives = req["shot_narratives"] if "shot_narratives" in req else None
+    if "shot_narratives" in req:
+        validate_narratives(data, narratives)
     existing={int(x.name[4:]) for x in (root/"references").glob("VID-*") if x.is_dir() and re.fullmatch(r"VID-\d{3,}",x.name)}
     number=1
     while number in existing:
@@ -152,8 +165,8 @@ def process(root,branch):
             frames.append(jpg)
         generate_storyboard(frames, dest/"storyboard.jpg", video=data["video"], architecture=data["architecture"], shots=shots)
         (dest/"analysis.yaml").write_text(yaml.safe_dump(data,sort_keys=False,allow_unicode=True),encoding="utf-8")
-        (dest/"analysis.md").write_text(markdown(data,rid),encoding="utf-8")
-        info=validate(dest,vid)
+        (dest/"analysis.md").write_text(markdown(data,rid,narratives),encoding="utf-8")
+        info=validate(dest,vid,narratives)
         result={"status":"saved","request_id":rid,"video_id":vid,"video_path":path,
                 "source_blob_sha":sha,"shot_count":len(shots),"file_count":len(info["files"]),
                 "run_id":os.getenv("GITHUB_RUN_ID")}

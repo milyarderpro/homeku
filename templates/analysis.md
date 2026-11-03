@@ -1,10 +1,14 @@
 <!--
 HOMEKU: ACUAN STRUKTUR LAPORAN VISUAL, bukan template yang dieksekusi langsung.
-Workflow v1.2 membuat analysis.md melalui fungsi markdown() dalam
+Workflow v1.3 membuat analysis.md melalui fungsi markdown() dalam
 scripts/save_analysis_action.py. Jika ingin mengubah output otomatis,
 ubah kode generator DAN acuan ini secara konsisten.
 
 - Semua fakta berasal dari analysis.yaml schema 2.1 yang sama.
+- Untuk request v1.3, ChatGPT menyusun shot_narratives di chat, kemudian runner menyisipkan paragraf yang sudah direview ke Detail yang terlihat.
+- Jika request historis tidak memiliki shot_narratives, runner tetap memakai formatter lama.
+- Narasi tidak disimpan dalam YAML, tidak dibuat oleh AI di runner, dan tidak boleh menambah fakta baru.
+- Setiap kategori kosong menampilkan "Tidak ada detail yang tercatat.".
 - ChatGPT menampilkan draft saat review; tampilan final bisa berbeda.
 - Runner menambahkan marker request_id untuk deduplikasi.
 - Gambar JPEG dihasilkan FFmpeg dari MP4 video/, lalu ditampilkan inline.
@@ -104,9 +108,19 @@ ubah kode generator DAN acuan ini secara konsisten.
 
 **Detail yang terlihat**
 
-- **Arsitektur:** {{shots[].visible_details.architectural | join_humanize}}
-- **Furnitur dan properti:** {{shots[].visible_details.furniture_and_props | join_humanize}}
-- **Lingkungan:** {{shots[].visible_details.environment | join_humanize}}
+**Arsitektur**
+
+{{shot_narratives[shots[].id].architectural.text | safe_plain_prose_or_empty_notice}}
+
+**Furnitur dan properti**
+
+{{shot_narratives[shots[].id].furniture_and_props.text | safe_plain_prose_or_empty_notice}}
+
+**Lingkungan**
+
+{{shot_narratives[shots[].id].environment.text | safe_plain_prose_or_empty_notice}}
+
+<!-- Untuk request lama TANPA shot_narratives, renderer memakai tiga bullet lama dari visible_details. -->
 
 **Catatan pengamatan:** {{shots[].observation_note | humanize}}
 

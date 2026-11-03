@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import html
 import re
 from pathlib import Path
 from typing import Any
@@ -12,6 +13,16 @@ from PIL import Image
 ID_RE = re.compile(r"(?:VID-\d{3,}|PENDING)\Z")
 SHOT_RE = re.compile(r"shot-(\d{2,})\Z")
 COMMON_REGIONS = frozenset({"north_america", "south_america", "europe", "asia", "africa", "oceania"})
+NARRATIVE_MARKER = "<!-- homeku_detail_narratives: chat-reviewed -->"
+NARRATIVE_CATEGORIES = ("architectural", "furniture_and_props", "environment")
+EMPTY_NARRATIVE = "Tidak ada detail yang tercatat."
+MAX_NARRATIVE_CHARS = 4000
+SHOT_HEADING = re.compile(r"^### Shot (\d{2}) — [^\n]+$", re.MULTILINE)
+NARRATIVE_BLOCK = re.compile(
+    r"\A\*\*Arsitektur\*\*\n\n(?P<architectural>[^\n]+)\n\n"
+    r"\*\*Furnitur dan properti\*\*\n\n(?P<furniture_and_props>[^\n]+)\n\n"
+    r"\*\*Lingkungan\*\*\n\n(?P<environment>[^\n]+)\Z"
+)
 
 
 class InvalidPackage(ValueError):
@@ -23,7 +34,56 @@ def check(condition: bool, message: str) -> None:
         raise InvalidPackage(message)
 
 
-def validate(package: Path, expected_id: str | None = None) -> dict[str, Any]:
+
+def narrative_text(value: str | None) -> str:
+    """Use literal Markdown-safe prose, with the same canonical output everywhere."""
+    if value is None:
+        return EMPTY_NARRATIVE
+    escaped = html.escape(" ".join(value.split()), quote=False)
+    return re.sub(r'([\\`*_{}\[\]()#+!|>~-])', r'\\\1', escaped)
+
+
+def validate_rendered_narratives(markdown: str, shots: list[dict[str, Any]],
+                                 narratives: dict[str, Any] | None = None) -> None:
+    """Check category order/text in EACH shot; compare approved text when available."""
+    check(markdown.count(NARRATIVE_MARKER) == 1, "Invalid narrative report marker")
+    start_heading = "## 7. Analisis per Shot\n"
+    end_heading = "## 8. Kualitas dan Ketidakpastian Analisis"
+    check(start_heading in markdown and end_heading in markdown,
+          "Missing narrative report shot section")
+    section = markdown.split(start_heading, 1)[1].split(end_heading, 1)[0]
+    headings = list(SHOT_HEADING.finditer(section))
+    check(len(headings) == len(shots), "Narrative report shot count differs from YAML")
+    for index, (shot, heading) in enumerate(zip(shots, headings), 1):
+        sid = shot["id"]
+        check(heading.group(1) == f"{index:02d}",
+              f"Wrong narrative report shot order: {sid}")
+        end = headings[index].start() if index < len(headings) else len(section)
+        body = section[heading.end():end]
+        detail_heading = "**Detail yang terlihat**"
+        observation_heading = "**Catatan pengamatan:**"
+        check(body.count(detail_heading) == 1 and body.count(observation_heading) == 1,
+              f"Missing/duplicate detail section: {sid}")
+        detail = body.split(detail_heading, 1)[1].split(observation_heading, 1)[0].strip()
+        match = NARRATIVE_BLOCK.fullmatch(detail)
+        check(match is not None, f"Invalid narrative category order or paragraph: {sid}")
+        for category in NARRATIVE_CATEGORIES:
+            text = match.group(category)
+            source = shot.get("visible_details", {}).get(category)
+            check(isinstance(source, list), f"Missing YAML detail category: {sid}.{category}")
+            if source:
+                check(bool(text.strip()) and text != EMPTY_NARRATIVE,
+                      f"Missing narrative paragraph for populated category: {sid}.{category}")
+            else:
+                check(text == EMPTY_NARRATIVE,
+                      f"Empty source narrative mismatch: {sid}.{category}")
+            if narratives is not None:
+                expected = narrative_text(narratives[sid][category]["text"])
+                check(text == expected,
+                      f"Narrative text differs from approved request: {sid}.{category}")
+
+def validate(package: Path, expected_id: str | None = None,
+             narratives: dict[str, Any] | None = None) -> dict[str, Any]:
     package = package.resolve(strict=True)
     check(package.is_dir(), "Package must be a directory")
     yaml_path, md_path = package / "analysis.yaml", package / "analysis.md"
@@ -60,6 +120,11 @@ def validate(package: Path, expected_id: str | None = None) -> dict[str, Any]:
         region_text = ", ".join(region.replace("_", " ") for region in regions) if regions else "Tidak diketahui"
         check(f"| Wilayah terkait gaya desain | {region_text} |" in markdown,
               "architecture.common_regions differs from Markdown")
+    if narratives is not None:
+        validate_narratives(data, narratives)
+        check(NARRATIVE_MARKER in markdown, "Missing approved narrative report marker")
+    if NARRATIVE_MARKER in markdown:
+        validate_rendered_narratives(markdown, shots, narratives)
     check(vid in markdown, "Video ID missing from Markdown")
     check(re.search(r"!\[[^\]]*\]\(storyboard\.jpg\)", markdown) is not None, "Storyboard must appear inline")
     expected_files = {"analysis.yaml", "analysis.md", "storyboard.jpg"}
@@ -89,6 +154,49 @@ def validate(package: Path, expected_id: str | None = None) -> dict[str, Any]:
     check(quality.get("status") in ("draft", "reviewed") and isinstance(quality.get("human_verified"), bool), "Invalid analysis quality status")
     return {"video_id": vid, "shot_count": len(shots), "files": sorted(expected_files), "duration_s": duration}
 
+
+
+
+def validate_narratives(data: dict[str, Any], narratives: Any) -> None:
+    """Validate ChatGPT-reviewed presentation text against YAML item coverage.
+
+    This proves structural coverage, NOT semantic equivalence. ChatGPT must
+    review fidelity to the visible evidence and YAML before 'save now'.
+    """
+    shots = data.get("shots")
+    check(isinstance(shots, list) and bool(shots), "Missing shots for narratives")
+    check(isinstance(narratives, dict), "shot_narratives must be an object")
+    shot_ids = [s.get("id") for s in shots]
+    check(set(narratives) == set(shot_ids) and len(shot_ids) == len(set(shot_ids)),
+          "shot_narratives shot IDs must match YAML shots exactly")
+    for shot in shots:
+        sid = shot["id"]
+        details = shot.get("visible_details")
+        check(isinstance(details, dict), f"Missing visible_details: {sid}")
+        entry = narratives[sid]
+        check(isinstance(entry, dict) and set(entry) == set(NARRATIVE_CATEGORIES),
+              f"Missing/extra narrative categories: {sid}")
+        for category in NARRATIVE_CATEGORIES:
+            source = details.get(category)
+            check(isinstance(source, list) and all(isinstance(x, str) for x in source),
+                  f"Invalid YAML source details: {sid}.{category}")
+            cell = entry[category]
+            check(isinstance(cell, dict) and set(cell) == {"text", "covered_indices"},
+                  f"Invalid narrative cell keys: {sid}.{category}")
+            indices = cell["covered_indices"]
+            check(isinstance(indices, list) and
+                  all(type(i) is int for i in indices) and
+                  len(indices) == len(source) and
+                  set(indices) == set(range(len(source))),
+                  f"Invalid covered_indices: {sid}.{category}")
+            value = cell["text"]
+            if not source:
+                check(value is None, f"Empty YAML category must have null text: {sid}.{category}")
+            else:
+                check(isinstance(value, str) and bool(value.strip()) and
+                      len(value) <= MAX_NARRATIVE_CHARS and
+                      all(ord(char) >= 32 or char in "\t\n\r" for char in value),
+                      f"Invalid narrative text: {sid}.{category}")
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)

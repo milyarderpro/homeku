@@ -1,10 +1,10 @@
 # VIDEO ANALYSIS ONLY — no ideas, prompts, or generation instructions.
 # Duplicate the shots[] item for every shot. Use null for unknown information.
 # Draft chat: video.id=PENDING. GitHub Actions assigns final VID-001, VID-002, etc. on save.
-# Shot IDs: shot-01, shot-02, shot-03, etc. (maximum 99 per video in v1.2).
+# Shot IDs: shot-01, shot-02, shot-03, etc. (maximum 99 per video; v1.3 analysis workflow).
 # Image filenames: shot-01.jpg, shot-02.jpg, etc. (always two digits for shots 1-99).
 # Technical labels: English snake_case; descriptive notes may be Indonesian.
-# v1.2: scripts/save_analysis_action.py generates analysis.md from YAML; templates/analysis.md is a structure reference, not an executed template.
+# v1.3: ChatGPT reviews YAML + Indonesian shot_narratives in chat; scripts/save_analysis_action.py renders Markdown without AI. This YAML template has NO narrative fields.
 # Keep analysis.yaml as source of truth; final Markdown uses relative shot-NN.jpg image src. Runner fills final keyframe paths.
 # building_scale stores visual impressions and approximate area ranges (m²); do not imply measured dimensions.
 # common_regions is a broad stylistic association, never a verified home location or regional prevalence ranking.
@@ -59,6 +59,14 @@ shots:
       movements: [] # dolly_in, tracking_right, pan_left, etc.
       speed: null
     focal_subject: null
+    # Detailed observation across the FULL shot, not only the saved keyframe.
+    # Write factual, specific English snake_case tags with color/material/size/position when visible.
+    # Exterior architecture: white_horizontal_wood_siding, tall_black_framed_windows.
+    # Interior architecture: exposed_wood_ceiling_beams, light_wood_appearance_flooring.
+    # Furniture: cream_fabric_sofa_facing_stone_fireplace, wood_table_between_two_chairs.
+    # Environment: large_tree_with_yellow_leaves_left_of_house, distant_mountain_silhouette.
+    # Interior window views may also belong in environment. [] when nothing is visible.
+    # Do not infer actual location, exact material or season from appearance alone.
     visible_details:
       architectural: []
       furniture_and_props: []

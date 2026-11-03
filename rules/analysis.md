@@ -11,6 +11,33 @@
 5. `shots`: catatan per shot (waktu, scene, framing, gerakan kamera, detail terlihat, transisi, keyframe).
 6. `analysis_quality`: ketidakpastian, estimasi, dan status verifikasi.
 
+## Standar v1.3 — Detailed Exterior & Environment Analysis
+
+- **Amati sepanjang shot**, termasuk awal, tengah, dan akhir gerakan kamera. Keyframe adalah bukti representatif, **bukan** satu-satunya frame untuk menemukan fakta. Data harus spesifik, lengkap menurut hal yang terlihat, tanpa jumlah item minimum yang dipaksakan.
+- **Eksterior/arsitektur:** bentuk massa rumah, atap dan kemiringan, fasad, material dan finishing yang tampak, warna, kusen/jendela, pintu, teras, tangga, pagar, chimney dan hubungan spasial objek. Catat posisi relatif, bentuk, ukuran visual, warna, dan material ketika cukup jelas.
+- **Lingkungan/lanskap:** ukuran dan posisi pohon, warna/kerapatan dedaunan, jenis vegetasi secara visual, rumput, bunga, taman, hamparan sawah/ladang jika dapat dikenali, sungai/danau, bukit/pegunungan, jalur masuk, pagar, tetangga/bangunan lain, tanah/batu/salju, kabut, awan, dan langit. Catat **depan/samping/belakang/kiri/kanan/jauh** dari rumah jika didukung framing.
+- Tulis label Inggris **spesifik** yang bisa ditelusuri ke video, misalnya `large_tree_with_yellow_leaves_left_of_house`, `green_rice_field_beside_house`, `distant_mountain_silhouette_behind_roofline`. Hindari label generik `tree` jika atribut penting terlihat jelas.
+- **Ketidakpastian:** jika bentuk lahan hanya tampak seperti lahan pertanian, pilih `green_agricultural_field` alih-alih memastikan itu sawah. Dedaunan kuning tidak otomatis membuktikan musim gugur atau negara tertentu. Jangan menambah fakta berdasarkan preferensi estetika atau asumsi rumah ideal.
+
+## Standar v1.3 — Detailed Interior & Spatial Analysis
+
+- **Geometri ruangan:** bentuk dan proporsi visual, plafon, balok terekspos, bukaan, tangga, perapian, area masuk dan hubungan antar-ruangan.
+- **Finishing:** warna, pola, tekstur, dan material yang *terlihat* pada dinding, lantai, plafon, countertop, backsplash, kabinet dan panel. Jika bahan persis tidak terbukti, gunakan deskripsi penampakan (`light_wood_appearance_flooring`), bukan menyatakan kayu tertentu sebagai fakta.
+- **Furnitur/properti:** jenis, bentuk, ukuran relatif, warna, upholstery/material yang tampak, jumlah jika jelas, arah hadap, penempatan dan hubungan antarbenda. Contoh: `cream_fabric_sofa_facing_stone_fireplace` lebih baik daripada `sofa`.
+- **Dekorasi/pencahayaan:** karpet, bantal, lampu, vas, buku, tanaman, lukisan, gorden, tekstil, cahaya alami/buatan dan sumbernya jika terlihat. Cahaya dan atmosfer yang sudah disimpan pada field lain harus tetap konsisten.
+- **Fokus ruangan:** living room (area duduk, meja, TV/fireplace), kitchen/dining (kabinet, island, sink, appliances, meja makan), bedroom (tempat tidur, bedding, headboard, bedside), bathroom (shower, bathtub, toilet, vanity, tile), laundry/utility (mesin, rak, penyimpanan). **Ini panduan observasi, bukan daftar objek wajib ada.**
+- Pemandangan **melalui jendela** tetap bisa dicatat pada `visible_details.environment` saat interior shot; hindari mengarang area luar yang tidak tampak.
+- Catat unsur pada kategori **yang sudah ada**, bukan field YAML baru: `shots[].visible_details.architectural` untuk struktur, finishing dan bukaan; `furniture_and_props` untuk objek; `environment` untuk konteks lingkungan luar atau pemandangan yang terlihat. Gunakan `[]` bila tidak ada detail yang terlihat.
+
+## Dual representation: fakta YAML dan narasi manusia
+
+- Analisis **baru**: item `visible_details` memakai English `snake_case`, sebaiknya memuat atribut + posisi/relasi jika terlihat. Nama field, `schema_version: "2.1"` dan data arsip **tidak berubah**.
+- **ChatGPT** membuat narasi bahasa Indonesia natural untuk tiga kategori per shot **berdasarkan item YAML**, sebelum review dan sebelum pesan `save now`. Narasi boleh menyatukan beberapa item menjadi kalimat mengalir, tetapi **tidak boleh menambah, menghilangkan, mengubah atau mempertajam fakta** di luar bukti YAML.
+- Lakukan review dua arah YAML ↔ narasi: objek, material, jumlah, warna, posisi, dan ketidakpastian harus sejalan. Jika satu detail tidak bisa ditulis dengan aman, revisi YAML/narasi dalam chat, **jangan mengarang** untuk memenuhi paragraf.
+- `analysis.yaml` adalah satu-satunya sumber fakta; narasi tidak ditambahkan ke YAML, melainkan hanya payload penyajian dalam `requests/save.json`. GitHub Actions **tidak menjalankan AI** atau penerjemahan.
+- Untuk kategori kosong, narasi `null` dan Markdown menampilkan **Tidak ada detail yang tercatat.** Evaluasi kelengkapan berdasarkan apa yang tampak; jangan paksakan jumlah item.
+- Penyimpanan dan request hanya mengikuti [workflow-analysis.md](workflow-analysis.md), termasuk pemeriksaan exact `save now` dan sequential save.
+
 ## Estimasi visual ukuran bangunan (schema 2.1)
 
 - `architecture.building_scale` wajib ada dalam setiap YAML: `perceived_size`, `building_form`, `vertical_scale`, `footprint`, `estimated_floor_area_m2.min`, `estimated_floor_area_m2.max`, dan `confidence`.
@@ -41,7 +68,7 @@
 - Gunakan ID shot `shot-01`, `shot-02`, `shot-03`, dan seterusnya, sesuai dengan nama gambar `shot-01.jpg`, `shot-02.jpg`, `shot-03.jpg`. Di laporan Markdown, tampilkan sebagai **Shot 01**, **Shot 02**, dan seterusnya.
 - Simpan **tepat satu keyframe JPEG yang diekstrak langsung dari frame video per shot**, dalam folder `references/VID-XXX/` dan rujuk melalui `shots[].keyframe` sebagai path relatif terhadap root repository. GitHub Actions memakai FFmpeg untuk mengekstrak frame pada timestamp yang dipilih selama analisis; JPEG hasil encode runner **tidak wajib identik byte** dengan gambar preview di chat, tetapi harus berasal dari shot dan video yang benar.
 - Simpan `storyboard.jpg` yang menggabungkan keyframe semua shot dalam folder video yang sama; tampilkan gambar ini **langsung** pada bagian atas `references/VID-XXX/analysis.md` dengan `![Storyboard](storyboard.jpg)`.
-- Setiap folder video **wajib** memiliki `analysis.yaml` (sumber data terstruktur AI) dan `analysis.md` (laporan visual untuk manusia), selain `storyboard.jpg` dan tepat satu gambar per shot. Gunakan `templates/video-analysis.yaml` sebagai schema data dan `templates/analysis.md` sebagai **acuan struktur**. Dalam workflow v1.2, Markdown final dibuat oleh `scripts/save_analysis_action.py` dari data YAML; template Markdown **tidak dieksekusi** sebagai mesin template. Jika susunan laporan perlu diubah, sinkronkan acuan template **dan generator Python**.
+- Setiap folder video **wajib** memiliki `analysis.yaml` (sumber data terstruktur AI) dan `analysis.md` (laporan visual untuk manusia), selain `storyboard.jpg` dan tepat satu gambar per shot. Gunakan `templates/video-analysis.yaml` sebagai schema data dan `templates/analysis.md` sebagai **acuan struktur**. Dalam workflow v1.3, Markdown final dibuat oleh `scripts/save_analysis_action.py` secara deterministik dari data YAML dan (untuk request baru) paragraf yang telah direview di chat; template Markdown **tidak dieksekusi** sebagai mesin template. Request historis tanpa narasi tetap dirender dengan formatter lama. Jika susunan laporan perlu diubah, sinkronkan acuan template **dan generator Python**.
 - `analysis.yaml` tetap menjadi **satu-satunya sumber fakta**. Isi `analysis.md` harus mengikuti YAML yang sama; tidak boleh menambahkan observasi/interpretasi baru, angka, atau detail yang tidak tercatat dalam YAML. Jika YAML berubah, sinkronkan `analysis.md`.
 - Pada `analysis.md`, tampilkan **gambar setiap shot secara langsung** di bawah heading masing-masing, bukan tautan ke gambar. Gunakan contoh `<img src="shot-01.jpg" alt="Shot 01" width="360">` dengan nama berurutan (`shot-02.jpg`, dst.); gambar akan terlihat di GitHub tanpa membuka file terpisah. ID di YAML mengikuti nama file tanpa ekstensi: `shot-01`, `shot-02`, dst.; file gambar memakai format `shot-NN.jpg` (dua digit, dimulai dari `shot-01.jpg`). Path HTML di Markdown relatif terhadap folder video, sedangkan `shots[].keyframe` dalam YAML relatif terhadap root repository.
 - `analysis.md` mengikuti urutan: **judul dan sumber data → informasi video → storyboard gabungan → identitas arsitektur → ukuran & proporsi bangunan → warna/pencahayaan/atmosfer → timeline → analisis per shot dengan gambar inline → kualitas/ketidakpastian**.
