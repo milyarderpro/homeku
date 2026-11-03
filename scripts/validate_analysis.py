@@ -60,6 +60,10 @@ def validate(package: Path, expected_id: str | None = None) -> dict[str, Any]:
         region_text = ", ".join(region.replace("_", " ") for region in regions) if regions else "Tidak diketahui"
         check(f"| Wilayah terkait gaya desain | {region_text} |" in markdown,
               "architecture.common_regions differs from Markdown")
+    if "<!-- homeku_detail_narratives: chat-reviewed -->" in markdown:
+        for label in ("Arsitektur", "Furnitur dan properti", "Lingkungan"):
+            check(markdown.count("\\n**" + label + "**\\n") == len(shots),
+                  f"Incomplete narrative category in Markdown: {label}")
     check(vid in markdown, "Video ID missing from Markdown")
     check(re.search(r"!\[[^\]]*\]\(storyboard\.jpg\)", markdown) is not None, "Storyboard must appear inline")
     expected_files = {"analysis.yaml", "analysis.md", "storyboard.jpg"}
