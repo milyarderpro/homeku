@@ -49,6 +49,8 @@ def markdown(d, rid, narratives=None):
              "**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** " + fmt(q["status"]) +
              " · **Diverifikasi manusia:** " + fmt(q["human_verified"]), "",
              "## 1. Informasi Video", "", "| Informasi | Nilai |", "|---|---|"]
+    if narratives is not None:
+        lines[4:4] = ["<!-- homeku_detail_narratives: chat-reviewed -->", ""]
     for k, value in [("ID",v["id"]),("File asli",v["filename"]),("Durasi",v["duration_s"]),
                      ("Resolusi",v.get("resolution")),("FPS",v.get("fps")),
                      ("Rasio",v.get("aspect_ratio")),("Jumlah shot",v["shot_count"])]:
