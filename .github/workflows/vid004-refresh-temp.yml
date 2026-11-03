@@ -1,0 +1,149 @@
+name: Homeku VID-004 v1.3 one-time archive refresh
+on:
+  push:
+    branches:
+      - update/vid-004-homeku-v1.3
+    paths:
+      - .homeku-staging/vid004-trigger.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: homeku-vid004-archive-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout isolated update branch
+        uses: actions/checkout@v4
+        with:
+          ref: update/vid-004-homeku-v1.3
+          fetch-depth: 0
+      - name: Prepare Python and FFmpeg
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          python -m pip install -r scripts/requirements.txt
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg
+          fi
+      - name: Run existing regression tests
+        run: python -m unittest discover -s tests -v
+      - name: Refresh same-ID analysis, shots, and storyboard
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import shutil
+          import subprocess
+          import sys
+          import tempfile
+          from pathlib import Path
+          
+          import yaml
+          
+          root = Path.cwd()
+          sys.path.insert(0, str(root / "scripts"))
+          from save_analysis_action import markdown
+          from storyboard import generate_storyboard
+          from validate_analysis import validate, validate_narratives
+          
+          source_path = "video/edh001.mp4"
+          expected_sha = "ba844313b645b154566a08a56ba500295ed4f021"
+          rid = "edh001-20261103-reviewed-001"
+          existing = root / "references" / "VID-004"
+          source_sha = subprocess.check_output(["git", "rev-parse", "HEAD:" + source_path], text=True).strip()
+          assert source_sha == expected_sha, "Original Git blob SHA has changed"
+          assert (root / source_path).is_file(), "MP4 source missing"
+          assert existing.is_dir(), "Original VID-004 directory missing"
+          original = yaml.safe_load((existing / "analysis.yaml").read_text(encoding="utf-8"))
+          assert original["video"]["id"] == "VID-004" and original["video"]["filename"] == "edh001.mp4"
+          assert original["video"]["shot_count"] == 5
+          assert "<!-- homeku_request_id: " + rid + " -->" in (existing / "analysis.md").read_text(encoding="utf-8")
+          
+          data = yaml.safe_load((root / ".homeku-staging/vid004-analysis.yaml").read_text(encoding="utf-8"))
+          narratives = json.loads((root / ".homeku-staging/vid004-narratives.json").read_text(encoding="utf-8"))["shot_narratives"]
+          assert data["schema_version"] == "2.1" and data["video"]["filename"] == "edh001.mp4"
+          assert data["video"]["shot_count"] == 5 and len(data["shots"]) == 5
+          assert data["video"]["duration_s"] == original["video"]["duration_s"]
+          assert data["video"]["resolution"] == original["video"]["resolution"]
+          assert data["video"]["fps"] == original["video"]["fps"]
+          data["video"]["id"] = "VID-004"
+          data["analysis_quality"]["status"] = "reviewed"
+          data["analysis_quality"]["human_verified"] = False
+          data["analysis_quality"]["notes"] = (
+              "Re-analysis of the same edh001.mp4 source for existing VID-004 using Homeku v1.3. "
+              "Updated 126 technical visible-detail labels and Indonesian per-shot narratives. "
+              "The 5-shot 18.40 s timeline and original video identity are preserved. "
+              "Git source blob: " + expected_sha + ". "
+              "Human verification of visual facts is not claimed; material, style, scale, and camera uncertainties remain estimations."
+          )
+          times = [2.30, 7.15, 9.89, 14.00, 16.55]
+          assert len(times) == len(data["shots"])
+          for index, (shot, t) in enumerate(zip(data["shots"], times), 1):
+              assert shot["id"] == f"shot-{index:02d}"
+              assert shot["start_s"] <= t < shot["end_s"]
+              shot["keyframe"] = f"references/VID-004/shot-{index:02d}.jpg"
+          validate_narratives(data, narratives)
+          label_total = sum(len(items) for shot in data["shots"] for items in shot["visible_details"].values())
+          assert label_total == 126, f"Expected 126 labels, got {label_total}"
+          
+          with tempfile.TemporaryDirectory(prefix="homeku-vid004-") as td:
+              folder = Path(td) / "VID-004"
+              folder.mkdir()
+              frames = []
+              for index, t in enumerate(times, 1):
+                  img = folder / f"shot-{index:02d}.jpg"
+                  subprocess.run([
+                      "ffmpeg", "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+                      "-ss", f"{t:.3f}", "-i", str(root / source_path),
+                      "-frames:v", "1", "-q:v", "2", str(img)
+                  ], check=True)
+                  assert img.is_file() and img.stat().st_size > 0
+                  frames.append(img)
+              generate_storyboard(frames, folder / "storyboard.jpg",
+                                  video=data["video"], architecture=data["architecture"],
+                                  shots=data["shots"])
+              (folder / "analysis.yaml").write_text(
+                  yaml.safe_dump(data, sort_keys=False, allow_unicode=True), encoding="utf-8")
+              (folder / "analysis.md").write_text(markdown(data, rid, narratives), encoding="utf-8")
+              result = validate(folder, "VID-004", narratives)
+              assert result["shot_count"] == 5 and len(result["files"]) == 8, result
+              allowed = {"analysis.yaml", "analysis.md", "storyboard.jpg"} | {
+                  f"shot-{i:02d}.jpg" for i in range(1, 6)
+              }
+              assert {x.name for x in folder.iterdir()} == allowed
+              assert {x.name for x in existing.iterdir() if x.is_file()} == allowed
+              for p in folder.iterdir():
+                  shutil.copy2(p, existing / p.name)
+          final = validate(existing, "VID-004", narratives)
+          print(json.dumps({"status": "VALIDATED", "video_id": "VID-004",
+                            "detail_labels": label_total, "shot_count": 5,
+                            "files": final["files"], "source_git_blob_sha": expected_sha,
+                            "keyframes_s": times}, indent=2))
+          PY
+      - name: Commit validated archive files only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add references/VID-004/analysis.yaml references/VID-004/analysis.md references/VID-004/shot-*.jpg references/VID-004/storyboard.jpg
+          git diff --cached --stat
+          test "$(git diff --cached --name-only | wc -l)" -eq 8
+          git commit -m "analysis: refresh VID-004 with Homeku v1.3 detailed review"
+          git push origin HEAD:update/vid-004-homeku-v1.3
+      - name: Verify committed archive at remote
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin update/vid-004-homeku-v1.3
+          test "$(git rev-parse HEAD)" = "$(git rev-parse FETCH_HEAD)"
+          python scripts/validate_analysis.py references/VID-004 --id VID-004
