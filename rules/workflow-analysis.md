@@ -1,8 +1,8 @@
-# Homeku — Workflow Analisis Video v1.2
+# Homeku — Workflow Analisis Video v1.3
 
 **Mode:** Sequential Save (satu proses penyimpanan sampai selesai sebelum berikutnya). **Produksi:** branch `main` pada repository `milyarderpro/homeku`.
 
-**Alur:** **UPLOAD MP4 → ANALYZE → REVIEW/REVISE → pesan `save now` → REQUEST → GITHUB ACTIONS → VERIFY**.
+**Alur:** **UPLOAD MP4 → ANALYZE → YAML + NARASI DI CHAT → REVIEW/REVISE → pesan `save now` → REQUEST → GITHUB ACTIONS → VERIFY**.
 
 ## 1. Sumber kebenaran
 
@@ -10,7 +10,8 @@ Sebelum analisis, baca versi terbaru:
 - `rules/workflow-analysis.md` (dokumen ini): izin menulis, sumber MP4, request, Actions, dan verifikasi.
 - `rules/analysis.md`: isi, estimasi, label, standar visual, dan aturan asosiasi kawasan `common_regions`.
 - `templates/video-analysis.yaml`: struktur YAML, `schema_version: "2.1"`.
-- `templates/analysis.md`: **acuan struktur** laporan; implementasi Actions membentuk Markdown sendiri dari YAML melalui `scripts/save_analysis_action.py`.
+- `templates/analysis.md`: **acuan struktur** laporan; Actions membuat Markdown deterministik dari YAML dan narasi yang sudah direview melalui `scripts/save_analysis_action.py`.
+- `templates/shot-narratives.json`: acuan **payload narasi** bahasa Indonesia di request, bukan file hasil dan bukan field YAML.
 
 Ruang lingkup hanya visual, tanpa analisis audio, ide konten, atau prompt generatif.
 
@@ -18,9 +19,11 @@ Ruang lingkup hanya visual, tanpa analisis audio, ide konten, atau prompt genera
 
 1. Pengguna lebih dahulu mengunggah MP4 ke **`main/video/<nama-file>.mp4`**, langsung pada folder `video/`. Upload hanya ke chat atau branch pengujian **tidak** menyediakan MP4 bagi runner produksi.
 2. AI membaca repo untuk menemukan path dan Git blob SHA sumber. Cocokkan nama secara persis, termasuk kapitalisasi. Bila byte video upload chat tersedia, hitung Git blob SHA dan bandingkan dengan GitHub; kesamaan nama saja tidak cukup membuktikan identitas. Bila tidak bisa memverifikasi byte, ungkapkan keterbatasan dan minta konfirmasi pengguna sebelum memakai sumber tersebut.
-3. Analisis video dalam chat sesuai `rules/analysis.md`: urutan shot, start/end, arsitektur, kamera, warna, pencahayaan, properti, ukuran visual dan confidence. Pilih **satu timestamp keyframe per shot**, di dalam [start_s, end_s); jangan memakai waktu hardcoded dari video uji.
-4. Susun draft YAML 2.1 dengan `video.id: PENDING`; pada draft, `shots[].keyframe` boleh `null` karena path final diberikan Actions. Tampilkan ringkasan, storyboard preview (jika tersedia), timeline, rincian setiap shot, kualitas dan ketidakpastian. Preview gambar boleh berbeda byte dari JPEG hasil FFmpeg runner; keduanya harus berasal dari shot yang sama.
-5. Perbaiki draft aktif jika diminta. Satu chat memiliki paling banyak satu draft yang belum tersimpan. Jangan menimpa draft lain secara diam-diam.
+3. Analisis **seluruh durasi setiap shot** sesuai `rules/analysis.md`: arsitektur/finishing exterior, lanskap/lingkungan, interior/tata ruang, warna, material, furnitur, relasi spasial, kamera, ukuran visual, dan confidence. Pilih **satu timestamp keyframe per shot**, di dalam [start_s, end_s); jangan memakai waktu hardcoded dari video uji.
+4. Susun draft YAML 2.1 dengan `video.id: PENDING`; pada draft, `shots[].keyframe` boleh `null` karena path final diberikan Actions. Isi item `visible_details` dengan English `snake_case` spesifik, termasuk atribut dan posisi yang terlihat.
+4a. **ChatGPT membuat `shot_narratives` dalam chat**: untuk setiap shot dan tiga kategori detail, buat paragraf bahasa Indonesia natural *hanya* dari YAML yang sudah disusun. Lengkapi `covered_indices` 0-based untuk semua item atau `text: null`/`[]` jika kategori kosong. Lakukan review dua arah agar setiap objek, warna, jumlah, material, posisi, dan ketidakpastian tetap sama. **Tidak ada AI lain di runner.**
+4b. Tampilkan ringkasan, storyboard preview (jika tersedia), timeline, rincian setiap shot, **contoh/paragraf narasi per kategori**, kualitas dan ketidakpastian untuk review. Preview gambar boleh berbeda byte dari JPEG hasil FFmpeg runner; keduanya harus berasal dari shot yang sama.
+5. Perbaiki **YAML dan narasi** bersama-sama jika diminta. Bila YAML berubah, perbarui narasi dan indeks cakupannya. Satu chat memiliki paling banyak satu draft yang belum tersimpan. Jangan menimpa draft lain secara diam-diam.
 6. **Selama semua tahap ini dilarang melakukan write GitHub**: tidak membuat request, blob, file, commit, atau memicu workflow simpan. Akses GitHub hanya read-only. Instruksi eksplisit untuk memperbarui dokumentasi/kode bukan persetujuan menyimpan data analisis video.
 
 Jika video sumber tidak ditemukan, jangan mengarang path; jelaskan cara upload. Jangan mengklaim identitas sumber sudah diverifikasi apabila baru cocok namanya.
@@ -33,6 +36,7 @@ Satu-satunya perintah save standar ialah pesan pengguna yang setelah trim spasi 
 - MP4 tersedia di `main/video/<nama>.mp4` dan file sumber serta Git blob SHA diketahui; cocokkan byte dengan video chat bila memungkinkan, jangan mengklaim sudah cocok tanpa bukti.
 - YAML lengkap schema 2.1, `video.filename` sama dengan basename MP4, shot_count benar, shot berurutan, durasi masuk akal, kamera/properti/catatan mengikuti rules analisis.
 - Draft **baru** mencantumkan `architecture.common_regions` sebagai daftar kawasan gaya yang valid (boleh `[]`); jangan menyimpulkan lokasi asli bangunan. Data lama tanpa field tersebut tetap kompatibel.
+- Untuk draft **baru v1.3**: `shot_narratives` wajib lengkap untuk **setiap shot dan tiga kategori**, dengan `covered_indices` unik tepat `0..n-1` menurut YAML, teks natural (atau `null` jika array sumber kosong), serta telah direview maknanya. Jangan meminta Actions menyusun narasi.
 - `keyframe_times_s` satu angka per shot, terletak di dalam [start_s, end_s) dan berasal dari review video tersebut.
 - Request terdahulu selesai atau sudah dipastikan tidak sedang berjalan. **Tidak ada penguncian otomatis** yang menjamin dua request tidak bertabrakan.
 
@@ -48,11 +52,18 @@ AI memakai konektor GitHub **update_file** untuk memperbarui file teks `main/req
     "blob_sha": "<SHA-GIT-BLOB-40-HEX-ASLI>"
   },
   "keyframe_times_s": [2.5, 7.3],
-  "analysis_yaml": "<YAML 2.1 LENGKAP DARI REVIEW, bukan placeholder>"
+  "analysis_yaml": "<YAML 2.1 LENGKAP DARI REVIEW, bukan placeholder>",
+  "shot_narratives": {
+    "shot-01": {
+      "architectural": {"text": "Jendela besar memiliki bingkai hitam.", "covered_indices": [0]},
+      "furniture_and_props": {"text": null, "covered_indices": []},
+      "environment": {"text": null, "covered_indices": []}
+    }
+  }
 }
 ```
 
-Ini **ilustrasi**, bukan request siap kirim. `request_id` harus stabil (8–80 karakter, alfanumerik/dash/underscore, mulai alfanumerik) dan unik untuk satu persetujuan video. `blob_sha` adalah SHA Git blob file MP4 yang benar (40 hex), **bukan SHA-256**. `analysis_yaml` merupakan string berisi **seluruh YAML**, bukan hanya ringkasan dan bukan JSON object. ID di YAML boleh `PENDING`.
+Ini **ilustrasi parsial**, bukan request siap kirim: contoh narasi hanya mencakup satu shot dengan asumsi YAML yang cocok; request produksi harus menyertakan *semua* shot dan kategori. Request lama **tanpa properti `shot_narratives`** tetap didukung renderer historis; jika properti hadir tetapi invalid, runner **gagal**, tidak fallback. `shot_narratives` hanya presentasi dan tidak ditambahkan ke `analysis.yaml`. `request_id` harus stabil (8–80 karakter, alfanumerik/dash/underscore, mulai alfanumerik) dan unik untuk satu persetujuan video. `blob_sha` adalah SHA Git blob file MP4 yang benar (40 hex), **bukan SHA-256**. `analysis_yaml` merupakan string berisi **seluruh YAML**, bukan hanya ringkasan dan bukan JSON object. ID di YAML boleh `PENDING`.
 
 Pada repo yang sudah terinisialisasi ini, file `requests/save.json` **sudah ada**; gunakan `update_file`, bukan `create_file`. Bila hasil operasi ambigu, baca ulang request dan run sebelum retry menggunakan request_id **yang sama**. Konektor **tidak** mengirim byte MP4, JPG, ZIP atau Base64.
 
@@ -67,7 +78,7 @@ Runner:
 2. Jalankan tes lokal yang termasuk dalam repo, lalu proses request jika `approved`.
 3. Cek apakah request_id sudah pernah disimpan (marker dalam `references/VID-*/analysis.md`); jika ya, jangan membuat video baru.
 4. Validasi path video langsung `video/<nama>.mp4`, SHA Git blob file yang dilacak, nama file YAML, jumlah dan urutan shot, serta timestamp frame.
-5. Pilih ID `VID-XXX` terkecil yang belum terpakai pada checkout; ekstrak **frame video** ke JPEG, buat storyboard, finalisasi YAML dan buat Markdown **dari YAML** melalui Python.
+5. Validasi `shot_narratives` terhadap YAML jika properti hadir (jumlah shot, nama kategori, indeks lengkap/unik, null untuk kategori kosong, batas teks), sebelum membuat folder. Pilih ID `VID-XXX` terkecil, ekstrak JPEG, buat storyboard, finalisasi YAML dan bentuk Markdown melalui Python. Untuk request v1.3, Python **hanya menyisipkan narasi yang dibuat/review di chat** dan melakukan escaping HTML/Markdown; untuk request lama tanpa narasi, gunakan formatter lama.
 6. Validasi keseluruhan paket; baru kemudian lakukan **satu commit** yang menambahkan `references/VID-XXX/` dan memperbarui `requests/result.json`, push tanpa force.
 7. Periksa commit di remote branch serta paket yang sudah dibuat. Jika terjadi konflik push atau validasi gagal, run gagal; tidak ada retry otomatis/force push.
 
@@ -86,10 +97,10 @@ Runner:
 
 - MP4 harus disimpan manual di `main/video/`; AI tidak otomatis mengirim video upload chat ke repo.
 - Keyframe diekstrak dari frame MP4 oleh FFmpeg dan dikodekan JPEG, **bukan byte-identik** dengan gambar preview ChatGPT.
-- `templates/analysis.md` adalah acuan bentuk laporan, bukan template engine; tata letak laporan produksi ditentukan `markdown()` dalam script Actions.
+- `templates/analysis.md` adalah acuan bentuk laporan, bukan template engine; tata letak laporan produksi ditentukan `markdown()` dalam script Actions. AI hanya ada di chat, **tidak perlu API key maupun panggilan API AI di Actions**.
 - File MP4 sumber tetap tersimpan setelah save. Riwayat Git akan bertambah; sistem belum mendukung pengambilan Git LFS khusus.
 - Edit dokumentasi di repo **tidak otomatis mengubah** Project Instructions ChatGPT.
-- Bukti end-to-end ada pada **branch uji** (run `41454322381`), dan uji replay `41454495367`. Produksi `main` baru lulus tes dan `idle` (run `41454647109`); **belum ada video produksi baru yang selesai disimpan** melalui v1.2.
+- Bukti end-to-end historis ada pada branch uji (run `41454322381`) dan replay (`41454495367`). Di produksi, **VID-004 telah tersimpan** melalui run [41636775788](https://github.com/milyarderpro/homeku/actions/runs/41636775788) sebelum perubahan v1.3. Ini **bukan** bukti jalur narasi v1.3 telah diuji di produksi.
 
 Panduan operasional: [docs/github-actions-save.md](../docs/github-actions-save.md).
 
