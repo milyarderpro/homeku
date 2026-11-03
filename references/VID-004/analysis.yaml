@@ -1,0 +1,306 @@
+schema_version: '2.1'
+video:
+  id: VID-004
+  filename: edh001.mp4
+  duration_s: 18.4
+  resolution: 720x1280
+  fps: 30
+  aspect_ratio: '9:16'
+  shot_count: 5
+architecture:
+  primary_style: organic_modern_cottage
+  common_regions:
+  - north_america
+  - europe
+  building_scale:
+    perceived_size: small
+    building_form: compact_curvilinear
+    vertical_scale: single_story_with_raised_roof_form
+    footprint: compact
+    estimated_floor_area_m2:
+      min: 60
+      max: 90
+    confidence: low
+  secondary_influences:
+  - scandinavian_contemporary
+  - modern_farmhouse
+  - minimalist_interior
+  exterior_features:
+  - white_textured_masonry_facade
+  - curved_building_mass
+  - black_curved_roof_fascia
+  - rounded_entry_canopy
+  - black_entry_door
+  - large_curved_bay_window
+  - front_stairs
+  - warm_wall_sconces
+  interior_style:
+  - warm_neutral_palette
+  - light_wood_accents
+  - soft_textiles
+  - black_metal_accents
+  - built_in_storage
+  - large_black_framed_windows
+  style_confidence: medium
+visual_style:
+  dominant_colors:
+  - name: warm_white
+    hex_approx: '#EDE8DF'
+  - name: charcoal_black
+    hex_approx: '#252725'
+  - name: natural_oak
+    hex_approx: '#B88D64'
+  - name: sage_grey
+    hex_approx: '#A9B9B3'
+  - name: snow_white
+    hex_approx: '#E2E7E8'
+  lighting:
+  - overcast_winter_daylight
+  - warm_wall_sconces
+  - warm_recessed_ceiling_lights
+  - warm_practical_lamps
+  - soft_window_daylight
+  setting:
+  - snow_covered_yard
+  - bare_deciduous_trees
+  - snowy_suburban_neighborhood
+  - front_garden_plantings
+  season_appearance: winter_appearance
+  mood:
+  - cozy
+  - warm
+  - calm
+  - intimate
+  - winter_retreat
+video_structure:
+  type: home_tour
+  scene_sequence:
+  - exterior_front
+  - living_room
+  - kitchen
+  - bedroom
+  - bathroom_laundry
+  overall_pace: moderate
+  transition_pattern: hard_cuts_between_rooms_with_slow_intra_shot_camera_motion
+shots:
+- id: shot-01
+  start_s: 0.0
+  end_s: 4.73
+  scene: exterior_front
+  framing:
+    start: wide_shot
+    end: medium_wide_shot
+    view_angle: eye_level_frontal_slight_left
+  camera:
+    movements:
+    - dolly_in
+    - tracking_right
+    speed: slow
+  focal_subject: front_facade_and_entry
+  visible_details:
+    architectural:
+    - white_textured_masonry
+    - rounded_exterior_walls
+    - black_curved_roof_trim
+    - curved_entry_canopy
+    - black_front_door
+    - bay_window_with_black_frames
+    - short_entry_staircase
+    furniture_and_props:
+    - decorative_door_wreath
+    - small_illuminated_conical_trees
+    - warm_wall_lights
+    environment:
+    - snow_covered_ground
+    - snowy_path
+    - bare_trees
+    - winter_sky
+  lighting: cool_overcast_daylight_and_warm_exterior_lights
+  transition_out: hard_cut
+  keyframe: references/VID-004/shot-01.jpg
+  confidence:
+    camera: medium
+    visual_details: high
+  observation_note: 'Observasi: kamera semakin mendekat pada fasad dan pintu; interpretasi
+    gerak dolly_in dengan pergeseran ringan ke kanan.'
+- id: shot-02
+  start_s: 4.73
+  end_s: 8.3
+  scene: living_room
+  framing:
+    start: wide_interior
+    end: medium_wide_interior
+    view_angle: eye_level_three_quarter
+  camera:
+    movements:
+    - tracking_right
+    - pan_right
+    speed: slow
+  focal_subject: sofa_and_bay_window
+  visible_details:
+    architectural:
+    - white_textured_stone_accent_wall
+    - large_black_framed_bay_windows
+    - built_in_linear_fireplace_or_dark_insert
+    - ceiling_recessed_lights
+    furniture_and_props:
+    - cream_sectional_sofa
+    - textured_throw_pillows
+    - rectangular_wood_coffee_table
+    - large_wall_mounted_television
+    - patterned_area_rug
+    - potted_plant
+    - long_floating_shelf
+    environment:
+    - snowy_trees_visible_through_windows
+    - neighboring_house_visible
+  lighting: mixed_soft_window_daylight_and_warm_accent_lights
+  transition_out: hard_cut
+  keyframe: references/VID-004/shot-02.jpg
+  confidence:
+    camera: medium
+    visual_details: high
+  observation_note: 'Observasi: komposisi bergeser ke kanan dan menonjolkan sofa serta
+    jendela lengkung; elemen gelap di bawah TV tampak menyerupai perapian linear.'
+- id: shot-03
+  start_s: 8.3
+  end_s: 11.57
+  scene: kitchen
+  framing:
+    start: medium_wide_interior
+    end: medium_interior
+    view_angle: eye_level_three_quarter
+  camera:
+    movements:
+    - tracking_right
+    speed: slow
+  focal_subject: kitchen_stove_counter_and_window
+  visible_details:
+    architectural:
+    - white_cabinetry
+    - black_cabinet_handles
+    - white_subway_tile_backsplash
+    - large_kitchen_window
+    - open_wall_shelves
+    - recessed_ceiling_lights
+    furniture_and_props:
+    - stainless_steel_refrigerator
+    - freestanding_range_oven
+    - dark_metal_kettle
+    - coffee_machine
+    - potted_small_cactus
+    - wooden_utensils
+    - hanging_metal_pendants
+    environment:
+    - snowy_yard_and_neighboring_buildings_seen_through_window
+  lighting: soft_cool_daylight_with_warm_pendant_and_under_cabinet_lights
+  transition_out: hard_cut
+  keyframe: references/VID-004/shot-03.jpg
+  confidence:
+    camera: medium
+    visual_details: high
+  observation_note: 'Observasi: perpindahan kamera ke kanan melewati area kompor menuju
+    kabinet, rak dan kulkas. Bahan countertop terlihat terang tetapi tidak dapat dipastikan.'
+- id: shot-04
+  start_s: 11.57
+  end_s: 15.0
+  scene: bedroom
+  framing:
+    start: medium_wide_interior
+    end: wide_interior
+    view_angle: eye_level_from_doorway
+  camera:
+    movements:
+    - tracking_right
+    - pan_right
+    speed: slow
+  focal_subject: bed_and_large_curved_window
+  visible_details:
+    architectural:
+    - large_curved_black_framed_window
+    - built_in_wardrobe_and_open_closet
+    - wood_flooring
+    - slatted_ceiling_accent
+    - recessed_ceiling_lights
+    furniture_and_props:
+    - low_platform_bed
+    - cream_bedding
+    - plaid_throw_and_cushions
+    - bedside_table
+    - small_warm_bedside_lamp
+    - striped_area_rug
+    - open_shelves
+    - hanging_clothes
+    - potted_plant
+    environment:
+    - snowy_neighborhood_and_bare_tree_branches_visible_outside
+  lighting: soft_cool_window_daylight_with_warm_bedside_and_recessed_lights
+  transition_out: hard_cut
+  keyframe: references/VID-004/shot-04.jpg
+  confidence:
+    camera: medium
+    visual_details: high
+  observation_note: 'Observasi: kamera bergeser ke kanan dari balik bukaan pintu;
+    ranjang tetap pusat perhatian sementara jendela lengkung semakin terlihat.'
+- id: shot-05
+  start_s: 15.0
+  end_s: 18.4
+  scene: bathroom_laundry
+  framing:
+    start: wide_interior
+    end: medium_wide_interior
+    view_angle: eye_level_three_quarter
+  camera:
+    movements:
+    - tracking_right
+    - dolly_in
+    speed: slow
+  focal_subject: glass_shower_and_stacked_laundry
+  visible_details:
+    architectural:
+    - curved_glass_shower_enclosure
+    - sage_green_wall_tiles
+    - circular_porthole_window
+    - dark_wood_ceiling_accent
+    - recessed_ceiling_lights
+    - built_in_recessed_wall_niches
+    furniture_and_props:
+    - black_shower_hardware
+    - rain_shower_and_handheld_shower
+    - white_toilet
+    - white_vanity_counter
+    - stacked_front_loading_washer_dryer
+    - folded_towels_on_upper_shelf
+    environment:
+    - snowy_tree_branches_visible_through_windows
+  lighting: mixed_cool_window_daylight_and_warm_ceiling_lights
+  transition_out: end_of_video
+  keyframe: references/VID-004/shot-05.jpg
+  confidence:
+    camera: medium
+    visual_details: high
+  observation_note: 'Observasi: kamar mandi sekaligus area laundry; kamera mendekat
+    dan bergeser ke kanan sehingga dinding shower, jendela bulat, dan mesin laundry
+    bertumpuk tampak lebih besar.'
+analysis_quality:
+  status: reviewed
+  human_verified: false
+  timestamp_precision: estimated
+  uncertainties:
+  - Gaya organic_modern_cottage adalah interpretasi visual, bukan identifikasi gaya
+    resmi atau asal geografis.
+  - Perkiraan luas 60-90 m2 bersifat kasar tanpa ukuran skala dan tidak dapat digunakan
+    sebagai ukuran aktual.
+  - Massa atap yang tinggi tidak membuktikan adanya lantai kedua atau loft.
+  - Klasifikasi camera dolly_in/tracking_right/pan_right didasarkan pada perubahan
+    perspektif, sehingga teknik pengambilan sebenarnya belum terverifikasi.
+  - Elemen gelap di bawah TV mungkin perapian linear atau panel dekoratif dan tidak
+    dapat dipastikan.
+  - Koherensi denah atau kesinambungan ruang interior-eksterior tidak dapat dipastikan
+    hanya dari rangkaian video.
+  - Kawasan North America dan Europe adalah asosiasi gaya desain saja, bukan lokasi
+    aktual bangunan atau statistik popularitas.
+  notes: 'Analisis hanya visual. Empat hard cut terdeteksi sekitar 4.73, 8.30, 11.57
+    dan 15.00 detik. Durasi visual trek gambar 18.40 detik (container termasuk trek
+    audio 18.53 detik). File sumber di chat cocok secara Git blob SHA-1 dengan main/video/edh001.mp4:
+    ba844313b645b154566a08a56ba500295ed4f021.'
