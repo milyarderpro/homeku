@@ -12,7 +12,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from save_analysis_action import process, markdown
+from save_analysis_action import process, markdown, narrative_text
 from test_validation import make_package
 
 
@@ -237,7 +237,7 @@ class ActionSaveTests(unittest.TestCase):
                                     ("furniture_and_props", "Furnitur dan properti"),
                                     ("environment", "Lingkungan")):
                 self.assertEqual(section.count("**" + label + "**"), 1)
-                self.assertIn(texts[sid][category], section)
+                self.assertIn(narrative_text(texts[sid][category]), section)
             self.assertNotIn("Tidak ada detail yang tercatat.", section)
         # Manual source/target spot-check assertions: relative position, color,
         # object count and material remain present in the correct shot.
