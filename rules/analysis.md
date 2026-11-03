@@ -11,6 +11,33 @@
 5. `shots`: catatan per shot (waktu, scene, framing, gerakan kamera, detail terlihat, transisi, keyframe).
 6. `analysis_quality`: ketidakpastian, estimasi, dan status verifikasi.
 
+## Standar v1.3 — Detailed Exterior & Environment Analysis
+
+- **Amati sepanjang shot**, termasuk awal, tengah, dan akhir gerakan kamera. Keyframe adalah bukti representatif, **bukan** satu-satunya frame untuk menemukan fakta. Data harus spesifik, lengkap menurut hal yang terlihat, tanpa jumlah item minimum yang dipaksakan.
+- **Eksterior/arsitektur:** bentuk massa rumah, atap dan kemiringan, fasad, material dan finishing yang tampak, warna, kusen/jendela, pintu, teras, tangga, pagar, chimney dan hubungan spasial objek. Catat posisi relatif, bentuk, ukuran visual, warna, dan material ketika cukup jelas.
+- **Lingkungan/lanskap:** ukuran dan posisi pohon, warna/kerapatan dedaunan, jenis vegetasi secara visual, rumput, bunga, taman, hamparan sawah/ladang jika dapat dikenali, sungai/danau, bukit/pegunungan, jalur masuk, pagar, tetangga/bangunan lain, tanah/batu/salju, kabut, awan, dan langit. Catat **depan/samping/belakang/kiri/kanan/jauh** dari rumah jika didukung framing.
+- Tulis label Inggris **spesifik** yang bisa ditelusuri ke video, misalnya `large_tree_with_yellow_leaves_left_of_house`, `green_rice_field_beside_house`, `distant_mountain_silhouette_behind_roofline`. Hindari label generik `tree` jika atribut penting terlihat jelas.
+- **Ketidakpastian:** jika bentuk lahan hanya tampak seperti lahan pertanian, pilih `green_agricultural_field` alih-alih memastikan itu sawah. Dedaunan kuning tidak otomatis membuktikan musim gugur atau negara tertentu. Jangan menambah fakta berdasarkan preferensi estetika atau asumsi rumah ideal.
+
+## Standar v1.3 — Detailed Interior & Spatial Analysis
+
+- **Geometri ruangan:** bentuk dan proporsi visual, plafon, balok terekspos, bukaan, tangga, perapian, area masuk dan hubungan antar-ruangan.
+- **Finishing:** warna, pola, tekstur, dan material yang *terlihat* pada dinding, lantai, plafon, countertop, backsplash, kabinet dan panel. Jika bahan persis tidak terbukti, gunakan deskripsi penampakan (`light_wood_appearance_flooring`), bukan menyatakan kayu tertentu sebagai fakta.
+- **Furnitur/properti:** jenis, bentuk, ukuran relatif, warna, upholstery/material yang tampak, jumlah jika jelas, arah hadap, penempatan dan hubungan antarbenda. Contoh: `cream_fabric_sofa_facing_stone_fireplace` lebih baik daripada `sofa`.
+- **Dekorasi/pencahayaan:** karpet, bantal, lampu, vas, buku, tanaman, lukisan, gorden, tekstil, cahaya alami/buatan dan sumbernya jika terlihat. Cahaya dan atmosfer yang sudah disimpan pada field lain harus tetap konsisten.
+- **Fokus ruangan:** living room (area duduk, meja, TV/fireplace), kitchen/dining (kabinet, island, sink, appliances, meja makan), bedroom (tempat tidur, bedding, headboard, bedside), bathroom (shower, bathtub, toilet, vanity, tile), laundry/utility (mesin, rak, penyimpanan). **Ini panduan observasi, bukan daftar objek wajib ada.**
+- Pemandangan **melalui jendela** tetap bisa dicatat pada `visible_details.environment` saat interior shot; hindari mengarang area luar yang tidak tampak.
+- Catat unsur pada kategori **yang sudah ada**, bukan field YAML baru: `shots[].visible_details.architectural` untuk struktur, finishing dan bukaan; `furniture_and_props` untuk objek; `environment` untuk konteks lingkungan luar atau pemandangan yang terlihat. Gunakan `[]` bila tidak ada detail yang terlihat.
+
+## Dual representation: fakta YAML dan narasi manusia
+
+- Analisis **baru**: item `visible_details` memakai English `snake_case`, sebaiknya memuat atribut + posisi/relasi jika terlihat. Nama field, `schema_version: "2.1"` dan data arsip **tidak berubah**.
+- **ChatGPT** membuat narasi bahasa Indonesia natural untuk tiga kategori per shot **berdasarkan item YAML**, sebelum review dan sebelum pesan `save now`. Narasi boleh menyatukan beberapa item menjadi kalimat mengalir, tetapi **tidak boleh menambah, menghilangkan, mengubah atau mempertajam fakta** di luar bukti YAML.
+- Lakukan review dua arah YAML ↔ narasi: objek, material, jumlah, warna, posisi, dan ketidakpastian harus sejalan. Jika satu detail tidak bisa ditulis dengan aman, revisi YAML/narasi dalam chat, **jangan mengarang** untuk memenuhi paragraf.
+- `analysis.yaml` adalah satu-satunya sumber fakta; narasi tidak ditambahkan ke YAML, melainkan hanya payload penyajian dalam `requests/save.json`. GitHub Actions **tidak menjalankan AI** atau penerjemahan.
+- Untuk kategori kosong, narasi `null` dan Markdown menampilkan **Tidak ada detail yang tercatat.** Evaluasi kelengkapan berdasarkan apa yang tampak; jangan paksakan jumlah item.
+- Penyimpanan dan request hanya mengikuti [workflow-analysis.md](workflow-analysis.md), termasuk pemeriksaan exact `save now` dan sequential save.
+
 ## Estimasi visual ukuran bangunan (schema 2.1)
 
 - `architecture.building_scale` wajib ada dalam setiap YAML: `perceived_size`, `building_form`, `vertical_scale`, `footprint`, `estimated_floor_area_m2.min`, `estimated_floor_area_m2.max`, dan `confidence`.
