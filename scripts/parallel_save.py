@@ -80,7 +80,7 @@ def check_case_collisions(root, stem):
         if not parent.exists():
             continue
         for item in parent.iterdir():
-            actual = item.stem if suffix and item.name.endswith(suffix) else (
+            actual = item.name[:-len(suffix)] if suffix and item.name.casefold().endswith(suffix) else (
                 item.name if not suffix and item.is_dir() else None
             )
             if actual is not None and actual.casefold() == stem.casefold():
@@ -254,10 +254,10 @@ def check_remote_case_collisions(root, ref, stem):
                 "references", cwd=root).splitlines()
     for path in paths:
         name = None
-        if path.startswith("video/") and path.count("/") == 1 and path.endswith(".mp4"):
-            name = Path(path).stem
-        elif path.startswith(("requests/pending/", "requests/results/")) and path.endswith(".json"):
-            name = Path(path).stem
+        if path.startswith("video/") and path.count("/") == 1 and path.casefold().endswith(".mp4"):
+            name = path.split("/")[-1][:-4]
+        elif path.startswith(("requests/pending/", "requests/results/")) and path.casefold().endswith(".json"):
+            name = path.split("/")[-1][:-5]
         elif path.startswith("references/") and path.count("/") == 2:
             name = path.split("/")[1]
         if name is not None and name.casefold() == stem.casefold():
@@ -336,6 +336,17 @@ def inspect_remote(root, ref, vid, req):
     return None
 
 
+def check_remote_source_sha(root, ref, req):
+    """Reject when video in moving main changed after approved snapshot."""
+    path = req["video"]["path"]
+    try:
+        actual = git("rev-parse", f"{ref}:{path}", cwd=root)
+    except subprocess.CalledProcessError as exc:
+        raise SaveConflict("Approved video was removed from remote main") from exc
+    require(actual == req["video"]["blob_sha"],
+            "Video source Git blob SHA changed in remote main")
+
+
 def remote_request_sha(root, ref, path):
     try:
         return git("rev-parse", f"{ref}:{path}", cwd=root)
@@ -352,6 +363,7 @@ def publish(root, request_path, trigger_sha, *, max_attempts=5):
     _, req, _, _, _ = load_request(root, request_path)
     git("fetch", "origin", "main", cwd=root)
     check_remote_case_collisions(root, "origin/main", vid)
+    check_remote_source_sha(root, "origin/main", req)
     require(remote_request_sha(root, "origin/main", request_path) == request_blob,
             "Pending request changed since trigger")
     found = inspect_remote(root, "origin/main", vid, req)
@@ -377,6 +389,7 @@ def publish(root, request_path, trigger_sha, *, max_attempts=5):
     for attempt in range(1, max_attempts + 1):
         git("fetch", "origin", "main", cwd=root)
         check_remote_case_collisions(root, "origin/main", vid)
+        check_remote_source_sha(root, "origin/main", req)
         require(remote_request_sha(root, "origin/main", request_path) == request_blob,
                 "Remote request changed during processing")
         found = inspect_remote(root, "origin/main", vid, req)
