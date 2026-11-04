@@ -108,7 +108,7 @@ class ParallelSaveTests(unittest.TestCase):
             load_request(self.root, self.req_path)
 
     def test_case_collision(self):
-        (self.root / "video/Test.mp4").write_bytes(b"not a video")
+        (self.root / "video/Test.MP4").write_bytes(b"not a video")
         with self.assertRaisesRegex(SaveConflict, "Case collision"):
             check_case_collisions(self.root, "test")
         with self.assertRaisesRegex(SaveConflict, "Case collision"):
@@ -225,6 +225,22 @@ class ParallelSaveTests(unittest.TestCase):
         second = publish(self.root, self.req_path, git(self.root, "rev-parse", "HEAD"))
         self.assertEqual(second["status"], "already_saved")
         self.assertEqual(second["video_id"], "test")
+
+    def test_changed_remote_mp4_blob_is_rejected(self):
+        sha = self.commit_requests()
+        self.add_remote()
+        other = self.root / "source-change-worktree"
+        subprocess.run(["git", "clone", "-q", "--branch", "main",
+                        str(self.root/"origin.git"), str(other)], check=True)
+        # A valid but different MP4 should not replace the approved input.
+        (other / "video/test.mp4").write_bytes(b"changed remote video bytes")
+        git(other, "config", "user.name", "Test")
+        git(other, "config", "user.email", "test@example.invalid")
+        git(other, "add", "video/test.mp4")
+        git(other, "commit", "-qm", "change video after review")
+        git(other, "push", "-q", "origin", "HEAD:main")
+        with self.assertRaisesRegex(SaveConflict, "Video source Git blob SHA changed"):
+            publish(self.root, self.req_path, sha)
 
     def test_changed_remote_request_blob_is_rejected(self):
         sha = self.commit_requests()
