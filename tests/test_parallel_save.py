@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import copy
 import json
+import time
+from concurrent.futures import ThreadPoolExecutor
 import os
 import shutil
 import subprocess
@@ -239,6 +241,58 @@ class ParallelSaveTests(unittest.TestCase):
         git(other, "push", "-q", "origin", "HEAD:main")
         with self.assertRaisesRegex(SaveConflict, "changed since trigger"):
             publish(self.root, self.req_path, sha)
+
+    def test_five_distinct_workers_publish_concurrently_without_loss(self):
+        # Five local Git/FFmpeg workers share one bare origin to exercise genuine
+        # concurrent process/commit races, not just a sequential rebase.
+        videos = ["test", "testb", "testc", "testd", "teste"]
+        for stem in videos[1:]:
+            shutil.copy2(self.root / "video/test.mp4",
+                         self.root / f"video/{stem}.mp4")
+        git(self.root, "add", "video")
+        git(self.root, "commit", "-qm", "add concurrent synthetic source videos")
+        for stem in videos[1:]:
+            req = copy.deepcopy(self.req)
+            req["request_id"] = f"{stem}-review-0001"
+            req["video"]["path"] = f"video/{stem}.mp4"
+            req["video"]["blob_sha"] = git(self.root, "rev-parse",
+                                            f"HEAD:video/{stem}.mp4")
+            yml = yaml.safe_load(req["analysis_yaml"])
+            yml["video"]["filename"] = f"{stem}.mp4"
+            req["analysis_yaml"] = yaml.safe_dump(yml, allow_unicode=True)
+            (self.pending / f"{stem}.json").write_text(
+                json.dumps(req, ensure_ascii=False), encoding="utf-8")
+        trigger = self.commit_requests()
+        remote = self.add_remote()
+        work = []
+        for index, stem in enumerate(videos, 1):
+            folder = self.root / f"concurrent-worker-{index}"
+            subprocess.run(["git", "clone", "-q", "--branch", "main",
+                            str(remote), str(folder)], check=True)
+            git(folder, "checkout", "-q", "--detach", trigger)
+            work.append((folder, stem))
+        starts = {}
+        finishes = {}
+        def save_one(item):
+            folder, stem = item
+            starts[stem] = time.monotonic()
+            out = publish(folder, f"requests/pending/{stem}.json", trigger)
+            finishes[stem] = time.monotonic()
+            return out
+        with ThreadPoolExecutor(max_workers=5) as pool:
+            outputs = list(pool.map(save_one, work))
+        self.assertEqual([out["status"] for out in outputs], ["saved"] * 5)
+        # At least two saves overlapped while FFmpeg and Git were running.
+        self.assertLess(max(starts.values()), min(finishes.values()))
+        git(self.root, "fetch", "origin", "main")
+        for stem in videos:
+            remote_result = json.loads(git(
+                self.root, "show", f"origin/main:requests/results/{stem}.json"))
+            self.assertEqual(remote_result["video_id"], stem)
+            self.assertEqual(remote_result["status"], "saved")
+            self.assertEqual(len(git(
+                self.root, "ls-tree", "-r", "--name-only", "origin/main",
+                "--", f"references/{stem}").splitlines()), 5)
 
     def test_parallel_two_video_commits_rebase_without_loss(self):
         # Simulates two independent runners checking out the SAME commit.
