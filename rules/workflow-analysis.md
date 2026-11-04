@@ -15,7 +15,7 @@ Pengguna menaruh MP4 **terlebih dahulu** pada `main/video/<filename>.mp4` (langs
 - **Tidak boleh melakukan write ke GitHub** selama tahap analisis/review. Tidak ada permintaan save otomatis atau upload JPEG/MP4/Base64 melalui connector.
 
 ## 3. Exact `save now` — persetujuan penyimpanan
-Hanya pesan pengguna yang, setelah trim dan case-insensitive, **persis** `save now` dan berdiri sendiri, berlaku untuk draft terbaru yang sudah ditampilkan/direview di **chat yang sama**. Penyebutan frasa dalam kutipan, pertanyaan, contoh, atau pesan dengan teks lain **bukan** izin. Replay untuk draft sama menggunakan request_id yang sama.
+Hanya pesan pengguna yang, setelah trim dan case-insensitive, **persis** `save now` dan berdiri sendiri (kecuali ditegaskan pemilik dengan izinnya), berlaku untuk draft terbaru yang sudah ditampilkan/direview di **chat yang sama**. Penyebutan frasa dalam kutipan, pertanyaan, contoh, atau pesan dengan teks lain **bukan** izin. Replay untuk draft sama menggunakan request_id yang sama.
 
 **ID baru:** basename MP4 **tanpa** `.mp4`, mempertahankan kapitalisasi. `video/edh011.mp4` → `edh011` → `references/edh011/`; `video/dreamsHouse003.mp4` → `dreamsHouse003`. Stem baru cocok `[A-Za-z0-9][A-Za-z0-9_.-]{0,63}`, case-sensitive, ekstensi harus `.mp4` persis. ID `PENDING` dan `VID-XXX` disisihkan untuk draft/arsip legacy; tidak ada counter atau alokasi nomor VID baru. Tolak slash/backslash/spasi/traversal, dan case-insensitive collision terhadap nama yang sudah ada.
 
