@@ -10,7 +10,7 @@ from typing import Any
 import yaml
 from PIL import Image
 
-ID_RE = re.compile(r"(?:VID-\d{3,}|PENDING)\Z")
+ID_RE = re.compile(r"(?:VID-\d{3,}|PENDING|[A-Za-z0-9][A-Za-z0-9_.-]{0,63})\Z")
 SHOT_RE = re.compile(r"shot-(\d{2,})\Z")
 COMMON_REGIONS = frozenset({"north_america", "south_america", "europe", "asia", "africa", "oceania"})
 NARRATIVE_MARKER = "<!-- homeku_detail_narratives: chat-reviewed -->"
@@ -95,6 +95,9 @@ def validate(package: Path, expected_id: str | None = None,
     vid = video.get("id")
     check(isinstance(vid, str) and bool(ID_RE.fullmatch(vid)), "Invalid video.id")
     check(expected_id is None or vid == expected_id, "video.id does not match expected ID")
+    if not re.fullmatch(r"VID-\d{3,}", vid) and vid != "PENDING":
+        check(video.get("filename") == vid + ".mp4",
+              "Filename-based video.id must equal video.filename stem")
     check(package.name == vid, "Package folder and video.id differ")
     shots = data.get("shots")
     check(isinstance(shots, list) and bool(shots), "shots must be non-empty")
@@ -200,7 +203,7 @@ def validate_narratives(data: dict[str, Any], narratives: Any) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("package", type=Path, help="references/PENDING or references/VID-XXX")
+    parser.add_argument("package", type=Path, help="references/<video-stem> or legacy references/VID-XXX")
     parser.add_argument("--id", help="Expected video ID")
     args = parser.parse_args()
     import json
