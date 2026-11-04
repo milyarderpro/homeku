@@ -1,10 +1,8 @@
 name: Homeku v1.4 CI
 
 on:
-  push:
-    branches:
-      - feature/homeku-v1.4-filename-parallel-save
   pull_request:
+    branches: [main]
     paths:
       - '.github/workflows/save-analysis.yml'
       - '.github/workflows/test-v1.4.yml'
@@ -21,7 +19,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
+      - name: Confirm exact PR head under test
+        shell: bash
+        run: |
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          echo "Verified exact PR HEAD: $(git rev-parse HEAD)"
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
