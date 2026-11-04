@@ -1,4 +1,8 @@
-"""Homeku v1.3: process ChatGPT-reviewed requests without AI in Actions."""
+"""Homeku Markdown renderer plus historical v1.3 sequential-save helper.
+
+v1.4 production uses parallel_save.py with per-video requests; this module
+retains markdown() and the legacy process() for regression compatibility.
+"""
 from __future__ import annotations
 import argparse
 import json

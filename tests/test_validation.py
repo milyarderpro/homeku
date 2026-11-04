@@ -56,6 +56,36 @@ class ValidateTests(unittest.TestCase):
         # Historical schema 2.1 packages without common_regions remain valid.
         self.assertEqual(validate(self.folder)["shot_count"], 2)
 
+    def test_filename_based_video_id_valid(self):
+        folder = self.folder
+        target = folder.parent / "dreamsHouse003"
+        folder.rename(target)
+        self.folder = target
+        yml = target / "analysis.yaml"
+        data = yaml.safe_load(yml.read_text())
+        data["video"]["id"] = "dreamsHouse003"
+        data["video"]["filename"] = "dreamsHouse003.mp4"
+        for i, shot in enumerate(data["shots"], 1):
+            shot["keyframe"] = f"references/dreamsHouse003/shot-{i:02d}.jpg"
+        yml.write_text(yaml.safe_dump(data, allow_unicode=True))
+        md = target / "analysis.md"
+        md.write_text(md.read_text().replace("PENDING", "dreamsHouse003"))
+        self.assertEqual(validate(target)["video_id"], "dreamsHouse003")
+
+    def test_filename_based_video_id_must_match_filename(self):
+        folder = self.folder
+        target = folder.parent / "edh011"
+        folder.rename(target)
+        self.folder = target
+        yml = target / "analysis.yaml"
+        data = yaml.safe_load(yml.read_text())
+        data["video"]["id"] = "edh011"
+        for i, shot in enumerate(data["shots"], 1):
+            shot["keyframe"] = f"references/edh011/shot-{i:02d}.jpg"
+        yml.write_text(yaml.safe_dump(data, allow_unicode=True))
+        with self.assertRaisesRegex(InvalidPackage, "filename stem"):
+            validate(target)
+
     def test_multiple_common_regions(self):
         self.set_regions(["north_america", "europe"])
         self.assertEqual(validate(self.folder)["shot_count"], 2)

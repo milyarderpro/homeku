@@ -1,3 +1,31 @@
+# Homeku v1.4 — Filename-Based Parallel Save (CURRENT)
+
+**Plan:** [Issue #4](https://github.com/milyarderpro/homeku/issues/4). This section supersedes the historical v1.3 sequential-save directions below. Apply only after the v1.4 PR is merged into main.
+
+## Normal operation
+
+1. Upload an MP4 to `main/video/<filename>.mp4`; ChatGPT analyzes all shots, writes reviewed YAML 2.1 and Indonesian `shot_narratives` without any GitHub mutation. Verify the source Git blob SHA if possible.
+2. An independent, standalone exact `save now` authorizes ChatGPT's GitHub **create_file** of `main/requests/pending/<video-stem>.json` (not update_file on shared save.json). Stem is the exact filename without `.mp4` and preserves case; new stems match `[A-Za-z0-9][A-Za-z0-9_.-]{0,63}`.
+3. Preflight ALL `references/*/analysis.yaml` (including old `VID-XXX`) for duplicate `video.filename`, plus pending/results and case-insensitive collisions. `edh001.mp4` is already `VID-004`, `edh014.mp4` is `VID-007`, and `edh010.mp4` is `VID-010`; do not create second archives for them. If metadata is missing/corrupt, fail closed.
+4. Create one immutable request JSON with `schema_version=1.0`, `status=approved`, stable `request_id`, `video.path`, Git blob `video.blob_sha` (40 lowercase hex), `keyframe_times_s`, full string `analysis_yaml` (2.1), and **complete** `shot_narratives` (three categories per shot, indices covering every YAML detail). No AI runs in Actions and no narratives are embedded in YAML.
+5. One GitHub Actions run is triggered per push adding a request, or by manual `workflow_dispatch` for one existing request path. The runner checks out **event SHA**, not moving main, and rejects multiple requests in one event, modified/deleted pending requests, or bad paths. It validates MP4+SHA, YAML, narratives and timestamps, creates FFmpeg JPGs, Pillow storyboard and Markdown.
+6. Each runner atomically commits **only** `references/<stem>/*` + `requests/results/<stem>.json`. It uses fetch, remote request blob comparison, existing-archive check, rebase, fast-forward push, up to five bounded retries; NEVER force-push or overwrite different/partial results. Remote files and request marker must validate before reporting Saved. Actions jobs for different videos may run concurrently.
+7. `requests/results/<stem>.json` holds last successful result for that video; it is **not** live status. Check the matching Actions run for Queued/Processing/Failed. Old `requests/save.json`/`requests/result.json` remain read-only archival files.
+
+## Recovery
+
+For network/FFmpeg/GitHub failures, **do not create a second pending file or change request_id**. Open GitHub → Actions → Homeku - Parallel Save v1.4 → Run workflow on main → enter `request_path` such as `requests/pending/edh011.json`. The runner rechecks the immutable request blob SHA against main and returns Already saved if a complete matching package already exists. Different request IDs, partial packages, corrupt legacy YAML, case collisions, or changed request payloads cause a hard failure rather than silent overwrites. If a request needs correction, cancel active runs, confirm no Saved package exists, use an explicitly authorized PR with SHA-aware edits, then dispatch from the new snapshot.
+
+## Release and rollback
+
+First run the historical 44 regression tests and new parallel tests on an isolated branch; confirm two independent local Git runner copies can rebase and publish without losing packages. Before production cutover ensure no legacy save run is active. After merge run production smoke for **3 previously unsaved videos** with overlapping Actions timestamps, then 5; verify package+result per video, original video identity and no altered legacy archives. Keep Issue #4 open until those acceptance tests are evidenced. Roll back the workflow through a PR if needed, without deleting pending/results/references; resume pending requests via dispatch once repaired. FFmpeg install caching remains outside this release.
+
+**Project Instructions:** the GitHub commit does not automatically update ChatGPT Project Instructions. Copy the replacement v1.4 instructions from README.
+
+---
+
+# Historical operating guide: v1.3 Sequential Save (NO LONGER CURRENT AFTER v1.4 MERGE)
+
 # Homeku v1.3 — Pengoperasian GitHub Actions (Sequential Save)
 
 Dokumen ini menjelaskan kontrak Homeku v1.3 yang dibahas pada [Issue #1](https://github.com/milyarderpro/homeku/issues/1) dan diajukan melalui [PR #2](https://github.com/milyarderpro/homeku/pull/2). Perilaku produksi yang berlaku selalu ditentukan oleh kode yang telah di-merge ke `main`; isi branch PR belum otomatis aktif di produksi.

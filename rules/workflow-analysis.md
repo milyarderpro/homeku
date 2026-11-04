@@ -1,107 +1,61 @@
-# Homeku — Workflow Analisis Video v1.3
+# Homeku — Workflow Analisis Video v1.4 (Filename-Based Parallel Save)
 
-**Mode:** Sequential Save (satu proses penyimpanan sampai selesai sebelum berikutnya). **Produksi:** branch `main` pada repository `milyarderpro/homeku`.
+**Sumber kebenaran:** `main` pada `milyarderpro/homeku`. **Alur:** UPLOAD → ANALYZE/REVIEW (read-only) → pesan `save now` → satu immutable per-video request → independent GitHub Actions → safe Git publication → VERIFY.
 
-**Alur:** **UPLOAD MP4 → ANALYZE → YAML + NARASI DI CHAT → REVIEW/REVISE → pesan `save now` → REQUEST → GITHUB ACTIONS → VERIFY**.
+## 1. Baca sebelum analisis
+Baca versi terbaru `rules/workflow-analysis.md`, `rules/analysis.md`, `templates/video-analysis.yaml`, `templates/analysis.md`, dan `templates/shot-narratives.json`. Analisis **visual saja**: exterior, interior, lanskap, warna/material/posisi objek, relasi spasial, pergerakan kamera, estimasi dan confidence. Tidak menganalisis audio, membuat ide konten, atau prompt generatif.
 
-## 1. Sumber kebenaran
+Pengguna menaruh MP4 **terlebih dahulu** pada `main/video/<filename>.mp4` (langsung di folder video), lalu mengunggah video yang sama ke chat. Baca path dan Git blob SHA dari `main`; bila byte upload chat tersedia, bandingkan Git blob SHA; jangan menganggap nama file sama sebagai bukti byte identik.
 
-Sebelum analisis, baca versi terbaru:
-- `rules/workflow-analysis.md` (dokumen ini): izin menulis, sumber MP4, request, Actions, dan verifikasi.
-- `rules/analysis.md`: isi, estimasi, label, standar visual, dan aturan asosiasi kawasan `common_regions`.
-- `templates/video-analysis.yaml`: struktur YAML, `schema_version: "2.1"`.
-- `templates/analysis.md`: **acuan struktur** laporan; Actions membuat Markdown deterministik dari YAML dan narasi yang sudah direview melalui `scripts/save_analysis_action.py`.
-- `templates/shot-narratives.json`: acuan **payload narasi** bahasa Indonesia di request, bukan file hasil dan bukan field YAML.
+## 2. Analyze / Review — GitHub READ ONLY
+- Analisis durasi **penuh** setiap shot, tidak hanya keyframe. Pilih tepat satu timestamp keyframe per shot dalam `[start_s, end_s)`.
+- Buat YAML Schema 2.1, English snake_case visual details, `architecture.common_regions` sebagai kawasan **gaya** (atau `[]`), bukan lokasi asli. Draft `video.id: PENDING` dan `shots[].keyframe: null` boleh.
+- Di **ChatGPT** buat `shot_narratives` untuk tiap `shot-XX` dengan tepat tiga kategori `architectural`, `furniture_and_props`, `environment`. Kalimat bahasa Indonesia natural hanya dari YAML, `covered_indices` 0-based harus mencakup semua item kategori tepat sekali; kategori YAML kosong => `{"text":null,"covered_indices":[]}`. Tinjau kesetaraan makna dua arah sebelum meminta persetujuan.
+- Tampilkan analisis, timeline, detail semua shot, contoh paragraf per kategori, storyboard preview (jika tersedia), kualitas dan ketidakpastian. Satu chat maksimal satu draft belum disimpan; revisi YAML berarti revisi narasi/indeks bersama-sama.
+- **Tidak boleh melakukan write ke GitHub** selama tahap analisis/review. Tidak ada permintaan save otomatis atau upload JPEG/MP4/Base64 melalui connector.
 
-Ruang lingkup hanya visual, tanpa analisis audio, ide konten, atau prompt generatif.
+## 3. Exact `save now` — persetujuan penyimpanan
+Hanya pesan pengguna yang, setelah trim dan case-insensitive, **persis** `save now` dan berdiri sendiri, berlaku untuk draft terbaru yang sudah ditampilkan/direview di **chat yang sama**. Penyebutan frasa dalam kutipan, pertanyaan, contoh, atau pesan dengan teks lain **bukan** izin. Replay untuk draft sama menggunakan request_id yang sama.
 
-## 2. Fase 1 — UPLOAD / ANALYZE / REVIEW (GitHub READ ONLY)
+**ID baru:** basename MP4 **tanpa** `.mp4`, mempertahankan kapitalisasi. `video/edh011.mp4` → `edh011` → `references/edh011/`; `video/dreamsHouse003.mp4` → `dreamsHouse003`. Stem baru cocok `[A-Za-z0-9][A-Za-z0-9_.-]{0,63}`, case-sensitive, ekstensi harus `.mp4` persis. ID `PENDING` dan `VID-XXX` disisihkan untuk draft/arsip legacy; tidak ada counter atau alokasi nomor VID baru. Tolak slash/backslash/spasi/traversal, dan case-insensitive collision terhadap nama yang sudah ada.
 
-1. Pengguna lebih dahulu mengunggah MP4 ke **`main/video/<nama-file>.mp4`**, langsung pada folder `video/`. Upload hanya ke chat atau branch pengujian **tidak** menyediakan MP4 bagi runner produksi.
-2. AI membaca repo untuk menemukan path dan Git blob SHA sumber. Cocokkan nama secara persis, termasuk kapitalisasi. Bila byte video upload chat tersedia, hitung Git blob SHA dan bandingkan dengan GitHub; kesamaan nama saja tidak cukup membuktikan identitas. Bila tidak bisa memverifikasi byte, ungkapkan keterbatasan dan minta konfirmasi pengguna sebelum memakai sumber tersebut.
-3. Analisis **seluruh durasi setiap shot** sesuai `rules/analysis.md`: arsitektur/finishing exterior, lanskap/lingkungan, interior/tata ruang, warna, material, furnitur, relasi spasial, kamera, ukuran visual, dan confidence. Pilih **satu timestamp keyframe per shot**, di dalam [start_s, end_s); jangan memakai waktu hardcoded dari video uji.
-4. Susun draft YAML 2.1 dengan `video.id: PENDING`; pada draft, `shots[].keyframe` boleh `null` karena path final diberikan Actions. Isi item `visible_details` dengan English `snake_case` spesifik, termasuk atribut dan posisi yang terlihat.
-4a. **ChatGPT membuat `shot_narratives` dalam chat**: untuk setiap shot dan tiga kategori detail, buat paragraf bahasa Indonesia natural *hanya* dari YAML yang sudah disusun. Lengkapi `covered_indices` 0-based untuk semua item atau `text: null`/`[]` jika kategori kosong. Lakukan review dua arah agar setiap objek, warna, jumlah, material, posisi, dan ketidakpastian tetap sama. **Tidak ada AI lain di runner.**
-4b. Tampilkan ringkasan, storyboard preview (jika tersedia), timeline, rincian setiap shot, **contoh/paragraf narasi per kategori**, kualitas dan ketidakpastian untuk review. Preview gambar boleh berbeda byte dari JPEG hasil FFmpeg runner; keduanya harus berasal dari shot yang sama.
-5. Perbaiki **YAML dan narasi** bersama-sama jika diminta. Bila YAML berubah, perbarui narasi dan indeks cakupannya. Satu chat memiliki paling banyak satu draft yang belum tersimpan. Jangan menimpa draft lain secara diam-diam.
-6. **Selama semua tahap ini dilarang melakukan write GitHub**: tidak membuat request, blob, file, commit, atau memicu workflow simpan. Akses GitHub hanya read-only. Instruksi eksplisit untuk memperbarui dokumentasi/kode bukan persetujuan menyimpan data analisis video.
+**Preflight WAJIB sebelum write:**
+1. MP4 ada di `main/video/<filename>.mp4` dan Git blob SHA (40 lowercase hex) benar. Filename pada YAML identik dengan basename MP4, jumlah/timeline shot/ketepatan keyframe sesuai.
+2. YAML 2.1 dan narasi Indonesia lengkap untuk **setiap shot dan tiga kategori**, `covered_indices` tepat, arti telah ditinjau. Runner tidak menulis narasi.
+3. Periksa semua `references/*/analysis.yaml`: jika `video.filename` sama (termasuk case-insensitive) dengan video baru, **Already saved** dan tautkan arsip legacy / baru. Contoh `edh010.mp4` sudah tersimpan sebagai `VID-010`. Jangan buat duplikat. Bila metadata existing rusak, **fail closed**.
+4. Periksa `requests/pending/<stem>.json` dan `requests/results/<stem>.json`; jika existing dan request sama, tampilkan status/replay. Jika berbeda, nyatakan **conflict**, **jangan overwrite**. Periksa tabrakan kapitalisasi pada video/request/result/folder.
+5. `request_id` 8–80 karakter dengan pola `[A-Za-z0-9][A-Za-z0-9_-]{7,79}`, unik untuk persetujuan ini dan stabil saat retry.
 
-Jika video sumber tidak ditemukan, jangan mengarang path; jelaskan cara upload. Jangan mengklaim identitas sumber sudah diverifikasi apabila baru cocok namanya.
+**Satu-satunya write normal ChatGPT:** GitHub connector **`create_file`** untuk file **baru** `main/requests/pending/<stem>.json`, berisi JSON UTF-8 sesuai schema request `1.0`, `status=approved`, `request_id`, `video.path`, `video.blob_sha`, `keyframe_times_s`, string `analysis_yaml` lengkap, dan `shot_narratives` lengkap. **Jangan `update_file` untuk request normal; jangan menyentuh `requests/save.json` legacy.**
 
-## 3. Fase 2 — Hanya pesan tersendiri `save now`
+Jika API error/timeout/409/422 atau respons ambiguous: baca ulang **file yang sama di main**. Jika sama payload+request_id → berhasil/replay; jika berbeda → conflict; jika file masih absen → retry dengan **ID, path dan payload yang sama**, maksimum 3 kali. Jangan memilih ID baru atau mengklaim Saved setelah create_file.
 
-Satu-satunya perintah save standar ialah pesan pengguna yang setelah trim spasi dan tanpa membedakan kapitalisasi sama persis dengan `save now`. Penyebutan frasa itu dalam contoh, kutipan, pertanyaan, atau pesan yang mengandung teks lain **bukan** izin. Perintah berlaku hanya untuk draft terbaru yang telah ditampilkan dan berstatus menunggu review dalam **chat yang sama**. Pesan berulang pada draft yang sudah saved tidak membuat ID/request baru.
+Setelah create_file berhasil laporkan **Queued/Processing**, bukan Saved. Chat lain boleh menerbitkan `save now` video **berbeda** tanpa menunggu.
 
-**Preflight:**
-- MP4 tersedia di `main/video/<nama>.mp4` dan file sumber serta Git blob SHA diketahui; cocokkan byte dengan video chat bila memungkinkan, jangan mengklaim sudah cocok tanpa bukti.
-- YAML lengkap schema 2.1, `video.filename` sama dengan basename MP4, shot_count benar, shot berurutan, durasi masuk akal, kamera/properti/catatan mengikuti rules analisis.
-- Draft **baru** mencantumkan `architecture.common_regions` sebagai daftar kawasan gaya yang valid (boleh `[]`); jangan menyimpulkan lokasi asli bangunan. Data lama tanpa field tersebut tetap kompatibel.
-- Untuk draft **baru v1.3**: `shot_narratives` wajib lengkap untuk **setiap shot dan tiga kategori**, dengan `covered_indices` unik tepat `0..n-1` menurut YAML, teks natural (atau `null` jika array sumber kosong), serta telah direview maknanya. Jangan meminta Actions menyusun narasi.
-- `keyframe_times_s` satu angka per shot, terletak di dalam [start_s, end_s) dan berasal dari review video tersebut.
-- Request terdahulu selesai atau sudah dipastikan tidak sedang berjalan. **Tidak ada penguncian otomatis** yang menjamin dua request tidak bertabrakan.
+## 4. GitHub Actions independen di main
+`.github/workflows/save-analysis.yml` dipicu oleh **push file baru ke `requests/pending/*.json`**; tersedia `workflow_dispatch` manual dengan input `request_path` untuk pemulihan. Tidak ada concurrency group global.
 
-AI memakai konektor GitHub **update_file** untuk memperbarui file teks `main/requests/save.json`, menggunakan blob SHA file saat ini. Jangan menulis dokumen/gambar/video lain melalui connector. Format request:
+- Snapshot run **dipatok ke Git SHA pemicu**. Pada push, ambil file `added` di `before..after`; tepat satu pending request harus baru dan tidak ada modifikasi/deletion. Jika batch >1 atau invalid, fail closed, tampilkan path dan jalankan `workflow_dispatch` satu per path. Jangan memilih latest request.
+- Pada `workflow_dispatch` gunakan satu path valid pada SHA checkout. Saat publish cek blob SHA pending di remote `main` masih sama; request yang diperbaiki lewat PR tidak boleh diproses dari snapshot lama.
+- Runner memvalidasi request, source Git blob, ID filename, narasi, duplicate legacy dan timestamp; mengekstrak JPEG FFmpeg, membuat storyboard Pillow, merender Markdown Python dari YAML + narasi chat, dan memvalidasi paket. AI tidak berjalan di Actions.
+- Paket `references/<stem>/` dan `requests/results/<stem>.json` dipublikasikan **bersamaan dalam satu commit**, hanya path video itu, tanpa force. Jika `main` bergerak, lakukan fetch/recheck/rebase/push fast-forward maksimal **5 kali** (backoff kecil). Pembuatan paket dan FFmpeg boleh berjalan paralel dengan video lain; hanya publikasi ref Git yang bersaing.
+- Jika hasil remote dengan request_id identik sudah **lengkap dan valid**, return `already_saved` tanpa commit; jika hasil berbeda/parsial, request SHA drift, atau konflik isi, **fail closed**. Runner verifikasi remote sebelum menyatakan saved.
+- `requests/results/<stem>.json` berisi `status=saved`, `request_id`, `video_id`, `video_path`, `source_blob_sha`, `shot_count`, `file_count` dan `run_id`. Ini hasil sukses bukan status live.
 
-```json
-{
-  "schema_version": "1.0",
-  "status": "approved",
-  "request_id": "contoh-video-20261102-001",
-  "video": {
-    "path": "video/contoh.mp4",
-    "blob_sha": "<SHA-GIT-BLOB-40-HEX-ASLI>"
-  },
-  "keyframe_times_s": [2.5, 7.3],
-  "analysis_yaml": "<YAML 2.1 LENGKAP DARI REVIEW, bukan placeholder>",
-  "shot_narratives": {
-    "shot-01": {
-      "architectural": {"text": "Jendela besar memiliki bingkai hitam.", "covered_indices": [0]},
-      "furniture_and_props": {"text": null, "covered_indices": []},
-      "environment": {"text": null, "covered_indices": []}
-    }
-  }
-}
-```
+**Recovery:** request pending **immutable secara normal** dan tetap ada setelah run gagal. Maintainer memakai manual `workflow_dispatch` pada **path yang sama**, tanpa create-file atau request_id baru. Bila request harus diperbaiki, **cancel run**, pastikan tidak ada output sukses, lakukan PR perbaikan berizin dan teraudit, lalu dispatch request baru dari SHA terbaru. Jangan mengubah request normal diam-diam.
 
-Ini **ilustrasi parsial**, bukan request siap kirim: contoh narasi hanya mencakup satu shot dengan asumsi YAML yang cocok; request produksi harus menyertakan *semua* shot dan kategori. Request lama **tanpa properti `shot_narratives`** tetap didukung renderer historis; jika properti hadir tetapi invalid, runner **gagal**, tidak fallback. `shot_narratives` hanya presentasi dan tidak ditambahkan ke `analysis.yaml`. `request_id` harus stabil (8–80 karakter, alfanumerik/dash/underscore, mulai alfanumerik) dan unik untuk satu persetujuan video. `blob_sha` adalah SHA Git blob file MP4 yang benar (40 hex), **bukan SHA-256**. `analysis_yaml` merupakan string berisi **seluruh YAML**, bukan hanya ringkasan dan bukan JSON object. ID di YAML boleh `PENDING`.
+## 5. Verifikasi dan status
+- **Queued / Processing:** request sudah ada, run masih pending/in_progress atau belum terverifikasi.
+- **Saved:** run yang sesuai sukses, `requests/results/<id>.json` berisi request_id sama, paket `references/<id>` lengkap di remote `main`, Markdown marker dan gambar valid, serta commit terbukti. Jangan hanya percaya status result yang tidak cocok.
+- **Already saved:** arsip legacy/filename-based untuk `video.filename` itu sudah ada, atau replay identik sudah diproses. Tautkan ID arsip sebenarnya.
+- **Not saved / Failed:** run gagal, source SHA tidak cocok, request korup, konflik git, atau remote tidak lengkap. Tampilkan error dan jalur `workflow_dispatch` untuk recovery, jangan membuat request baru.
 
-Pada repo yang sudah terinisialisasi ini, file `requests/save.json` **sudah ada**; gunakan `update_file`, bukan `create_file`. Bila hasil operasi ambigu, baca ulang request dan run sebelum retry menggunakan request_id **yang sama**. Konektor **tidak** mengirim byte MP4, JPG, ZIP atau Base64.
+## 6. Kompatibilitas dan batasan
+- Semua paket `references/VID-XXX/` lama dan video historis tetap utuh, tidak dimigrasi. Validator menerima ID legacy dan filename-based baru.
+- `requests/save.json`/`requests/result.json` legacy tetap read-only; tidak dipakai oleh jalur baru.
+- `analysis.yaml` tetap Schema 2.1 (tanpa `shot_narratives`); narasi Indonesia hanya disisipkan ke Markdown. Request baru wajib punya narasi lengkap. Legacy renderer tetap tersedia untuk membaca/tes arsip lama.
+- **Optimasi instalasi FFmpeg terpisah** dari v1.4; pengujian regresi tetap berjalan.
+- Perubahan rules/README **tidak otomatis mengubah Project Instructions ChatGPT**. Salin instruksi pembaruan dari README ke Project agar semua chat memahami v1.4.
+- Jika konektor tidak dapat melakukan `create_file` baru dengan aman, jangan mengubah `save.json` lama sebagai fallback.
 
-Setelah update request berhasil, laporkan **Processing/Queued**, bukan Saved.
-
-## 4. Fase 3 — GitHub Actions di main
-
-File `.github/workflows/save-analysis.yml` saat ini hanya terpicu oleh **push ke main yang mengubah `requests/save.json`**. Mengunggah MP4 saja tidak memicu save. Tidak ada perintah `workflow_dispatch` produksi.
-
-Runner:
-1. Checkout main dan persiapkan Python, PyYAML, Pillow, FFmpeg.
-2. Jalankan tes lokal yang termasuk dalam repo, lalu proses request jika `approved`.
-3. Cek apakah request_id sudah pernah disimpan (marker dalam `references/VID-*/analysis.md`); jika ya, jangan membuat video baru.
-4. Validasi path video langsung `video/<nama>.mp4`, SHA Git blob file yang dilacak, nama file YAML, jumlah dan urutan shot, serta timestamp frame.
-5. Validasi `shot_narratives` terhadap YAML jika properti hadir (jumlah shot, nama kategori, indeks lengkap/unik, null untuk kategori kosong, batas teks), sebelum membuat folder. Pilih ID `VID-XXX` terkecil, ekstrak JPEG, buat storyboard, finalisasi YAML dan bentuk Markdown melalui Python. Untuk request v1.3, Python **hanya menyisipkan narasi yang dibuat/review di chat** dan melakukan escaping HTML/Markdown; untuk request lama tanpa narasi, gunakan formatter lama.
-6. Validasi keseluruhan paket; baru kemudian lakukan **satu commit** yang menambahkan `references/VID-XXX/` dan memperbarui `requests/result.json`, push tanpa force.
-7. Periksa commit di remote branch serta paket yang sudah dibuat. Jika terjadi konflik push atau validasi gagal, run gagal; tidak ada retry otomatis/force push.
-
-**Tidak ada Save paralel**, sistem antrean khusus, penguncian ID, atau jalur Git Data API/Base64 dari ChatGPT. Pengguna harus menunggu sampai request ini selesai sebelum menerbitkan berikutnya. Jika sebuah run sudah gagal, lakukan pemeriksaan penyebab dan keadaan GitHub sebelum mengulang menggunakan ID request yang sama.
-
-## 5. Fase 4 — VERIFIKASI DAN STATUS
-
-- **Processing:** request sudah ditulis, run belum terbukti berhasil.
-- **Saved:** run terkait request sukses, `requests/result.json` memuat `status: saved` serta **request_id yang sama persis**, file lengkap di `references/VID-XXX/` dapat diverifikasi pada `main`, dan commit terlihat. Tampilkan VID, jumlah shot, link analysis.md/YAML, serta commit.
-- **Already saved:** request_id sudah memiliki paket lama; jangan membuat ulang.
-- **Not saved:** run gagal, MP4 hilang/berbeda, result tidak cocok, push gagal, atau file/commit tidak lengkap. Jelaskan penyebab yang terlihat dan jangan mengarang link hasil.
-
-**`requests/result.json` bukan status live.** Ia hanya ditulis saat **save baru berhasil**. Ketika run masih berjalan atau gagal, isinya bisa tetap menunjukkan request lain yang sudah sukses. Pastikan cocokkan request_id dan run. Jika tindakan pemantauan tidak dapat dilanjutkan pada giliran yang sama, jangan menjanjikan pemrosesan di latar belakang oleh ChatGPT; pengguna dapat meminta pengecekan status lagi.
-
-## 6. Batasan, dokumentasi dan hasil pengujian
-
-- MP4 harus disimpan manual di `main/video/`; AI tidak otomatis mengirim video upload chat ke repo.
-- Keyframe diekstrak dari frame MP4 oleh FFmpeg dan dikodekan JPEG, **bukan byte-identik** dengan gambar preview ChatGPT.
-- `templates/analysis.md` adalah acuan bentuk laporan, bukan template engine; tata letak laporan produksi ditentukan `markdown()` dalam script Actions. AI hanya ada di chat, **tidak perlu API key maupun panggilan API AI di Actions**.
-- File MP4 sumber tetap tersimpan setelah save. Riwayat Git akan bertambah; sistem belum mendukung pengambilan Git LFS khusus.
-- Edit dokumentasi di repo **tidak otomatis mengubah** Project Instructions ChatGPT.
-- Bukti end-to-end historis ada pada branch uji (run `41454322381`) dan replay (`41454495367`). Di produksi, **VID-004 telah tersimpan** melalui run [41636775788](https://github.com/milyarderpro/homeku/actions/runs/41636775788) sebelum perubahan v1.3. Ini **bukan** bukti jalur narasi v1.3 telah diuji di produksi.
-
-Panduan operasional: [docs/github-actions-save.md](../docs/github-actions-save.md).
-
-**Prinsip:** Analyze = Read Only. Exact `save now` = Write Authorized. Actions = Generate + Commit. Verify before Saved.
+**Prinsip:** Analyze = Read Only · exact `save now` = one new immutable per-video request · independent Actions = render + optimistic publish · Verify remote before Saved.

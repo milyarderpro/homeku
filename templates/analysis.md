@@ -1,16 +1,16 @@
 <!--
 HOMEKU: ACUAN STRUKTUR LAPORAN VISUAL, bukan template yang dieksekusi langsung.
-Workflow v1.3 membuat analysis.md melalui fungsi markdown() dalam
+Workflow v1.4 membuat analysis.md melalui fungsi markdown() dalam
 scripts/save_analysis_action.py. Jika ingin mengubah output otomatis,
 ubah kode generator DAN acuan ini secara konsisten.
 
-- Semua fakta berasal dari analysis.yaml schema 2.1 yang sama.
-- Untuk request v1.3, ChatGPT menyusun shot_narratives di chat, kemudian runner menyisipkan paragraf yang sudah direview ke Detail yang terlihat.
+- Semua fakta berasal dari analysis.yaml schema 2.1 yang sama; file requests/pending/<stem>.json immutable untuk satu video dan requests/results/<stem>.json mencatat hasil sukses.
+- Untuk request v1.4 filename-based, ChatGPT menyusun shot_narratives di chat, kemudian runner menyisipkan paragraf yang sudah direview ke Detail yang terlihat.
 - Jika request historis tidak memiliki shot_narratives, runner tetap memakai formatter lama.
 - Narasi tidak disimpan dalam YAML, tidak dibuat oleh AI di runner, dan tidak boleh menambah fakta baru.
 - Setiap kategori kosong menampilkan "Tidak ada detail yang tercatat.".
 - ChatGPT menampilkan draft saat review; tampilan final bisa berbeda.
-- Runner menambahkan marker request_id untuk deduplikasi.
+- Runner menambahkan marker request_id untuk idempotensi. video.id final adalah basename video.filename tanpa .mp4; arsip VID-XXX lama tidak dimigrasi.
 - Gambar JPEG dihasilkan FFmpeg dari MP4 video/, lalu ditampilkan inline.
 - storyboard.jpg dibuat oleh scripts/storyboard.py: 1–5 shot dalam satu baris (kolom sejumlah shot), lebih dari 5 shot dalam tiga kolom; judul, metadata, gambar portrait, serta label scene/waktu/kamera sesuai YAML.
 - Ulangi tabel timeline dan bagian per-shot sesuai shots[].
