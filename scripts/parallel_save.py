@@ -212,6 +212,8 @@ def render(root, request_path):
 def event_request_path(root, event, event_name, trigger_sha):
     """Require exactly one new request on push; dispatch chooses one existing path."""
     if event_name == "workflow_dispatch":
+        require(event.get("ref") == "refs/heads/main",
+                "Manual recovery is only permitted on main")
         inputs = event.get("inputs") or {}
         path = inputs.get("request_path")
         request_id_from_path(path)
@@ -244,6 +246,22 @@ def remote_files(root, ref, folder):
     names = [p for p in git("ls-tree", "-r", "--name-only", ref, "--",
                            f"references/{folder}", cwd=root).splitlines() if p.startswith(prefix)]
     return names
+
+
+def check_remote_case_collisions(root, ref, stem):
+    """Recheck casefold aliases against moving main before each publication."""
+    paths = git("ls-tree", "-r", "--name-only", ref, "--", "video", "requests",
+                "references", cwd=root).splitlines()
+    for path in paths:
+        name = None
+        if path.startswith("video/") and path.count("/") == 1 and path.endswith(".mp4"):
+            name = Path(path).stem
+        elif path.startswith(("requests/pending/", "requests/results/")) and path.endswith(".json"):
+            name = Path(path).stem
+        elif path.startswith("references/") and path.count("/") == 2:
+            name = path.split("/")[1]
+        if name is not None and name.casefold() == stem.casefold():
+            require(name == stem, f"Remote case collision: {name} vs {stem}")
 
 
 def remote_archive(root, ref, video_filename):
@@ -292,7 +310,7 @@ def verify_remote_package(root, ref, vid, req, result):
         for item in paths:
             target = folder / Path(item).name
             target.write_bytes(git_bytes("show", f"{ref}:{item}", cwd=root))
-        info = validate(folder, vid)
+        info = validate(folder, vid, req.get("shot_narratives"))
         require(info["shot_count"] == result["shot_count"]
                 and len(info["files"]) == result["file_count"],
                 "Remote result file/shot counts differ from archive")
@@ -333,6 +351,7 @@ def publish(root, request_path, trigger_sha, *, max_attempts=5):
     request_blob = git("rev-parse", f"{trigger_sha}:{request_path}", cwd=root)
     _, req, _, _, _ = load_request(root, request_path)
     git("fetch", "origin", "main", cwd=root)
+    check_remote_case_collisions(root, "origin/main", vid)
     require(remote_request_sha(root, "origin/main", request_path) == request_blob,
             "Pending request changed since trigger")
     found = inspect_remote(root, "origin/main", vid, req)
@@ -357,6 +376,7 @@ def publish(root, request_path, trigger_sha, *, max_attempts=5):
     git("commit", "-m", f"analysis: save {vid} from filename request", cwd=root)
     for attempt in range(1, max_attempts + 1):
         git("fetch", "origin", "main", cwd=root)
+        check_remote_case_collisions(root, "origin/main", vid)
         require(remote_request_sha(root, "origin/main", request_path) == request_blob,
                 "Remote request changed during processing")
         found = inspect_remote(root, "origin/main", vid, req)
