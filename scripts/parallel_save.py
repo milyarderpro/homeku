@@ -353,7 +353,7 @@ def check_remote_request_id_unique(root, ref, request_path, req):
     names = git("ls-tree", "-r", "--name-only", ref, "--",
                 "requests/pending", "requests/results", "references", cwd=root).splitlines()
     for path in names:
-        if path == request_path:
+        if path in (request_path, f"requests/results/{request_id_from_path(request_path)}.json"):
             continue
         if path.startswith(("requests/pending/", "requests/results/")) and path.endswith(".json"):
             try:
