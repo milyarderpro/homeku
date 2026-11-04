@@ -1,33 +1,36 @@
-name: Homeku - Save Video Analysis v1.2
+name: Homeku - Parallel Save v1.4
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
-      - requests/save.json
+      - 'requests/pending/*.json'
+  workflow_dispatch:
+    inputs:
+      request_path:
+        description: 'Existing requests/pending/<video-id>.json for same-request recovery'
+        required: true
+        type: string
 
 permissions:
   contents: write
 
-concurrency:
-  group: homeku-save-${{ github.ref }}
-  cancel-in-progress: false
-
 jobs:
   save:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     steps:
-      - name: Checkout requested branch
+      - name: Checkout immutable triggering commit
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.sha }}
           fetch-depth: 0
+          persist-credentials: true
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Install dependencies
         shell: bash
@@ -38,46 +41,20 @@ jobs:
             sudo apt-get install -y ffmpeg
           fi
 
-      - name: Test validation and action processing
+      - name: Test validation and parallel processing
         shell: bash
         run: python -m unittest discover -s tests -v
 
-      - name: Process approved request and validate full package
-        id: process
+      - name: Save exactly one approved filename-based request
         shell: bash
+        env:
+          HOMEKU_EVENT: ${{ github.event_path }}
+          HOMEKU_EVENT_NAME: ${{ github.event_name }}
+          HOMEKU_TRIGGER_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
-          git pull --ff-only origin "$GITHUB_REF_NAME"
-          python scripts/save_analysis_action.py \
-            --root . --branch "$GITHUB_REF_NAME" > "$RUNNER_TEMP/homeku-result.json"
-          cat "$RUNNER_TEMP/homeku-result.json"
-          STATUS=$(python -c 'import json,sys;print(json.load(open(sys.argv[1]))["status"])' "$RUNNER_TEMP/homeku-result.json")
-          echo "status=$STATUS" >> "$GITHUB_OUTPUT"
-          if [[ "$STATUS" == "saved" ]]; then
-            VIDEO_ID=$(python -c 'import json,sys;print(json.load(open(sys.argv[1]))["video_id"])' "$RUNNER_TEMP/homeku-result.json")
-            echo "video_id=$VIDEO_ID" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Commit complete analysis and result together
-        if: steps.process.outputs.status == 'saved'
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add "references/${{ steps.process.outputs.video_id }}" requests/result.json
-          git commit -m "analysis: save ${{ steps.process.outputs.video_id }} from approved request"
-          git push origin "HEAD:$GITHUB_REF_NAME"
-
-      - name: Verify saved files in the remote branch
-        if: steps.process.outputs.status == 'saved'
-        shell: bash
-        run: |
-          set -euo pipefail
-          git fetch origin "$GITHUB_REF_NAME"
-          test "$(git rev-parse HEAD)" = "$(git rev-parse FETCH_HEAD)"
-          ID="${{ steps.process.outputs.video_id }}"
-          test -f "references/$ID/analysis.yaml"
-          test -f "references/$ID/analysis.md"
-          test -f "references/$ID/storyboard.jpg"
-          python scripts/validate_analysis.py "references/$ID" --id "$ID"
+          python scripts/parallel_save.py \
+            --root . \
+            --event "$HOMEKU_EVENT" \
+            --event-name "$HOMEKU_EVENT_NAME" \
+            --trigger-sha "$HOMEKU_TRIGGER_SHA"
