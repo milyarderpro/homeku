@@ -17,7 +17,7 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from parallel_save import (
-    SaveConflict, check_case_collisions, event_request_path, filename_id,
+    SaveConflict, check_case_collisions, check_remote_case_collisions, event_request_path, filename_id,
     find_archive, inspect_remote, load_request, publish, remote_request_sha,
     render, request_id_from_path, request_path_for_video,
 )
@@ -158,7 +158,7 @@ class ParallelSaveTests(unittest.TestCase):
         event = {"ref": "refs/heads/main", "before": before, "after": after}
         self.assertEqual(event_request_path(self.root, event, "push", after), self.req_path)
         self.assertEqual(event_request_path(
-            self.root, {"inputs": {"request_path": self.req_path}},
+            self.root, {"ref": "refs/heads/main", "inputs": {"request_path": self.req_path}},
             "workflow_dispatch", after), self.req_path)
 
     def test_batch_push_fails_closed(self):
@@ -179,6 +179,32 @@ class ParallelSaveTests(unittest.TestCase):
         with self.assertRaisesRegex(SaveConflict, "exactly one"):
             event_request_path(self.root, {"ref": "refs/heads/main",
                                            "before": before, "after": after}, "push", after)
+
+    def test_dispatch_other_branch_fails_closed(self):
+        with self.assertRaisesRegex(SaveConflict, "only permitted on main"):
+            event_request_path(
+                self.root,
+                {"ref": "refs/heads/feature-unsafe",
+                 "inputs": {"request_path": self.req_path}},
+                "workflow_dispatch", "a" * 40)
+
+    def test_remote_case_collision_after_checkout_is_rejected(self):
+        sha = self.commit_requests()
+        self.add_remote()
+        other = self.root / "parallel-case-worktree"
+        subprocess.run(["git", "clone", "-q", "--branch", "main",
+                        str(self.root/"origin.git"), str(other)], check=True)
+        (other / "requests/pending/TEST.json").write_text(json.dumps(self.req))
+        git(other, "config", "user.name", "Test")
+        git(other, "config", "user.email", "test@example.invalid")
+        git(other, "add", "requests/pending/TEST.json")
+        git(other, "commit", "-qm", "racing case-colliding request")
+        git(other, "push", "-q", "origin", "HEAD:main")
+        git(self.root, "fetch", "origin", "main")
+        with self.assertRaisesRegex(SaveConflict, "Remote case collision"):
+            check_remote_case_collisions(self.root, "origin/main", "test")
+        with self.assertRaisesRegex(SaveConflict, "Remote case collision"):
+            publish(self.root, self.req_path, sha)
 
     def test_dispatch_bad_path_fails_closed(self):
         with self.assertRaises(SaveConflict):
