@@ -1,16 +1,16 @@
 # VIDEO ANALYSIS ONLY — no ideas, prompts, or generation instructions.
 # Duplicate the shots[] item for every shot. Use null for unknown information.
-# Draft chat: video.id=PENDING. GitHub Actions assigns final VID-001, VID-002, etc. on save.
-# Shot IDs: shot-01, shot-02, shot-03, etc. (maximum 99 per video; v1.3 analysis workflow).
+# Draft chat: video.id=PENDING. v1.4 Actions finalizes ID to exact MP4 filename stem (e.g. edh011.mp4 -> edh011); legacy VID-XXX packages remain valid.
+# Shot IDs: shot-01, shot-02, shot-03, etc. (maximum 99 per video; v1.4).
 # Image filenames: shot-01.jpg, shot-02.jpg, etc. (always two digits for shots 1-99).
 # Technical labels: English snake_case; descriptive notes may be Indonesian.
-# v1.3: ChatGPT reviews YAML + Indonesian shot_narratives in chat; scripts/save_analysis_action.py renders Markdown without AI. This YAML template has NO narrative fields.
+# v1.4: ChatGPT reviews YAML + Indonesian shot_narratives in chat; scripts/parallel_save.py renders Markdown deterministically using save_analysis_action.markdown(). NO AI in Actions and NO narrative fields in YAML.
 # Keep analysis.yaml as source of truth; final Markdown uses relative shot-NN.jpg image src. Runner fills final keyframe paths.
 # building_scale stores visual impressions and approximate area ranges (m²); do not imply measured dimensions.
 # common_regions is a broad stylistic association, never a verified home location or regional prevalence ranking.
 schema_version: "2.1"
 video:
-  id: PENDING # draft only; finalized to VID-XXX by GitHub Actions after save now
+  id: PENDING # draft only; finalized to filename stem from video.filename by Actions
   filename: video_XXXX.mp4 # must exactly match the basename of main/video/<filename>.mp4
   duration_s: null
   resolution: null # e.g. "720x1280"
@@ -73,7 +73,7 @@ shots:
       environment: []
     lighting: null
     transition_out: null
-    keyframe: null # draft can be null; runner generates references/VID-XXX/shot-01.jpg at save
+    keyframe: null # draft can be null; runner generates references/<video-stem>/shot-01.jpg at save
     confidence: { camera: null, visual_details: null }
     observation_note: null
 
