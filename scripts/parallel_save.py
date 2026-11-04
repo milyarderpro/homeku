@@ -347,6 +347,31 @@ def check_remote_source_sha(root, ref, req):
             "Video source Git blob SHA changed in remote main")
 
 
+def check_remote_request_id_unique(root, ref, request_path, req):
+    """Do not reuse a reviewed approval ID for a different video."""
+    rid = req["request_id"]
+    names = git("ls-tree", "-r", "--name-only", ref, "--",
+                "requests/pending", "requests/results", "references", cwd=root).splitlines()
+    for path in names:
+        if path == request_path:
+            continue
+        if path.startswith(("requests/pending/", "requests/results/")) and path.endswith(".json"):
+            try:
+                obj = json.loads(git_bytes("show", f"{ref}:{path}", cwd=root))
+            except (ValueError, UnicodeDecodeError):
+                # An unrelated invalid pending request must not block other videos.
+                continue
+            if isinstance(obj, dict) and obj.get("request_id") == rid:
+                raise SaveConflict(f"request_id reused by another video: {path}")
+        elif path.startswith("references/") and path.endswith("/analysis.md"):
+            # Legacy marker remains the permanent history of a saved request.
+            if path.split("/")[1] == request_id_from_path(request_path):
+                continue
+            md = git_bytes("show", f"{ref}:{path}", cwd=root)
+            if f"<!-- homeku_request_id: {rid} -->".encode() in md:
+                raise SaveConflict(f"request_id already saved for another video: {path}")
+
+
 def remote_request_sha(root, ref, path):
     try:
         return git("rev-parse", f"{ref}:{path}", cwd=root)
@@ -366,6 +391,7 @@ def publish(root, request_path, trigger_sha, *, max_attempts=5):
     check_remote_source_sha(root, "origin/main", req)
     require(remote_request_sha(root, "origin/main", request_path) == request_blob,
             "Pending request changed since trigger")
+    check_remote_request_id_unique(root, "origin/main", request_path, req)
     found = inspect_remote(root, "origin/main", vid, req)
     if found:
         return found
@@ -392,6 +418,7 @@ def publish(root, request_path, trigger_sha, *, max_attempts=5):
         check_remote_source_sha(root, "origin/main", req)
         require(remote_request_sha(root, "origin/main", request_path) == request_blob,
                 "Remote request changed during processing")
+        check_remote_request_id_unique(root, "origin/main", request_path, req)
         found = inspect_remote(root, "origin/main", vid, req)
         if found:
             return found
