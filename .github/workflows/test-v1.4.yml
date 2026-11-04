@@ -1,0 +1,43 @@
+name: Homeku v1.4 CI
+
+on:
+  push:
+    branches:
+      - feature/homeku-v1.4-filename-parallel-save
+  pull_request:
+    paths:
+      - '.github/workflows/save-analysis.yml'
+      - '.github/workflows/test-v1.4.yml'
+      - 'scripts/**'
+      - 'tests/**'
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Python dependencies and FFmpeg
+        run: |
+          python -m pip install -r scripts/requirements.txt
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg
+          fi
+      - name: Compile scripts
+        run: python -m compileall -q scripts tests
+      - name: Run complete regression and parallel suite
+        run: python -m unittest discover -s tests -v
+      - name: Verify no accidental changes to protected data
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --exit-code
