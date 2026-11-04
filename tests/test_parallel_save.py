@@ -226,6 +226,24 @@ class ParallelSaveTests(unittest.TestCase):
         self.assertEqual(second["status"], "already_saved")
         self.assertEqual(second["video_id"], "test")
 
+    def test_approval_request_id_reused_for_other_video_rejected(self):
+        sha = self.commit_requests()
+        self.add_remote()
+        another = self.root / "duplicate-approval-worktree"
+        subprocess.run(["git", "clone", "-q", "--branch", "main",
+                        str(self.root/"origin.git"), str(another)], check=True)
+        # This request is invalid for its own video but only its reused
+        # approval ID is relevant to the other independent request.
+        (another / "requests/pending/testb.json").write_text(
+            json.dumps(self.req), encoding="utf-8")
+        git(another, "config", "user.name", "Test")
+        git(another, "config", "user.email", "test@example.invalid")
+        git(another, "add", "requests/pending/testb.json")
+        git(another, "commit", "-qm", "reuse approval id")
+        git(another, "push", "-q", "origin", "HEAD:main")
+        with self.assertRaisesRegex(SaveConflict, "request_id reused"):
+            publish(self.root, self.req_path, sha)
+
     def test_changed_remote_mp4_blob_is_rejected(self):
         sha = self.commit_requests()
         self.add_remote()
