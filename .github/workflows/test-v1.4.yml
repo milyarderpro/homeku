@@ -31,11 +31,15 @@ jobs:
           python-version: '3.11'
       - name: Install Python dependencies and FFmpeg
         run: |
-          python -m pip install -r scripts/requirements.txt
-          if ! command -v ffmpeg >/dev/null; then
-            sudo apt-get update
-            sudo apt-get install -y ffmpeg
-          fi
+          set -euo pipefail
+          # Use the same pinned FFmpeg as the production save workflow.
+          python -m pip install -r scripts/requirements.txt "imageio-ffmpeg==0.6.0"
+          ffmpeg_exe="$(python -c 'import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())')"
+          test -x "$ffmpeg_exe"
+          mkdir -p "$RUNNER_TEMP/homeku-bin"
+          ln -s "$ffmpeg_exe" "$RUNNER_TEMP/homeku-bin/ffmpeg"
+          echo "$RUNNER_TEMP/homeku-bin" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/homeku-bin/ffmpeg" -hide_banner -version
       - name: Compile scripts
         run: python -m compileall -q scripts tests
       - name: Run complete regression and parallel suite
