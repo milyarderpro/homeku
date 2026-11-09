@@ -1,251 +1,303 @@
-# HOMEKU — Reference DNA Summary v1.0 (P1)
+# HOMEKU — Ringkasan DNA Referensi v1.1 (P1)
 
-> **Status:** production-facing observational knowledge, NOT a generative prompt and NOT an assertion of virality causation.  
-> **Tracking:** [Issue #7](https://github.com/milyarderpro/homeku/issues/7) · [P0 roadmap PR #8](https://github.com/milyarderpro/homeku/pull/8).  
-> **Snapshot:** `milyarderpro/homeku` at [commit `80072accc56f7824d9575f144ed4e88dcf51a8bc`](https://github.com/milyarderpro/homeku/tree/80072accc56f7824d9575f144ed4e88dcf51a8bc), audited 2026-11-09.  
-> **Source priority:** per-video `analysis.yaml` (Schema 2.1, visual observations) → `analysis.md` (human-readable render) → `storyboard.jpg` and `shot-NN.jpg` (visual cross-check). For fine detail, **open the selected source again**; this summary is a retrieval index, not a replacement for it.
+> **Status:** basis pengetahuan hasil observasi untuk produksi; **bukan** prompt siap pakai dan belum diuji menghasilkan video.  
+> **Tracking:** [Issue #7](https://github.com/milyarderpro/homeku/issues/7) · [PR P1 #9](https://github.com/milyarderpro/homeku/pull/9).  
+> **Snapshot sumber:** [`milyarderpro/homeku`, commit `80072accc56f7824d9575f144ed4e88dcf51a8bc`](https://github.com/milyarderpro/homeku/tree/80072accc56f7824d9575f144ed4e88dcf51a8bc), audit **9 November 2026**. Statistik tidak diperbarui otomatis saat `main` berubah.  
+> **Sumber berurutan:** `references/<ID>/analysis.yaml` (fakta visual) → `analysis.md` (uraian) → `storyboard.jpg` dan `shot-NN.jpg` (acuan gambar). Untuk produksi, **buka ulang paket lengkap referensi terpilih**; file ini adalah indeks, bukan pengganti analisis tiap shot.
 
-## 1. What the corpus can and cannot teach
+## 0. Cara menggunakan dokumen
 
-HOMEKU's DNA is not just house style. It is the **combination of architecture, exterior reveal, environment, interior composition, material/lighting continuity, camera choreography, shot order, edit rhythm, and on-screen visual progression**.
+**Tujuan:** AI mampu menghasilkan video rumah baru yang memiliki **DNA video referensi secara menyeluruh**, bukan hanya gaya arsitektur. Tujuh unsur wajib yang harus diperhatikan:
 
-These 58 packages were selected from videos reported by the owner as viral. Their metadata is observational, not an outcome-comparison dataset. **Do not claim that a roof, colour, 5-shot sequence, 6-second opening, or camera movement *caused* millions of views.** No verified per-video retention, audience demographics, audio, music, caption, thumbnail, platform delivery, or experiment/control results are in this corpus. All source `analysis_quality.human_verified` flags are `false` (57 `draft`; 1 `reviewed`); use visual confidence and uncertainty cautiously. Visual appearance does not prove real-world materials, exact floor area, season, or property location.
+1. **Hook eksterior:** komposisi frame pertama, ciri rumah yang ditonjolkan, cara kamera mengungkap rumah.
+2. **Arsitektur:** ukuran tampak, massa/atap, fasad, bukaan, material dan identitas desain.
+3. **Lingkungan:** taman, foreground, pepohonan, jalur masuk, cuaca yang terlihat, pemandangan dari jendela.
+4. **Interior:** hubungan ruang, posisi objek/furnitur, focal subject dan reveal dalam ruangan.
+5. **Sinematografi:** framing awal–akhir, sudut pandang, pergerakan, arah, kecepatan.
+6. **Pencahayaan dan mood:** cahaya alami/lampu, warna, kontras, kesatuan antarshot.
+7. **Narasi visual dan editing:** urutan shot, tempo, pembagian durasi, hard cut atau gerak kontinu, komposisi penutup.
 
-## 2. Audit coverage and measured baselines
+**Alur penggunaan:** baca ringkasan → pilih 1 referensi utama dan 1–2 referensi pendukung → buka YAML/laporan/storyboard referensi tersebut → catat bukti DNA per shot → buat ide orisinal → Design Lock → storyboard → gambar → dua prompt Omni Flash → QA.
 
-| Audit measure | Observed at snapshot | Interpretation |
+Pisahkan setiap keputusan menjadi:
+- **[FAKTA REFERENSI]**: observasi yang benar-benar tercatat dengan `reference_id`, `shot-XX` atau field YAML.
+- **[INTERPRETASI]**: kesimpulan kreatif yang masuk akal tetapi mungkin tidak pasti.
+- **[KREASI BARU]**: elemen yang sengaja diciptakan agar tidak menjiplak referensi.
+- **[ATURAN PRODUKSI]**: kebijakan untuk video HOMEKU baru, **bukan** fakta yang diklaim terjadi pada semua video sumber.
+
+**Istilah teknis:** *framing* = area gambar yang terlihat; *dolly-in/out* = pandangan mendekat/menjauh; *tracking* = bergeser; *pan* = mengarahkan pandangan ke kiri/kanan; *reveal* = objek baru mulai tampak; *hard cut* = pindah langsung antarshot tanpa perubahan bentuk/morphing; *focal subject* = objek perhatian utama. Istilah kamera adalah **interpretasi gerak pada layar**, bukan verifikasi alat kamera fisik.
+
+## 1. Audit seluruh dataset
+
+| Indikator | Hasil pada snapshot | Batas interpretasi |
 | --- | --- | --- |
-| Reference packages | **58** (10 historical `VID-XXX`; 48 filename-based) | All 58 contain `analysis.yaml`, `analysis.md`, and `storyboard.jpg` |
-| Shot evidence | **300** shot records and **300** per-shot JPEG files | Shot counts agree with package-level image counts; every package has a storyboard |
-| Detailed visual descriptors | **6,226** recorded items: 2,850 architectural; 2,504 furniture/props; 872 environment | Items can recur across shots; NOT 6,226 unique objects |
-| Video duration | **15.30–27.233s**; median **20.19s**; mean **20.57s** | Approx. 20 seconds is a useful **production target**, not an exact source invariant |
-| Shot-count distribution | **3 shots: 1**; **4: 6**; **5: 35**; **6: 14**; **7: 2** | 5 is the mode, not a compulsory number |
-| Overall pace labels | **slow: 29**, **moderate: 28**, **slow_to_moderate: 1** | Movement is typically deliberate within scenes, even where the sequence is moderate |
-| Opening scene | **58/58** first shots reference an exterior; **5** explicitly combine exterior with living-room entry | Do not count all of a mixed opening as exterior-only time |
-| First-shot length bins | **12** below 5s; **33** from 5s to under 6s; **13** at least 6s | These are first-shot spans, NOT measured outdoor-only visibility |
-| Pure exterior-coded first shot ≥6s | **8** clear examples: `VID-001`, `VID-002`, `VID-003`, `edh022`, `edh032`, `edh038`, `edh056`, `edh060` | The other five first-shot spans ≥6s include entry-to-interior (`edh016`, `edh026`, `edh031`, `edh035`, `edh036`) |
-| Editing pattern | Hard/straight cuts are very common; exceptions include continuous doorway travel and occasional soft/flash transition | **Default production:** clean hard cuts; never imply morphing between rooms |
+| Paket video | **58**: 10 `VID-XXX` lama + 48 `edh...` | Ke-58 memiliki `analysis.yaml`, `analysis.md` dan `storyboard.jpg` |
+| Shot dan keyframe | **300** shot; **300** file `shot-NN.jpg` | File diverifikasi **ada**, bukan seluruh isinya ditinjau manual satu per satu |
+| Item detail visual | **6.226**: 2.850 arsitektur, 2.504 furnitur/objek, 872 lingkungan | Total item yang dicatat, **bukan** jumlah objek unik |
+| Durasi sumber | **15,300–27,233 detik**; median **20,19 detik**, rata-rata **20,57 detik** | Video baru memakai target 20 detik atas keputusan produksi |
+| Jumlah shot/video | 3: **1**; 4: **6**; 5: **35**; 6: **14**; 7: **2** | Lima shot paling umum, tetapi tidak wajib |
+| Label ritme | `slow` **29**, `moderate` **28**, `slow_to_moderate` **1** | Kecepatan gerak kamera dalam shot bisa berbeda dari ritme edit keseluruhan |
+| Shot pembuka | **58 dari 58** dimulai dengan eksterior; **5** masuk dari eksterior→living dalam **satu shot** | Tidak semua durasi shot pembuka adalah waktu eksterior murni |
+| Durasi shot pembuka | **12** kurang dari 5 dtk; **33** dari 5 hingga kurang dari 6; **13** minimal 6 | Ini durasi **shot pertama**, bukan selalu durasi outdoor-only |
+| Shot pembuka berlabel eksterior ≥6 dtk | **8**: `VID-001`, `VID-002`, `VID-003`, `edh022`, `edh032`, `edh038`, `edh056`, `edh060` | Lima shot ≥6 dtk lainnya mencakup area living: `edh016`, `edh026`, `edh031`, `edh035`, `edh036` |
+| Transisi | Umumnya hard/straight cut; sebagian gerak melalui pintu kontinu; beberapa blur/dissolve | Hard cut adalah **pilihan default produksi**, bukan satu-satunya pola referensi |
 
-**Critical correction:** not every source opening is ≥5 seconds. Examples: [`edh019`](../references/edh019/analysis.yaml) 3.97s, [`edh015`](../references/edh015/analysis.yaml) 4.133s, [`VID-004`](../references/VID-004/analysis.yaml) 4.73s. The HOMEKU rule **exterior ≥6 full seconds in final production** is a **new deliberate creative constraint**, not a statistical finding or claim of proven retention benefit. Check true outdoor screen time from generated footage, not merely planned timestamps. Source shot timestamps may be estimated and some shot endpoints differ from the listed container duration by about 0.1–0.15s; use approximate tolerances during analysis, exact viewing during final QA.
+**Hasil review penting:** klaim bahwa setiap eksterior referensi minimal lima detik **tidak didukung data**. Contohnya [`edh019`](../references/edh019/analysis.yaml) 3,97 detik, [`edh015`](../references/edh015/analysis.yaml) 4,133 detik, [`VID-004`](../references/VID-004/analysis.yaml) 4,73 detik. **[ATURAN PRODUKSI]** keputusan HOMEKU tetap: **shot exterior minimal 6,00 detik yang benar-benar menampilkan bagian luar rumah**, di awal video 20 detik. Ini keputusan kreatif, **bukan bukti durasi 6 detik menyebabkan jutaan views**.
 
-## 3. Complete reusable DNA — seven layers
+**Kualitas sumber:** seluruh metadata `analysis_quality.human_verified` bernilai `false`; 57 status `draft`, 1 `reviewed`. Waktu cut bersifat estimasi dan beberapa ending visual berbeda sekitar 0,1–0,15 detik dari durasi kontainer. Material, luas bangunan, wilayah geografis, musim, dan jenis pergerakan kamera dapat memiliki ketidakpastian; jangan menyebutnya telah terverifikasi.
 
-Use all layers to build an original video; **do not stop after selecting an architecture style**. A selected source supports a technique, not a license to copy its house or exact frame.
+## 2. Tujuh lapisan DNA dan penerapan praktis
 
-### DNA-01 · Opening / visual hook
+### DNA-01 — Eksterior sebagai hook visual
 
-**Observed grammar:** reveal an identifiable, attractive dwelling **from frame one**, usually an establishing wide or three-quarter exterior shot; move deliberately toward the facade, doorway, porch or distinctive feature; let foreground landscaping and facade details create progressive discovery.
+**Pola sumber:** frame pertama biasanya langsung memperlihatkan **rumah yang dapat dikenali**, dari sudut depan/wide/tiga-perempat. Kamera bergerak perlahan mendekati pintu atau ke samping untuk membuka informasi fasad. Lanskap ikut membentuk *foreground, middle ground, background*.
 
-- **Wide/full house → tighter entry/facade:** [`edh058`](../references/edh058/analysis.yaml) approaches the terracotta-roof cottage and curved stone walkway; [`VID-001`](../references/VID-001/analysis.yaml) approaches a sage-sided storybook facade; [`edh059`](../references/edh059/analysis.yaml) closes toward the stone cottage's entry/balcony.
-- **Foreground parallax → reveal facade:** [`edh060`](../references/edh060/analysis.yaml) starts with tree trunks partly obscuring a trailer-based tiny house and shifts right; [`edh047`](../references/edh047/analysis.yaml) uses foreground trunks and an entry stair; [`edh042`](../references/edh042/analysis.yaml) has leafy canopy, lawn and pathway framing a white tropical facade.
-- **Hero feature as destination:** [`edh038`](../references/edh038/analysis.yaml) exterior stairs and rooftop terrace; [`edh020`](../references/edh020/analysis.yaml) pointed arch, stone facade and curved eave; [`edh052`](../references/edh052/analysis.yaml) recessed porch, terracotta-like roof, palms and flowering beds.
+- **Whole house → entry reveal:** [`edh058`](../references/edh058/analysis.yaml) shot-01, tampak lebar fasad cottage menjadi pintu lebih dekat, `dolly_in` + `slight_tracking_right`; [`VID-001`](../references/VID-001/analysis.yaml) cottage hijau sage dan porch; [`edh059`](../references/edh059/analysis.yaml) fasad batu dan pintu/balkon.
+- **Foreground bergerak melewati rumah:** [`edh060`](../references/edh060/analysis.yaml) shot-01, batang pohon menghalangi sebagian lalu bergeser; [`edh047`](../references/edh047/analysis.yaml) batang pohon dengan tangga masuk; [`edh042`](../references/edh042/analysis.yaml) kanopi daun dan lawn.
+- **Fitur unik sebagai akhir gerak:** [`edh038`](../references/edh038/analysis.yaml) tangga luar/teras atap; [`edh020`](../references/edh020/analysis.yaml) lengkung atap dan dinding batu; [`edh052`](../references/edh052/analysis.yaml) porch, jalan masuk, bunga dan palem.
 
-**Carry into production:** starting composition, hero feature, foreground/house/background layers, camera path, ending composition, visible architectural attributes, day/lighting, and exterior-only duration. Do not spend opening frames on blank sky, indistinct vegetation, or a long approach without revealing the house. **Target 6.0s+ exterior** for the new workflow.
+**Saat menulis storyboard:** tetapkan *frame 0*, hero feature, tiga lapisan lanskap, framing awal, jalur kamera dan kecepatannya, kapan detail fasad terungkap, framing akhir, serta titik cut ke living. **Jangan habiskan 6 detik hanya menampilkan daun/langit atau gerak kamera tanpa perubahan visual.** Target luar rumah **≥6 detik**, diukur dari video hasil generasi.
 
-### DNA-02 · Architecture / character / scale
+### DNA-02 — Arsitektur, gaya dan skala
 
-Record **one primary style**, distinctive massing/roofline, levels/vertical scale, texture/material **appearance**, facade, door/window geometry, porch/stairs/chimney, and visible colour contrast. Use `architecture.building_scale` as a rough visual proportion, not a measured plan. `architecture.common_regions` is a **stylistic association only**, never a verified building location.
+Ambil `architecture.primary_style`, `secondary_influences`, `building_scale`, `exterior_features` dan `shots[].visible_details.architectural`. Yang dijaga bukan hanya nama gaya, melainkan **massa rumah, bentuk atap, tingkat/lantai yang tampak, proporsi fasad, jendela/pintu, material tampak, railing, chimney/porch, dan hubungan dengan halaman**.
 
-Reference families worth retrieving (examples, not exhaustive labels):
-
-| Family | Source IDs | Reusable DNA |
+| Kelompok yang dapat dicari | Referensi representatif | Ciri yang dapat diadaptasi |
 | --- | --- | --- |
-| Storybook / rustic stone / alpine | [`edh020`](../references/edh020/analysis.yaml), [`edh025`](../references/edh025/analysis.yaml), [`edh059`](../references/edh059/analysis.yaml), [`edh057`](../references/edh057/analysis.yaml) | prominent gable/arch, stone appearance, wood detail, black gridded glazing, warm lamps against cool landscape |
-| Mediterranean / courtyard-capable | [`edh038`](../references/edh038/analysis.yaml), [`edh058`](../references/edh058/analysis.yaml), [`edh053`](../references/edh053/analysis.yaml), [`edh050`](../references/edh050/analysis.yaml) | cream stucco appearance, terracotta-like roof or stone, arches, wood entries, planted paths/terraces |
-| Tropical / contemporary | [`VID-005`](../references/VID-005/analysis.yaml), [`edh042`](../references/edh042/analysis.yaml), [`edh052`](../references/edh052/analysis.yaml), [`edh055`](../references/edh055/analysis.yaml) | light masses, broad openings, palms/trees, lawn/plant borders, wood contrast, bright/diffused daylight |
-| Modern farmhouse / cottage | [`edh017`](../references/edh017/analysis.yaml), [`edh041`](../references/edh041/analysis.yaml), [`edh060`](../references/edh060/analysis.yaml), [`VID-001`](../references/VID-001/analysis.yaml) | gables or compact masses, calm light palette, dark window hardware, warm wood, porches and practical lighting |
-| Compact / loft / open plan | [`edh033`](../references/edh033/analysis.yaml), [`edh060`](../references/edh060/analysis.yaml), [`edh022`](../references/edh022/analysis.yaml), [`edh057`](../references/edh057/analysis.yaml) | efficient combined living/kitchen, loft or terrace where supported, compact bathroom, clear vertical hierarchy |
+| Storybook / rustic stone / alpine | [`edh020`](../references/edh020/analysis.yaml), [`edh025`](../references/edh025/analysis.yaml), [`edh057`](../references/edh057/analysis.yaml), [`edh059`](../references/edh059/analysis.yaml) | gable/arch, dinding batu tampak alami, kusen gelap, kayu, suasana hangat kontras lanskap dingin |
+| Mediterranean / Spanish revival | [`edh038`](../references/edh038/analysis.yaml), [`edh058`](../references/edh058/analysis.yaml), [`edh050`](../references/edh050/analysis.yaml), [`edh053`](../references/edh053/analysis.yaml) | stucco/plester krem, genteng tampak terracotta, bukaan arch, pintu kayu, taman dan tangga teras |
+| Tropical / contemporary | [`VID-005`](../references/VID-005/analysis.yaml), [`edh042`](../references/edh042/analysis.yaml), [`edh052`](../references/edh052/analysis.yaml), [`edh055`](../references/edh055/analysis.yaml) | bentuk terang, jendela luas, kayu, tanaman/palem, daylight |
+| Modern farmhouse / cottage | [`edh017`](../references/edh017/analysis.yaml), [`edh041`](../references/edh041/analysis.yaml), [`edh060`](../references/edh060/analysis.yaml), [`VID-001`](../references/VID-001/analysis.yaml) | massa kompak/atap, palet tenang, kusen gelap, porch, lampu hangat |
+| Compact, open plan, loft | [`edh033`](../references/edh033/analysis.yaml), [`edh060`](../references/edh060/analysis.yaml), [`edh022`](../references/edh022/analysis.yaml), [`edh057`](../references/edh057/analysis.yaml) | ruang gabungan, efisiensi ruang, loft pada contoh tertentu, skala visual kecil |
 
-**Conflict rule:** a support reference can contribute a camera pattern, mood or landscape without importing its whole roof/facade/room geometry. The **primary architecture source + approved Design Lock override incidental support details**. New videos must retain a recognisable HOMEKU visual language while changing the actual layout/massing, combinations, details or landscape to make an original concept.
+**Aturan konflik:** satu referensi **utama** menentukan identitas arsitektur; dua pendukung hanya menyumbang unsur yang disebut eksplisit. Jangan mengambil atap/level rumah alpine sekaligus tropical bungalow tanpa alasan desain. `common_regions` adalah **wilayah asosiasi gaya**, **bukan** lokasi nyata bangunan. Semua geometri final ditentukan dalam **Design Lock rumah baru**.
 
-### DNA-03 · Environment / spatial context
+### DNA-03 — Environment, lanskap, pemandangan jendela
 
-Environment is a co-star, **not generic background filler**. Specify foreground, both house sides, behind the roofline, entry path, beds, trees, fence, distant view, and views **through windows** where observed.
+Catat jalan/tangga masuk, tanaman berbunga, lawn, pohon tinggi, kanopi foreground, pagar, hutan/pegunungan jauh, bayangan, cuaca yang **terlihat**, dan **pemandangan dari dalam jendela**.
 
-- **Snow + stone + winter woodland:** [`edh020`](../references/edh020/analysis.yaml), [`edh025`](../references/edh025/analysis.yaml), [`edh059`](../references/edh059/analysis.yaml). Snow/trees can recur through the interior windows to connect scenes.
-- **Flowering paths and courtyard/garden warmth:** [`edh058`](../references/edh058/analysis.yaml), [`edh052`](../references/edh052/analysis.yaml), [`edh038`](../references/edh038/analysis.yaml). Paths direct attention to the entry; planted borders create visual layers.
-- **Tropical foliage and mature-tree framing:** [`edh042`](../references/edh042/analysis.yaml), [`edh047`](../references/edh047/analysis.yaml), [`edh055`](../references/edh055/analysis.yaml).
-- **Woodland/forest framing:** [`edh056`](../references/edh056/analysis.yaml), [`edh060`](../references/edh060/analysis.yaml).
+- **Batu, musim dingin bersalju:** [`edh020`](../references/edh020/analysis.yaml), [`edh025`](../references/edh025/analysis.yaml), [`edh059`](../references/edh059/analysis.yaml).
+- **Jalur taman dan bunga:** [`edh058`](../references/edh058/analysis.yaml), [`edh052`](../references/edh052/analysis.yaml), [`edh038`](../references/edh038/analysis.yaml).
+- **Pohon tropis dan foreground:** [`edh042`](../references/edh042/analysis.yaml), [`edh047`](../references/edh047/analysis.yaml), [`edh055`](../references/edh055/analysis.yaml).
+- **Hutan dan pohon tinggi:** [`edh056`](../references/edh056/analysis.yaml), [`edh060`](../references/edh060/analysis.yaml).
 
-**Production consistency:** do not show snow in one exterior and lush tropical palm views from the same house's windows unless the concept explicitly accounts for it. Treat house position, path entry, foreground tree placement, climate/season appearance and exterior light direction as a single scene-world lock.
+**Aturan kontinuitas:** rumah, arah jalur, jenis lanskap dan pohon besar, cuaca/season appearance, serta pemandangan dari jendela interior harus menjadi **dunia visual yang sama**. Jangan membuat halaman bersalju pada exterior dan taman tropis pada bedroom tanpa konsep yang masuk akal.
 
-### DNA-04 · Interior / object relationships / micro-reveals
+### DNA-04 — Interior, furnitur, hubungan ruang dan objek yang diungkap
 
-Room DNA consists of **architecture + objects + positions + camera discovery + views beyond windows**; naming a room is insufficient.
+Kuncinya **bukan** sekadar “living room” atau “kitchen”, melainkan posisi dan hubungan benda: sofa dengan TV/fireplace, bed dengan jendela, island dengan sink/range, bathtub dengan vanity. Tetapkan apa terlihat di frame awal dan apa menjadi terlihat setelah kamera bergerak.
 
-| Scene | Recurring visual role / planned reveal | Source evidence |
+| Adegan | Focal subject dan perubahan tampilan | Contoh sumber |
 | --- | --- | --- |
-| Living | Establish lifestyle: sofa/rug/table facing TV/fireplace, windows and/or stairs; either wide→detail or detail→wide | [`edh058`](../references/edh058/analysis.yaml) TV arch → window/seating reveal; [`edh020`](../references/edh020/analysis.yaml) stone fireplace and plaid accents; [`edh047`](../references/edh047/analysis.yaml) double-height mezzanine and stair |
-| Kitchen | Show material palette, cabinetry, hood/sink, island/peninsula, window, utensils; move along functional composition | [`edh058`](../references/edh058/analysis.yaml) peninsula→range; [`edh052`](../references/edh052/analysis.yaml) compact cream shaker kitchen; [`edh042`](../references/edh042/analysis.yaml) U-shaped kitchen and sink-window |
-| Bedroom | Bed/headboard as focal anchor; reveal window/ceiling/wardrobe/lamps; textiles echo palette | [`edh058`](../references/edh058/analysis.yaml) bed close→beams/side tables; [`edh025`](../references/edh025/analysis.yaml) stone/arch/winter view; [`edh047`](../references/edh047/analysis.yaml) vaulted ceiling and dark framed glazing |
-| Bathroom | Vanity/tub/shower/toilet relation and fixtures, mirror/tiles/window; close→wide or wide→hero detail | [`edh060`](../references/edh060/analysis.yaml) vanity→tub pan; [`edh058`](../references/edh058/analysis.yaml) tub→vanity pan; [`edh025`](../references/edh025/analysis.yaml) round window and tub |
-| Optional specialty | Laundry/closet/loft/return-to-exterior only when the original concept makes sense | [`edh044`](../references/edh044/analysis.yaml) laundry; [`edh055`](../references/edh055/analysis.yaml) closet; [`edh033`](../references/edh033/analysis.yaml) loft and bath/laundry; [`edh051`](../references/edh051/analysis.yaml) exterior return |
+| Living | Sofa/kursi–coffee table–TV/fireplace–jendela/tangga; detail→wide atau wide→detail | [`edh058`](../references/edh058/analysis.yaml) arch TV dan seating/window; [`edh020`](../references/edh020/analysis.yaml) fireplace batu; [`edh047`](../references/edh047/analysis.yaml) living tinggi dan tangga |
+| Kitchen | Cabinetry, island/peninsula, hood/range, sink, jendela, backsplash | [`edh058`](../references/edh058/analysis.yaml) peninsula→range; [`edh052`](../references/edh052/analysis.yaml) kitchen krem; [`edh042`](../references/edh042/analysis.yaml) U-shaped kitchen |
+| Bedroom | Bed/headboard sebagai jangkar, reveal jendela/ceiling/wardrobe/textile | [`edh058`](../references/edh058/analysis.yaml) dolly-out dari bed ke ruang lebih lebar; [`edh025`](../references/edh025/analysis.yaml) arch batu; [`edh047`](../references/edh047/analysis.yaml) vaulted ceiling |
+| Bathroom | Vanity, sink, cermin, shower, bathtub, toilet; perubahan detail→wide atau sebaliknya | [`edh060`](../references/edh060/analysis.yaml) vanity→bathtub; [`edh058`](../references/edh058/analysis.yaml) tub→vanity; [`edh025`](../references/edh025/analysis.yaml) jendela bundar |
+| Tambahan | Laundry, walk-in closet, loft, exterior closing bila masuk akal dan cukup waktu | [`edh044`](../references/edh044/analysis.yaml), [`edh055`](../references/edh055/analysis.yaml), [`edh033`](../references/edh033/analysis.yaml), [`edh051`](../references/edh051/analysis.yaml) |
 
-**Master-image implication:** each room needs a specific **hero composition**, not a generic wide interior prompt. Anchor fixed window shape, wall/floor materials, hardware, external view, furniture layout, and object positions. Distinguish verified appearance from material/scale guesses. Do not infer a physically valid floor plan from independent shots; production must invent/check a plausible layout.
+**Untuk gambar master:** satu gambar per shot harus siap sebagai frame pembuka video; kunci bentuk jendela, material lantai, posisi furnitur, benda utama, arah cahaya, dan pemandangan luar. Referensi **tidak menyediakan denah terukur**; ketika membuat rumah baru, periksa sendiri hubungan ruang yang masuk akal.
 
-### DNA-05 · Cinematic grammar (camera, framing, speed, subject)
+### DNA-05 — Kamera: framing, sudut, arah, kecepatan, reveal
 
-- **Main motion:** subtle forward dolly/push and side tracking recur in exterior and some hero close-ups; gentle pan/slide or dolly-out often reveals more of a room. Recorded vocabulary includes `dolly_in/out`, `tracking_left/right`, `pan_left/right`, occasional `tilt_up/down`, with modifiers `slow`, `slight`, `subtle`, `gentle`. Retrieve **actual `shots[].camera.movements` and `speed`** of the chosen sources; do not flatten every shot into the same dolly-in.
-- **Framing trajectory A — wide→medium/close:** [`edh058`](../references/edh058/analysis.yaml) exterior and kitchen, [`edh047`](../references/edh047/analysis.yaml) facade and living; works for approaching the architectural focal subject.
-- **Framing trajectory B — detail→wide:** [`edh058`](../references/edh058/analysis.yaml) bedroom and bathroom; [`edh044`](../references/edh044/analysis.yaml) living starts on fireplace then shows seating; works for controlled spatial reveal.
-- **Framing trajectory C — lateral scan:** [`edh052`](../references/edh052/analysis.yaml) living/kitchen pans; [`edh038`](../references/edh038/analysis.yaml) narrow-room reveals. Avoid too-fast motion, spatial teleports, extreme lens warping and contradictory camera directions.
-- **Camera is a narrative tool:** specify **where it starts, what is initially visible, which feature it travels toward/reveals, where it ends, and which objects become newly visible**. A list of motion names alone is not a complete video prompt.
-- **Camera confidence matters:** source movement may reflect digital zoom or synthetic movement. Treat it as intended screen motion, not proof of physical rig.
+Ambil `shots[].framing.start`, `framing.end`, `framing.view_angle`, `camera.movements`, `camera.speed`, `focal_subject`, `observation_note` dan `confidence.camera`.
 
-### DNA-06 · Lighting, palette and emotional continuity
+- **Wide→medium/close:** [`edh058`](../references/edh058/analysis.yaml) exterior shot-01 dan kitchen shot-03; [`edh047`](../references/edh047/analysis.yaml) fasad/living.
+- **Detail→wide:** [`edh058`](../references/edh058/analysis.yaml) bedroom dan bathroom; [`edh044`](../references/edh044/analysis.yaml) living dimulai dari fireplace lalu menampakkan seating.
+- **Lateral pan/tracking:** [`edh052`](../references/edh052/analysis.yaml) living/kitchen; [`edh038`](../references/edh038/analysis.yaml) ruangan sempit; [`edh049`](../references/edh049/analysis.yaml) opening sedikit orbit.
+- **Entry kontinu (bukan cut):** [`edh016`](../references/edh016/analysis.yaml), [`edh026`](../references/edh026/analysis.yaml), [`edh031`](../references/edh031/analysis.yaml), [`edh035`](../references/edh035/analysis.yaml), [`edh036`](../references/edh036/analysis.yaml). **Bukan** contoh yang dapat digunakan menghitung outdoor 6 detik.
 
-Recurring palette families include warm ivory/cream/off-white, light/natural/honey wood, stone-like beige/gray, dark/charcoal/black frames or fixtures, greenery, and selective terracotta/sage/rust accents. These are **combinations and material contrasts**, not a compulsory single beige house. Distinctive exceptions (sage green storybook siding, pink/blush cottage, winter snow, bold tiled roof) may anchor an idea.
+**Enam elemen wajib pada satu shot:** (1) framing awal, (2) focal subject awal, (3) arah dan kecepatan kamera, (4) urutan objek/area yang muncul, (5) framing akhir, (6) batasan agar bangunan/furnitur tidak berubah. “Cinematic, slow motion” saja **tidak cukup**. Tidak semua gerak yang tampak pasti hasil kamera fisik; bisa berupa zoom/gerakan sintetis.
 
-- **Outside:** soft overcast/diffuse or bright daylight, readable facade, often glowing wall lanterns under porches; e.g. [`edh058`](../references/edh058/analysis.yaml) clear sun, [`edh020`](../references/edh020/analysis.yaml) cool winter light with warm entry lamps, [`edh056`](../references/edh056/analysis.yaml) forest ambient with glowing windows.
-- **Inside:** daylight through visible windows plus warm practical/recessed/pendant/sconce lighting; e.g. [`edh058`](../references/edh058/analysis.yaml), [`edh052`](../references/edh052/analysis.yaml), [`edh047`](../references/edh047/analysis.yaml).
-- **Mood:** visual signals of cozy, calm, inviting, warm, orderly and/or bright; the emotional effect is an interpretation, not a measured audience reaction.
+### DNA-06 — Lighting, warna dan mood
 
-**Lock continuity:** choose daylight/weather/season, camera exposure, white balance, wood tone, accent colours, window-frame finish, visible fixture family, and exterior garden view. All generated images and clips must be checked against those anchors.
+Contoh palet sering melibatkan ivory/cream/off-white, natural/honey wood, beige/stone, black/charcoal pada kusen/fixture, foliage green dan aksen terracotta/sage/rust. Namun setiap konsep boleh memilih **palet konsisten yang berbeda**; DNA bukan berarti semua rumah berwarna sama.
 
-### DNA-07 · Structure, edit rhythm and scene payoff
+- **Luar:** daylight lembut atau terang, fasad mudah dibaca, lampu dinding/teras hangat. Contoh [`edh058`](../references/edh058/analysis.yaml) daylight cerah; [`edh020`](../references/edh020/analysis.yaml) winter daylight dingin + lampu hangat; [`edh056`](../references/edh056/analysis.yaml) suasana hutan dan cahaya rumah.
+- **Dalam:** jendela sebagai sumber cahaya alami, dilengkapi lampu warm dari pendant/sconce/recessed light atau fireplace; contoh [`edh058`](../references/edh058/analysis.yaml), [`edh052`](../references/edh052/analysis.yaml), [`edh047`](../references/edh047/analysis.yaml).
+- **Mood:** cozy, inviting, calm, warm dan sebagainya adalah **interpretasi visual**, bukan hasil pengukuran perasaan/retensi penonton.
 
-The **modal** path is Exterior → Living → Kitchen → Bedroom → Bathroom, but the corpus has meaningful alternatives:
+Kunci warna kusen, kayu, dinding, arah cahaya, cuaca, lampu, kontras dan white balance **dari Clip A ke Clip B**.
 
-- **Compact standard tour:** [`VID-001`](../references/VID-001/analysis.yaml), [`edh011`](../references/edh011/analysis.yaml), [`edh052`](../references/edh052/analysis.yaml), [`edh059`](../references/edh059/analysis.yaml).
-- **Expanded tour:** laundry/closet between core rooms; [`edh044`](../references/edh044/analysis.yaml), [`edh055`](../references/edh055/analysis.yaml), [`edh058`](../references/edh058/analysis.yaml).
-- **Open-plan / loft condensation:** [`edh033`](../references/edh033/analysis.yaml), [`edh057`](../references/edh057/analysis.yaml), [`edh060`](../references/edh060/analysis.yaml).
-- **Exterior bookend:** [`edh047`](../references/edh047/analysis.yaml), [`edh051`](../references/edh051/analysis.yaml), [`edh056`](../references/edh056/analysis.yaml).
-- **Continuous doorway entry exception:** [`edh016`](../references/edh016/analysis.yaml), [`edh026`](../references/edh026/analysis.yaml), [`edh031`](../references/edh031/analysis.yaml), [`edh035`](../references/edh035/analysis.yaml), [`edh036`](../references/edh036/analysis.yaml). Those first-shot durations **include interior**, and cannot validate 6s of exterior alone.
-- **Other transition exception:** early [`VID-001`](../references/VID-001/analysis.yaml) soft blur and [`VID-003`](../references/VID-003/analysis.yaml) warm flash/dissolve; these are not the new hard-cut default.
+### DNA-07 — Struktur narasi dan edit
 
-**Micro-narrative:** establish house → confirm livability in living area → reveal kitchen functionality → bedroom comfort → bathroom quality/detail. In a 20s production each shot must deliver a distinct visual payload; redundant views waste the remaining 14s after the 6s exterior hook.
+Pola dominan: **Exterior → Living → Kitchen → Bedroom → Bathroom**, dengan variasi:
+- **Tur standar:** [`VID-001`](../references/VID-001/analysis.yaml), [`edh011`](../references/edh011/analysis.yaml), [`edh052`](../references/edh052/analysis.yaml), [`edh059`](../references/edh059/analysis.yaml).
+- **Laundry/closet tambahan:** [`edh044`](../references/edh044/analysis.yaml), [`edh055`](../references/edh055/analysis.yaml), [`edh058`](../references/edh058/analysis.yaml).
+- **Open plan/loft:** [`edh033`](../references/edh033/analysis.yaml), [`edh057`](../references/edh057/analysis.yaml), [`edh060`](../references/edh060/analysis.yaml).
+- **Kembali ke eksterior di akhir:** [`edh047`](../references/edh047/analysis.yaml), [`edh051`](../references/edh051/analysis.yaml), [`edh056`](../references/edh056/analysis.yaml).
+- **Transisi pengecualian:** [`VID-001`](../references/VID-001/analysis.yaml) memakai blur dan [`VID-003`](../references/VID-003/analysis.yaml) warm flash/dissolve. Untuk produksi awal Omni Flash, gunakan **hard cut**.
 
-## 4. DNA retrieval rules for idea generation (P2 handoff)
+Secara visual, tiap adegan punya fungsi: memperkenalkan rumah → gaya hidup di living → fungsi kitchen → kenyamanan bedroom → detail bathroom. Hindari dua shot berurutan yang tidak memperlihatkan informasi baru. **Ritme edit (jumlah/durasi shot) dan ritme kamera (kecepatan dalam satu shot) harus ditetapkan terpisah.**
 
-This P1 summary is small enough to read every ideation session. **Then open 2–3 full references** selected for the concept rather than relying on this summary alone.
+## 3. Aturan pemilihan 2–3 referensi dan orisinalitas
 
-1. **Primary (1 ID):** supplies the dominant house identity: style, massing, facade, consistent interior materials/window language. Example: `edh058` Mediterranean cottage.
-2. **Supporting A (1 ID):** one compatible contribution such as tropical context (`edh052`), winter wooded context (`edh025`), or a compact planning strategy (`edh060`). Explicitly state what was *not* imported.
-3. **Supporting B (optional, 1 ID):** provides camera/timing/room-reveal technique or editorial structure, not a contradictory second building.
-4. **Check compatibility:** roof vs style, floor count, window shape, facade finish, climate/window views, daylight direction, scale and room layout. If incompatible, keep the primary Design Lock and reject the imported feature.
-5. **Force originality:** change distinctive massing/layout, orientation/composition, garden path or feature combinations; never imitate a complete reference frame, sequence or specific house one-to-one.
-6. **Record provenance per decision:** `DNA feature → source ID / shot ID / observed fields → intended new use → originality change → uncertainty`.
+1. **Utama (1 ID):** menentukan gaya rumah, roofline/massing, level, fasad, bukaan, kesatuan material dan skala.
+2. **Pendukung A (1 ID):** menambahkan elemen **tertentu** seperti taman, pencahayaan atau mood yang cocok.
+3. **Pendukung B (opsional, 1 ID):** memberi pola kamera, framing, reveal, atau susunan shot. **Jangan** otomatis mengimpor fasad/atapnya.
+4. **Buka sumber lengkap:** jangan membuat klaim spesifik hanya dari baris katalog. Baca `analysis.yaml`, `analysis.md`, dan storyboard untuk ID pilihan.
+5. **Periksa konflik:** atap vs gaya, jumlah lantai, jendela, material, iklim, arah sunlight, pemandangan melalui jendela, hubungan ruang. Jika bentrok, pertahankan **Design Lock rumah baru yang telah disetujui**; revisi elemen pendukung.
+6. **Hasil baru harus orisinal:** ubah susunan bentuk, proporsi, layout, orientasi, taman/objek dan komposisi. Pertahankan **prinsip visual dan sinematik**, bukan menyalin satu fasad atau seluruh video secara identik.
+7. **Catat jejak:** `fitur DNA → ID referensi + shot/field → bukti yang terlihat → penggunaan baru → perbedaan kreatif → ketidakpastian`.
 
-**Example combination, marked creative hypothesis:** primary `edh058` (warm Mediterranean identity + facade approach); support `edh052` (tropical planted context); optional `edh044` (fireplace detail→wide reveal). The resulting home can be new, but references do not prove this exact mix will outperform alternatives.
+**Contoh (hipotesis kreasi, bukan bukti hasil):** utama `edh058` untuk Mediterranean cottage/eksterior; pendukung `edh052` untuk lanskap tropis; opsional `edh060` untuk penutup bathroom dengan pan dari vanity ke tub. Ketiganya memberi aspek berbeda, tetapi bentuk rumah **baru** harus masuk akal.
 
-### Required per-idea DNA Trace (minimum fields)
+### Jejak DNA yang wajib dihasilkan pada setiap ide di P2
 
-| Field | Must include |
+| Bagian | Informasi minimum |
 | --- | --- |
-| `references` | 1 primary + 1–2 supporting IDs and their assigned roles |
-| `architectural_dna` | building form/scale/roof, facade, openings, material appearance, colour |
-| `environmental_dna` | garden/path/trees/view/weather appearance, foreground/background relations |
-| `interior_dna` | room palette + spatial/furniture anchors + view through windows |
-| `cinematic_dna` | per-shot start/end framing, camera path/speed, focal subject, reveal direction |
-| `editorial_dna` | scene order, time allocations, local cuts, end-frame payoff |
-| `lighting_mood_dna` | indoor/outdoor light sources, colour temperature, emotional tone |
-| `source_trace` | source video ID, shot ID or top-level field for each chosen feature |
-| `new_design_decisions` | what intentionally differs from the cited references |
-| `unknowns_and_conflicts` | unproven materials/locations/spatial relationships or incompatible traits |
+| `references` | ID utama dan 1–2 ID pendukung, peran spesifik, shot sumber |
+| `hook` | Frame pertama, fitur eksterior, posisi awal kamera, reveal, posisi akhir dan ≥6s |
+| `architecture` | Gaya, massa, lantai, atap, fasad, bukaan, material tampak |
+| `environment` | Foreground, path/taman/pohon, cuaca, view dari jendela |
+| `interior` | Posisi objek, material, hubungan furnitur, focal subject tiap ruang |
+| `cinematography` | Framing awal–akhir, sudut, gerak + kecepatan + objek yang diungkap |
+| `lighting_mood` | Sumber cahaya dan kesatuan visual antarshot |
+| `editing` | Urutan shot, durasi, local/global timestamps, transisi, akhir shot |
+| `provenance` | Bukti YAML/shot untuk setiap fitur DNA yang diambil |
+| `originality_unknowns` | Apa yang berbeda dari sumber dan apa yang belum dapat diverifikasi |
 
-Avoid generic statements such as "use luxury lighting" or "cinematic camera" without shot-level source evidence and a concrete visual effect.
+## 4. Contoh DNA menjadi storyboard video (simulasi)
 
-## 5. Production-facing mapping (contract agreed for P2/P3)
+**Konsep ilustratif:** *Tropical Mediterranean Mini Cottage*. Bukan rumah/video yang sudah dibuat.
 
-**These are prescriptive HOMEKU production rules, NOT measured properties of all reference videos.**
+| Lapisan DNA | Bukti referensi | Pemakaian yang diusulkan |
+| --- | --- | --- |
+| Hook/exterior/kamera | [`edh058`](../references/edh058/analysis.yaml) shot-01: wide→entry, `dolly_in` + `slight_tracking_right` | Wujud rumah baru sejak frame 0, lalu mendekat ke pintu selama 6 detik |
+| Gaya | `edh058`: dinding krem tampak stucco, terracotta-look roof, jendela gelap | Fasad/massa baru dengan prinsip desain senada |
+| Lanskap | [`edh052`](../references/edh052/analysis.yaml) shot-01: vegetasi tropis dan jalur masuk | Lanskap baru dengan orientasi konsisten ke pintu |
+| Living | `edh058` shot-02: area TV/sofa dan reveal jendela/seating | Penataan living baru, pan perlahan untuk memperlihatkan ruang |
+| Kitchen | `edh058` shot-03: peninsula/area kompor, dolly+tracking | Kamera bergerak ke area focal subject kitchen baru |
+| Bedroom | `edh058` shot-04: bed→wide dengan dolly-out | Reveal jendela dan bed pada kamar baru |
+| Bathroom | [`edh060`](../references/edh060/analysis.yaml) shot-03: pan dari vanity ke tub | Closing vanity→bathtub dengan fixture sewarna rumah |
+| Cahaya/edit | `edh058`: daylight + lampu hangat; hard cuts | Cahaya/window views konsisten, clean cuts pada batas shot |
 
-| Final timeline | Omni clip (local) | Default planned scene | Required DNA |
+**[ATURAN PRODUKSI]** Timeline simulasi, dengan **dua generasi masing-masing 10 detik**:
+
+| Waktu final | Waktu **lokal** dalam klip | Scene | Instruksi sinematik |
 | --- | --- | --- | --- |
-| 00:00–00:06 | A, 0–6s | **Exterior: ≥6s outdoor-only, hook** | whole-house visibility, hero facade, landscape parallax, camera reveal, identity/lighting |
-| 00:06–00:10 | A, 6–10s | Living | furniture/layout focal subject; framing and lighting consistent with facade/world |
-| 00:10–00:14 | B, 0–4s | Kitchen | coherent cabinetry, window placement, camera path, functional reveal |
-| 00:14–00:17 | B, 4–7s | Bedroom | hero bed, window/ceiling reveal, calming light and palette |
-| 00:17–00:20 | B, 7–10s | Bathroom | vanity/tub/shower reveal, matching fixture finish, strong end-frame composition |
+| **00:00–00:06** | A `0–6s` | **Exterior hook**, luar rumah ≥6 dtk | Wide→medium, dolly+tracking, rumah terbaca sejak awal |
+| 00:06–00:10 | A `6–10s` | Living | Pan dan reveal objek ruang; hard cut di `6s` klip A |
+| 00:10–00:14 | B `0–4s` | Kitchen | Tracking menuju focal subject; Clip B dimulai shot baru |
+| 00:14–00:17 | B `4–7s` | Bedroom | Dolly-out/detail→wide; hard cut di `4s` lokal |
+| 00:17–00:20 | B `7–10s` | Bathroom | Pan vanity→tub; hard cut di `7s` lokal, ending stabil |
 
-- **Format:** target 20s at 9:16 from **two 10s Omni Flash generations**. 5 shots and timings are defaults; exceptions require explicit storyboard justification and must keep two 10s clips and first exterior ≥6s.
-- **One Design Lock:** roof/massing, level count, window/door system, facade and room materials, palette, climate/window views, light source/direction, approximate layout. The image and video stages must both honour it.
-- **Shot-level storyboard:** `clip_id`, `local_start/end_s`, `global_start/end_s`, `scene`, `source_dna`, `first_frame`, `last_frame`, `focal_subject`, `camera_movement/speed`, `architectural+props+environment anchors`, `lighting`, `transition_out`.
-- **Clip storyboard:** an ordered summary of its constituent shots. Prompt A instructs 6+4; Prompt B instructs 4+3+3. State **clean hard cut** at boundaries. Avoid an animated morph through walls as a room change.
-- **Master image route:** Option A **default** AI creates five coherent images. Option B **only if requested** AI creates five image prompts and reviews user-provided generated images. Same five-approved-image gate.
-- **Prompt packaging:** 1 English video prompt per clip; include reference image→shot mapping, global Design Lock, local timing, shot-by-shot camera and reveal, lighting, hard cuts, negative constraints and 9:16/10s output.
-- **Generation limits:** model timing, multiple hard cuts, and room identity may fail; never promise that two first tries suffice. QA actual generated exterior screen-time, cuts, absence of morphing, geometry, room count, visual continuity, and final assembled duration. Repair the affected clip first.
-- **Production persistence:** no GitHub write without separate, explicit approval; **`save now` belongs only to analysis v1.4**.
+**Bukan jaminan hasil generator:** timestamp dan hard cut adalah instruksi; video harus ditinjau. Jika model mengabaikan 6 detik eksterior atau menyatukan ruangan menjadi morphing, generasi tidak langsung dianggap lulus.
 
-### P2 implementation acceptance (derived from this summary)
+## 5. Ketentuan implementasi yang harus dibawa ke P2
 
-A production rules/template PR should fail review if it omits **any** of: 2–3 traceable source references; primary-vs-supporting precedence; exterior+environment anchors; framing start **and** end; camera motion **and** speed; room focal subjects and spatial object relationships; daylight/material consistency; order/timing/transitions; Design Lock; both image routes; two separate 10s prompts; QA and uncertainty/originality. The workflow must distinguish **observed DNA** from **creative constraints** and **model-dependent behavior**.
+| Komponen | Aturan yang disepakati |
+| --- | --- |
+| Output | Video rumah orisinal target **20 detik**, rasio **9:16** |
+| Produksi | **Dua klip Omni Flash @10 detik**, A dan B |
+| Hook | Shot exterior pertama **≥6 detik layar nyata**, bukan durasi gabungan exterior→living |
+| Storyboard default | Clip A **Exterior 0–6 + Living 6–10**; Clip B **Kitchen 0–4 + Bedroom 4–7 + Bathroom 7–10** |
+| Jumlah shot | Default **5**; variasi boleh jika cocok DNA, tetap dua klip dan exterior ≥6 |
+| Desain | **Satu Design Lock**: bentuk, atap, lantai, bukaan, material, furnitur, lanskap, lighting dan hubungan ruang |
+| Pembuatan gambar A | **Default:** AI langsung membuat **5 master image**, user melakukan review |
+| Pembuatan gambar B | **Atas permintaan user:** AI membuat **5 prompt gambar berbahasa Inggris**; user menghasilkan/mengunggah, AI mereview |
+| Gerbang sebelum video | **5 gambar telah disetujui**; kedua opsi harus bertemu pada titik ini |
+| Prompt Flow | **Satu prompt lengkap per klip 10 detik**; mapping gambar→shot, Design Lock, local timestamps, framing, focal, kamera, lighting, hard cuts dan larangan morphing |
+| QA | Cek hasil video asli: durasi, exterior, frame/ruang, konsistensi, hard cuts, artefak, total 20 detik |
+| Simpan GitHub | Hanya setelah persetujuan produksi khusus; `save now` **hanya** untuk analisis referensi lama |
 
-## 6. Source registry — all 58 packages
+**Field wajib per shot untuk template P2:** `clip_id`; `local_start_s`; `local_end_s`; `global_start_s`; `global_end_s`; `scene`; `source_reference_ids` dan `source_shot_ids`; `master_image`; `framing_start`; `framing_end`; `view_angle`; `focal_subject`; `camera.movements`; `camera.speed`; `reveal_path`; `architecture_anchors`; `furniture_and_props_anchors`; `environment_anchors`; `lighting`; `transition_out`; `continuity_constraints`; `uncertainty_notes`.
 
-**Legend:** `E` exterior, `L` living, `K` kitchen, `B` bedroom, `Ba` bathroom, `U` laundry, `C` walk-in closet/wardrobe, `X` return to exterior. `LK` combined living+kitchen shot; `EL` combined exterior→living shot; `Ba/U` bath+laundry shot; `(loft)` combined loft. **Opening** is the duration of the **first annotated shot** (seconds), *not guaranteed exclusive exterior time*. Rows marked `*` are the five exterior→living combined first shots.
+**Gerbang validasi sebelum prompt:** total lokal Clip A tepat 10 detik, Clip B tepat 10 detik; tidak ada celah/overlap; exterior ≥6; setiap shot memiliki referensi DNA, gambar dan framing awal/akhir; penempatan cut jelas. Jika tidak lulus, perbaiki storyboard **sebelum** menggunakan kredit Flow.
 
-| Reference YAML | Primary style (source label) | Video duration (s) | Shots | Opening shot (s) | Annotated sequence |
-| --- | --- | ---: | ---: | ---: | --- |
-| [VID-001](../references/VID-001/analysis.yaml) | american_storybook_cottage | 20.030 | 5 | 6.200 | E-L-K-B-Ba |
-| [VID-002](../references/VID-002/analysis.yaml) | modern_rustic_cottage | 20.900 | 4 | 6.310 | E-L-B-Ba |
-| [VID-003](../references/VID-003/analysis.yaml) | american_cottage | 26.500 | 7 | 6.700 | E-L-K-U-B-Ba-C |
-| [VID-004](../references/VID-004/analysis.yaml) | organic_modern_cottage | 18.400 | 5 | 4.730 | E-L-K-B-Ba/U |
-| [VID-005](../references/VID-005/analysis.yaml) | modern_tropical_villa | 18.850 | 6 | 4.630 | E-L-K-B-Ba-X |
-| [VID-006](../references/VID-006/analysis.yaml) | modern_cottage | 21.780 | 5 | 4.550 | E-L-K-B-Ba |
-| [VID-007](../references/VID-007/analysis.yaml) | modern_traditional_cottage | 21.500 | 7 | 5.070 | E-L-K-B-C-Ba-X |
-| [VID-008](../references/VID-008/analysis.yaml) | modern_cottage | 21.767 | 5 | 4.900 | E-L-K-B-Ba |
-| [VID-009](../references/VID-009/analysis.yaml) | modern_tropical_villa | 17.670 | 5 | 5.100 | E-L-K-B-Ba |
-| [VID-010](../references/VID-010/analysis.yaml) | modern_storybook_cottage | 20.530 | 6 | 5.100 | E-L-K-B-U-Ba |
-| [edh011](../references/edh011/analysis.yaml) | modern_rustic_cottage | 17.530 | 5 | 5.000 | E-L-K-B-Ba |
-| [edh012](../references/edh012/analysis.yaml) | modern_contemporary_cottage | 24.400 | 5 | 4.970 | E-L-K-B-Ba |
-| [edh013](../references/edh013/analysis.yaml) | whimsical_organic_mediterranean_tower_house | 21.477 | 5 | 4.600 | E-L-K-B-Ba |
-| [edh015](../references/edh015/analysis.yaml) | european_rustic_stone_cottage | 20.014 | 5 | 4.133 | E-L-K-B-Ba |
-| [edh016](../references/edh016/analysis.yaml) | storybook_cottage | 19.830 | 5 | 9.600* | EL-K-B-Ba/U-X |
-| [edh017](../references/edh017/analysis.yaml) | victorian_influenced_american_farmhouse | 19.770 | 6 | 4.830 | E-L-K-U-B-Ba |
-| [edh018](../references/edh018/analysis.yaml) | modern_farmhouse_cottage | 17.670 | 5 | 5.070 | E-L-K-B-Ba/U |
-| [edh019](../references/edh019/analysis.yaml) | modern_barrel_vault_cottage | 21.480 | 5 | 3.970 | E-L-K-B-Ba |
-| [edh020](../references/edh020/analysis.yaml) | storybook_stone_cottage | 18.620 | 5 | 5.070 | E-L-K-B-Ba |
-| [edh021](../references/edh021/analysis.yaml) | contemporary_castle_inspired_stone_cottage | 22.800 | 5 | 4.570 | E-L-K-B-Ba |
-| [edh022](../references/edh022/analysis.yaml) | contemporary_compact_minimalist_house | 21.830 | 5 | 6.570 | E-LK-B-Ba-X |
-| [edh023](../references/edh023/analysis.yaml) | modern_tropical_contemporary | 22.400 | 5 | 4.670 | E-L-K-B-Ba |
-| [edh024](../references/edh024/analysis.yaml) | contemporary_modern_farmhouse | 18.250 | 5 | 5.867 | E-L-K-B-Ba |
-| [edh025](../references/edh025/analysis.yaml) | rustic_storybook_stone_cottage | 21.082 | 6 | 5.167 | E-L-K-U-B-Ba |
-| [edh026](../references/edh026/analysis.yaml) | modern_contemporary | 21.000 | 5 | 9.667* | EL-K-B-C-Ba |
-| [edh027](../references/edh027/analysis.yaml) | modern_contemporary | 21.150 | 6 | 5.470 | E-L-K-B-C-Ba |
-| [edh029](../references/edh029/analysis.yaml) | contemporary_bungalow_with_modern_farmhouse_influence | 20.107 | 5 | 5.367 | E-L-K-B-Ba |
-| [edh030](../references/edh030/analysis.yaml) | mediterranean_inspired_cottage | 20.460 | 5 | 5.000 | E-LK-U-B-Ba |
-| [edh031](../references/edh031/analysis.yaml) | modern_contemporary | 27.233 | 5 | 11.333* | EL-K-B-C-Ba |
-| [edh032](../references/edh032/analysis.yaml) | contemporary_compact_cottage | 15.300 | 4 | 7.030 | E-L-B-X |
-| [edh033](../references/edh033/analysis.yaml) | contemporary_rustic_compact_house | 18.667 | 4 | 5.033 | E-LK(loft)-Ba/U-X |
-| [edh034](../references/edh034/analysis.yaml) | modern_cottage | 20.200 | 5 | 5.033 | E-LK-B-Ba-X |
-| [edh035](../references/edh035/analysis.yaml) | modern_cottage | 24.770 | 4 | 13.130* | EL-K-B-Ba |
-| [edh036](../references/edh036/analysis.yaml) | modern_european_cottage | 27.170 | 5 | 12.500* | EL-K-B-Ba/U-X |
-| [edh037](../references/edh037/analysis.yaml) | modern_transitional_with_classical_european_accents | 19.570 | 6 | 5.100 | E-L-K-B-Ba-X |
-| [edh038](../references/edh038/analysis.yaml) | rustic_mediterranean_cottage | 23.520 | 5 | 6.000 | E-L-K-B-Ba |
-| [edh039](../references/edh039/analysis.yaml) | contemporary_organic_mountain_modern | 20.933 | 6 | 5.300 | E-L-K-U-B-Ba |
-| [edh040](../references/edh040/analysis.yaml) | modern_farmhouse | 20.898 | 5 | 4.597 | E-L-K-B-X |
-| [edh041](../references/edh041/analysis.yaml) | modern_farmhouse | 22.567 | 5 | 5.367 | E-L-K-B-Ba/U |
-| [edh042](../references/edh042/analysis.yaml) | modern_tropical_minimalist | 22.700 | 5 | 5.433 | E-L-K-B-Ba |
-| [edh043](../references/edh043/analysis.yaml) | contemporary_european_cottage | 21.830 | 5 | 5.900 | E-L-K-B-Ba |
-| [edh044](../references/edh044/analysis.yaml) | english_storybook_cottage | 21.360 | 6 | 5.130 | E-L-K-U-B-Ba |
-| [edh045](../references/edh045/analysis.yaml) | contemporary_rustic_cottage | 23.293 | 5 | 5.900 | E-L-K-B-C |
-| [edh046](../references/edh046/analysis.yaml) | modern_cottage_with_contemporary_farmhouse_influences | 16.881 | 5 | 5.065 | E-L-K-B-Ba |
-| [edh047](../references/edh047/analysis.yaml) | modern_organic_contemporary | 18.900 | 6 | 5.067 | E-L-K-B-Ba/U-X |
-| [edh048](../references/edh048/analysis.yaml) | modern_european_cottage | 20.180 | 6 | 5.100 | E-L-K-C-B-Ba/U |
-| [edh049](../references/edh049/analysis.yaml) | contemporary_organic_stone_architecture | 19.090 | 4 | 5.530 | E-K-B-Ba |
-| [edh050](../references/edh050/analysis.yaml) | spanish_revival_cottage | 18.230 | 5 | 5.470 | E-L-K-B-Ba/U |
-| [edh051](../references/edh051/analysis.yaml) | contemporary_mediterranean | 18.370 | 6 | 5.133 | E-L-K-B-Ba-X |
-| [edh052](../references/edh052/analysis.yaml) | contemporary_tropical_bungalow | 18.633 | 5 | 5.133 | E-L-K-B-Ba |
-| [edh053](../references/edh053/analysis.yaml) | contemporary_mediterranean_villa | 18.633 | 5 | 5.633 | E-L-K-B-Ba |
-| [edh054](../references/edh054/analysis.yaml) | contemporary_neoclassical_townhouse | 18.300 | 5 | 5.800 | E-L-K-B-Ba |
-| [edh055](../references/edh055/analysis.yaml) | tropical_contemporary_villa | 19.800 | 6 | 5.900 | E-L-K-B-C-Ba |
-| [edh056](../references/edh056/analysis.yaml) | modern_rustic_contemporary | 23.700 | 6 | 6.600 | E-L-K-B-Ba-X |
-| [edh057](../references/edh057/analysis.yaml) | rustic_alpine_stone_cottage | 18.640 | 4 | 5.100 | E-LK-B-Ba |
-| [edh058](../references/edh058/analysis.yaml) | mediterranean_cottage | 19.900 | 6 | 5.300 | E-L-K-B-C-Ba |
-| [edh059](../references/edh059/analysis.yaml) | storybook_rustic_stone_cottage | 17.800 | 5 | 5.300 | E-L-K-B-Ba |
-| [edh060](../references/edh060/analysis.yaml) | modern_farmhouse_tiny_house | 18.470 | 3 | 8.030 | E-LK(loft)-Ba |
+**Batas model:** jumlah gambar yang dapat dimasukkan bergantung mode/model Google Flow, perlu dicek saat pilot. Tidak boleh berjanji semua mode mendukung 3 input image, hard cut tepat per-frame, atau dua generasi percobaan pasti cukup. Revisi klip yang gagal terlebih dahulu.
 
-For the full shot list, factual descriptions, camera motion, framing, and uncertainty, open the linked YAML and its sibling Markdown/storyboard. Source labels can be historical or filename-based; **do not allocate or migrate IDs during P1**.
+## 6. Batas yang tidak boleh ditutup dengan tebakan AI
 
-## 7. Gaps and explicit boundaries (do not silently fill)
+1. **Viralitas/retensi:** video disebut telah mencapai jutaan views oleh pemilik, tetapi statistik per-platform, watch time, completion dan uji sebab-akibat **tidak** tersedia dalam analisis.
+2. **Audio, musik, SFX, dialog, teks:** proses referensi hanya visual. Tidak ada DNA audio yang sah untuk disimpulkan dari YAML. Jika diperlukan, buat sebagai pilihan produksi baru dan tandai bukan dari sumber.
+3. **Identitas fisik rumah:** `common_regions` adalah *wilayah asosiasi gaya*, bukan lokasi rumah; material hanya dari tampilan, luas estimasi, musim tidak pasti.
+4. **Waktu exterior:** first-shot mixed exterior→living tidak mengukur outdoor-only; QA generasi harus melihat berapa detik rumah di luar benar-benar muncul.
+5. **Gambar kunci:** satu `shot-NN.jpg` tidak mewakili gerakan seluruh adegan; wajib baca `framing.start/end`, `camera`, `focal_subject`, `observation_note`.
+6. **Konsistensi antarshot:** gambar terpisah bisa menggambarkan rumah berbeda; Design Lock dan pemeriksaan manual harus mencegahnya.
+7. **Perpindahan generatif:** hard cut di prompt belum pasti terjadi; jika morphing/ruang tidak muncul/exterior terlalu singkat, status QA gagal dan perbaiki.
+8. **Freshness:** setiap penambahan referensi baru memerlukan re-audit snapshot; jangan mengubah data asli atau menyatakan tabel ini otomatis mencakup isi baru.
+9. **Batas fase:** P1 hanya membangun pengetahuan. **P2 workflow/template, P3 pilot, dan P4 kesiapan produksi belum dijalankan pada PR ini**.
 
-1. **Virality mechanism unknown:** selection for millions of views is provided by the owner, but performance attributes are not in the YAML. No unsupported "this element guarantees retention" or causal scoring.
-2. **No audio/text DNA:** reference analysis expressly excludes audio. Do not invent soundtrack, ASMR, speech, captions, editing sound effects or typography from these files.
-3. **No physical property verification:** estimated floor area, real materials, exact building location, true season and physically consistent interior/exterior plan are not proven. Style-associated regions are *not* geography.
-4. **First shot ≠ exterior-only time:** mixed entry scenes require separate outdoor timing if you need exterior-only duration; actual output must be checked after generation.
-5. **One image ≠ a whole video shot:** keyframe shows one representative point. Read shot start/end framing, camera movement, focal and observation notes in the YAML.
-6. **No guaranteed AI edit cuts:** timestamps/hard-cut instructions are targets; generation QA can reject an output even if its prompt was structurally correct.
-7. **Data freshness:** this file is grounded in the immutable commit above. Re-audit if new reference packages appear or if analysis YAML materially changes; do not silently recalculate statistics from mutable `main`.
-8. **Status:** this is **P1 DNA extraction only**. P2 operational rules and template, P3 pilot, and Google Flow generated footage have NOT been implemented or tested by this change.
+**P2 dinilai memiliki gap** bila mengabaikan salah satu unsur: bukti ID+shot, exterior dan environment, framing awal **dan** akhir, gerak dan kecepatan kamera, reveal, posisi furnitur dan hubungan ruang, konsistensi lighting, alur/cut/timing, Design Lock, dua opsi master image, dua prompt 10s, QA, orisinalitas dan ketidakpastian.
 
-**P1 deliverable guarantee:** this summary and source registry cover the observable DNA needed to construct a reference-grounded **visual house tour**, not just a visual house design. P2 must turn each DNA dimension into explicit storyboard and prompt fields, and P3 must validate whether the model actually reproduces them.
+## 7. Katalog seluruh 58 referensi
+
+**Kegunaan:** cari berdasarkan gaya **dan** pola edit/kamera awal. Setelah memilih maksimal tiga, buka dokumen YAML serta storyboard masing-masing untuk detail seluruh shot.
+
+**Legenda:** `E` exterior; `L` living; `K` kitchen; `B` bedroom; `Ba` bathroom; `U` laundry; `C` closet; `X` kembali ke exterior; `LK` living+kitchen gabungan; `EL` exterior→living dalam satu shot; `Ba/U` bath+laundry; `(loft)` area loft. Tanda `*` berarti durasi shot pembuka mencakup exterior **dan** interior. Kolom *kamera pembuka* menyimpan label sumber `shots[0].camera.movements` (bukan prompt lengkap).
+
+| File referensi | Label gaya asli | Durasi (dtk) | Shot | Shot 1 (dtk) | Urutan scene | Kamera pembuka |
+| --- | --- | ---: | ---: | ---: | --- | --- |
+| [VID-001](../references/VID-001/analysis.yaml) | american_storybook_cottage | 20.030 | 5 | 6.200 | E-L-K-B-Ba | `dolly_in + tracking_right` |
+| [VID-002](../references/VID-002/analysis.yaml) | modern_rustic_cottage | 20.900 | 4 | 6.310 | E-L-B-Ba | `subtle_dolly_in` |
+| [VID-003](../references/VID-003/analysis.yaml) | american_cottage | 26.500 | 7 | 6.700 | E-L-K-U-B-Ba-C | `dolly_in` |
+| [VID-004](../references/VID-004/analysis.yaml) | organic_modern_cottage | 18.400 | 5 | 4.730 | E-L-K-B-Ba/U | `dolly_in + slight_tracking_right` |
+| [VID-005](../references/VID-005/analysis.yaml) | modern_tropical_villa | 18.850 | 6 | 4.630 | E-L-K-B-Ba-X | `dolly_in + subtle_tracking_right` |
+| [VID-006](../references/VID-006/analysis.yaml) | modern_cottage | 21.780 | 5 | 4.550 | E-L-K-B-Ba | `dolly_in` |
+| [VID-007](../references/VID-007/analysis.yaml) | modern_traditional_cottage | 21.500 | 7 | 5.070 | E-L-K-B-C-Ba-X | `tracking_right + dolly_in` |
+| [VID-008](../references/VID-008/analysis.yaml) | modern_cottage | 21.767 | 5 | 4.900 | E-L-K-B-Ba | `dolly_in + subtle_tracking_right` |
+| [VID-009](../references/VID-009/analysis.yaml) | modern_tropical_villa | 17.670 | 5 | 5.100 | E-L-K-B-Ba | `dolly_in + tracking_right` |
+| [VID-010](../references/VID-010/analysis.yaml) | modern_storybook_cottage | 20.530 | 6 | 5.100 | E-L-K-B-U-Ba | `dolly_in + slight_pan_right` |
+| [edh011](../references/edh011/analysis.yaml) | modern_rustic_cottage | 17.530 | 5 | 5.000 | E-L-K-B-Ba | `dolly_in + slight_tracking_right` |
+| [edh012](../references/edh012/analysis.yaml) | modern_contemporary_cottage | 24.400 | 5 | 4.970 | E-L-K-B-Ba | `dolly_in + subtle_tracking_right` |
+| [edh013](../references/edh013/analysis.yaml) | whimsical_organic_mediterranean_tower_house | 21.477 | 5 | 4.600 | E-L-K-B-Ba | `tracking_right + subtle_dolly_in` |
+| [edh015](../references/edh015/analysis.yaml) | european_rustic_stone_cottage | 20.014 | 5 | 4.133 | E-L-K-B-Ba | `slow_dolly_in` |
+| [edh016](../references/edh016/analysis.yaml) | storybook_cottage | 19.830 | 5 | 9.600* | EL-K-B-Ba/U-X | `dolly_in + tracking_right` |
+| [edh017](../references/edh017/analysis.yaml) | victorian_influenced_american_farmhouse | 19.770 | 6 | 4.830 | E-L-K-U-B-Ba | `dolly_in` |
+| [edh018](../references/edh018/analysis.yaml) | modern_farmhouse_cottage | 17.670 | 5 | 5.070 | E-L-K-B-Ba/U | `tracking_right + subtle_dolly_in` |
+| [edh019](../references/edh019/analysis.yaml) | modern_barrel_vault_cottage | 21.480 | 5 | 3.970 | E-L-K-B-Ba | `tracking_right + dolly_in` |
+| [edh020](../references/edh020/analysis.yaml) | storybook_stone_cottage | 18.620 | 5 | 5.070 | E-L-K-B-Ba | `dolly_in + tracking_right` |
+| [edh021](../references/edh021/analysis.yaml) | contemporary_castle_inspired_stone_cottage | 22.800 | 5 | 4.570 | E-L-K-B-Ba | `tracking_right + slow_dolly_in` |
+| [edh022](../references/edh022/analysis.yaml) | contemporary_compact_minimalist_house | 21.830 | 5 | 6.570 | E-LK-B-Ba-X | `dolly_in + tracking_right` |
+| [edh023](../references/edh023/analysis.yaml) | modern_tropical_contemporary | 22.400 | 5 | 4.670 | E-L-K-B-Ba | `dolly_in + subtle_tracking_right` |
+| [edh024](../references/edh024/analysis.yaml) | contemporary_modern_farmhouse | 18.250 | 5 | 5.867 | E-L-K-B-Ba | `dolly_in + tracking_right + slight_tilt_up` |
+| [edh025](../references/edh025/analysis.yaml) | rustic_storybook_stone_cottage | 21.082 | 6 | 5.167 | E-L-K-U-B-Ba | `slow_dolly_in + subtle_tracking_right` |
+| [edh026](../references/edh026/analysis.yaml) | modern_contemporary | 21.000 | 5 | 9.667* | EL-K-B-C-Ba | `dolly_in + tracking_right + pan_right` |
+| [edh027](../references/edh027/analysis.yaml) | modern_contemporary | 21.150 | 6 | 5.470 | E-L-K-B-C-Ba | `dolly_in + slight_tracking_right` |
+| [edh029](../references/edh029/analysis.yaml) | contemporary_bungalow_with_modern_farmhouse_influence | 20.107 | 5 | 5.367 | E-L-K-B-Ba | `dolly_in + slight_tracking_right` |
+| [edh030](../references/edh030/analysis.yaml) | mediterranean_inspired_cottage | 20.460 | 5 | 5.000 | E-LK-U-B-Ba | `slow_dolly_in + tracking_right` |
+| [edh031](../references/edh031/analysis.yaml) | modern_contemporary | 27.233 | 5 | 11.333* | EL-K-B-C-Ba | `tracking_right + dolly_in + pan_right` |
+| [edh032](../references/edh032/analysis.yaml) | contemporary_compact_cottage | 15.300 | 4 | 7.030 | E-L-B-X | `dolly_in + tracking_right + slight_descending` |
+| [edh033](../references/edh033/analysis.yaml) | contemporary_rustic_compact_house | 18.667 | 4 | 5.033 | E-LK(loft)-Ba/U-X | `slow_tracking_right + subtle_dolly_in` |
+| [edh034](../references/edh034/analysis.yaml) | modern_cottage | 20.200 | 5 | 5.033 | E-LK-B-Ba-X | `tracking_right + subtle_dolly_in` |
+| [edh035](../references/edh035/analysis.yaml) | modern_cottage | 24.770 | 4 | 13.130* | EL-K-B-Ba | `dolly_in + pan_left` |
+| [edh036](../references/edh036/analysis.yaml) | modern_european_cottage | 27.170 | 5 | 12.500* | EL-K-B-Ba/U-X | `dolly_in + forward_tracking_through_door + gentle_pan_right` |
+| [edh037](../references/edh037/analysis.yaml) | modern_transitional_with_classical_european_accents | 19.570 | 6 | 5.100 | E-L-K-B-Ba-X | `tracking_right + dolly_in` |
+| [edh038](../references/edh038/analysis.yaml) | rustic_mediterranean_cottage | 23.520 | 5 | 6.000 | E-L-K-B-Ba | `dolly_in + tracking_right` |
+| [edh039](../references/edh039/analysis.yaml) | contemporary_organic_mountain_modern | 20.933 | 6 | 5.300 | E-L-K-U-B-Ba | `slow_dolly_in + subtle_tracking_right` |
+| [edh040](../references/edh040/analysis.yaml) | modern_farmhouse | 20.898 | 5 | 4.597 | E-L-K-B-X | `slow_dolly_in + subtle_tracking_right` |
+| [edh041](../references/edh041/analysis.yaml) | modern_farmhouse | 22.567 | 5 | 5.367 | E-L-K-B-Ba/U | `dolly_in + slight_pan_right` |
+| [edh042](../references/edh042/analysis.yaml) | modern_tropical_minimalist | 22.700 | 5 | 5.433 | E-L-K-B-Ba | `slow_dolly_in + subtle_tracking_right` |
+| [edh043](../references/edh043/analysis.yaml) | contemporary_european_cottage | 21.830 | 5 | 5.900 | E-L-K-B-Ba | `dolly_in + tracking_right` |
+| [edh044](../references/edh044/analysis.yaml) | english_storybook_cottage | 21.360 | 6 | 5.130 | E-L-K-U-B-Ba | `dolly_in` |
+| [edh045](../references/edh045/analysis.yaml) | contemporary_rustic_cottage | 23.293 | 5 | 5.900 | E-L-K-B-C | `dolly_in + subtle_tracking_right` |
+| [edh046](../references/edh046/analysis.yaml) | modern_cottage_with_contemporary_farmhouse_influences | 16.881 | 5 | 5.065 | E-L-K-B-Ba | `slow_dolly_in + slight_tracking_right` |
+| [edh047](../references/edh047/analysis.yaml) | modern_organic_contemporary | 18.900 | 6 | 5.067 | E-L-K-B-Ba/U-X | `slow_dolly_in + tracking_right` |
+| [edh048](../references/edh048/analysis.yaml) | modern_european_cottage | 20.180 | 6 | 5.100 | E-L-K-C-B-Ba/U | `dolly_in` |
+| [edh049](../references/edh049/analysis.yaml) | contemporary_organic_stone_architecture | 19.090 | 4 | 5.530 | E-K-B-Ba | `slow_lateral_tracking + subtle_orbit` |
+| [edh050](../references/edh050/analysis.yaml) | spanish_revival_cottage | 18.230 | 5 | 5.470 | E-L-K-B-Ba/U | `tracking_right + subtle_dolly_in` |
+| [edh051](../references/edh051/analysis.yaml) | contemporary_mediterranean | 18.370 | 6 | 5.133 | E-L-K-B-Ba-X | `dolly_in + tracking_right` |
+| [edh052](../references/edh052/analysis.yaml) | contemporary_tropical_bungalow | 18.633 | 5 | 5.133 | E-L-K-B-Ba | `slow_dolly_in + subtle_tracking_right` |
+| [edh053](../references/edh053/analysis.yaml) | contemporary_mediterranean_villa | 18.633 | 5 | 5.633 | E-L-K-B-Ba | `dolly_in + tracking_right` |
+| [edh054](../references/edh054/analysis.yaml) | contemporary_neoclassical_townhouse | 18.300 | 5 | 5.800 | E-L-K-B-Ba | `dolly_in + slight_pan_right` |
+| [edh055](../references/edh055/analysis.yaml) | tropical_contemporary_villa | 19.800 | 6 | 5.900 | E-L-K-B-C-Ba | `dolly_in + tracking_right` |
+| [edh056](../references/edh056/analysis.yaml) | modern_rustic_contemporary | 23.700 | 6 | 6.600 | E-L-K-B-Ba-X | `slow_dolly_in + gradual_tracking_right` |
+| [edh057](../references/edh057/analysis.yaml) | rustic_alpine_stone_cottage | 18.640 | 4 | 5.100 | E-LK-B-Ba | `dolly_in + slight_tracking_right` |
+| [edh058](../references/edh058/analysis.yaml) | mediterranean_cottage | 19.900 | 6 | 5.300 | E-L-K-B-C-Ba | `dolly_in + slight_tracking_right` |
+| [edh059](../references/edh059/analysis.yaml) | storybook_rustic_stone_cottage | 17.800 | 5 | 5.300 | E-L-K-B-Ba | `slow_dolly_in + tracking_right` |
+| [edh060](../references/edh060/analysis.yaml) | modern_farmhouse_tiny_house | 18.470 | 3 | 8.030 | E-LK(loft)-Ba | `tracking_right + subtle_dolly_in` |
+
+Setiap tautan mengarah ke `analysis.yaml` yang ada pada snapshot; file `analysis.md`, `storyboard.jpg` dan foto per shot berada dalam direktori referensi yang sama. Jangan melakukan migrasi ID arsip lama.
+
+## 8. Checklist review P1
+
+- [x] 58 direktori dengan tiga berkas wajib tersedia, total 300 keyframe.
+- [x] 58 baris katalog, tidak ada ID yang hilang atau berulang, seluruh tautan YAML dicek.
+- [x] Metadata durasi, urutan shot, ritme, pola kamera dan ketidakpastian diuraikan.
+- [x] Tujuh DNA video menyeluruh dan jejak pengambilan sumber ditetapkan.
+- [x] Gerak kamera pembuka dari tiap referensi ditambahkan ke indeks.
+- [x] Aturan produksi 6 detik exterior dan Omni 2×10 dtk dipisahkan dari fakta sumber.
+- [x] Opsi A (gambar langsung, default), opsi B (prompt gambar atas permintaan), dan gerbang lima gambar disetujui tercantum.
+- [ ] **Belum dilakukan:** inspeksi isi semua 300 JPEG secara manual, pembuatan prompt produksi final, pengujian model/retensi, dan pilot video.
+
+**Ringkasnya:** P1 menyediakan fondasi DNA **desain, lingkungan, interior, sinematografi, lighting, dan editing** agar AI dapat membangun konten rumah yang terasa satu keluarga dengan referensi tanpa menjiplak video. P2 harus mewajibkan penerjemahan tujuh unsur tersebut ke storyboard dan prompt, sedangkan P3 membuktikan kualitasnya pada hasil Omni Flash.
