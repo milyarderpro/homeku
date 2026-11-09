@@ -11,7 +11,7 @@
 Sebelum membuat ide:
 1. Baca **versi terbaru `main`** dari dokumen ini, [`knowledge/dna-summary.md`](../knowledge/dna-summary.md), dan [`templates/production.md`](../templates/production.md). P1 adalah indeks, **bukan** pengganti data sumber.
 2. Tinjau 58 katalog referensi sebagai basis pola. Untuk ide yang dikembangkan, pilih **satu referensi utama + satu/dua pendukung**, lalu **buka sumber lengkap** `references/<ID>/analysis.yaml`, `analysis.md` dan `storyboard.jpg` serta keyframe yang relevan. Bila ada ketidaksesuaian, **YAML/visual sumber** dan ketidakpastiannya didahulukan daripada ringkasan.
-3. Gunakan **seluruh 7 DNA**: hook eksterior; arsitektur; lingkungan; interior/relasi objek; sinematografi; pencahayaan/mood; editing/urutan narasi. Hanya menyebut nama gaya, warna, atau “cinematic” **tidak memadai**.
+3. Gunakan **seluruh 7 DNA** secara eksplisit: **DNA-01** hook eksterior; **DNA-02** arsitektur; **DNA-03** lingkungan; **DNA-04** interior/relasi objek; **DNA-05** sinematografi; **DNA-06** pencahayaan/mood; **DNA-07** editing/urutan narasi. Hanya menyebut nama gaya, warna, atau “cinematic” **tidak memadai**.
 4. **Status bukti:** pisahkan `FAKTA REFERENSI` (ID+shot/field), `INTERPRETASI` (dugaan estetis), `KREASI BARU` (rumah orisinal), dan `ATURAN PRODUKSI` (keputusan HOMEKU). Jangan menyebut durasi 6s sebagai fakta semua video referensi, dan jangan mengklaim sebab-akibat viralitas, retention atau statistik yang tidak ada.
 5. Bahasa interaksi, laporan, storyboard dan penjelasan: **Bahasa Indonesia**. Prompt gambar dan prompt Omni Flash yang akan ditempel ke generator: **Bahasa Inggris**, dengan nama aset/input yang jelas.
 
@@ -122,6 +122,8 @@ Tulis identitas rumah untuk mencegah **style drift** dan **geometry drift**:
 - Jangan mengubah `rules/workflow-analysis.md`, YAML Schema 2.1, `references/`, skrip penyimpanan analisis, maupun GitHub Actions.
 
 ## 4. Pemeriksaan pra-produksi: harus lolos sebelum P3
+
+**Jejak sumber:** simpan `source_reference_ids`, `source_shot_ids`, dan `source_field_paths` per elemen/shot; bila field tidak tersedia, tandai sebagai keputusan kreasi atau `belum diketahui` alih-alih memalsukan bukti.
 
 **Gerbang DNA:**
 - [ ] Ada 1 referensi utama + 1–2 pendukung dengan ID/shot asli, kelebihan dan batas masing-masing.
