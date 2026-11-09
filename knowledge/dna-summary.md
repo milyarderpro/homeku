@@ -193,14 +193,16 @@ Secara visual, tiap adegan punya fungsi: memperkenalkan rumah → gaya hidup di 
 | Storyboard default | Clip A **Exterior 0–6 + Living 6–10**; Clip B **Kitchen 0–4 + Bedroom 4–7 + Bathroom 7–10** |
 | Jumlah shot | Default **5**; variasi boleh jika cocok DNA, tetap dua klip dan exterior ≥6 |
 | Desain | **Satu Design Lock**: bentuk, atap, lantai, bukaan, material, furnitur, lanskap, lighting dan hubungan ruang |
-| Pembuatan gambar A | **Default:** AI langsung membuat **5 master image**, user melakukan review |
-| Pembuatan gambar B | **Atas permintaan user:** AI membuat **5 prompt gambar berbahasa Inggris**; user menghasilkan/mengunggah, AI mereview |
+| **Opsi A — gambar langsung** | **Default:** AI langsung membuat **5 master image**, user melakukan review |
+| **Opsi B — prompt gambar** | **Atas permintaan user:** AI membuat **5 prompt gambar berbahasa Inggris**; user menghasilkan/mengunggah, AI mereview |
 | Gerbang sebelum video | **5 gambar telah disetujui**; kedua opsi harus bertemu pada titik ini |
 | Prompt Flow | **Satu prompt lengkap per klip 10 detik**; mapping gambar→shot, Design Lock, local timestamps, framing, focal, kamera, lighting, hard cuts dan larangan morphing |
 | QA | Cek hasil video asli: durasi, exterior, frame/ruang, konsistensi, hard cuts, artefak, total 20 detik |
 | Simpan GitHub | Hanya setelah persetujuan produksi khusus; `save now` **hanya** untuk analisis referensi lama |
 
 **Field wajib per shot untuk template P2:** `clip_id`; `local_start_s`; `local_end_s`; `global_start_s`; `global_end_s`; `scene`; `source_reference_ids` dan `source_shot_ids`; `master_image`; `framing_start`; `framing_end`; `view_angle`; `focal_subject`; `camera.movements`; `camera.speed`; `reveal_path`; `architecture_anchors`; `furniture_and_props_anchors`; `environment_anchors`; `lighting`; `transition_out`; `continuity_constraints`; `uncertainty_notes`.
+
+**Kesesuaian jumlah gambar dengan shot:** lima master image/prompt gambar berlaku untuk storyboard default lima shot. Bila konsep yang disetujui memakai jumlah shot lain, jumlah dan mapping aset harus mengikuti shot yang berbeda tersebut; tetap satu aset yang disetujui untuk setiap komposisi shot yang membutuhkannya. Jangan memaksakan lima gambar pada storyboard yang berubah.
 
 **Gerbang validasi sebelum prompt:** total lokal Clip A tepat 10 detik, Clip B tepat 10 detik; tidak ada celah/overlap; exterior ≥6; setiap shot memiliki referensi DNA, gambar dan framing awal/akhir; penempatan cut jelas. Jika tidak lulus, perbaiki storyboard **sebelum** menggunakan kredit Flow.
 
