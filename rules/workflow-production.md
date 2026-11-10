@@ -1,148 +1,143 @@
-# HOMEKU — Workflow Produksi Video v1.1 (Production Lite)
+# HOMEKU — Workflow Produksi Video v1.2 (Production Lite)
 
-> **Status:** aturan operasional P2; sumber DNA dari [`knowledge/dna-summary.md`](../knowledge/dna-summary.md); rencana induk [`docs/production-lite-v1.1-implementation-plan.md`](../docs/production-lite-v1.1-implementation-plan.md); [Issue #7](https://github.com/milyarderpro/homeku/issues/7).  
-> **Output target:** video rumah orisinal, vertikal **9:16**, **20 detik** dari **dua klip Google Flow Omni Flash masing-masing 10 detik**.  
-> **Batas tegas:** ini workflow **kreasi**, BUKAN [`rules/workflow-analysis.md`](workflow-analysis.md); **`save now` tetap eksklusif untuk menyimpan analisis video referensi.**
+> **Status:** aturan operasional untuk ide dan video rumah baru, bukan workflow analisis referensi.  
+> **Sumber observasi:** [Ringkasan DNA P1](../knowledge/dna-summary.md), dilanjutkan dengan paket asli di `references/<ID>/`. **Template eksekusi:** [`templates/production.md`](../templates/production.md). **Roadmap:** [rencana implementasi](../docs/production-lite-v1.1-implementation-plan.md), [Issue #7](https://github.com/milyarderpro/homeku/issues/7).  
+> **Perubahan v1.2:** default **satu storyboard image kolase lima panel beresolusi tinggi**; **dua prompt Google Flow singkat berbahasa Indonesia**; kamera dolly/tracking yang benar-benar mengungkap ruang; **tanpa musik, hanya ambience alami**.  
+> **Prioritas aturan:** untuk **prosedur produksi**, dokumen v1.2 ini dan template v1.2 menggantikan ketentuan lama tentang 5 gambar terpisah, prompt panjang berbahasa Inggris, dan audio bebas pada P0/P1. **Fakta dan observasi DNA P1 tidak diubah**.
 
-## 0. Cara memulai, sumber kebenaran, dan cakupan
+## 0. Pemicu, sumber kebenaran, dan batas aman
 
-**Pemicu produksi:** instruksi eksplisit seperti “Buat 3 ide video rumah HOMEKU”, “Mulai produksi IDEA-…”, atau “Lanjutkan storyboard produksi”. Jangan menganggap pengguna yang mengunggah MP4 untuk dianalisis ingin membuat video baru. Ketika permintaan adalah analisis video referensi, **ikuti workflow analisis v1.4** dan jangan jalankan aturan produksi ini.
+Workflow produksi dijalankan saat user meminta **ide video rumah baru, desain/storyboard, gambar kolase, prompt Flow, atau QA pilot**. Jika user mengunggah video untuk **analisis referensi**, jalankan [`workflow-analysis.md`](workflow-analysis.md) v1.4 **bukan** dokumen ini.
 
-Sebelum membuat ide:
-1. Baca **versi terbaru `main`** dari dokumen ini, [`knowledge/dna-summary.md`](../knowledge/dna-summary.md), dan [`templates/production.md`](../templates/production.md). P1 adalah indeks, **bukan** pengganti data sumber.
-2. Tinjau 58 katalog referensi sebagai basis pola. Untuk ide yang dikembangkan, pilih **satu referensi utama + satu/dua pendukung**, lalu **buka sumber lengkap** `references/<ID>/analysis.yaml`, `analysis.md` dan `storyboard.jpg` serta keyframe yang relevan. Bila ada ketidaksesuaian, **YAML/visual sumber** dan ketidakpastiannya didahulukan daripada ringkasan.
-3. Gunakan **seluruh 7 DNA** secara eksplisit: **DNA-01** hook eksterior; **DNA-02** arsitektur; **DNA-03** lingkungan; **DNA-04** interior/relasi objek; **DNA-05** sinematografi; **DNA-06** pencahayaan/mood; **DNA-07** editing/urutan narasi. Hanya menyebut nama gaya, warna, atau “cinematic” **tidak memadai**.
-4. **Status bukti:** pisahkan `FAKTA REFERENSI` (ID+shot/field), `INTERPRETASI` (dugaan estetis), `KREASI BARU` (rumah orisinal), dan `ATURAN PRODUKSI` (keputusan HOMEKU). Jangan menyebut durasi 6s sebagai fakta semua video referensi, dan jangan mengklaim sebab-akibat viralitas, retention atau statistik yang tidak ada.
-5. Bahasa interaksi, laporan, storyboard dan penjelasan: **Bahasa Indonesia**. Prompt gambar dan prompt Omni Flash yang akan ditempel ke generator: **Bahasa Inggris**, dengan nama aset/input yang jelas.
+Sebelum produksi:
+1. Baca ringkasan DNA beserta katalog 58 referensi sebagai **indeks**. Pilih **1 referensi utama + 1–2 pendukung** yang berbeda perannya. Baca ulang `analysis.yaml`, `analysis.md` dan storyboard/keyframe relevan untuk referensi terpilih.
+2. Rekam sumber dengan `reference_id`, `shot_id`, `field_path`, fakta visual, apa yang diadaptasi, perbedaan orisinal, dan ketidakpastian.
+3. Gunakan **semua tujuh DNA**: **DNA-01** hook exterior; **DNA-02** arsitektur; **DNA-03** lingkungan; **DNA-04** interior/posisi objek; **DNA-05** framing dan gerak kamera; **DNA-06** lighting/mood; **DNA-07** ritme, alur, transisi. Video harus terasa seperti **tur rumah**, bukan hanya lima foto dekorasi.
+4. Pisahkan **[FAKTA REFERENSI]**, **[INTERPRETASI]**, **[KREASI BARU]** dan **[ATURAN PRODUKSI]**. Analisis referensi visual **tidak** membuktikan metrik retensi/virality maupun audio asli. `common_regions` berarti wilayah terkait gaya, bukan lokasi rumah.
+5. Interaksi, Design Lock, storyboard, **prompt image dan video default memakai bahasa Indonesia**; istilah teknis seperti `dolly in`, `tracking right`, `parallax`, `hard cut` boleh tetap dalam bahasa Inggris. Bila user minta prompt bahasa lain, sesuaikan.
 
-**Bukan bagian P2:** membuat mesin RAG/vector DB, AI di GitHub Actions, otomasi akses ke Google Flow, membuat video pilot, membuat file produksi final tanpa izin, atau mengubah referensi yang sudah tersimpan.
+**Tidak diubah:** `references/`, `video/`, `requests/`, `rules/workflow-analysis.md`, YAML analisis, dan GitHub Actions. `save now` **khusus workflow analisis**; tidak pernah berarti izin menulis produksi.
 
-## 1. Kontrak visual dan waktu yang tidak boleh dilanggar
+## 1. Kontrak produksi yang tetap berlaku
 
-| Item | Ketentuan |
+| Parameter | Aturan |
 | --- | --- |
-| Format | Portrait 9:16; target final 20,00 detik |
-| Jumlah klip | **A = 10 detik**, **B = 10 detik**; dua **prompt video utama** (satu per klip) |
-| Awal video | **Exterior sebagai shot pertama**, rumah dapat dikenali sejak frame pertama |
-| Durasi hook | **Exterior murni ≥6,00 detik** pada hasil final, bukan keseluruhan shot yang sudah masuk living |
-| Default shot/timing global | Exterior `0–6s`; Living `6–10s`; Kitchen `10–14s`; Bedroom `14–17s`; Bathroom `17–20s` |
-| Default Clip A (waktu lokal) | **0–6s Exterior** → **6–10s Living**; hard cut pada detik 6 |
-| Default Clip B (waktu lokal) | **0–4s Kitchen** → **4–7s Bedroom** → **7–10s Bathroom**; hard cut detik 4 dan 7 |
-| Jumlah shot/gambar | Default **5 shot + 5 master image**; jika jumlah shot berubah, **jumlah dan mapping gambar mengikuti storyboard** |
-| Gerak kamera | Diturunkan dari DNA shot sumber: `framing.start/end`, `focal_subject`, `camera.movements/speed`, `observation_note`; halus dan berarah |
-| Kontinuitas | Satu Design Lock untuk rumah, taman, jendela, interior, objek, lingkungan, pencahayaan dan dua klip |
-| Transisi | Clean hard cut antaradegan sebagai default; **bukan morphing** atau teleportasi ruangan |
-| Audio/teks | Tidak ada DNA audio/teks dalam analisis sumber; jika dibutuhkan, keputusan baru terpisah, **bukan klaim ekstraksi referensi** |
+| Bentuk akhir | Rumah baru orisinal; target **20 detik**, **vertical 9:16** |
+| Generasi | **2 klip × 10 detik** Google Flow Omni Flash; **1 prompt utama per klip** |
+| Hook | Exterior terlihat sejak frame pertama dan berlangsung **≥6,00 detik outdoor-only**; bukan durasi shot gabungan yang sudah menampilkan interior |
+| Clip A (lokal) | **S01 Exterior 0–6s**, **S02 Living 6–10s**, `hard cut` pada detik lokal 6 |
+| Clip B (lokal) | **S03 Kitchen 0–4s**, **S04 Bedroom 4–7s**, **S05 Bathroom 7–10s**, `hard cut` pada detik lokal 4 dan 7 |
+| Waktu global | 0–6 exterior; 6–10 living; 10–14 kitchen; 14–17 bedroom; 17–20 bathroom |
+| Gambar default | **SATU** storyboard image rasio landscape sekitar **3:2**, berisi **lima panel** berlabel S01–S05 untuk kelima shot |
+| Prompt default | **Simple First**: prompt singkat **bahasa Indonesia**, 2 prompt total, satu per klip; jangan mengulang Design Lock panjang bila sudah tercermin pada storyboard |
+| Kamera | `dolly in`, `dolly out`, `tracking right`, `tracking left`, atau kombinasi; gerak disesuaikan ruangan dan durasi, **perspective change + parallax nyata**, bukan zoom digital |
+| Cakupan ruang | Sejak awal shot interior, **susunan ruangan utama hampir seluruhnya terbaca**; gerak mengungkap tambahan detail tanpa memotong furniture/fitur penting sebelum akhir |
+| Suara | **Tidak ada musik, vokal, dialog/narasi, atau SFX sinematik**; hanya ambience alami halus dan relevan; bila Flow tak patuh, **QA audio gagal** |
+| Sumber | Tujuh DNA direkam di Design Lock, shot detail, dan panel. Detail panjang **tidak wajib diulang** dalam prompt video |
+| Perubahan | Jumlah shot atau panel boleh berubah jika disetujui dan punya alasan DNA, tetapi harus memetakan **semua shot dengan jelas**, mempertahankan **dua 10s** dan exterior ≥6s |
 
-**Perubahan storyboard boleh** mengikuti pola relevan dari referensi, misalnya rumah loft, gabungan living/kitchen, laundry/closet, atau eksterior penutup, **dengan syarat**: (a) total tepat 10s+10s, (b) eksterior awal **≥6s**, (c) tidak ada celah/overlap waktu di dalam tiap klip, (d) seluruh shot memiliki tujuan visual berbeda, (e) jumlah aset dan prompt mengikuti urutan baru, (f) alasan perubahan dicatat. Jangan menyalin 5 shot dari sumber secara otomatis.
+**Batas kemampuan model:** satu gambar kolase adalah **reference sheet**, bukan bukti mode Flow dapat membaca 5 panel sebagai 5 image inputs independen. Jika mode hanya mendukung *first frame / last frame*, **jangan** memasang seluruh kolase sebagai frame awal karena label/garis panel bisa dianimasikan. Pilih input referensi/ingredients/storyboard **jika tersedia dan teruji**; jika tak tersedia atau Flow hanya menggerakkan kolase seperti slide, gunakan fallback yang disetujui user (mis. panel hasil crop/5 gambar terpisah) dan **catat perubahan jalur**. Tidak ada jaminan `hard cut` atau timing tepat per-frame dari satu generasi; QA hasil video wajib.
 
-**Definisi eksterior murni:** frame masih memperlihatkan bangunan dari luar; saat kamera sudah menampilkan interior sebagai adegan utama, penghitungan exterior berakhir. **Jangan menghitung gerakan exterior→living gabungan sebagai 6s exterior** tanpa bukti frame. Pada hasil video, periksa batas transisi nyata. Karena model tidak menjamin pemotongan tepat-per-frame, bila gagal **revisi klip**, jangan menandai lulus hanya karena prompt mencantumkan “6s”.
+## 2. Enam langkah dengan gerbang persetujuan
 
-## 2. Tahapan percakapan, keputusan dan status
-
-**Satu sesi percakapan = satu paket ide terpilih.** Jangan buat banyak berkas dari tiga ide awal. Simpan progres dalam struktur [`templates/production.md`](../templates/production.md) di chat sampai pengguna secara eksplisit mengizinkan penyimpanan. Jika user meminta melanjutkan dari suatu status, **lanjutkan dari hasil yang sudah ada**, bukan otomatis ulang dari nol.
-
-| Langkah | Tugas AI dan output | Keputusan/gate |
+| Step | Tugas AI | Syarat lanjut |
 | --- | --- | --- |
-| **1 — DNA Selection** | Baca P1; tentukan 2–3 referensi yang cocok, peran tiap referensi, bukti dari YAML/shot, 7 dimensi DNA | **READ-ONLY** sumber; jika evidence tidak ada, tulis `belum diketahui` |
-| **2 — Idea Generation** | Tampilkan **3 Idea Cards** berbeda: nama, karakter, hook, sumber/peran, kombinasi DNA, pembeda orisinal, usulan shot 20s, potensi risiko | **Gate 1:** user memilih satu ide (contoh “Pilih IDEA-002”) |
-| **3 — Design Lock & Storyboard** | Kunci rumah; tampilkan storyboard global dan per-klip; tulis framing awal/akhir, fokus, gerak+kecepatan, reveal, lighting, sumber DNA untuk **setiap shot** | **Gate 2:** user menyetujui atau merevisi konsep/desain/storyboard |
-| **4 — Master Image Production** | **Opsi A DEFAULT:** AI membuat master image asli; **Opsi B atas permintaan:** AI membuat prompt gambar agar user menghasilkan sendiri. Semua gambar direview | **Gate 3:** seluruh master image sesuai Design Lock dan disetujui |
-| **5 — Omni Flash Prompt Packaging** | AI menyusun **Prompt A** & **Prompt B** dalam bahasa Inggris lengkap, masing-masing satu video 10s multi-shot, mengikuti urutan dan image mapping | Tidak boleh mengaku prompt final sebelum Gate 3. Lulus validasi waktu dan DNA dulu |
-| **6 — Generate, QA & Revision** | User menjalankan Flow, unggah klip; AI menilai video nyata, menyampaikan kegagalan/penyebab/prompt koreksi per klip; user menyetujui hasil | Video final hanya dinyatakan lolos jika hasil benar-benar diperiksa; save produksi terpisah |
+| **1. DNA Selection** | Pelajari P1, baca 2–3 paket referensi dan ketujuh DNA; cantumkan ID serta bukti kamera/komposisi | Data sumber read-only, tidak mengada-ada |
+| **2. Idea Generation** | Beri **3 ide berbeda** dengan hook, sumber/roles, pembeda orisinal, sinematografi dan risiko | **Gate 1:** user memilih **satu** konsep |
+| **3. Design Lock & Storyboard** | Tetapkan rumah satu identitas, lanskap/window views, furnitur, lighting, shot framing awal-akhir, kamera/reveal, dua timeline 10s | **Gate 2:** user setujui desain dan storyboard |
+| **4. Storyboard Image** | **Opsi A DEFAULT:** AI buat **1 image kolase**; **Opsi B jika diminta:** AI buat **1 prompt untuk menghasilkan kolase**; cek kelima panel | **Gate 3:** kolase **nyata** tersedia dan **disetujui** user |
+| **5. Simple Omni Prompts** | Buat **2 prompt singkat bahasa Indonesia**, panel A=S01–S02 dan B=S03–S05; camera, cuts, ambience, larangan kolase ditayangkan | Preflight waktu, mapping, audio, gambar; keluarkan prompt saat Gate 3 lulus |
+| **6. Generate & QA** | User jalankan Flow, upload dua klip atau gabungannya; AI audit **visual + audio**, revisi tepat pada masalahnya | Hasil P3/P4 belum lulus sebelum **video aktual** dan suara diperiksa |
 
-**Contoh dialog tanpa asumsi persetujuan diam-diam:** “Buat 3 ide video baru” → AI tampilkan ide → “Pilih IDEA-002” → AI tampilkan Design Lock/storyboard → “Setuju desain, buat gambar” (Opsi A) **atau** “Buat 5 prompt gambar” (Opsi B) → user meninjau gambar → “Gambar sudah sesuai, buat prompt Flow” → user generate/unggah video → AI QA/revisi.
+**Pengendalian status:** `idea_options → idea_selected → design_draft → design_approved → storyboard_image_pending → storyboard_image_approved → prompts_ready → qa_pending → revision_required / final_approved`. Perubahan besar pada Design Lock **membatalkan approval gambar/prompt yang terdampak**. User boleh meminta revisi pada titik mana pun; jangan memaksa mengulang tahap sebelumnya yang tidak terdampak.
 
-### 2.1 Langkah 1 — Pemilihan DNA: wajib berbasis bukti
+### Step 1–2: memilih dan mengolah DNA
 
-- **Utama (1 ID):** sumber dominan arsitektur, skala, geometri, bahasa bukaan serta material.
-- **Pendukung A (1 ID):** kontribusi terbatas seperti lanskap/warna interior yang kompatibel.
-- **Pendukung B (opsional, 1 ID):** teknik kamera, ritme, framing atau reveal. Bisa saja pendukung A juga menyumbang kamera; tetap tulis perannya.
-- Untuk tiap DNA terpakai, tulis **`referensi/shot/field → observasi → adaptasi baru → elemen yang sengaja berbeda → ketidakpastian`**.
-- Konflik: **Design Lock yang disetujui > identitas arsitektur sumber utama > inspirasi pendukung**. Jangan mencampur iklim/pemandangan jendela, roofline, level, material dan spasial secara bertentangan. Jangan menganggap `common_regions` lokasi rumah sebenarnya.
-- Pastikan ide **orisinal**, bukan salinan utuh rumah/shot/frame atau reproduksi adegan berurutan yang identik.
+Untuk setiap ide wajib ada satu arsitektur utama, satu pendukung lingkungan/interior/lighting, dan pendukung opsional sinematografi/edit. Uraikan kontribusi tiap referensi **tanpa** mengimpor seluruh facade/atap pendukung. Pastikan ketujuh DNA tercermin dalam keputusan final, misalnya:
+- **DNA-01:** rumah utuh sejak frame 0 dan perubahan fokus eksterior selama 6s.
+- **DNA-02:** gaya dan geometri rumah yang konsisten.
+- **DNA-03:** path, pohon, landscape, kondisi luar dan view melalui jendela.
+- **DNA-04:** ruangan utuh dan relasi sofa–kursi–meja–jendela, island–range–sink, bed–nightstand–window, vanity–shower–tub.
+- **DNA-05:** framing dan **gerak yang mengubah posisi/perspektif kamera**, tidak hanya lensa zoom.
+- **DNA-06:** arah cahaya/warm practical lamps/warna yang sama lintas panel.
+- **DNA-07:** urutan shot, ritme, hard cut dan komposisi akhir yang memuaskan.
 
-### 2.2 Langkah 2 — Tiga ide yang benar-benar berbeda
+Setiap Idea Card memuat nama, tampak rumah, lingkungan, hook, 2–3 sumber dan perannya, gerak kamera/ritme yang dipinjam, elemen baru, urutan target 20s, risiko. Ketiga ide **berbeda secara substantif**, bukan sekadar warna. Jangan membuat gambar sampai user memilih satu.
 
-Setiap Idea Card minimal memuat: `ID sementara`; judul; deskripsi visual (fasad/lingkungan/interior); **hook exterior 6s**; ID dan peran 2–3 sumber; DNA sinematik dan edit; pembeda/novelty; susunan shot rencana; risiko kontinuitas/generasi. Ide berbeda pada setidaknya **dua aspek substantif** (arsitektur, lingkungan, cinematic reveal, organisasi ruang), bukan hanya warna atau nama.
+### Step 3: Design Lock + storyboard — detail tetap diperlukan di sini
 
-Jangan langsung membuat gambar atau prompt video sebelum user memilih **satu** ide.
+Kunci: massa/skala/level/roofline; facade, pintu & kusen; material/warna; path, pohon dan window view; hubungan living–kitchen–bedroom–bathroom; posisi objek dan pencahayaan; lensa/perspektif wajar; gaya tur dan waktu tiap shot.
 
-### 2.3 Langkah 3 — Design Lock sebelum gambar
+Untuk **setiap shot S01–S05** isi:
+`shot_id`, `source_reference_ids/shot_ids/field_paths`, `clip_id`, `global_start/end_s`, `local_start/end_s`, `framing_start/end`, `view_angle`, `focal_subject`, `camera_movement` + `speed`, `reveal_path`, `architecture_anchors`, `furniture_anchors`, `environment_anchors`, `lighting`, `transition_out`, `uncertainty`.
 
-Tulis identitas rumah untuk mencegah **style drift** dan **geometry drift**:
-- **Bangunan:** skala tampak, jumlah lantai, arah massa dan atap, bentuk fasad, pintu/handle, posisi-bentuk-kusen jendela, porch/stairs/chimney/railing.
-- **Material/warnanya:** palet utama/aksen, penampilan stucco/kayu/batu, lantai, trim, hardware.
-- **Dunia luar:** jalan/path, ukuran/posisi pohon foreground, taman/bunga, pagar/lawn, cuaca/langit/season appearance, view lewat jendela.
-- **Interior dan denah masuk akal:** hubungan living-kitchen-bedroom-bath, skala plafon, material/furnitur sama, penempatan focal subject; jangan mengarang denah sumber sebagai fakta.
-- **Look & feel:** pencahayaan arah, temperatur dan kekuatan relatif, mood, fotorealisme, depth/perspective, portrait 9:16.
-- **Sinematik+editing:** pilihan framing awal/akhir tiap shot, jalur reveal, kecepatan gerak, urutan, hard cuts, titik join antara Clip A dan B.
+Syarat framing: interior bukan close-up yang menutupi mayoritas ruangan; **paling lambat paruh awal shot** pengguna dapat membaca tata ruang penting, dan pada akhir shot subjek utama **tidak terpotong**. Gerak **bertujuan**: pilih salah satu/kombo `dolly` dan `tracking` yang menghasilkan pergeseran relatif foreground–midground–background. Cek waktu lokal Clip A/B terpisah; tidak boleh ada gap/overlap. Sampaikan desain+storyboard dalam Bahasa Indonesia dan tunggu Gate 2.
 
-**Wajib tampilkan dua storyboard:** satu tabel shot global (0–20s) dan dua blok per generasi dengan **waktu lokal masing-masing 0–10s**. Konsistensi kamera **bukan** berarti semua shot memiliki satu gerakan yang sama; gerak harus mempunyai tujuan yang dapat dilihat.
+### Step 4: satu storyboard image 5 panel — SOP versi 1.2
 
-### 2.4 Langkah 4 — Dua jalur gambar (pilihan pengguna)
+**Opsi A DEFAULT:** setelah Gate 2, **generate satu gambar gabungan** yang memuat **semua panel sekaligus**, bukan lima gambar terpisah dan bukan kolase yang menggabungkan lima gambar generasi berbeda secara otomatis. User memberi persetujuan untuk seluruh panel. Opsi B **hanya atas permintaan:** buat **satu prompt** (bahasa Indonesia kecuali istilah teknis yang berguna), kemudian user menghasilkan/mengunggah **satu** gambar kolase; **prompt belum dianggap gambar**.
 
-**Opsi A — AI membuat gambar (DEFAULT):** tanpa user harus memilih mode, AI membuat **5 master image** sesuai storyboard lima shot setelah Gate 2. Tampilkan gambar satu per satu dengan identitas `image_id` dan `shot_id`; periksa kesesuaian sebelum user menerima. Bila kemampuan membuat gambar tidak tersedia saat itu, jelaskan dengan jujur dan berikan alternatif prompt; jangan berpura-pura gambar sudah dibuat.
+**Spesifikasi default board:**
+1. **Kanvas landscape sekitar 3:2**. Target **≥3072×2048 px hanya jika generator mendukung resolusi native yang memadai**; jika tidak, hasil terbaik yang tersedia harus dilaporkan, tidak mengklaim native tinggi hanya karena upscaling. Prioritaskan **keterbacaan setiap panel** pada ukuran sebenarnya, bukan angka piksel semata.
+2. **Dua panel lebar pada baris atas**: **S01 Exterior (0–6s)** kiri, **S02 Living (6–10s)** kanan. **Tiga panel pada baris bawah**: **S03 Kitchen (10–14s)**, **S04 Bedroom (14–17s)**, **S05 Bathroom (17–20s)**.
+3. Label panel ditempatkan sebagai **metadata di pinggir/banner**, tidak menutupi ruangan. Pemisah panel bersih dan tipis. Di output Flow **label, border, dan layout kolase tidak boleh tampil**.
+4. **S01:** keseluruhan bangunan **sudah terbaca** plus landscape dan jalur kamera yang punya foreground/midground/background.
+5. **S02–S05:** gunakan **wide architectural view** yang memperlihatkan **hampir seluruh karakter ruangan beserta hubungan objek**; ruang tidak boleh sekadar close-up fireplace/island/bed/vanity. Hindari tepi panel memotong sofa, armchair, island, bed, bathtub, atau window utama.
+6. Semua panel **satu identitas rumah**: window family, stone/wood, suhu warna, arah cahaya, cuaca, pemandangan eksterior, posisi objek dan perspektif logis. Ingat **panel landscape sebagai acuan komposisi** untuk video portrait 9:16; potongan vertikal 9:16 harus tetap dapat menggambarkan ruang atau Flow perlu membuat sudut pandang baru yang tetap konsisten. Jangan menjanjikan crop otomatis bisa memperlihatkan semua isi panel landscape.
+7. **Satu gambar final saja** untuk kedua klip. Setiap panel perlu detail cukup untuk masing-masing shot meskipun area panel lebih kecil daripada gambar terpisah.
 
-**Opsi B — AI membuat prompt gambar (hanya bila diminta):** AI membuat **5 prompt gambar berbahasa Inggris**, setiap prompt menjelaskan rumah yang sama, komposisi frame awal, objek detail, lanskap/view, material, pencahayaan, rasio 9:16, serta elemen konsistensi/larangan distorsi. User memakai generator pilihannya lalu mengunggah hasil. **Prompt ≠ master image**; status tetap `menunggu gambar` sampai gambar benar-benar ada dan direview.
+**QA Gate 3:** jumlah/urutan/label panel benar, desain cocok, tidak ada clipping objek penting, tiap ruang hampir lengkap, resolusi cukup dibaca ketika di-zoom, panel tidak rusak/tertukar, kedalaman untuk parallax jelas, dan user menyetujui satu board. Jika satu panel buruk, lakukan edit terarah pada panel itu **dengan menjaga empat panel lain**, atau regenerate board dan review ulang. Jangan menganggap panel baru otomatis disetujui.
 
-**Jika jumlah shot berubah:** hasilkan aset seperlunya untuk komposisi shot yang berbeda (jangan selalu memaksakan lima). Catat `image_id → shot_id → clip_id`. User dapat pindah Opsi A↔B **tanpa mengulang ide/Design Lock**. Revisi satu gambar jika hanya satu yang bermasalah; jika Design Lock fundamental berubah, periksa ulang semua gambar terdampak.
+**Fallback tertib:** jika board tidak bisa menghasilkan panel yang jelas, resolusi terlalu rendah, Flow salah memilih panel, atau kolase justru muncul dalam video, tawarkan **panel crop yang terverifikasi** atau **lima master image terpisah** sebagai alternatif **setelah persetujuan user**. Kembali ke QA aset dan ubah mapping/prompt seperlunya; tidak perlu ulang ide dan Design Lock yang masih valid.
 
-**Gate 3 wajib:** gambar tersedia, terbaca, sesuai rasio/komposisi yang bisa dianimasikan, memiliki identitas rumah/ruang/material/jendela/lighting yang koheren, tidak ada distorsi besar, dan **user menyetujui**. Jika belum lulus, tidak boleh mengklaim Prompt A/B final siap pakai (boleh menyusun rancangan internal yang jelas berstatus draft).
+### Step 5: dua prompt video singkat dalam Bahasa Indonesia (Simple First)
 
-### 2.5 Langkah 5 — Dua prompt Omni Flash, bukan prompt per shot
+**Default Level 1 — Simple Base:** **tidak** memasukkan seluruh DNA Trace, furnitur satu per satu, atau Design Lock berulang. Detail itu sudah ada dalam storyboard dan board. Dua prompt **siap copy** berisi hanya:
+- format portrait 9:16, 10s;
+- **satu board kolase** sebagai referensi; **panel mana dan urutan+durasi lokal** tiap klip;
+- gerak kamera dibatasi `dolly in/out` dan `tracking right/left` atau kombinasi, **kecepatan natural (tidak terlalu lambat/cepat)**;
+- hampir semua ruangan terbaca, `perspective change` dan `parallax` nyata, **bukan fake zoom/slideshow**;
+- `hard cut` di batas shot, larangan menayangkan label/panel/border, dan kontinuitas;
+- **NO MUSIC, NO VOCALS/NARRATION, natural subtle ambience only**.
 
-**Output final:** tepat **dua prompt video utama berbahasa Inggris**: `PROMPT A — Clip A 10s` dan `PROMPT B — Clip B 10s`. Di setiap prompt, urutan shot multi-adegan ditulis **di dalam satu prompt**, dengan:
-1. **Video identity:** rumah orisinal yang sama + format 9:16 fotorealistis, 10s.
-2. **Approved image mapping:** deskripsi atau nama asset gambar spesifik yang dipakai untuk setiap shot; jangan menganggap Flow menerima semuanya sekaligus pada setiap mode.
-3. **Global Design Lock:** geometri, material, bukaan, lighting, landscape dan interior continuity; Clip B adalah rumah yang **sama** dengan Clip A.
-4. **Local timeline:** urutan dan batas detik lokal, durasi masing-masing; juga catat batas global di paket produksi.
-5. **Per-shot cinematic direction:** `start framing → focal subject → motion/speed → reveal path → end framing`, posisi objek, pencahayaan.
-6. **Transition:** `clean hard cut` di batas yang disepakati; tidak boleh morphing, teleportation, material swaps, extra rooms.
-7. **Negative/quality constraints:** no unwanted people, logo, watermark, text, geometric distortion, camera shakes/whip pan, object pop-in, changing furniture/window count.
-8. **Output:** exact target length 10s, portrait 9:16.
+**Level 2 — Simple + Corrective:** bila hasil aktual gagal, **ulang Level 1 + paling banyak 1–3 instruksi spesifik** yang menyasar masalah teramati, misalnya “living dimulai terlalu dekat; mulai wide agar kursi/sofa utuh”, “kamera cuma zoom; lakukan tracking kanan dengan parallax nyata”, atau “musik muncul; tanpa musik”. **Revisi hanya klip bermasalah dahulu**. Catat timestamp, bukti, versi dan efek revisi.
 
-**Praflight prompt:** format seluruh slot wajib, mapping gambar valid, waktu lokal A dan B masing-masing 10s, exterior ≥6s, tidak ada slot kosong, tidak ada janji kemampuan image-input model yang belum terverifikasi. Jika mode Omni tertentu memiliki keterbatasan input gambar/scene, sampaikan keterbatasan dan sesuaikan paket sumber secara jujur; **jangan menyebut storyboard collage pasti dapat dipakai sebagai semua image input**. Prioritaskan scene clarity dan konsistensi, dengan risiko multi-cut eksplisit.
+**Level 3 — Detailed Rescue:** hanya jika Level 2 masih gagal; detail per-shot dari Design Lock, framing awal/akhir, objek, jalur kamera, cahaya, dan pembatasan khusus. **Jangan menjadikan prompt panjang wajib di awal**. Level 3 bukan jaminan model patuh.
 
-### 2.6 Langkah 6 — QA berdasarkan klip, bukan berdasarkan kata-kata prompt
+**Mode input Flow:** user menggunakan board sebagai *visual reference* **jika mode relevan tersedia**. Jangan mengasumsikan *first/last frame* atau *ingredients* tertentu menerima storyboard panel secara semantik. Jika output memperlihatkan kolase, hentikan pendekatan board sebagai sumber video dan beralih ke fallback aset yang benar setelah persetujuan. Label “S02” dalam prompt adalah **petunjuk pemilihan panel**, bukan teks yang boleh digambar di video.
 
-- User menjalankan Google Flow. AI **tidak** menyatakan sudah mengeksekusi Flow hanya karena dua prompt dibuat.
-- Setelah user mengunggah video, catat `clip_id`, durasi nyata, aspek rasio, timestamp perubahan exterior→living, cut kitchen→bedroom→bathroom, keberadaan adegan, kesesuaian dengan gambar, kelancaran gerak, distorsi, lighting dan material yang berubah.
-- **LULUS:** exterior terlihat nyata ≥6s sejak frame 0; urutan dan ruang sesuai storyboard; hard cuts yang nyata; satu identitas rumah, landscape dan furnishing konsisten; klip yang digabung target 20s vertikal 9:16.
-- **GAGAL:** exterior <6s, salah/ruang hilang, pergantian ruang morphing, kamera mengubah geometri/furnitur, klip tidak 10s/rasio salah, atau visual tidak selaras. Laporkan **klip, rentang waktu, bukti visual dan usulan revisi**.
-- Buat prompt revisi **hanya klip terdampak** dahulu; bandingkan kembali terhadap Gate 3/Design Lock. **Dua generasi hanyalah baseline**, bukan janji percobaan pertama langsung berhasil.
-- Jika kedua klip lolos, jelaskan perlunya penggabungan/trim jika durasi video final berbeda; tidak mengklaim sudah menyunting file kecuali benar-benar dilakukan.
+### Step 6: QA dua klip dan audio alami
 
-## 3. Kontrol izin, penyimpanan dan pemisahan workflow
+Lihat video **aktual**, bukan hanya prompt. Terima video A, B, atau gabungan 20s; bila hanya gabungan tersedia, evaluasi cut global di 6, 10, 14, 17 detik.
 
-- **Saat ideasi/design/gambar/prompt/review:** GitHub **read-only** untuk `references/` dan aturan; berkas proyek disusun dahulu dalam chat. Jangan membuat `productions/IDEA-xxx/production.md` hanya karena user memilih ide atau mengetik `save now`.
-- **`save now`** dalam [`workflow-analysis.md`](workflow-analysis.md) tetap memiliki makna khusus: satu request analisis ke `requests/pending/`. **Jangan menggunakannya untuk produksi**; jangan menulis `requests/`, `video/`, `references/`, atau workflow Actions dalam alur produksi.
-- Penyimpanan produksi menggunakan **perintah eksplisit yang menyebut objek**, mis. “Simpan produksi IDEA-001 ke GitHub”; sebelum write periksa target, konflik/duplikasi, status persetujuan dan perubahan. Pada konflik, **jangan overwrite diam-diam**; minta instruksi tujuan revisi. Commit file produksi **hanya setelah** persetujuan; verifikasi ulang remote sebelum mengaku tersimpan.
-- ID `IDEA-001` di template adalah **contoh**; jangan mengalokasikan nomor baru tanpa mengecek `productions/` yang sudah ada. Simpan file Markdown ringkas; jangan menjadikan repository tempat otomatis mengunggah MP4/JPEG besar.
-- Jangan mengubah `rules/workflow-analysis.md`, YAML Schema 2.1, `references/`, skrip penyimpanan analisis, maupun GitHub Actions.
+**Periksa per shot**: seluruh identitas bangunan/porsi penting ruangan terbaca; objektif camera translation (pergeseran perspektif relatif foreground/midground/background), kamera bergerak natural tidak terlalu pasif/tergesa, tidak hanya crop/zoom; adegan tidak memotong furniture saat berakhir; cut eksplisit; material/jendela/landscape konsisten; tidak ada panel atau label.
 
-## 4. Pemeriksaan pra-produksi: harus lolos sebelum P3
+**Periksa waktu**: eksterior **≥6s nyata**, dua klip target masing-masing 10s, final 20s/9:16. Durasi dan cut presisi **tidak dijamin** oleh prompt; jika salah, catat dan retake/edit seperlunya dengan persetujuan.
 
-**Jejak sumber:** simpan `source_reference_ids`, `source_shot_ids`, dan `source_field_paths` per elemen/shot; bila field tidak tersedia, tandai sebagai keputusan kreasi atau `belum diketahui` alih-alih memalsukan bukti.
+**Periksa audio dengan mendengar/analisis:** harus **tanpa musik, vocal/narasi, SFX sinematik**, hanya ambience alami sesuai adegan (angin ringan di exterior, fireplace crackle di living bila memang tampak menyala, quiet room tone di interior). Jangan menganggap stream audio ada/tiada sebagai bukti bahwa musik ada/tiada—**dengarkan**. Jika Flow tetap membuat musik, **status audio GAGAL**. Opsi pemulihan: regenerasi prompt atau *mute* audio yang bermusik lalu pasang natural ambience baru dalam edit; jangan klaim bisa memisahkan musik bersih dari ambience tanpa bukti.
 
-**Gerbang DNA:**
-- [ ] Ada 1 referensi utama + 1–2 pendukung dengan ID/shot asli, kelebihan dan batas masing-masing.
-- [ ] **Ketujuh DNA** punya observasi, penerapan baru dan pengaruh pada hasil video, bukan hanya bentuk rumah.
-- [ ] Konsep asli tidak menyalin rumah/frame/video tertentu satu banding satu.
+**Keputusan:** `BELUM DIUJI` / `GAGAL` / `LULUS` **per clip, visual dan audio**. Baru `final_approved` setelah video digabung dan lulus QA serta persetujuan user. Pelajaran pilot lama: gambar bisa indah tetapi **ruang dan gerak kamera gagal**; jangan samakan estetika still image dengan keberhasilan tur video.
 
-**Gerbang desain & storyboard:**
-- [ ] Design Lock memuat rumah, environment, interior, material, windows/view dan lighting.
-- [ ] Shot **pertama exterior**; sejak frame pertama rumah terbaca; **durasi luar target ≥6s**.
-- [ ] Dua klip video dengan durasi lokal masing-masing tepat **10 detik**, tanpa jeda/overlap.
-- [ ] Semua shot memiliki kamera, framing awal–akhir, focal subject, reveal, detail, transisi dan hubungan ke sumber.
+## 3. Izin menulis GitHub: selalu terpisah
 
-**Gerbang gambar & prompt:**
-- [ ] Jalur A (default) dan B (jika diminta) berakhir pada kumpulan gambar **disetujui**; jumlah gambar disesuaikan storyboard.
-- [ ] **Dua prompt utama** per klip, masing-masing mencakup semua shotnya; tidak ada placeholder, gambar yang belum ada, atau sumber tidak jelas.
-- [ ] Batas mode Google Flow dan potensi gagalnya multi-shot dipahami; tidak menjanjikan cut presisi.
+Selama ideasi, storyboard, gambar, prompt, QA: `references/` dan aturan **read-only**. File `productions/<ID>/production.md` dibuat **hanya** setelah perintah jelas semisal **“Simpan produksi IDEA-001 ke GitHub”**. Periksa ketersediaan ID/path dan konflik, gunakan izin spesifik, commit, lalu **verifikasi remote**. Jangan menambah MP4/JPEG biner besar ke repo secara otomatis.
 
-**Gerbang hasil (dilakukan P3/P4, belum dinyatakan lulus di P2):**
-- [ ] Klip hasil user diinspeksi; klaim exterior ≥6s dan kualitas berdasarkan **video sebenarnya**.
-- [ ] Perbaikan/retake terdokumentasi; tidak mengklaim video final dan viralitas tanpa bukti.
+`save now` **tetap eksklusif** untuk analisis referensi melalui `requests/pending/`. Tidak boleh digunakan pada produksi; jangan membuat/memodifikasi `requests/`, `references/`, `video/`, atau GitHub Actions.
 
-**Definition of Done P2:** dua file aturan/template tertulis, saling konsisten, memenuhi semua checklist **dokumen/praflight**, dan simulasi kedua opsi gambar dengan timeline lulus. **P2 bukan bukti Omni Flash sudah berhasil membuat video nyata; pilot itu P3.**
+## 4. Definition of Done v1.2 dan skenario gagal
+
+**Pemeriksaan pra-generasi**
+- [ ] Tiga ide dibuktikan dari DNA referensi; user pilih satu; Design Lock/storyboard disetujui.
+- [ ] Tujuh DNA, source trace, framing dan camera reveal tiap shot ada dalam data produksi **walau prompt video sengaja singkat**.
+- [ ] Board memuat **lima panel benar S01–S05**, 2 atas + 3 bawah, layout/rasio/resolusi memadai, semua ruangan hampir utuh dan readable; user setujui **satu board**.
+- [ ] Clip A 6+4=10; Clip B 4+3+3=10; dua prompt ringkas bahasa Indonesia; cakupan shot benar, tanpa label kolase dan tanpa musik.
+- [ ] Jika Flow tidak mendukung storyboard referensi atau 3D parallax dari board, pembatasan dijelaskan dan fallback disetujui.
+
+**Pemeriksaan hasil aktual (P3/P4)**
+- [ ] Kamera menampilkan **perubahan perspektif dan parallax**, bukan hanya zoom.
+- [ ] Living/kitchen/bed/bath room **nyaris utuh**, tidak terpotong sebelum cut.
+- [ ] Exterior outdoor-only ≥6s; cut/ruang dan timing sesuai.
+- [ ] Audio **tanpa musik**, hanya ambience alami yang terdengar masuk akal.
+- [ ] User menerima hasil; kegagalan/retake terdokumentasi.
+
+**Penting:** dokumen aturan yang lulus tidak berarti Flow telah lulus QA. Pilot P3 sebelumnya **`revision_required`** sampai video baru diuji; v1.2 merupakan perubahan workflow berdasar temuan tersebut, **bukan bukti jaminan hasil yang lebih baik**.
