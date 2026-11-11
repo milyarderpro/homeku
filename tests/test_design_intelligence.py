@@ -56,7 +56,7 @@ class DesignIntelligenceTests(unittest.TestCase):
         group_files = sorted(profile_root.glob("[0-9][0-9]-*.md"))
         self.assertEqual(len(group_files), 8)
         seen = {}
-        heading = re.compile(r"(?m)^### \\[([A-Za-z0-9_.-]+)\\]\\(\\.\\./\\.\\./references/\\1/analysis\\.yaml\\)\\s*$")
+        heading = re.compile(r"(?m)^### \[([A-Za-z0-9_.-]+)\]\(\.\./\.\./references/\1/analysis\.yaml\)\s*$")
         for file in group_files:
             content = file.read_text(encoding="utf-8")
             matches = list(heading.finditer(content))
