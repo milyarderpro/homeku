@@ -51,6 +51,35 @@ class DesignIntelligenceTests(unittest.TestCase):
         refreshed = markdown_rows(render_catalog())
         self.assertEqual(set(refreshed), set(self.references))
 
+    def test_every_source_has_traceable_design_profile(self):
+        profile_root = KNOWLEDGE / "reference-profiles"
+        group_files = sorted(profile_root.glob("[0-9][0-9]-*.md"))
+        self.assertEqual(len(group_files), 8)
+        seen = {}
+        heading = re.compile(r"(?m)^### \\[([A-Za-z0-9_.-]+)\\]\\(\\.\\./\\.\\./references/\\1/analysis\\.yaml\\)\\s*$")
+        for file in group_files:
+            content = file.read_text(encoding="utf-8")
+            matches = list(heading.finditer(content))
+            self.assertGreater(len(matches), 0, str(file))
+            for i, match in enumerate(matches):
+                ident = match.group(1)
+                self.assertNotIn(ident, seen, f"Duplicate profile for {ident}")
+                self.assertIn(ident, self.references)
+                section = content[match.end():(matches[i + 1].start() if i + 1 < len(matches) else len(content))]
+                doc = self.references[ident]
+                style = doc["architecture"]["primary_style"].replace("_", " ")
+                scale = doc["architecture"]["building_scale"]["perceived_size"]
+                self.assertIn(style, section, ident)
+                self.assertIn("**" + str(scale) + "**", section, ident)
+                for feature in doc["architecture"]["exterior_features"][:4]:
+                    self.assertIn("`" + feature + "`", section, ident)
+                for lighting in doc["visual_style"]["lighting"][:2]:
+                    self.assertIn(lighting.replace("_", " "), section, ident)
+                for camera in doc["shots"][0]["camera"]["movements"][:3]:
+                    self.assertIn(camera.replace("_", " "), section, ident)
+                seen[ident] = file.name
+        self.assertEqual(set(seen), set(self.references))
+
     def test_knowledge_documents_present(self):
         for filename in THEMES:
             self.assertTrue((KNOWLEDGE / filename).is_file(), filename)
@@ -83,7 +112,7 @@ class DesignIntelligenceTests(unittest.TestCase):
 
     def test_local_markdown_links_resolve(self):
         link = re.compile(r"\]\(([^)]+)\)")
-        for file in [ROOT / "README.md", *(KNOWLEDGE / f for f in THEMES)]:
+        for file in [ROOT / "README.md", *(KNOWLEDGE / f for f in THEMES), *(KNOWLEDGE / "reference-profiles").glob("*.md")]:
             for relative in link.findall(file.read_text(encoding="utf-8")):
                 if relative.startswith(("http:", "https:", "#")):
                     continue

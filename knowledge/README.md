@@ -7,9 +7,10 @@
 1. [methodology.md](methodology.md) — source hierarchy, confidence, categories of claims, limitations and maintenance.
 2. [dna-summary.md](dna-summary.md) — cross-reference synthesis and seven visual layers.
 3. [reference-catalog.md](reference-catalog.md) — searchable index of reference identifiers, styles, scene sequences and camera metadata.
-4. [architecture-dna.md](architecture-dna.md) — massing, scale, roof, envelope, openings, visible material families.
-5. [landscape-dna.md](landscape-dna.md) — landscape composition, entrance and window-world continuity.
-6. [interior-dna.md](interior-dna.md) — interior character, spatial anchors and furniture relationships.
+4. [reference-profiles/README.md](reference-profiles/README.md) — selective source-grounded architectural, color, lighting, scene and camera signatures for **all 58** references.
+5. [architecture-dna.md](architecture-dna.md) — massing, scale, roof, envelope, openings, visible material families.
+6. [landscape-dna.md](landscape-dna.md) — landscape composition, entrance and window-world continuity.
+7. [interior-dna.md](interior-dna.md) — interior character, spatial anchors and furniture relationships.
 7. [spatial-design-principles.md](spatial-design-principles.md) — observed vs inferred adjacency, views and geometric coherence.
 8. [cinematography-dna.md](cinematography-dna.md) — framing, visual reveal, camera vocabulary and scene grammar.
 9. [design-compatibility.md](design-compatibility.md) — compatibility reasoning and risks in cross-reference synthesis.

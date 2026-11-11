@@ -34,6 +34,6 @@ A **recognizable silhouette** plus a distinctive entrance and landscape foregrou
 
 ## How to read the intelligence
 
-Use [reference catalog](reference-catalog.md) to locate examples; inspect the linked YAML and relevant original images before asserting shot-level facts. Use [compatibility](design-compatibility.md) and [originality](originality-framework.md) for explicitly reasoned design synthesis, and [spatial principles](spatial-design-principles.md) for geometric plausibility. Grounded examples and limitations are also listed in [evidence-index.yaml](evidence-index.yaml).
+Use [reference catalog](reference-catalog.md) and [all 58 source design profiles](reference-profiles/README.md) to locate examples; inspect the linked YAML and relevant original images before asserting shot-level facts. Use [compatibility](design-compatibility.md) and [originality](originality-framework.md) for explicitly reasoned design synthesis, and [spatial principles](spatial-design-principles.md) for geometric plausibility. Curated, field-level claim examples and limitations are listed in [evidence-index.yaml](evidence-index.yaml); this is a selective index rather than a complete mirror of the 58 source packages.
 
 **Exclusions:** mandatory shot timing, imagery/panel count, Flow/Omni controls, generation platform choices, cut rules, audio policy, approval gates, prompts, video QA, and file-save instructions for production.

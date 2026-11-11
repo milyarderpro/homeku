@@ -8,6 +8,7 @@ Start at **[knowledge/README.md](knowledge/README.md)**. The knowledge library c
 
 - [Cross-reference DNA synthesis](knowledge/dna-summary.md)
 - [Catalog of 58 reference sources](knowledge/reference-catalog.md)
+- [58 detailed source design signatures](knowledge/reference-profiles/README.md)
 - [Traceable evidence index](knowledge/evidence-index.yaml)
 - [Evidence and uncertainty methodology](knowledge/methodology.md)
 

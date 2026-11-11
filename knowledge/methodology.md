@@ -17,6 +17,10 @@ Individual `analysis.yaml` records are source-of-record *annotations*, not indep
 
 `knowledge/evidence-index.yaml` stores `id`, `category`, `claim_type`, `statement`, `sources` (each with `reference_id`, `shot_id`, `field_path`), `confidence`, and `limitations`. A reference points to actual `references/<ID>/analysis.yaml`; `shot_id` must exist. `field_path` uses `shots[N].<path>` with a zero-based shot index, or a root field. A record with two source IDs is **not** a claim that those houses are physically connected.
 
+## Coverage of all 58 sources
+
+The [reference profiles](reference-profiles/README.md) contain concise source-metadata signatures for all 58 references: perceived scale, architectural features, color labels, lighting, scene sequence and opening camera annotation. The 23 initial curated records in `evidence-index.yaml` are **worked examples**, not 58 complete per-shot records, and should not be described as exhaustive. Profiles link directly to source YAML and retain its recorded field names. Deeper thematic inference still requires human/AI review of additional shots and original frames.
+
 ## Interpretation safeguards
 
 1. A labeled camera motion is inferred from pixels; it does not establish physical equipment or prove the difference between mechanical dolly and generative zoom.
