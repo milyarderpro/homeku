@@ -10,7 +10,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
-from refresh_design_catalog import read_references, verify_catalog
+from refresh_design_catalog import read_references, verify_catalog, render_catalog, markdown_rows
 
 KNOWLEDGE = ROOT / "knowledge"
 THEMES = (
@@ -46,6 +46,10 @@ class DesignIntelligenceTests(unittest.TestCase):
         count, shots = verify_catalog()
         self.assertEqual(count, 58)
         self.assertEqual(shots, 300)
+
+    def test_catalog_refresh_renderer_is_complete(self):
+        refreshed = markdown_rows(render_catalog())
+        self.assertEqual(set(refreshed), set(self.references))
 
     def test_knowledge_documents_present(self):
         for filename in THEMES:
