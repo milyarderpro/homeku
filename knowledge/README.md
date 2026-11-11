@@ -4,18 +4,19 @@
 
 ## Knowledge navigation
 
-1. [methodology.md](methodology.md) — source hierarchy, confidence, categories of claims, limitations and maintenance.
-2. [dna-summary.md](dna-summary.md) — cross-reference synthesis and seven visual layers.
-3. [reference-catalog.md](reference-catalog.md) — searchable index of reference identifiers, styles, scene sequences and camera metadata.
-4. [reference-profiles/README.md](reference-profiles/README.md) — selective source-grounded architectural, color, lighting, scene and camera signatures for **all 58** references.
-5. [architecture-dna.md](architecture-dna.md) — massing, scale, roof, envelope, openings, visible material families.
-6. [landscape-dna.md](landscape-dna.md) — landscape composition, entrance and window-world continuity.
-7. [interior-dna.md](interior-dna.md) — interior character, spatial anchors and furniture relationships.
-7. [spatial-design-principles.md](spatial-design-principles.md) — observed vs inferred adjacency, views and geometric coherence.
-8. [cinematography-dna.md](cinematography-dna.md) — framing, visual reveal, camera vocabulary and scene grammar.
-9. [design-compatibility.md](design-compatibility.md) — compatibility reasoning and risks in cross-reference synthesis.
-10. [originality-framework.md](originality-framework.md) — transformations that preserve visual vocabulary without copying a specific house.
-11. [evidence-index.yaml](evidence-index.yaml) — machine-readable examples of traceable evidence, inferences and their limits.
+1. [methodology.md](methodology.md) — evidence classes, confidence, provenance and uncertainty.
+2. [dna-summary.md](dna-summary.md) — seven-layer cross-reference synthesis.
+3. [reference-catalog.md](reference-catalog.md) — 58-reference searchable metadata overview.
+4. [reference-profiles/README.md](reference-profiles/README.md) — individually traceable profiles of **all 58** sources.
+5. [architecture-dna.md](architecture-dna.md) — massing, scale, roof, envelope and openings.
+6. [landscape-dna.md](landscape-dna.md) — setting, foreground, entrance and window views.
+7. [interior-dna.md](interior-dna.md) — rooms, furniture and visual relationships.
+8. [lighting-and-palette-dna.md](lighting-and-palette-dna.md) — source palette values, natural/practical light and mood.
+9. [spatial-design-principles.md](spatial-design-principles.md) — geometry, reciprocal views and plausible adjacency.
+10. [cinematography-dna.md](cinematography-dna.md) — framing, reveal, movement and visual sequence.
+11. [design-compatibility.md](design-compatibility.md) — style combinations and conflict reasoning.
+12. [originality-framework.md](originality-framework.md) — original design transformations.
+13. [evidence-index.yaml](evidence-index.yaml) — curated claim-level YAML provenance examples.
 
 ## Source hierarchy
 

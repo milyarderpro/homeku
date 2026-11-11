@@ -110,6 +110,14 @@ class DesignIntelligenceTests(unittest.TestCase):
                     index = int(PATH_RE.match(field).group(1))
                     self.assertEqual(doc["shots"][index]["id"], sid)
 
+    def test_knowledge_entrypoint_lists_all_themes(self):
+        readme = (KNOWLEDGE / "README.md").read_text(encoding="utf-8")
+        for filename in THEMES:
+            if filename == "README.md":
+                continue
+            self.assertIn("](" + filename + ")", readme, filename)
+        self.assertIn("reference-profiles/README.md", readme)
+
     def test_local_markdown_links_resolve(self):
         link = re.compile(r"\]\(([^)]+)\)")
         for file in [ROOT / "README.md", *(KNOWLEDGE / f for f in THEMES), *(KNOWLEDGE / "reference-profiles").glob("*.md")]:
