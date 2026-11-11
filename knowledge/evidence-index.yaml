@@ -1,0 +1,294 @@
+schema_version: "2.0"
+dataset_snapshot_commit: "80072accc56f7824d9575f144ed4e88dcf51a8bc"
+source: "references/<ID>/analysis.yaml"
+notes: "Curated traceable examples, not an exhaustive list of every observed item. Claim_type distinguishes source fact from reasoning. Sources use zero-based shot indices."
+records:
+  - id: ARCH-001
+    category: architecture
+    claim_type: OBSERVATION
+    statement: "edh058 exterior presents cream-stucco appearance, warm tiled gable roof and dark-framed windows"
+    sources:
+      - reference_id: "edh058"
+        shot_id: "shot-01"
+        field_path: "shots[0].visible_details.architectural"
+    confidence: high
+    limitations:
+      - "Appearance only; composition and material are not physically surveyed"
+  - id: ARCH-002
+    category: architecture
+    claim_type: OBSERVATION
+    statement: "edh060 exterior is a compact trailer-based house with dark frames, front raised deck and visible upper terrace"
+    sources:
+      - reference_id: "edh060"
+        shot_id: "shot-01"
+        field_path: "shots[0].visible_details.architectural"
+    confidence: high
+    limitations:
+      - "Small-scale label and square meters are visually inferred"
+  - id: ARCH-003
+    category: architecture
+    claim_type: OBSERVATION
+    statement: "edh020 and edh059 both use visibly stone-like facades and sculptural/curved dark roof accents"
+    sources:
+      - reference_id: "edh020"
+        shot_id: "shot-01"
+        field_path: "shots[0].visible_details.architectural"
+      - reference_id: "edh059"
+        shot_id: "shot-01"
+        field_path: "shots[0].visible_details.architectural"
+    confidence: medium
+    limitations:
+      - "They are two different buildings; identical materials/geometry are not claimed"
+  - id: ARCH-004
+    category: architecture
+    claim_type: OBSERVATION
+    statement: "edh052 uses a reddish tiled hip roof with a warm-cream bungalow-style facade"
+    sources:
+      - reference_id: "edh052"
+        shot_id: "shot-01"
+        field_path: "shots[0].visible_details.architectural"
+    confidence: medium
+    limitations:
+      - "Roof composition inferred from visual annotation"
+  - id: ARCH-005
+    category: architecture
+    claim_type: OBSERVATION
+    statement: "edh042 contemporary tropical facade has broad bright walls and wood-tone opening details"
+    sources:
+      - reference_id: "edh042"
+        shot_id: "shot-01"
+        field_path: "shots[0].visible_details.architectural"
+    confidence: medium
+    limitations:
+      - "Visual style is not geographic confirmation"
+  - id: LAND-001
+    category: landscape
+    claim_type: OBSERVATION
+    statement: "edh058 exterior garden has a curved pale-stone walkway and flowering borders"
+    sources:
+      - reference_id: "edh058"
+        shot_id: "shot-01"
+        field_path: "shots[0].visible_details.environment"
+    confidence: high
+    limitations:
+      - "Plant species and terrain dimensions unknown"
+  - id: LAND-002
+    category: landscape
+    claim_type: OBSERVATION
+    statement: "edh060 exterior camera is partly framed by tree trunks, with lawn and stepping path"
+    sources:
+      - reference_id: "edh060"
+        shot_id: "shot-01"
+        field_path: "shots[0].visible_details.environment"
+    confidence: high
+    limitations:
+      - "View angle is an annotation"
+  - id: LAND-003
+    category: landscape
+    claim_type: OBSERVATION
+    statement: "edh058 interior living-room opening shows greenery and colored flowers"
+    sources:
+      - reference_id: "edh058"
+        shot_id: "shot-02"
+        field_path: "shots[1].visible_details.environment"
+    confidence: high
+    limitations:
+      - "Window compass direction not established"
+  - id: LAND-004
+    category: landscape
+    claim_type: OBSERVATION
+    statement: "edh060 living/kitchen windows include lawn and trees in the recorded view"
+    sources:
+      - reference_id: "edh060"
+        shot_id: "shot-02"
+        field_path: "shots[1].visible_details.environment"
+    confidence: medium
+    limitations:
+      - "Cannot locate the windows precisely on a measured plan"
+  - id: INTR-001
+    category: interior
+    claim_type: OBSERVATION
+    statement: "edh058 living uses cream sofa, coffee table, rug and a TV/media wall"
+    sources:
+      - reference_id: "edh058"
+        shot_id: "shot-02"
+        field_path: "shots[1].visible_details.furniture_and_props"
+    confidence: high
+    limitations:
+      - "Positions recorded in the frame, not overall plan"
+  - id: INTR-002
+    category: interior
+    claim_type: OBSERVATION
+    statement: "edh058 kitchen includes peninsula seating, cooking range and cabinetry"
+    sources:
+      - reference_id: "edh058"
+        shot_id: "shot-03"
+        field_path: "shots[2].visible_details.furniture_and_props"
+      - reference_id: "edh058"
+        shot_id: "shot-03"
+        field_path: "shots[2].visible_details.architectural"
+    confidence: high
+    limitations:
+      - "This is a separate cut from the living scene"
+  - id: INTR-003
+    category: interior
+    claim_type: OBSERVATION
+    statement: "edh058 bedroom includes a wood-framed bed, matching bedside storage and an arched window"
+    sources:
+      - reference_id: "edh058"
+        shot_id: "shot-04"
+        field_path: "shots[3].visible_details.furniture_and_props"
+      - reference_id: "edh058"
+        shot_id: "shot-04"
+        field_path: "shots[3].visible_details.architectural"
+    confidence: high
+    limitations:
+      - "View and room dimensions not surveyed"
+  - id: INTR-004
+    category: interior
+    claim_type: OBSERVATION
+    statement: "edh060 bathroom view contains a wood vanity, toilet, bathtub and dark-framed mirror"
+    sources:
+      - reference_id: "edh060"
+        shot_id: "shot-03"
+        field_path: "shots[2].visible_details.furniture_and_props"
+    confidence: high
+    limitations:
+      - "View does not verify full room dimensions"
+  - id: SPAT-001
+    category: spatial
+    claim_type: OBSERVATION
+    statement: "edh060 records a combined narrow living/kitchen space with sleeping loft and stairs"
+    sources:
+      - reference_id: "edh060"
+        shot_id: "shot-02"
+        field_path: "shots[1].visible_details.architectural"
+      - reference_id: "edh060"
+        shot_id: "shot-02"
+        field_path: "shots[1].visible_details.furniture_and_props"
+    confidence: high
+    limitations:
+      - "Only the recorded visible arrangement, not complete floorplan"
+  - id: SPAT-002
+    category: spatial
+    claim_type: OBSERVATION
+    statement: "edh033 scene label includes living, dining, kitchen and sleeping loft in one view"
+    sources:
+      - reference_id: "edh033"
+        shot_id: "shot-02"
+        field_path: "shots[1].scene"
+    confidence: medium
+    limitations:
+      - "Scene category does not establish survey-accurate adjacency"
+  - id: SPAT-003
+    category: spatial
+    claim_type: INFERENCE
+    statement: "Separate edh058 living and kitchen shots do not by themselves prove a doorway or which room is east or west"
+    sources:
+      - reference_id: "edh058"
+        shot_id: "shot-02"
+        field_path: "shots[1].scene"
+      - reference_id: "edh058"
+        shot_id: "shot-03"
+        field_path: "shots[2].scene"
+    confidence: high
+    limitations:
+      - "A limitation on inference, not a statement about unseen walls"
+  - id: CINE-001
+    category: cinematography
+    claim_type: OBSERVATION
+    statement: "edh058 exterior annotated dolly-in and slight rightward tracking toward front entry"
+    sources:
+      - reference_id: "edh058"
+        shot_id: "shot-01"
+        field_path: "shots[0].camera.movements"
+      - reference_id: "edh058"
+        shot_id: "shot-01"
+        field_path: "shots[0].framing"
+    confidence: high
+    limitations:
+      - "Motion is screen-inferred; not proof of equipment"
+  - id: CINE-002
+    category: cinematography
+    claim_type: OBSERVATION
+    statement: "edh060 foreground tree occlusion changes during annotated rightward tracking"
+    sources:
+      - reference_id: "edh060"
+        shot_id: "shot-01"
+        field_path: "shots[0].camera.movements"
+      - reference_id: "edh060"
+        shot_id: "shot-01"
+        field_path: "shots[0].observation_note"
+    confidence: high
+    limitations:
+      - "No technical camera calibration"
+  - id: CINE-003
+    category: cinematography
+    claim_type: OBSERVATION
+    statement: "edh058 bedroom starts near bed detail and expands to a wider room view"
+    sources:
+      - reference_id: "edh058"
+        shot_id: "shot-04"
+        field_path: "shots[3].framing"
+      - reference_id: "edh058"
+        shot_id: "shot-04"
+        field_path: "shots[3].camera.movements"
+    confidence: high
+    limitations:
+      - "Camera labels are inferred from pixels"
+  - id: CINE-004
+    category: cinematography
+    claim_type: OBSERVATION
+    statement: "edh060 bathroom shifts the view from vanity toward tub with pan-right annotation"
+    sources:
+      - reference_id: "edh060"
+        shot_id: "shot-03"
+        field_path: "shots[2].camera.movements"
+      - reference_id: "edh060"
+        shot_id: "shot-03"
+        field_path: "shots[2].focal_subject"
+    confidence: high
+    limitations:
+      - "Not a requirement for future concepts"
+  - id: NARR-001
+    category: visual_storytelling
+    claim_type: OBSERVATION
+    statement: "edh058 has distinct exterior, living, kitchen, bedroom, closet and bathroom scenes"
+    sources:
+      - reference_id: "edh058"
+        shot_id: "shot-01"
+        field_path: "shots[0].scene"
+      - reference_id: "edh058"
+        shot_id: "shot-05"
+        field_path: "shots[4].scene"
+      - reference_id: "edh058"
+        shot_id: "shot-06"
+        field_path: "shots[5].scene"
+    confidence: high
+    limitations:
+      - "Sequence varies across collection"
+  - id: NARR-002
+    category: visual_storytelling
+    claim_type: OBSERVATION
+    statement: "edh060 has only three shots, with living/kitchen/loft combined"
+    sources:
+      - reference_id: "edh060"
+        shot_id: "shot-02"
+        field_path: "shots[1].scene"
+      - reference_id: "edh060"
+        shot_id: "shot-03"
+        field_path: "shots[2].scene"
+    confidence: high
+    limitations:
+      - "Do not assume five distinct rooms are universal"
+  - id: METHOD-001
+    category: methodology
+    claim_type: OBSERVATION
+    statement: "edh060 source assessment is not marked human verified"
+    sources:
+      - reference_id: "edh060"
+        shot_id: "shot-01"
+        field_path: "analysis_quality.human_verified"
+    confidence: high
+    limitations:
+      - "This claim is scoped to this source; historic audit supplies collection-wide figures"
