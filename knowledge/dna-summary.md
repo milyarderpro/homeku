@@ -4,6 +4,8 @@
 
 ## Snapshot of the reference set
 
+Numeric baseline below refers to initial release 2026-11-17-stage-1-2. See [current release](release.json) for published membership and counts; later archive additions do not update these historical aggregates.
+
 The active source snapshot was refreshed on 2026-11-17 after removing an exact duplicate source and retaining its canonical reference. It contains **57 reference packages, 295 shots and keyframes**, and 6,111 recorded visual-detail items (not unique objects). There are 34 five-shot, 14 six-shot, 6 four-shot, 2 seven-shot, and 1 three-shot references. All 57 annotated videos begin with exterior imagery; in 4, exterior and living appear within the same first shot. These are **sample descriptions**, not recommended durations or universal patterns. Source bytes and canonical IDs are pinned in [source-manifest.json](source-manifest.json); see [source integrity](source-integrity.md).
 
 The median annotated video length is 20.18 seconds (range 15.300–27.233 seconds). Overall pace labels: 29 slow, 27 moderate, one slow-to-moderate. Source boundary estimates and interpretations have uncertainties. No performance metric was verified in these annotations, so patterns below cannot be called causal 'viral formulas'.

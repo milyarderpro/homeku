@@ -1,0 +1,73 @@
+# Directory: style_influence
+
+[All directories](README.md) · [Vocabulary](../taxonomy/README.md)
+
+## modern / modern
+
+Concept ID: `style_influence.modern`.
+[VID-001](../reference-profiles/VID-001.md), [VID-002](../reference-profiles/VID-002.md), [VID-003](../reference-profiles/VID-003.md), [VID-004](../reference-profiles/VID-004.md), [VID-005](../reference-profiles/VID-005.md), [VID-006](../reference-profiles/VID-006.md), [VID-007](../reference-profiles/VID-007.md), [VID-008](../reference-profiles/VID-008.md), [VID-009](../reference-profiles/VID-009.md), [VID-010](../reference-profiles/VID-010.md), [edh011](../reference-profiles/edh011.md), [edh012](../reference-profiles/edh012.md), [edh013](../reference-profiles/edh013.md), [edh016](../reference-profiles/edh016.md), [edh018](../reference-profiles/edh018.md), [edh019](../reference-profiles/edh019.md), [edh020](../reference-profiles/edh020.md), [edh021](../reference-profiles/edh021.md), [edh022](../reference-profiles/edh022.md), [edh023](../reference-profiles/edh023.md), [edh024](../reference-profiles/edh024.md), [edh027](../reference-profiles/edh027.md), [edh029](../reference-profiles/edh029.md), [edh030](../reference-profiles/edh030.md), [edh031](../reference-profiles/edh031.md), [edh032](../reference-profiles/edh032.md), [edh033](../reference-profiles/edh033.md), [edh034](../reference-profiles/edh034.md), [edh035](../reference-profiles/edh035.md), [edh036](../reference-profiles/edh036.md), [edh037](../reference-profiles/edh037.md), [edh039](../reference-profiles/edh039.md), [edh040](../reference-profiles/edh040.md), [edh041](../reference-profiles/edh041.md), [edh042](../reference-profiles/edh042.md), [edh043](../reference-profiles/edh043.md), [edh045](../reference-profiles/edh045.md), [edh046](../reference-profiles/edh046.md), [edh047](../reference-profiles/edh047.md), [edh048](../reference-profiles/edh048.md), [edh049](../reference-profiles/edh049.md), [edh051](../reference-profiles/edh051.md), [edh052](../reference-profiles/edh052.md), [edh054](../reference-profiles/edh054.md), [edh055](../reference-profiles/edh055.md), [edh056](../reference-profiles/edh056.md), [edh057](../reference-profiles/edh057.md), [edh060](../reference-profiles/edh060.md)
+
+## contemporary / kontemporer
+
+Concept ID: `style_influence.contemporary`.
+[VID-002](../reference-profiles/VID-002.md), [VID-004](../reference-profiles/VID-004.md), [VID-005](../reference-profiles/VID-005.md), [VID-006](../reference-profiles/VID-006.md), [VID-008](../reference-profiles/VID-008.md), [VID-009](../reference-profiles/VID-009.md), [edh012](../reference-profiles/edh012.md), [edh018](../reference-profiles/edh018.md), [edh019](../reference-profiles/edh019.md), [edh021](../reference-profiles/edh021.md), [edh022](../reference-profiles/edh022.md), [edh023](../reference-profiles/edh023.md), [edh024](../reference-profiles/edh024.md), [edh027](../reference-profiles/edh027.md), [edh029](../reference-profiles/edh029.md), [edh031](../reference-profiles/edh031.md), [edh032](../reference-profiles/edh032.md), [edh033](../reference-profiles/edh033.md), [edh034](../reference-profiles/edh034.md), [edh035](../reference-profiles/edh035.md), [edh037](../reference-profiles/edh037.md), [edh039](../reference-profiles/edh039.md), [edh040](../reference-profiles/edh040.md), [edh041](../reference-profiles/edh041.md), [edh042](../reference-profiles/edh042.md), [edh043](../reference-profiles/edh043.md), [edh045](../reference-profiles/edh045.md), [edh046](../reference-profiles/edh046.md), [edh047](../reference-profiles/edh047.md), [edh048](../reference-profiles/edh048.md), [edh049](../reference-profiles/edh049.md), [edh050](../reference-profiles/edh050.md), [edh051](../reference-profiles/edh051.md), [edh052](../reference-profiles/edh052.md), [edh053](../reference-profiles/edh053.md), [edh054](../reference-profiles/edh054.md), [edh055](../reference-profiles/edh055.md), [edh056](../reference-profiles/edh056.md), [edh060](../reference-profiles/edh060.md)
+
+## rustic / rustik
+
+Concept ID: `style_influence.rustic`.
+[VID-002](../reference-profiles/VID-002.md), [VID-003](../reference-profiles/VID-003.md), [edh011](../reference-profiles/edh011.md), [edh015](../reference-profiles/edh015.md), [edh016](../reference-profiles/edh016.md), [edh018](../reference-profiles/edh018.md), [edh020](../reference-profiles/edh020.md), [edh021](../reference-profiles/edh021.md), [edh024](../reference-profiles/edh024.md), [edh025](../reference-profiles/edh025.md), [edh030](../reference-profiles/edh030.md), [edh032](../reference-profiles/edh032.md), [edh033](../reference-profiles/edh033.md), [edh034](../reference-profiles/edh034.md), [edh035](../reference-profiles/edh035.md), [edh036](../reference-profiles/edh036.md), [edh038](../reference-profiles/edh038.md), [edh039](../reference-profiles/edh039.md), [edh040](../reference-profiles/edh040.md), [edh044](../reference-profiles/edh044.md), [edh045](../reference-profiles/edh045.md), [edh046](../reference-profiles/edh046.md), [edh047](../reference-profiles/edh047.md), [edh049](../reference-profiles/edh049.md), [edh051](../reference-profiles/edh051.md), [edh054](../reference-profiles/edh054.md), [edh056](../reference-profiles/edh056.md), [edh057](../reference-profiles/edh057.md), [edh058](../reference-profiles/edh058.md), [edh059](../reference-profiles/edh059.md)
+
+## organic / organik
+
+Concept ID: `style_influence.organic`.
+[VID-004](../reference-profiles/VID-004.md), [VID-005](../reference-profiles/VID-005.md), [VID-009](../reference-profiles/VID-009.md), [VID-010](../reference-profiles/VID-010.md), [edh013](../reference-profiles/edh013.md), [edh021](../reference-profiles/edh021.md), [edh027](../reference-profiles/edh027.md), [edh031](../reference-profiles/edh031.md), [edh039](../reference-profiles/edh039.md), [edh047](../reference-profiles/edh047.md), [edh049](../reference-profiles/edh049.md), [edh051](../reference-profiles/edh051.md)
+
+## Scandinavian / Skandinavia
+
+Concept ID: `style_influence.scandinavian`.
+[VID-004](../reference-profiles/VID-004.md), [edh019](../reference-profiles/edh019.md), [edh025](../reference-profiles/edh025.md), [edh027](../reference-profiles/edh027.md), [edh046](../reference-profiles/edh046.md), [edh060](../reference-profiles/edh060.md)
+
+## transitional / transisional
+
+Concept ID: `style_influence.transitional`.
+[VID-003](../reference-profiles/VID-003.md), [VID-007](../reference-profiles/VID-007.md), [VID-010](../reference-profiles/VID-010.md), [edh011](../reference-profiles/edh011.md), [edh018](../reference-profiles/edh018.md), [edh022](../reference-profiles/edh022.md), [edh036](../reference-profiles/edh036.md), [edh037](../reference-profiles/edh037.md), [edh041](../reference-profiles/edh041.md), [edh042](../reference-profiles/edh042.md), [edh043](../reference-profiles/edh043.md), [edh048](../reference-profiles/edh048.md), [edh050](../reference-profiles/edh050.md), [edh051](../reference-profiles/edh051.md), [edh052](../reference-profiles/edh052.md), [edh053](../reference-profiles/edh053.md), [edh054](../reference-profiles/edh054.md), [edh055](../reference-profiles/edh055.md), [edh056](../reference-profiles/edh056.md), [edh058](../reference-profiles/edh058.md)
+
+## classical / klasik
+
+Concept ID: `style_influence.classical`.
+[VID-007](../reference-profiles/VID-007.md), [edh017](../reference-profiles/edh017.md), [edh036](../reference-profiles/edh036.md), [edh037](../reference-profiles/edh037.md), [edh043](../reference-profiles/edh043.md), [edh048](../reference-profiles/edh048.md), [edh053](../reference-profiles/edh053.md), [edh054](../reference-profiles/edh054.md)
+
+## storybook / dongeng
+
+Concept ID: `style_influence.storybook`.
+[VID-001](../reference-profiles/VID-001.md), [VID-010](../reference-profiles/VID-010.md), [edh013](../reference-profiles/edh013.md), [edh016](../reference-profiles/edh016.md), [edh020](../reference-profiles/edh020.md), [edh025](../reference-profiles/edh025.md), [edh044](../reference-profiles/edh044.md), [edh059](../reference-profiles/edh059.md)
+
+## minimalist / minimalis
+
+Concept ID: `style_influence.minimalist`.
+[VID-004](../reference-profiles/VID-004.md), [VID-005](../reference-profiles/VID-005.md), [VID-008](../reference-profiles/VID-008.md), [edh019](../reference-profiles/edh019.md), [edh022](../reference-profiles/edh022.md), [edh023](../reference-profiles/edh023.md), [edh027](../reference-profiles/edh027.md), [edh029](../reference-profiles/edh029.md), [edh031](../reference-profiles/edh031.md), [edh040](../reference-profiles/edh040.md), [edh042](../reference-profiles/edh042.md), [edh045](../reference-profiles/edh045.md), [edh046](../reference-profiles/edh046.md), [edh047](../reference-profiles/edh047.md), [edh056](../reference-profiles/edh056.md), [edh060](../reference-profiles/edh060.md)
+
+## industrial / industrial
+
+Concept ID: `style_influence.industrial`.
+[edh023](../reference-profiles/edh023.md), [edh039](../reference-profiles/edh039.md)
+
+## Craftsman / Craftsman
+
+Concept ID: `style_influence.craftsman`.
+[VID-003](../reference-profiles/VID-003.md)
+
+## biophilic / biofilik
+
+Concept ID: `style_influence.biophilic`.
+[VID-009](../reference-profiles/VID-009.md)
+
+## French country / pedesaan Prancis
+
+Concept ID: `style_influence.french_country`.
+[edh015](../reference-profiles/edh015.md), [edh048](../reference-profiles/edh048.md)
+
+## English country / pedesaan Inggris
+
+Concept ID: `style_influence.english_country`.
+[edh016](../reference-profiles/edh016.md), [edh036](../reference-profiles/edh036.md), [edh044](../reference-profiles/edh044.md)

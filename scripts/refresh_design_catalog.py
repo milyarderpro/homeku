@@ -1,41 +1,34 @@
-"""Read-only by default: verify the Design Intelligence catalog against reference YAML.
-
---write regenerates only knowledge/reference-catalog.md using existing YAML.
-It does not modify references, production artifacts or source analysis files.
-"""
+"""Read-only verification or deterministic rendering of the published catalog."""
 from __future__ import annotations
 
 import argparse
-import re
 from pathlib import Path
-
+import re
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 REFERENCES = ROOT / "references"
-CATALOG = ROOT / "knowledge" / "reference-catalog.md"
-ROW_RE = re.compile(
-    r"^\| \[(?P<id>[A-Za-z0-9_.-]+)\]\(\.\./references/(?P=id)/analysis\.yaml\)\s*\|"
-)
+CATALOG = ROOT / "knowledge/reference-catalog.md"
+ROW_RE = re.compile(r"^\| \[(?P<id>[A-Za-z0-9_.-]+)\]\(\.\./references/(?P=id)/analysis\.yaml\)\s*\|")
 
 
-def read_references() -> dict[str, dict]:
+def read_references(root=ROOT, *, published=False):
+    if published:
+        from knowledge_library import published_references
+        return published_references(root)
     result = {}
-    for file in sorted(REFERENCES.glob("*/analysis.yaml")):
+    for file in sorted((Path(root) / "references").glob("*/analysis.yaml")):
         data = yaml.safe_load(file.read_text(encoding="utf-8"))
         ident = file.parent.name
-        if data["video"]["id"] != ident:
-            raise ValueError(f"Reference identifier mismatch: {ident}")
-        shots = data["shots"]
-        if data["video"]["shot_count"] != len(shots):
-            raise ValueError(f"Shot count mismatch: {ident}")
+        if data["video"]["id"] != ident or data["video"]["shot_count"] != len(data["shots"]):
+            raise ValueError(f"Reference identity/shot count mismatch: {ident}")
         result[ident] = data
     if not result:
         raise ValueError("No source analysis files")
     return result
 
 
-def markdown_rows(text: str) -> dict[str, list[str]]:
+def markdown_rows(text):
     rows = {}
     for line in text.splitlines():
         match = ROW_RE.match(line)
@@ -51,80 +44,50 @@ def markdown_rows(text: str) -> dict[str, list[str]]:
     return rows
 
 
-def verify_catalog() -> tuple[int, int]:
-    data = read_references()
-    rows = markdown_rows(CATALOG.read_text(encoding="utf-8"))
-    if set(rows) != set(data):
-        raise ValueError(
-            f"Catalog sources differ; missing={sorted(set(data)-set(rows))}, "
-            f"obsolete={sorted(set(rows)-set(data))}"
-        )
-    shots = 0
-    for ident, item in data.items():
-        cells = rows[ident]
-        style = str(item["architecture"]["primary_style"])
-        total = int(item["video"]["shot_count"])
-        duration = float(item["video"]["duration_s"])
-        opening = float(item["shots"][0]["end_s"]) - float(item["shots"][0]["start_s"])
-        recorded_opening = cells[4].replace("*", "").strip()
-        if cells[1] != style or int(cells[3]) != total:
-            raise ValueError(f"Source style/shot mismatch in catalog: {ident}")
-        if abs(float(cells[2]) - duration) > 0.02:
-            raise ValueError(f"Duration mismatch in catalog: {ident}")
-        if abs(float(recorded_opening) - opening) > 0.03:
-            raise ValueError(f"Opening shot mismatch in catalog: {ident}")
-        shots += total
-    return len(data), shots
-
-
-def render_catalog() -> str:
-    refs = read_references()
-    lines = [
-        "# HOMEKU — Reference catalog (generated from source YAML)",
-        "",
-        "A source-data index, not an AI design-generation or video-production rule. "
-        "Descriptions and durations are recorded annotations, not independently verified measurements. "
-        "Regenerate explicitly with `python scripts/refresh_design_catalog.py --write` and review the diff.",
-        "",
-        "| Reference | Recorded style | Length (s) | Shots | Opening shot (s) | Annotated scenes | First-shot camera labels |",
-        "| --- | --- | ---: | ---: | ---: | --- | --- |",
-    ]
-    for ident, item in sorted(refs.items()):
-        shots = item["shots"]
-        video = item["video"]
-        style = item["architecture"]["primary_style"]
-        scene = ", ".join(str(x) for x in item["video_structure"]["scene_sequence"])
-        camera = " + ".join(shots[0]["camera"]["movements"]) or "not_recorded"
-        first = float(shots[0]["end_s"]) - float(shots[0]["start_s"])
-        fields = [
-            f"[{ident}](../references/{ident}/analysis.yaml)",
-            str(style),
-            f"{float(video['duration_s']):.3f}",
-            str(len(shots)),
-            f"{first:.3f}",
-            scene,
-            camera,
-        ]
+def render_catalog(refs=None, *, release_id=None, root=ROOT):
+    if refs is None:
+        from knowledge_library import load_release, published_references
+        release_id = load_release(root)["release_id"]
+        refs = published_references(root)
+    lines = ["# HOMEKU — Published reference catalog", "",
+             f"Knowledge release: {release_id}. Source labels and timings remain recorded annotations.",
+             "New archives do not enter this table until an explicit knowledge publication.",
+             "", "[Reference profiles](reference-profiles/README.md) · [Core knowledge](ai-knowledge.md) · [Release](release.json)",
+             "", "| Reference | Recorded style | Length (s) | Shots | Opening shot (s) | Annotated scenes | First-shot camera labels |",
+             "| --- | --- | ---: | ---: | ---: | --- | --- |"]
+    for ident, doc in sorted(refs.items()):
+        shots, video = doc["shots"], doc["video"]
+        fields = [f"[{ident}](../references/{ident}/analysis.yaml)",
+                  str(doc["architecture"]["primary_style"]), f"{float(video['duration_s']):.3f}",
+                  str(len(shots)), f"{float(shots[0]['end_s']) - float(shots[0]['start_s']):.3f}",
+                  ", ".join(str(x) for x in doc["video_structure"].get("scene_sequence", [])),
+                  " + ".join(shots[0]["camera"]["movements"]) or "not_recorded"]
         if any("|" in cell or "\n" in cell for cell in fields):
             raise ValueError(f"Unsafe catalog text for {ident}")
         lines.append("| " + " | ".join(fields) + " |")
-    lines.extend(
-        ["", "Use each linked YAML, its analysis report and visual frames to inspect individual claims. "
-         "A scene label or camera tag cannot establish a measured floorplan or physical camera rig.", ""]
-    )
-    return "\n".join(lines)
+    return "\n".join(lines + ["", "Inspect source YAML, frames and original video for evidence; this table does not establish a floorplan or physical camera rig.", ""])
 
 
-def main() -> None:
+def verify_catalog(root=ROOT):
+    root = Path(root)
+    refs = read_references(root, published=True)
+    content = (root / "knowledge/reference-catalog.md").read_text(encoding="utf-8")
+    if set(markdown_rows(content)) != set(refs) or content != render_catalog(root=root):
+        raise ValueError("Published catalog differs from its release; rebuild the current snapshot")
+    return len(refs), sum(len(d["shots"]) for d in refs.values())
+
+
+def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--root", type=Path, default=ROOT)
     mode = parser.add_mutually_exclusive_group()
-    mode.add_argument("--check", action="store_true", help="Validate catalog against reference YAML (default)")
-    mode.add_argument("--write", action="store_true", help="Regenerate catalog from current YAML")
+    mode.add_argument("--check", action="store_true")
+    mode.add_argument("--write", action="store_true")
     args = parser.parse_args()
     if args.write:
-        CATALOG.write_text(render_catalog(), encoding="utf-8")
-    count, shots = verify_catalog()
-    print(f"Design catalog verified: {count} references / {shots} shots")
+        (args.root / "knowledge/reference-catalog.md").write_text(render_catalog(root=args.root), encoding="utf-8")
+    count, shots = verify_catalog(args.root)
+    print(f"Published catalog verified: {count} references / {shots} shots")
 
 
 if __name__ == "__main__":

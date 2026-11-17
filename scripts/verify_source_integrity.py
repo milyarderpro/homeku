@@ -40,7 +40,7 @@ def load_manifest(root):
     path = root / MANIFEST
     require(path.is_file(), f"Source manifest missing: {MANIFEST}")
     value = json.loads(path.read_text(encoding="utf-8"))
-    require(isinstance(value, dict) and value.get("schema_version") == "1.0",
+    require(isinstance(value, dict) and value.get("schema_version") in ("1.0", "1.1"),
             "Unsupported source manifest")
     require(isinstance(value.get("retired_references"), list),
             "Missing retired_references ledger")
@@ -105,8 +105,7 @@ def scan_sources(root, retired_references=()):
                 and video.get("shot_count") == len(shots),
                 f"Shot count mismatch: {ident}")
         shot_count += len(shots)
-        references.append({"reference_id": ident, **inventory[filename]})
-    require(bool(references), "No reference analyses")
+        references.append({"reference_id": ident, "analysis_sha256": sha256_file(analysis), **inventory[filename]})
 
     active = {item["reference_id"]: item for item in references}
     retired_ids = set()
@@ -132,7 +131,7 @@ def scan_sources(root, retired_references=()):
             ), f"Retired artifact restored: {relative}")
 
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "hash_algorithm": "sha256",
         "reference_count": len(references),
         "shot_count": shot_count,
@@ -142,13 +141,41 @@ def scan_sources(root, retired_references=()):
     }
 
 
-def verify_sources(root=ROOT):
+def verify_sources(root=ROOT, *, allow_additions=False):
     root = Path(root)
     recorded = load_manifest(root)
     actual = scan_sources(root, recorded["retired_references"])
-    require(actual == recorded,
-            "Source manifest differs from current files/bindings; review changes, then "
-            "run scripts/verify_source_integrity.py --write")
+    if allow_additions:
+        ensure_append_only(recorded, actual)
+    else:
+        require(actual == recorded,
+                "Source manifest differs from current files/bindings; review changes, then "
+                "run scripts/verify_source_integrity.py --write")
+    return actual
+
+
+def ensure_append_only(recorded, actual):
+    """Permit new sources/archives, never bless changes to pinned source bytes."""
+    inventory = {r["source_path"]: r for r in actual["references"] + actual["unannotated_sources"]}
+    references = {r["reference_id"]: r for r in actual["references"]}
+    for item in recorded["references"] + recorded["unannotated_sources"]:
+        current = inventory.get(item["source_path"], {})
+        require(all(current.get(k) == item[k] for k in ("source_path", "sha256", "size_bytes")),
+                f"Pinned source changed or removed: {item['source_path']}")
+    for item in recorded["references"]:
+        require(references.get(item["reference_id"]) == item,
+                f"Pinned archive changed or removed: {item['reference_id']}")
+    require(recorded["retired_references"] == actual["retired_references"], "Retirement ledger changed")
+
+
+def sync_archive_manifest(root=ROOT):
+    """Automatic append-only refresh after archiving; does not publish knowledge."""
+    root = Path(root)
+    recorded = load_manifest(root)
+    actual = scan_sources(root, recorded["retired_references"])
+    ensure_append_only(recorded, actual)
+    (root / MANIFEST).write_text(
+        json.dumps(actual, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return actual
 
 

@@ -1,0 +1,1404 @@
+{
+  "schema_version": "1.0",
+  "version": "1.0.0",
+  "normalization_method": "lexical_aliases_with_field_scope",
+  "notes": [
+    "Labels normalize source vocabulary, not visual truth, geographic location or actual material composition.",
+    "Multiple concepts may coexist; exact matches and partial lexical matches remain distinct.",
+    "Unknown or ambiguous labels remain visible for AI review; they do not exclude references from inspiration."
+  ],
+  "concepts": [
+    {
+      "id": "style_family.cottage",
+      "dimension": "style_family",
+      "label": {
+        "en": "cottage",
+        "id": "rumah cottage"
+      },
+      "aliases": [
+        "cottage",
+        "rumah cottage",
+        "cottages"
+      ]
+    },
+    {
+      "id": "style_family.farmhouse",
+      "dimension": "style_family",
+      "label": {
+        "en": "farmhouse",
+        "id": "rumah farmhouse"
+      },
+      "aliases": [
+        "farmhouse",
+        "rumah farmhouse"
+      ]
+    },
+    {
+      "id": "style_family.mediterranean",
+      "dimension": "style_family",
+      "label": {
+        "en": "Mediterranean",
+        "id": "Mediterania"
+      },
+      "aliases": [
+        "Mediterranean",
+        "Mediterania",
+        "spanish revival"
+      ]
+    },
+    {
+      "id": "style_family.tropical",
+      "dimension": "style_family",
+      "label": {
+        "en": "tropical",
+        "id": "tropis"
+      },
+      "aliases": [
+        "tropical",
+        "tropis"
+      ]
+    },
+    {
+      "id": "style_family.bungalow",
+      "dimension": "style_family",
+      "label": {
+        "en": "bungalow",
+        "id": "bungalow"
+      },
+      "aliases": [
+        "bungalow"
+      ]
+    },
+    {
+      "id": "style_family.tiny_house",
+      "dimension": "style_family",
+      "label": {
+        "en": "tiny house",
+        "id": "rumah mungil"
+      },
+      "aliases": [
+        "tiny house",
+        "rumah mungil",
+        "tiny"
+      ]
+    },
+    {
+      "id": "style_family.alpine",
+      "dimension": "style_family",
+      "label": {
+        "en": "alpine",
+        "id": "alpin"
+      },
+      "aliases": [
+        "alpine",
+        "alpin",
+        "chalet"
+      ]
+    },
+    {
+      "id": "style_family.victorian",
+      "dimension": "style_family",
+      "label": {
+        "en": "Victorian",
+        "id": "Victoria"
+      },
+      "aliases": [
+        "Victorian",
+        "Victoria"
+      ]
+    },
+    {
+      "id": "style_family.neoclassical",
+      "dimension": "style_family",
+      "label": {
+        "en": "neoclassical",
+        "id": "neoklasik"
+      },
+      "aliases": [
+        "neoclassical",
+        "neoklasik"
+      ]
+    },
+    {
+      "id": "style_family.castle_inspired",
+      "dimension": "style_family",
+      "label": {
+        "en": "castle inspired",
+        "id": "terinspirasi kastel"
+      },
+      "aliases": [
+        "castle inspired",
+        "terinspirasi kastel",
+        "castle",
+        "medieval"
+      ]
+    },
+    {
+      "id": "style_family.townhouse",
+      "dimension": "style_family",
+      "label": {
+        "en": "townhouse",
+        "id": "rumah deret"
+      },
+      "aliases": [
+        "townhouse",
+        "rumah deret"
+      ]
+    },
+    {
+      "id": "style_influence.modern",
+      "dimension": "style_influence",
+      "label": {
+        "en": "modern",
+        "id": "modern"
+      },
+      "aliases": [
+        "modern",
+        "modernism"
+      ]
+    },
+    {
+      "id": "style_influence.contemporary",
+      "dimension": "style_influence",
+      "label": {
+        "en": "contemporary",
+        "id": "kontemporer"
+      },
+      "aliases": [
+        "contemporary",
+        "kontemporer"
+      ]
+    },
+    {
+      "id": "style_influence.rustic",
+      "dimension": "style_influence",
+      "label": {
+        "en": "rustic",
+        "id": "rustik"
+      },
+      "aliases": [
+        "rustic",
+        "rustik"
+      ]
+    },
+    {
+      "id": "style_influence.organic",
+      "dimension": "style_influence",
+      "label": {
+        "en": "organic",
+        "id": "organik"
+      },
+      "aliases": [
+        "organic",
+        "organik",
+        "curvilinear"
+      ]
+    },
+    {
+      "id": "style_influence.scandinavian",
+      "dimension": "style_influence",
+      "label": {
+        "en": "Scandinavian",
+        "id": "Skandinavia"
+      },
+      "aliases": [
+        "Scandinavian",
+        "Skandinavia"
+      ]
+    },
+    {
+      "id": "style_influence.transitional",
+      "dimension": "style_influence",
+      "label": {
+        "en": "transitional",
+        "id": "transisional"
+      },
+      "aliases": [
+        "transitional",
+        "transisional"
+      ]
+    },
+    {
+      "id": "style_influence.classical",
+      "dimension": "style_influence",
+      "label": {
+        "en": "classical",
+        "id": "klasik"
+      },
+      "aliases": [
+        "classical",
+        "klasik",
+        "classic"
+      ]
+    },
+    {
+      "id": "style_influence.storybook",
+      "dimension": "style_influence",
+      "label": {
+        "en": "storybook",
+        "id": "dongeng"
+      },
+      "aliases": [
+        "storybook",
+        "dongeng",
+        "fairytale",
+        "whimsical"
+      ]
+    },
+    {
+      "id": "style_influence.minimalist",
+      "dimension": "style_influence",
+      "label": {
+        "en": "minimalist",
+        "id": "minimalis"
+      },
+      "aliases": [
+        "minimalist",
+        "minimalis",
+        "minimalism"
+      ]
+    },
+    {
+      "id": "style_influence.industrial",
+      "dimension": "style_influence",
+      "label": {
+        "en": "industrial",
+        "id": "industrial"
+      },
+      "aliases": [
+        "industrial"
+      ]
+    },
+    {
+      "id": "style_influence.craftsman",
+      "dimension": "style_influence",
+      "label": {
+        "en": "Craftsman",
+        "id": "Craftsman"
+      },
+      "aliases": [
+        "Craftsman"
+      ]
+    },
+    {
+      "id": "style_influence.biophilic",
+      "dimension": "style_influence",
+      "label": {
+        "en": "biophilic",
+        "id": "biofilik"
+      },
+      "aliases": [
+        "biophilic",
+        "biofilik"
+      ]
+    },
+    {
+      "id": "style_influence.french_country",
+      "dimension": "style_influence",
+      "label": {
+        "en": "French country",
+        "id": "pedesaan Prancis"
+      },
+      "aliases": [
+        "French country",
+        "pedesaan Prancis"
+      ]
+    },
+    {
+      "id": "style_influence.english_country",
+      "dimension": "style_influence",
+      "label": {
+        "en": "English country",
+        "id": "pedesaan Inggris"
+      },
+      "aliases": [
+        "English country",
+        "pedesaan Inggris"
+      ]
+    },
+    {
+      "id": "room_type.exterior",
+      "dimension": "room_type",
+      "label": {
+        "en": "exterior",
+        "id": "eksterior"
+      },
+      "aliases": [
+        "exterior",
+        "eksterior",
+        "facade",
+        "fasad"
+      ]
+    },
+    {
+      "id": "room_type.living_room",
+      "dimension": "room_type",
+      "label": {
+        "en": "living room",
+        "id": "ruang keluarga"
+      },
+      "aliases": [
+        "living room",
+        "ruang keluarga",
+        "living",
+        "ruang tamu"
+      ]
+    },
+    {
+      "id": "room_type.kitchen",
+      "dimension": "room_type",
+      "label": {
+        "en": "kitchen",
+        "id": "dapur"
+      },
+      "aliases": [
+        "kitchen",
+        "dapur"
+      ]
+    },
+    {
+      "id": "room_type.dining",
+      "dimension": "room_type",
+      "label": {
+        "en": "dining",
+        "id": "ruang makan"
+      },
+      "aliases": [
+        "dining",
+        "ruang makan"
+      ]
+    },
+    {
+      "id": "room_type.bedroom",
+      "dimension": "room_type",
+      "label": {
+        "en": "bedroom",
+        "id": "kamar tidur"
+      },
+      "aliases": [
+        "bedroom",
+        "kamar tidur",
+        "sleeping"
+      ]
+    },
+    {
+      "id": "room_type.bathroom",
+      "dimension": "room_type",
+      "label": {
+        "en": "bathroom",
+        "id": "kamar mandi"
+      },
+      "aliases": [
+        "bathroom",
+        "kamar mandi",
+        "bath",
+        "shower"
+      ]
+    },
+    {
+      "id": "room_type.laundry",
+      "dimension": "room_type",
+      "label": {
+        "en": "laundry",
+        "id": "ruang cuci"
+      },
+      "aliases": [
+        "laundry",
+        "ruang cuci"
+      ]
+    },
+    {
+      "id": "room_type.closet",
+      "dimension": "room_type",
+      "label": {
+        "en": "closet",
+        "id": "ruang pakaian"
+      },
+      "aliases": [
+        "closet",
+        "ruang pakaian",
+        "wardrobe"
+      ]
+    },
+    {
+      "id": "room_type.terrace",
+      "dimension": "room_type",
+      "label": {
+        "en": "terrace",
+        "id": "teras"
+      },
+      "aliases": [
+        "terrace",
+        "teras",
+        "porch",
+        "deck"
+      ]
+    },
+    {
+      "id": "room_type.garden",
+      "dimension": "room_type",
+      "label": {
+        "en": "garden",
+        "id": "taman"
+      },
+      "aliases": [
+        "garden",
+        "taman"
+      ]
+    },
+    {
+      "id": "room_type.loft",
+      "dimension": "room_type",
+      "label": {
+        "en": "loft",
+        "id": "loteng"
+      },
+      "aliases": [
+        "loft",
+        "loteng"
+      ]
+    },
+    {
+      "id": "configuration.open_plan",
+      "dimension": "configuration",
+      "label": {
+        "en": "open plan",
+        "id": "ruang terbuka menyatu"
+      },
+      "aliases": [
+        "open plan",
+        "ruang terbuka menyatu"
+      ]
+    },
+    {
+      "id": "configuration.combined_view",
+      "dimension": "configuration",
+      "label": {
+        "en": "combined view",
+        "id": "ruang dalam satu pandangan"
+      },
+      "aliases": [
+        "combined view",
+        "ruang dalam satu pandangan",
+        "combined"
+      ]
+    },
+    {
+      "id": "configuration.loft",
+      "dimension": "configuration",
+      "label": {
+        "en": "loft",
+        "id": "loteng"
+      },
+      "aliases": [
+        "loft",
+        "loteng"
+      ]
+    },
+    {
+      "id": "configuration.double_height",
+      "dimension": "configuration",
+      "label": {
+        "en": "double height",
+        "id": "ruang dua tinggi"
+      },
+      "aliases": [
+        "double height",
+        "ruang dua tinggi"
+      ]
+    },
+    {
+      "id": "configuration.vaulted_ceiling",
+      "dimension": "configuration",
+      "label": {
+        "en": "vaulted ceiling",
+        "id": "langit-langit berkubah"
+      },
+      "aliases": [
+        "vaulted ceiling",
+        "langit-langit berkubah"
+      ]
+    },
+    {
+      "id": "configuration.staircase",
+      "dimension": "configuration",
+      "label": {
+        "en": "staircase",
+        "id": "tangga"
+      },
+      "aliases": [
+        "staircase",
+        "tangga",
+        "stairway",
+        "stairs"
+      ]
+    },
+    {
+      "id": "configuration.integrated_storage",
+      "dimension": "configuration",
+      "label": {
+        "en": "integrated storage",
+        "id": "penyimpanan terintegrasi"
+      },
+      "aliases": [
+        "integrated storage",
+        "penyimpanan terintegrasi"
+      ]
+    },
+    {
+      "id": "configuration.transition_between_spaces",
+      "dimension": "configuration",
+      "label": {
+        "en": "transition between spaces",
+        "id": "perpindahan antar-ruang"
+      },
+      "aliases": [
+        "transition between spaces",
+        "perpindahan antar-ruang",
+        "exterior front to living room",
+        "exterior to living room"
+      ]
+    },
+    {
+      "id": "roof_form.gable",
+      "dimension": "roof_form",
+      "label": {
+        "en": "gable roof",
+        "id": "atap pelana"
+      },
+      "aliases": [
+        "gable roof",
+        "atap pelana",
+        "gable",
+        "gabled"
+      ]
+    },
+    {
+      "id": "roof_form.hip",
+      "dimension": "roof_form",
+      "label": {
+        "en": "hip roof",
+        "id": "atap perisai"
+      },
+      "aliases": [
+        "hip roof",
+        "atap perisai",
+        "hipped",
+        "hip"
+      ]
+    },
+    {
+      "id": "roof_form.flat",
+      "dimension": "roof_form",
+      "label": {
+        "en": "flat roof",
+        "id": "atap datar"
+      },
+      "aliases": [
+        "flat roof",
+        "atap datar",
+        "flat roofline"
+      ]
+    },
+    {
+      "id": "roof_form.shed",
+      "dimension": "roof_form",
+      "label": {
+        "en": "single pitch roof",
+        "id": "atap satu arah"
+      },
+      "aliases": [
+        "single pitch roof",
+        "atap satu arah",
+        "shed roof",
+        "single slope roof"
+      ]
+    },
+    {
+      "id": "roof_form.barrel_vault",
+      "dimension": "roof_form",
+      "label": {
+        "en": "barrel vault",
+        "id": "atap lengkung tong"
+      },
+      "aliases": [
+        "barrel vault",
+        "atap lengkung tong"
+      ]
+    },
+    {
+      "id": "roof_form.curved",
+      "dimension": "roof_form",
+      "label": {
+        "en": "curved roof",
+        "id": "atap melengkung"
+      },
+      "aliases": [
+        "curved roof",
+        "atap melengkung",
+        "curving roof",
+        "sculptural roof"
+      ]
+    },
+    {
+      "id": "roof_form.pitched",
+      "dimension": "roof_form",
+      "label": {
+        "en": "pitched roof",
+        "id": "atap miring"
+      },
+      "aliases": [
+        "pitched roof",
+        "atap miring",
+        "pitched",
+        "sloped roof"
+      ]
+    },
+    {
+      "id": "opening.window",
+      "dimension": "opening",
+      "label": {
+        "en": "window",
+        "id": "jendela"
+      },
+      "aliases": [
+        "window",
+        "jendela",
+        "windows"
+      ]
+    },
+    {
+      "id": "opening.door",
+      "dimension": "opening",
+      "label": {
+        "en": "door",
+        "id": "pintu"
+      },
+      "aliases": [
+        "door",
+        "pintu",
+        "doors",
+        "doorway"
+      ]
+    },
+    {
+      "id": "opening.arched",
+      "dimension": "opening",
+      "label": {
+        "en": "arched opening",
+        "id": "bukaan lengkung"
+      },
+      "aliases": [
+        "arched opening",
+        "bukaan lengkung",
+        "arched",
+        "arch window",
+        "arch windows"
+      ]
+    },
+    {
+      "id": "opening.glazing",
+      "dimension": "opening",
+      "label": {
+        "en": "glazing",
+        "id": "bidang kaca"
+      },
+      "aliases": [
+        "glazing",
+        "bidang kaca",
+        "glazed",
+        "glass"
+      ]
+    },
+    {
+      "id": "opening.black_frame",
+      "dimension": "opening",
+      "label": {
+        "en": "black framed",
+        "id": "bingkai hitam"
+      },
+      "aliases": [
+        "black framed",
+        "bingkai hitam",
+        "black frame",
+        "dark framed"
+      ]
+    },
+    {
+      "id": "opening.mullions",
+      "dimension": "opening",
+      "label": {
+        "en": "mullions",
+        "id": "kisi jendela"
+      },
+      "aliases": [
+        "mullions",
+        "kisi jendela",
+        "mullioned",
+        "multi pane",
+        "grid framed"
+      ]
+    },
+    {
+      "id": "opening.shutters",
+      "dimension": "opening",
+      "label": {
+        "en": "shutters",
+        "id": "daun penutup jendela"
+      },
+      "aliases": [
+        "shutters",
+        "daun penutup jendela"
+      ]
+    },
+    {
+      "id": "material_appearance.stone",
+      "dimension": "material_appearance",
+      "label": {
+        "en": "stone appearance",
+        "id": "tampilan batu"
+      },
+      "aliases": [
+        "stone appearance",
+        "tampilan batu",
+        "stone",
+        "masonry",
+        "batu",
+        "limestone"
+      ]
+    },
+    {
+      "id": "material_appearance.wood",
+      "dimension": "material_appearance",
+      "label": {
+        "en": "wood appearance",
+        "id": "tampilan kayu"
+      },
+      "aliases": [
+        "wood appearance",
+        "tampilan kayu",
+        "wood",
+        "wooden",
+        "timber",
+        "kayu"
+      ]
+    },
+    {
+      "id": "material_appearance.stucco",
+      "dimension": "material_appearance",
+      "label": {
+        "en": "stucco appearance",
+        "id": "tampilan plester"
+      },
+      "aliases": [
+        "stucco appearance",
+        "tampilan plester",
+        "stucco",
+        "render",
+        "rendered",
+        "plester"
+      ]
+    },
+    {
+      "id": "material_appearance.terracotta",
+      "dimension": "material_appearance",
+      "label": {
+        "en": "terracotta appearance",
+        "id": "tampilan terakota"
+      },
+      "aliases": [
+        "terracotta appearance",
+        "tampilan terakota",
+        "terracotta",
+        "terakota"
+      ]
+    },
+    {
+      "id": "material_appearance.metal",
+      "dimension": "material_appearance",
+      "label": {
+        "en": "metal appearance",
+        "id": "tampilan logam"
+      },
+      "aliases": [
+        "metal appearance",
+        "tampilan logam",
+        "metal",
+        "steel",
+        "iron",
+        "logam"
+      ]
+    },
+    {
+      "id": "material_appearance.glass",
+      "dimension": "material_appearance",
+      "label": {
+        "en": "glass appearance",
+        "id": "tampilan kaca"
+      },
+      "aliases": [
+        "glass appearance",
+        "tampilan kaca",
+        "glass",
+        "glazed",
+        "glazing",
+        "kaca"
+      ]
+    },
+    {
+      "id": "material_appearance.brick",
+      "dimension": "material_appearance",
+      "label": {
+        "en": "brick appearance",
+        "id": "tampilan bata"
+      },
+      "aliases": [
+        "brick appearance",
+        "tampilan bata",
+        "brick",
+        "bata"
+      ]
+    },
+    {
+      "id": "material_appearance.concrete",
+      "dimension": "material_appearance",
+      "label": {
+        "en": "concrete appearance",
+        "id": "tampilan beton"
+      },
+      "aliases": [
+        "concrete appearance",
+        "tampilan beton",
+        "concrete",
+        "beton"
+      ]
+    },
+    {
+      "id": "material_appearance.tile",
+      "dimension": "material_appearance",
+      "label": {
+        "en": "tile appearance",
+        "id": "tampilan ubin"
+      },
+      "aliases": [
+        "tile appearance",
+        "tampilan ubin",
+        "tile",
+        "tiles",
+        "tiled",
+        "ubin"
+      ]
+    },
+    {
+      "id": "material_appearance.fabric",
+      "dimension": "material_appearance",
+      "label": {
+        "en": "fabric appearance",
+        "id": "tampilan kain"
+      },
+      "aliases": [
+        "fabric appearance",
+        "tampilan kain",
+        "fabric",
+        "upholstered",
+        "linen",
+        "textile",
+        "kain"
+      ]
+    },
+    {
+      "id": "material_appearance.marble",
+      "dimension": "material_appearance",
+      "label": {
+        "en": "marble appearance",
+        "id": "tampilan marmer"
+      },
+      "aliases": [
+        "marble appearance",
+        "tampilan marmer",
+        "marble",
+        "marmer"
+      ]
+    },
+    {
+      "id": "lighting.daylight",
+      "dimension": "lighting",
+      "label": {
+        "en": "daylight",
+        "id": "cahaya siang"
+      },
+      "aliases": [
+        "daylight",
+        "cahaya siang",
+        "sunlight",
+        "natural light",
+        "window light",
+        "cahaya alami"
+      ]
+    },
+    {
+      "id": "lighting.diffuse",
+      "dimension": "lighting",
+      "label": {
+        "en": "diffuse light",
+        "id": "cahaya menyebar"
+      },
+      "aliases": [
+        "diffuse light",
+        "cahaya menyebar",
+        "diffuse",
+        "diffused",
+        "soft daylight",
+        "soft natural",
+        "soft window",
+        "overcast",
+        "cloudy"
+      ]
+    },
+    {
+      "id": "lighting.direct_sun",
+      "dimension": "lighting",
+      "label": {
+        "en": "direct sunlight",
+        "id": "sinar matahari langsung"
+      },
+      "aliases": [
+        "direct sunlight",
+        "sinar matahari langsung",
+        "crisp shadows"
+      ]
+    },
+    {
+      "id": "lighting.warm_practical",
+      "dimension": "lighting",
+      "label": {
+        "en": "warm practical light",
+        "id": "lampu hangat"
+      },
+      "aliases": [
+        "warm practical light",
+        "lampu hangat",
+        "warm",
+        "amber"
+      ]
+    },
+    {
+      "id": "lighting.recessed",
+      "dimension": "lighting",
+      "label": {
+        "en": "recessed light",
+        "id": "lampu tanam"
+      },
+      "aliases": [
+        "recessed light",
+        "lampu tanam",
+        "recessed",
+        "downlights",
+        "spotlights"
+      ]
+    },
+    {
+      "id": "lighting.pendant",
+      "dimension": "lighting",
+      "label": {
+        "en": "pendant light",
+        "id": "lampu gantung"
+      },
+      "aliases": [
+        "pendant light",
+        "lampu gantung",
+        "pendant",
+        "pendants",
+        "chandelier"
+      ]
+    },
+    {
+      "id": "lighting.sconce",
+      "dimension": "lighting",
+      "label": {
+        "en": "wall sconce",
+        "id": "lampu dinding"
+      },
+      "aliases": [
+        "wall sconce",
+        "lampu dinding",
+        "sconce",
+        "sconces",
+        "lantern",
+        "lanterns"
+      ]
+    },
+    {
+      "id": "lighting.firelight",
+      "dimension": "lighting",
+      "label": {
+        "en": "firelight",
+        "id": "cahaya perapian"
+      },
+      "aliases": [
+        "firelight",
+        "cahaya perapian",
+        "fireplace"
+      ]
+    },
+    {
+      "id": "lighting.candlelight",
+      "dimension": "lighting",
+      "label": {
+        "en": "candlelight",
+        "id": "cahaya lilin"
+      },
+      "aliases": [
+        "candlelight",
+        "cahaya lilin",
+        "candle",
+        "candles"
+      ]
+    },
+    {
+      "id": "lighting.accent",
+      "dimension": "lighting",
+      "label": {
+        "en": "accent light",
+        "id": "pencahayaan aksen"
+      },
+      "aliases": [
+        "accent light",
+        "pencahayaan aksen",
+        "accent",
+        "under cabinet",
+        "under shelf",
+        "undershelf",
+        "undercabinet",
+        "cove",
+        "indirect"
+      ]
+    },
+    {
+      "id": "camera.dolly_in",
+      "dimension": "camera",
+      "label": {
+        "en": "dolly in",
+        "id": "dolly maju"
+      },
+      "aliases": [
+        "dolly in",
+        "dolly maju"
+      ]
+    },
+    {
+      "id": "camera.dolly_out",
+      "dimension": "camera",
+      "label": {
+        "en": "dolly out",
+        "id": "dolly mundur"
+      },
+      "aliases": [
+        "dolly out",
+        "dolly mundur",
+        "dolly back"
+      ]
+    },
+    {
+      "id": "camera.track_right",
+      "dimension": "camera",
+      "label": {
+        "en": "tracking right",
+        "id": "kamera bergeser kanan"
+      },
+      "aliases": [
+        "tracking right",
+        "kamera bergeser kanan",
+        "track right",
+        "lateral slide right",
+        "lateral move right"
+      ]
+    },
+    {
+      "id": "camera.track_left",
+      "dimension": "camera",
+      "label": {
+        "en": "tracking left",
+        "id": "kamera bergeser kiri"
+      },
+      "aliases": [
+        "tracking left",
+        "kamera bergeser kiri",
+        "track left",
+        "lateral slide left",
+        "lateral move left"
+      ]
+    },
+    {
+      "id": "camera.pan_right",
+      "dimension": "camera",
+      "label": {
+        "en": "pan right",
+        "id": "kamera menoleh kanan"
+      },
+      "aliases": [
+        "pan right",
+        "kamera menoleh kanan"
+      ]
+    },
+    {
+      "id": "camera.pan_left",
+      "dimension": "camera",
+      "label": {
+        "en": "pan left",
+        "id": "kamera menoleh kiri"
+      },
+      "aliases": [
+        "pan left",
+        "kamera menoleh kiri"
+      ]
+    },
+    {
+      "id": "camera.tilt_up",
+      "dimension": "camera",
+      "label": {
+        "en": "tilt up",
+        "id": "kamera menengadah"
+      },
+      "aliases": [
+        "tilt up",
+        "kamera menengadah"
+      ]
+    },
+    {
+      "id": "camera.tilt_down",
+      "dimension": "camera",
+      "label": {
+        "en": "tilt down",
+        "id": "kamera menunduk"
+      },
+      "aliases": [
+        "tilt down",
+        "kamera menunduk"
+      ]
+    },
+    {
+      "id": "camera.move_forward",
+      "dimension": "camera",
+      "label": {
+        "en": "forward move",
+        "id": "gerak maju"
+      },
+      "aliases": [
+        "forward move",
+        "gerak maju",
+        "push in",
+        "forward tracking"
+      ]
+    },
+    {
+      "id": "camera.move_down",
+      "dimension": "camera",
+      "label": {
+        "en": "descending",
+        "id": "gerak turun"
+      },
+      "aliases": [
+        "descending",
+        "gerak turun"
+      ]
+    },
+    {
+      "id": "camera.lateral_unspecified",
+      "dimension": "camera",
+      "label": {
+        "en": "lateral tracking",
+        "id": "gerak lateral tanpa arah"
+      },
+      "aliases": [
+        "lateral tracking",
+        "gerak lateral tanpa arah"
+      ]
+    },
+    {
+      "id": "camera.orbit",
+      "dimension": "camera",
+      "label": {
+        "en": "orbit",
+        "id": "mengorbit"
+      },
+      "aliases": [
+        "orbit",
+        "mengorbit"
+      ]
+    },
+    {
+      "id": "camera.reframe",
+      "dimension": "camera",
+      "label": {
+        "en": "reframing",
+        "id": "perubahan framing"
+      },
+      "aliases": [
+        "reframing",
+        "perubahan framing",
+        "widening reveal"
+      ]
+    },
+    {
+      "id": "mood.cozy",
+      "dimension": "mood",
+      "label": {
+        "en": "cozy",
+        "id": "nyaman hangat"
+      },
+      "aliases": [
+        "cozy",
+        "nyaman hangat",
+        "cosy"
+      ]
+    },
+    {
+      "id": "mood.calm",
+      "dimension": "mood",
+      "label": {
+        "en": "calm",
+        "id": "tenang"
+      },
+      "aliases": [
+        "calm",
+        "tenang",
+        "peaceful",
+        "serene"
+      ]
+    },
+    {
+      "id": "mood.warm",
+      "dimension": "mood",
+      "label": {
+        "en": "warm",
+        "id": "hangat"
+      },
+      "aliases": [
+        "warm",
+        "hangat"
+      ]
+    },
+    {
+      "id": "mood.inviting",
+      "dimension": "mood",
+      "label": {
+        "en": "inviting",
+        "id": "mengundang"
+      },
+      "aliases": [
+        "inviting",
+        "mengundang"
+      ]
+    },
+    {
+      "id": "mood.rustic",
+      "dimension": "mood",
+      "label": {
+        "en": "rustic",
+        "id": "rustik"
+      },
+      "aliases": [
+        "rustic",
+        "rustik"
+      ]
+    },
+    {
+      "id": "mood.luxurious",
+      "dimension": "mood",
+      "label": {
+        "en": "luxurious",
+        "id": "mewah"
+      },
+      "aliases": [
+        "luxurious",
+        "mewah",
+        "luxury"
+      ]
+    },
+    {
+      "id": "mood.romantic",
+      "dimension": "mood",
+      "label": {
+        "en": "romantic",
+        "id": "romantis"
+      },
+      "aliases": [
+        "romantic",
+        "romantis"
+      ]
+    },
+    {
+      "id": "mood.nostalgic",
+      "dimension": "mood",
+      "label": {
+        "en": "nostalgic",
+        "id": "nostalgia"
+      },
+      "aliases": [
+        "nostalgic",
+        "nostalgia"
+      ]
+    },
+    {
+      "id": "scale.tiny",
+      "dimension": "scale",
+      "label": {
+        "en": "tiny",
+        "id": "sangat mungil"
+      },
+      "aliases": [
+        "tiny",
+        "sangat mungil"
+      ]
+    },
+    {
+      "id": "scale.small",
+      "dimension": "scale",
+      "label": {
+        "en": "small",
+        "id": "kecil"
+      },
+      "aliases": [
+        "small",
+        "kecil"
+      ]
+    },
+    {
+      "id": "scale.medium",
+      "dimension": "scale",
+      "label": {
+        "en": "medium",
+        "id": "sedang"
+      },
+      "aliases": [
+        "medium",
+        "sedang"
+      ]
+    },
+    {
+      "id": "scale.large",
+      "dimension": "scale",
+      "label": {
+        "en": "large",
+        "id": "besar"
+      },
+      "aliases": [
+        "large",
+        "besar"
+      ]
+    },
+    {
+      "id": "scale.estate",
+      "dimension": "scale",
+      "label": {
+        "en": "estate",
+        "id": "kompleks luas"
+      },
+      "aliases": [
+        "estate",
+        "kompleks luas"
+      ]
+    }
+  ]
+}

@@ -20,6 +20,7 @@ import yaml
 
 from save_analysis_action import markdown
 from storyboard import generate_storyboard
+from verify_source_integrity import MANIFEST, sync_archive_manifest
 from validate_analysis import validate, validate_narratives, normalize_analysis_quality
 
 STEM = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,63}\Z")
@@ -413,7 +414,16 @@ def publish(root, request_path, trigger_sha, *, max_attempts=5):
     git("config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com",
         cwd=root)
     git("commit", "-m", f"analysis: save {vid} from filename request", cwd=root)
+    managed_manifest = (root / MANIFEST).is_file()
     for attempt in range(1, max_attempts + 1):
+        # Remove our generated manifest diff before rebasing. Each worker's
+        # archive commit is independent; shared inventory is rebuilt afterwards.
+        if managed_manifest:
+            previous = git_bytes("show", f"HEAD^:{MANIFEST.as_posix()}", cwd=root)
+            (root / MANIFEST).write_bytes(previous)
+            git("add", "--", MANIFEST.as_posix(), cwd=root)
+            if git("diff", "--cached", "--name-only", cwd=root):
+                git("commit", "--amend", "--no-edit", cwd=root)
         git("fetch", "origin", "main", cwd=root)
         check_remote_case_collisions(root, "origin/main", vid)
         check_remote_source_sha(root, "origin/main", req)
@@ -428,6 +438,16 @@ def publish(root, request_path, trigger_sha, *, max_attempts=5):
         except subprocess.CalledProcessError as exc:
             subprocess.run(["git", "rebase", "--abort"], cwd=root, check=False)
             raise SaveConflict("Rebase conflict; no overwrite attempted") from exc
+        require(not managed_manifest or (root / MANIFEST).is_file(),
+                "Source manifest removed in remote main")
+        managed_manifest = (root / MANIFEST).is_file()
+        if managed_manifest:
+            # Append-only: fail on changed/deleted pinned sources or annotations.
+            # Recompute from the rebased tree so concurrent saves are not lost.
+            sync_archive_manifest(root)
+            git("add", "--", MANIFEST.as_posix(), cwd=root)
+            if git("diff", "--cached", "--name-only", cwd=root):
+                git("commit", "--amend", "--no-edit", cwd=root)
         pushed = subprocess.run(["git", "push", "origin", "HEAD:main"],
                                 cwd=root, text=True, capture_output=True)
         if pushed.returncode == 0:

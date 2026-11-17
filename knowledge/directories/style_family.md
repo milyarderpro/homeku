@@ -1,0 +1,58 @@
+# Directory: style_family
+
+[All directories](README.md) · [Vocabulary](../taxonomy/README.md)
+
+## cottage / rumah cottage
+
+Concept ID: `style_family.cottage`.
+[VID-001](../reference-profiles/VID-001.md), [VID-002](../reference-profiles/VID-002.md), [VID-003](../reference-profiles/VID-003.md), [VID-004](../reference-profiles/VID-004.md), [VID-006](../reference-profiles/VID-006.md), [VID-007](../reference-profiles/VID-007.md), [VID-008](../reference-profiles/VID-008.md), [VID-010](../reference-profiles/VID-010.md), [edh011](../reference-profiles/edh011.md), [edh012](../reference-profiles/edh012.md), [edh015](../reference-profiles/edh015.md), [edh016](../reference-profiles/edh016.md), [edh017](../reference-profiles/edh017.md), [edh018](../reference-profiles/edh018.md), [edh019](../reference-profiles/edh019.md), [edh020](../reference-profiles/edh020.md), [edh021](../reference-profiles/edh021.md), [edh024](../reference-profiles/edh024.md), [edh025](../reference-profiles/edh025.md), [edh029](../reference-profiles/edh029.md), [edh030](../reference-profiles/edh030.md), [edh032](../reference-profiles/edh032.md), [edh033](../reference-profiles/edh033.md), [edh034](../reference-profiles/edh034.md), [edh035](../reference-profiles/edh035.md), [edh036](../reference-profiles/edh036.md), [edh038](../reference-profiles/edh038.md), [edh041](../reference-profiles/edh041.md), [edh043](../reference-profiles/edh043.md), [edh044](../reference-profiles/edh044.md), [edh045](../reference-profiles/edh045.md), [edh046](../reference-profiles/edh046.md), [edh048](../reference-profiles/edh048.md), [edh050](../reference-profiles/edh050.md), [edh056](../reference-profiles/edh056.md), [edh057](../reference-profiles/edh057.md), [edh058](../reference-profiles/edh058.md), [edh059](../reference-profiles/edh059.md)
+
+## farmhouse / rumah farmhouse
+
+Concept ID: `style_family.farmhouse`.
+[VID-001](../reference-profiles/VID-001.md), [VID-002](../reference-profiles/VID-002.md), [VID-003](../reference-profiles/VID-003.md), [VID-004](../reference-profiles/VID-004.md), [VID-008](../reference-profiles/VID-008.md), [edh011](../reference-profiles/edh011.md), [edh012](../reference-profiles/edh012.md), [edh015](../reference-profiles/edh015.md), [edh016](../reference-profiles/edh016.md), [edh017](../reference-profiles/edh017.md), [edh018](../reference-profiles/edh018.md), [edh019](../reference-profiles/edh019.md), [edh024](../reference-profiles/edh024.md), [edh029](../reference-profiles/edh029.md), [edh030](../reference-profiles/edh030.md), [edh034](../reference-profiles/edh034.md), [edh035](../reference-profiles/edh035.md), [edh036](../reference-profiles/edh036.md), [edh038](../reference-profiles/edh038.md), [edh040](../reference-profiles/edh040.md), [edh041](../reference-profiles/edh041.md), [edh043](../reference-profiles/edh043.md), [edh044](../reference-profiles/edh044.md), [edh045](../reference-profiles/edh045.md), [edh046](../reference-profiles/edh046.md), [edh047](../reference-profiles/edh047.md), [edh052](../reference-profiles/edh052.md), [edh055](../reference-profiles/edh055.md), [edh056](../reference-profiles/edh056.md), [edh060](../reference-profiles/edh060.md)
+
+## Mediterranean / Mediterania
+
+Concept ID: `style_family.mediterranean`.
+[VID-007](../reference-profiles/VID-007.md), [edh013](../reference-profiles/edh013.md), [edh030](../reference-profiles/edh030.md), [edh038](../reference-profiles/edh038.md), [edh043](../reference-profiles/edh043.md), [edh049](../reference-profiles/edh049.md), [edh050](../reference-profiles/edh050.md), [edh051](../reference-profiles/edh051.md), [edh053](../reference-profiles/edh053.md), [edh058](../reference-profiles/edh058.md)
+
+## tropical / tropis
+
+Concept ID: `style_family.tropical`.
+[VID-005](../reference-profiles/VID-005.md), [VID-006](../reference-profiles/VID-006.md), [VID-009](../reference-profiles/VID-009.md), [edh023](../reference-profiles/edh023.md), [edh042](../reference-profiles/edh042.md), [edh052](../reference-profiles/edh052.md), [edh053](../reference-profiles/edh053.md), [edh055](../reference-profiles/edh055.md)
+
+## bungalow / bungalow
+
+Concept ID: `style_family.bungalow`.
+[VID-006](../reference-profiles/VID-006.md), [edh022](../reference-profiles/edh022.md), [edh029](../reference-profiles/edh029.md), [edh052](../reference-profiles/edh052.md), [edh055](../reference-profiles/edh055.md)
+
+## tiny house / rumah mungil
+
+Concept ID: `style_family.tiny_house`.
+[edh032](../reference-profiles/edh032.md), [edh033](../reference-profiles/edh033.md), [edh060](../reference-profiles/edh060.md)
+
+## alpine / alpin
+
+Concept ID: `style_family.alpine`.
+[edh057](../reference-profiles/edh057.md), [edh059](../reference-profiles/edh059.md)
+
+## Victorian / Victoria
+
+Concept ID: `style_family.victorian`.
+[edh017](../reference-profiles/edh017.md)
+
+## neoclassical / neoklasik
+
+Concept ID: `style_family.neoclassical`.
+[edh054](../reference-profiles/edh054.md)
+
+## castle inspired / terinspirasi kastel
+
+Concept ID: `style_family.castle_inspired`.
+[edh021](../reference-profiles/edh021.md)
+
+## townhouse / rumah deret
+
+Concept ID: `style_family.townhouse`.
+[edh054](../reference-profiles/edh054.md)

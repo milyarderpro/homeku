@@ -1,6 +1,9 @@
-# HOMEKU — Reference catalog (generated from source YAML)
+# HOMEKU — Published reference catalog
 
-A source-data index, not an AI design-generation or video-production rule. Descriptions and durations are recorded annotations, not independently verified measurements. Regenerate explicitly with `python scripts/refresh_design_catalog.py --write` and review the diff.
+Knowledge release: 2026-11-17-stage-1-2-r2. Source labels and timings remain recorded annotations.
+New archives do not enter this table until an explicit knowledge publication.
+
+[Reference profiles](reference-profiles/README.md) · [Core knowledge](ai-knowledge.md) · [Release](release.json)
 
 | Reference | Recorded style | Length (s) | Shots | Opening shot (s) | Annotated scenes | First-shot camera labels |
 | --- | --- | ---: | ---: | ---: | --- | --- |
@@ -62,4 +65,4 @@ A source-data index, not an AI design-generation or video-production rule. Descr
 | [edh059](../references/edh059/analysis.yaml) | storybook_rustic_stone_cottage | 17.800 | 5 | 5.300 | exterior_front, living_room, kitchen, bedroom, bathroom | slow_dolly_in + tracking_right |
 | [edh060](../references/edh060/analysis.yaml) | modern_farmhouse_tiny_house | 18.470 | 3 | 8.030 | exterior_front_and_roof_terrace, open_plan_living_kitchen_and_sleeping_loft, bathroom_vanity_and_tub_shower | tracking_right + subtle_dolly_in |
 
-Use each linked YAML, its analysis report and visual frames to inspect individual claims. A scene label or camera tag cannot establish a measured floorplan or physical camera rig.
+Inspect source YAML, frames and original video for evidence; this table does not establish a floorplan or physical camera rig.

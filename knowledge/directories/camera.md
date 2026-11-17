@@ -1,0 +1,68 @@
+# Directory: camera
+
+[All directories](README.md) · [Vocabulary](../taxonomy/README.md)
+
+## dolly in / dolly maju
+
+Concept ID: `camera.dolly_in`.
+[VID-001](../reference-profiles/VID-001.md), [VID-002](../reference-profiles/VID-002.md), [VID-003](../reference-profiles/VID-003.md), [VID-004](../reference-profiles/VID-004.md), [VID-005](../reference-profiles/VID-005.md), [VID-006](../reference-profiles/VID-006.md), [VID-007](../reference-profiles/VID-007.md), [VID-008](../reference-profiles/VID-008.md), [VID-009](../reference-profiles/VID-009.md), [VID-010](../reference-profiles/VID-010.md), [edh011](../reference-profiles/edh011.md), [edh012](../reference-profiles/edh012.md), [edh013](../reference-profiles/edh013.md), [edh015](../reference-profiles/edh015.md), [edh016](../reference-profiles/edh016.md), [edh017](../reference-profiles/edh017.md), [edh018](../reference-profiles/edh018.md), [edh019](../reference-profiles/edh019.md), [edh020](../reference-profiles/edh020.md), [edh021](../reference-profiles/edh021.md), [edh022](../reference-profiles/edh022.md), [edh023](../reference-profiles/edh023.md), [edh024](../reference-profiles/edh024.md), [edh025](../reference-profiles/edh025.md), [edh027](../reference-profiles/edh027.md), [edh029](../reference-profiles/edh029.md), [edh030](../reference-profiles/edh030.md), [edh031](../reference-profiles/edh031.md), [edh032](../reference-profiles/edh032.md), [edh033](../reference-profiles/edh033.md), [edh034](../reference-profiles/edh034.md), [edh035](../reference-profiles/edh035.md), [edh036](../reference-profiles/edh036.md), [edh037](../reference-profiles/edh037.md), [edh038](../reference-profiles/edh038.md), [edh039](../reference-profiles/edh039.md), [edh040](../reference-profiles/edh040.md), [edh041](../reference-profiles/edh041.md), [edh042](../reference-profiles/edh042.md), [edh043](../reference-profiles/edh043.md), [edh044](../reference-profiles/edh044.md), [edh045](../reference-profiles/edh045.md), [edh046](../reference-profiles/edh046.md), [edh047](../reference-profiles/edh047.md), [edh048](../reference-profiles/edh048.md), [edh049](../reference-profiles/edh049.md), [edh050](../reference-profiles/edh050.md), [edh051](../reference-profiles/edh051.md), [edh052](../reference-profiles/edh052.md), [edh053](../reference-profiles/edh053.md), [edh054](../reference-profiles/edh054.md), [edh055](../reference-profiles/edh055.md), [edh056](../reference-profiles/edh056.md), [edh057](../reference-profiles/edh057.md), [edh058](../reference-profiles/edh058.md), [edh059](../reference-profiles/edh059.md), [edh060](../reference-profiles/edh060.md)
+
+## dolly out / dolly mundur
+
+Concept ID: `camera.dolly_out`.
+[VID-001](../reference-profiles/VID-001.md), [VID-003](../reference-profiles/VID-003.md), [VID-005](../reference-profiles/VID-005.md), [VID-006](../reference-profiles/VID-006.md), [VID-007](../reference-profiles/VID-007.md), [VID-008](../reference-profiles/VID-008.md), [VID-009](../reference-profiles/VID-009.md), [VID-010](../reference-profiles/VID-010.md), [edh011](../reference-profiles/edh011.md), [edh012](../reference-profiles/edh012.md), [edh013](../reference-profiles/edh013.md), [edh016](../reference-profiles/edh016.md), [edh017](../reference-profiles/edh017.md), [edh018](../reference-profiles/edh018.md), [edh020](../reference-profiles/edh020.md), [edh021](../reference-profiles/edh021.md), [edh022](../reference-profiles/edh022.md), [edh023](../reference-profiles/edh023.md), [edh024](../reference-profiles/edh024.md), [edh025](../reference-profiles/edh025.md), [edh027](../reference-profiles/edh027.md), [edh029](../reference-profiles/edh029.md), [edh030](../reference-profiles/edh030.md), [edh031](../reference-profiles/edh031.md), [edh032](../reference-profiles/edh032.md), [edh034](../reference-profiles/edh034.md), [edh035](../reference-profiles/edh035.md), [edh036](../reference-profiles/edh036.md), [edh037](../reference-profiles/edh037.md), [edh038](../reference-profiles/edh038.md), [edh039](../reference-profiles/edh039.md), [edh040](../reference-profiles/edh040.md), [edh041](../reference-profiles/edh041.md), [edh042](../reference-profiles/edh042.md), [edh046](../reference-profiles/edh046.md), [edh047](../reference-profiles/edh047.md), [edh048](../reference-profiles/edh048.md), [edh049](../reference-profiles/edh049.md), [edh050](../reference-profiles/edh050.md), [edh051](../reference-profiles/edh051.md), [edh052](../reference-profiles/edh052.md), [edh053](../reference-profiles/edh053.md), [edh054](../reference-profiles/edh054.md), [edh055](../reference-profiles/edh055.md), [edh056](../reference-profiles/edh056.md), [edh057](../reference-profiles/edh057.md), [edh058](../reference-profiles/edh058.md), [edh059](../reference-profiles/edh059.md)
+
+## tracking right / kamera bergeser kanan
+
+Concept ID: `camera.track_right`.
+[VID-001](../reference-profiles/VID-001.md), [VID-004](../reference-profiles/VID-004.md), [VID-005](../reference-profiles/VID-005.md), [VID-006](../reference-profiles/VID-006.md), [VID-007](../reference-profiles/VID-007.md), [VID-008](../reference-profiles/VID-008.md), [VID-009](../reference-profiles/VID-009.md), [edh011](../reference-profiles/edh011.md), [edh012](../reference-profiles/edh012.md), [edh013](../reference-profiles/edh013.md), [edh016](../reference-profiles/edh016.md), [edh017](../reference-profiles/edh017.md), [edh018](../reference-profiles/edh018.md), [edh019](../reference-profiles/edh019.md), [edh020](../reference-profiles/edh020.md), [edh021](../reference-profiles/edh021.md), [edh022](../reference-profiles/edh022.md), [edh023](../reference-profiles/edh023.md), [edh024](../reference-profiles/edh024.md), [edh025](../reference-profiles/edh025.md), [edh027](../reference-profiles/edh027.md), [edh029](../reference-profiles/edh029.md), [edh030](../reference-profiles/edh030.md), [edh031](../reference-profiles/edh031.md), [edh032](../reference-profiles/edh032.md), [edh033](../reference-profiles/edh033.md), [edh034](../reference-profiles/edh034.md), [edh037](../reference-profiles/edh037.md), [edh038](../reference-profiles/edh038.md), [edh039](../reference-profiles/edh039.md), [edh040](../reference-profiles/edh040.md), [edh042](../reference-profiles/edh042.md), [edh043](../reference-profiles/edh043.md), [edh044](../reference-profiles/edh044.md), [edh045](../reference-profiles/edh045.md), [edh046](../reference-profiles/edh046.md), [edh047](../reference-profiles/edh047.md), [edh048](../reference-profiles/edh048.md), [edh050](../reference-profiles/edh050.md), [edh051](../reference-profiles/edh051.md), [edh052](../reference-profiles/edh052.md), [edh053](../reference-profiles/edh053.md), [edh055](../reference-profiles/edh055.md), [edh056](../reference-profiles/edh056.md), [edh057](../reference-profiles/edh057.md), [edh058](../reference-profiles/edh058.md), [edh059](../reference-profiles/edh059.md), [edh060](../reference-profiles/edh060.md)
+
+## tracking left / kamera bergeser kiri
+
+Concept ID: `camera.track_left`.
+[VID-003](../reference-profiles/VID-003.md), [VID-004](../reference-profiles/VID-004.md), [VID-005](../reference-profiles/VID-005.md), [VID-007](../reference-profiles/VID-007.md), [VID-008](../reference-profiles/VID-008.md), [edh016](../reference-profiles/edh016.md), [edh018](../reference-profiles/edh018.md), [edh022](../reference-profiles/edh022.md), [edh023](../reference-profiles/edh023.md), [edh029](../reference-profiles/edh029.md), [edh032](../reference-profiles/edh032.md), [edh035](../reference-profiles/edh035.md), [edh036](../reference-profiles/edh036.md), [edh039](../reference-profiles/edh039.md), [edh047](../reference-profiles/edh047.md), [edh048](../reference-profiles/edh048.md), [edh053](../reference-profiles/edh053.md), [edh056](../reference-profiles/edh056.md), [edh057](../reference-profiles/edh057.md)
+
+## pan right / kamera menoleh kanan
+
+Concept ID: `camera.pan_right`.
+[VID-002](../reference-profiles/VID-002.md), [VID-003](../reference-profiles/VID-003.md), [VID-004](../reference-profiles/VID-004.md), [VID-008](../reference-profiles/VID-008.md), [VID-009](../reference-profiles/VID-009.md), [VID-010](../reference-profiles/VID-010.md), [edh011](../reference-profiles/edh011.md), [edh015](../reference-profiles/edh015.md), [edh017](../reference-profiles/edh017.md), [edh019](../reference-profiles/edh019.md), [edh020](../reference-profiles/edh020.md), [edh021](../reference-profiles/edh021.md), [edh022](../reference-profiles/edh022.md), [edh024](../reference-profiles/edh024.md), [edh025](../reference-profiles/edh025.md), [edh027](../reference-profiles/edh027.md), [edh029](../reference-profiles/edh029.md), [edh030](../reference-profiles/edh030.md), [edh031](../reference-profiles/edh031.md), [edh032](../reference-profiles/edh032.md), [edh033](../reference-profiles/edh033.md), [edh034](../reference-profiles/edh034.md), [edh036](../reference-profiles/edh036.md), [edh037](../reference-profiles/edh037.md), [edh038](../reference-profiles/edh038.md), [edh039](../reference-profiles/edh039.md), [edh041](../reference-profiles/edh041.md), [edh042](../reference-profiles/edh042.md), [edh043](../reference-profiles/edh043.md), [edh045](../reference-profiles/edh045.md), [edh046](../reference-profiles/edh046.md), [edh049](../reference-profiles/edh049.md), [edh050](../reference-profiles/edh050.md), [edh051](../reference-profiles/edh051.md), [edh052](../reference-profiles/edh052.md), [edh054](../reference-profiles/edh054.md), [edh055](../reference-profiles/edh055.md), [edh056](../reference-profiles/edh056.md), [edh058](../reference-profiles/edh058.md), [edh059](../reference-profiles/edh059.md), [edh060](../reference-profiles/edh060.md)
+
+## pan left / kamera menoleh kiri
+
+Concept ID: `camera.pan_left`.
+[VID-001](../reference-profiles/VID-001.md), [VID-002](../reference-profiles/VID-002.md), [VID-003](../reference-profiles/VID-003.md), [VID-004](../reference-profiles/VID-004.md), [VID-005](../reference-profiles/VID-005.md), [VID-006](../reference-profiles/VID-006.md), [VID-007](../reference-profiles/VID-007.md), [VID-008](../reference-profiles/VID-008.md), [VID-009](../reference-profiles/VID-009.md), [edh011](../reference-profiles/edh011.md), [edh017](../reference-profiles/edh017.md), [edh019](../reference-profiles/edh019.md), [edh020](../reference-profiles/edh020.md), [edh021](../reference-profiles/edh021.md), [edh025](../reference-profiles/edh025.md), [edh027](../reference-profiles/edh027.md), [edh030](../reference-profiles/edh030.md), [edh035](../reference-profiles/edh035.md), [edh036](../reference-profiles/edh036.md), [edh041](../reference-profiles/edh041.md), [edh044](../reference-profiles/edh044.md), [edh045](../reference-profiles/edh045.md), [edh046](../reference-profiles/edh046.md), [edh049](../reference-profiles/edh049.md), [edh050](../reference-profiles/edh050.md), [edh051](../reference-profiles/edh051.md), [edh054](../reference-profiles/edh054.md), [edh055](../reference-profiles/edh055.md), [edh057](../reference-profiles/edh057.md), [edh058](../reference-profiles/edh058.md), [edh059](../reference-profiles/edh059.md)
+
+## tilt up / kamera menengadah
+
+Concept ID: `camera.tilt_up`.
+[VID-005](../reference-profiles/VID-005.md), [edh024](../reference-profiles/edh024.md), [edh027](../reference-profiles/edh027.md), [edh033](../reference-profiles/edh033.md), [edh042](../reference-profiles/edh042.md), [edh060](../reference-profiles/edh060.md)
+
+## tilt down / kamera menunduk
+
+Concept ID: `camera.tilt_down`.
+[edh019](../reference-profiles/edh019.md), [edh040](../reference-profiles/edh040.md)
+
+## forward move / gerak maju
+
+Concept ID: `camera.move_forward`.
+[edh036](../reference-profiles/edh036.md), [edh056](../reference-profiles/edh056.md)
+
+## descending / gerak turun
+
+Concept ID: `camera.move_down`.
+[edh032](../reference-profiles/edh032.md)
+
+## lateral tracking / gerak lateral tanpa arah
+
+Concept ID: `camera.lateral_unspecified`.
+[edh049](../reference-profiles/edh049.md)
+
+## orbit / mengorbit
+
+Concept ID: `camera.orbit`.
+[edh049](../reference-profiles/edh049.md)
+
+## reframing / perubahan framing
+
+Concept ID: `camera.reframe`.
+[edh022](../reference-profiles/edh022.md), [edh056](../reference-profiles/edh056.md)

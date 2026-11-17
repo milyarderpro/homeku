@@ -59,3 +59,7 @@ Setelah create_file berhasil laporkan **Queued/Processing**, bukan Saved. Chat l
 - Jika konektor tidak dapat melakukan `create_file` baru dengan aman, jangan mengubah `save.json` lama sebagai fallback.
 
 **Prinsip:** Analyze = Read Only · exact `save now` = one new immutable per-video request · independent Actions = render + optimistic publish · Verify remote before Saved.
+
+## Inventaris arsip dan snapshot pengetahuan
+
+Setelah rebase, runner memperbarui manifest sumber secara append-only bersama hasil arsip. Perubahan sumber/anotasi yang sudah dipin ditolak dan memerlukan koreksi maintainer yang eksplisit. Worker paralel menghitung ulang manifest dari tree terbaru. Penyimpanan tidak otomatis mengubah release pengetahuan, profil, kamus atau sintesis desain. Lihat [pemeliharaan pengetahuan](../docs/knowledge-maintenance.md).

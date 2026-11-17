@@ -106,9 +106,9 @@ class SourceIntegrityTests(unittest.TestCase):
             write_manifest(self.root)
 
     def test_repository_manifest(self):
-        report = verify_sources(ROOT)
-        self.assertEqual(report["reference_count"], 57)
-        self.assertEqual(report["shot_count"], 295)
+        report = verify_sources(ROOT, allow_additions=True)
+        self.assertEqual(report["reference_count"], len(list((ROOT / "references").glob("*/analysis.yaml"))))
+        self.assertEqual(report["shot_count"], sum(yaml.safe_load(p.read_text())["video"]["shot_count"] for p in (ROOT / "references").glob("*/analysis.yaml")))
         self.assertNotIn("edh026", [r["reference_id"] for r in report["references"]])
         self.assertIn("edh027", [r["reference_id"] for r in report["references"]])
         restored = next(r for r in report["references"] if r["reference_id"] == "VID-001")

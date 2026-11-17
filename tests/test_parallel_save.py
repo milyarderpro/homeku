@@ -26,6 +26,7 @@ from parallel_save import (
 from test_action_save import ActionSaveTests
 from test_validation import make_package
 from validate_analysis import validate
+from verify_source_integrity import write_manifest
 
 
 def git(root, *args):
@@ -300,6 +301,9 @@ class ParallelSaveTests(unittest.TestCase):
         for stem in videos[1:]:
             shutil.copy2(self.root / "video/test.mp4",
                          self.root / f"video/{stem}.mp4")
+            # Distinct valid MP4 free atoms keep fixtures independently hashed.
+            with (self.root / f"video/{stem}.mp4").open("ab") as stream:
+                stream.write(bytes.fromhex("0000001066726565") + stem.encode().ljust(8, b" "))
         git(self.root, "add", "video")
         git(self.root, "commit", "-qm", "add concurrent synthetic source videos")
         for stem in videos[1:]:
@@ -313,6 +317,8 @@ class ParallelSaveTests(unittest.TestCase):
             req["analysis_yaml"] = yaml.safe_dump(yml, allow_unicode=True)
             (self.pending / f"{stem}.json").write_text(
                 json.dumps(req, ensure_ascii=False), encoding="utf-8")
+        write_manifest(self.root)
+        git(self.root, "add", "knowledge/source-manifest.json")
         trigger = self.commit_requests()
         remote = self.add_remote()
         work = []
@@ -345,11 +351,17 @@ class ParallelSaveTests(unittest.TestCase):
                 self.root, "ls-tree", "-r", "--name-only", "origin/main",
                 "--", f"references/{stem}").splitlines()), 5)
 
+        manifest = json.loads(git(self.root, "show", "origin/main:knowledge/source-manifest.json"))
+        self.assertEqual({r["reference_id"] for r in manifest["references"]}, set(videos))
+        self.assertEqual(manifest["unannotated_sources"], [])
+
     def test_parallel_two_video_commits_rebase_without_loss(self):
         # Simulates two independent runners checking out the SAME commit.
         # Each one publishes only its own package and result.
         src2 = self.root / "video/testb.mp4"
         shutil.copy2(self.root / "video/test.mp4", src2)
+        with src2.open("ab") as stream:
+            stream.write(bytes.fromhex("0000001066726565") + b"worker-b")
         git(self.root, "add", "video/testb.mp4")
         git(self.root, "commit", "-qm", "add second source")
         sha2 = git(self.root, "rev-parse", "HEAD:video/testb.mp4")
@@ -361,6 +373,8 @@ class ParallelSaveTests(unittest.TestCase):
         data2["video"]["filename"] = "testb.mp4"
         req2["analysis_yaml"] = yaml.safe_dump(data2, allow_unicode=True)
         (self.pending / "testb.json").write_text(json.dumps(req2), encoding="utf-8")
+        write_manifest(self.root)
+        git(self.root, "add", "knowledge/source-manifest.json")
         trigger = self.commit_requests()
         remote = self.add_remote()
         a = self.root / "worker-a"
