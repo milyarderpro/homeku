@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -253,7 +253,6 @@ Melalui jendela belakang kamar mandi terlihat vegetasi taman hijau yang rimbun.
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | frame based |
 | Ketidakpastian | exact materials not confirmed from video, roof profile and full building depth partially obscured, floor area is visual estimate without measured scale, style regions indicate association not actual location, apparent greenery does not confirm season or geography, camera translation vs digital zoom not always distinguishable |
 

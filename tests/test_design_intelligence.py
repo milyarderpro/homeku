@@ -47,6 +47,14 @@ class DesignIntelligenceTests(unittest.TestCase):
         self.assertEqual(count, 57)
         self.assertEqual(shots, 295)
 
+
+    def test_active_analyses_have_no_manual_verification_metadata(self):
+        for ident, doc in self.references.items():
+            self.assertNotIn("human_verified", doc["analysis_quality"], ident)
+            report = (ROOT / "references" / ident / "analysis.md").read_text()
+            self.assertNotIn("Verifikasi manusia", report, ident)
+            self.assertNotIn("Diverifikasi manusia", report, ident)
+
     def test_catalog_refresh_renderer_is_complete(self):
         refreshed = markdown_rows(render_catalog())
         self.assertEqual(set(refreshed), set(self.references))

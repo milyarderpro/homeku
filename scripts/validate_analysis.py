@@ -154,10 +154,32 @@ def validate(package: Path, expected_id: str | None = None,
                 check(image.format == "JPEG", f"Not a JPEG file: {name}")
                 image.verify()
     quality = data.get("analysis_quality") or {}
-    check(quality.get("status") in ("draft", "reviewed") and isinstance(quality.get("human_verified"), bool), "Invalid analysis quality status")
+    check(quality.get("status") in ("draft", "reviewed"), "Invalid analysis quality status")
     return {"video_id": vid, "shot_count": len(shots), "files": sorted(expected_files), "duration_s": duration}
 
 
+
+
+def normalize_analysis_quality(data: dict[str, Any]) -> None:
+    """Drop retired metadata when reading immutable historical requests."""
+    quality = data.get("analysis_quality")
+    if isinstance(quality, dict):
+        quality.pop("human_verified", None)
+        notes = quality.get("notes")
+        if isinstance(notes, str):
+            replacements = (
+                ("Human verification of visual facts is not claimed; material, style, "
+                 "scale, and camera uncertainties remain estimations.",
+                 "Material, style, scale, and camera uncertainties remain estimations."),
+                ("Tidak ada analisis audio atau verifikasi manusia.", "Tidak ada analisis audio."),
+                ("; belum diverifikasi manusia.", "."),
+                ("; belum ada verifikasi manusia.", "."),
+                (" Not human verified.", ""),
+                (" Belum diverifikasi manusia atau disimpan ke GitHub.", ""),
+            )
+            for old, new in replacements:
+                notes = notes.replace(old, new)
+            quality["notes"] = notes
 
 
 def validate_narratives(data: dict[str, Any], narratives: Any) -> None:

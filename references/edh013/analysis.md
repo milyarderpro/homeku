@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -252,7 +252,6 @@ Melalui jendela bulat terlihat langit biru pucat dan garis horizon jauh yang sam
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated frame level |
 | Ketidakpastian | floor area and exact storey use are visual estimates not measurements, architectural style and european region are aesthetic associations not geolocation, stucco wood marble and metal materials are identified by appearance only, camera move terms are inferred from screen motion, season and actual location are unknown, interior and exterior space connections are not independently verified |
 

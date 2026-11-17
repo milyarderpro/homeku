@@ -80,6 +80,23 @@ class ParallelSaveTests(unittest.TestCase):
             with self.subTest(path=path), self.assertRaises(SaveConflict):
                 filename_id(path)
 
+
+    def test_retired_quality_metadata_does_not_mutate_approved_request(self):
+        legacy = yaml.safe_load(self.req["analysis_yaml"])
+        legacy["analysis_quality"]["human_verified"] = False
+        self.req["analysis_yaml"] = yaml.safe_dump(legacy)
+        self.write_request()
+        path = self.root / self.req_path
+        before = path.read_bytes()
+        _, req, data, _, _ = load_request(self.root, self.req_path)
+        self.assertNotIn("human_verified", data["analysis_quality"])
+        self.assertIn("human_verified", yaml.safe_load(req["analysis_yaml"])["analysis_quality"])
+        result = render(self.root, self.req_path)
+        saved = self.root / "references" / result["video_id"]
+        stored = yaml.safe_load((saved / "analysis.yaml").read_text())
+        self.assertNotIn("human_verified", stored["analysis_quality"])
+        self.assertEqual(path.read_bytes(), before)
+
     def test_valid_request_load(self):
         vid, req, data, narratives, times = load_request(self.root, self.req_path)
         self.assertEqual(vid, "test")

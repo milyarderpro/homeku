@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -253,7 +253,6 @@ Halaman depan dipenuhi rumput hijau pendek yang mengapit jalan setapak beton puc
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | frame based estimate |
 | Ketidakpastian | estimated floor area 35 to 60 m2 without measured scale, exact roof pitch and structural material not visible, stucco wood and stone materials are appearance based, actual site location and season not verifiable, camera motion direction inferred from framing, dark shower partition identified from partial glass and reflection |
 

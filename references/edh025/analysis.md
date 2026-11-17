@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -288,7 +288,6 @@ Melalui jendela bundar tampak hutan bersalju, dengan batang pohon tinggi yang lu
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | frame based cuts rounded to 0 001 s |
 | Ketidakpastian | architectural style is an interpretation not verified provenance, snow suggests winter like appearance but date and location unknown, building floor area is low confidence visual estimate, some surfaces have wood or stone appearance without material verification, interior shots do not prove a measured spatial plan |
 

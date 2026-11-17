@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -253,7 +253,6 @@ Tidak ada detail yang tercatat.
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | architectural style and common regions are interpretations not verified origin, floor area 80 to 140 m2 is rough visual estimate without floor plan, left exterior stone feature may not be functional chimney, exact wood species and stone composition not verifiable, camera movements inferred from apparent image motion, season and real geographic location not determinable from video |
 

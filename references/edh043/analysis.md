@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -254,7 +254,6 @@ Tidak ada detail yang tercatat.
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | exterior to living room boundary marks spatial change without a hard cut, exact roof tile material and roof panel function are not verified, exact surface materials are described by visual appearance, building floor area is a low confidence visual estimate, design region labels are style associations not home location, outdoor season and geographic location cannot be confirmed from video |
 

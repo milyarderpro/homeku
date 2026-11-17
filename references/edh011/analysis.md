@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -254,7 +254,6 @@ Melalui jendela belakang tampak rimbun pepohonan hijau, sebagian bangunan bertin
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | frame aligned estimate |
 | Ketidakpastian | precise stucco stone wood and countertop materials not verified, building floor area estimated only from visible scale no floor plan, raised roof section does not prove usable upper story, camera translation vs digital zoom not distinguishable, visible hills and neighbor buildings do not establish actual location or season, architectural region association is stylistic not geographic |
 

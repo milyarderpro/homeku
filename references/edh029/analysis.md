@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -252,7 +252,6 @@ Melalui jendela di ujung ruangan terlihat dedaunan konifer hijau yang terkena sa
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated to nearest video frame |
 | Ketidakpastian | actual geographic location unknown, exact wall roof floor and counter materials not verified, true building footprint and floor area not measurable from video, number and size of hidden rooms unknown, precise camera translation vs digital cropping not verifiable, winter appearance does not establish capture date or month |
 

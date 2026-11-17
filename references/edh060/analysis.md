@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -183,11 +183,10 @@ Tidak ada detail yang tercatat.
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | frame based estimate |
 | Ketidakpastian | primary style is visual classification not provenance, common regions are style associations not house location, floor area range is unmeasured visual estimate, surface materials described by appearance not verified composition, season and geographic location cannot be confirmed, camera dolly or zoom component is inferred from relative framing |
 
-**Catatan:** Peninjauan dilakukan pada ketiga shot sepanjang durasi video dan pada beberapa titik di dalam masing-masing shot. Batas potongan terdeteksi dekat frame ke-241 dan ke-397 pada 30 FPS; belum ada verifikasi manusia.
+**Catatan:** Peninjauan dilakukan pada ketiga shot sepanjang durasi video dan pada beberapa titik di dalam masing-masing shot. Batas potongan terdeteksi dekat frame ke-241 dan ke-397 pada 30 FPS.
 
 ---
 

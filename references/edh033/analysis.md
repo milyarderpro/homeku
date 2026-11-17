@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -219,11 +219,10 @@ Rumput hijau dengan batu pijakan pucat tak beraturan memenuhi bagian depan. Bata
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | exact building location cannot be determined, north america is only a possible stylistic association not a geographic identification, exact exterior and interior materials not physically verified, floor area range is visual and has no measured scale, precise camera motion may include digital zoom or stabilization, season not determinable from evergreen vegetation, bathroom shot only partially reveals the toilet and sink |
 
-**Catatan:** Observasi visual dari seluruh klip 560 frame pada 30 fps. Cut diperkirakan di frame 151, 385, dan 514. Keyframe draft ditentukan pada 2.5, 9.0, 15.0, dan 18.0 detik. Tidak ada analisis audio atau verifikasi manusia.
+**Catatan:** Observasi visual dari seluruh klip 560 frame pada 30 fps. Cut diperkirakan di frame 151, 385, dan 514. Keyframe draft ditentukan pada 2.5, 9.0, 15.0, dan 18.0 detik. Tidak ada analisis audio.
 
 ---
 

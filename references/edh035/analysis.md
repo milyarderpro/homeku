@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -217,7 +217,6 @@ Tidak ada detail yang tercatat.
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | floor area estimated from limited front facade and room views, roof depth and rear building geometry not visible, primary style and common regions are interpretive not location evidence, camera motion types inferred from visual changes, video container duration includes short audio tail after last visible frame, surface materials described by visible appearance not verified composition |
 

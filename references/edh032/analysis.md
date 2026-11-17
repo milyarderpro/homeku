@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -218,7 +218,6 @@ Jalur papan pijakan cokelat menuju gerbang putih yang terbuka pada pagar rendah,
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | building floor area is rough visual estimate not measured, siding roof and wood materials identified by surface appearance only, agricultural crop species and geographic location not confirmed, camera translation and panning inferred from image motion, visual stream ends at 15 3 seconds while container metadata duration is 15 44 seconds |
 

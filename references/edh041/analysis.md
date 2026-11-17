@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -253,7 +253,6 @@ Melalui jendela kamar mandi tampak semak hijau yang rimbun, dengan sebagian fasa
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | exact building location unknown, regional style association is not geolocation, actual floor area and house depth not measurable from video, precise roof wall floor and countertop materials not confirmed, season and tree species not verified, camera translation versus digital zoom cannot be fully distinguished |
 

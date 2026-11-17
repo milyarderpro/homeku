@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -289,7 +289,6 @@ Pada saat kamera menjauh, batang\-batang pohon tinggi menyerupai pinus, hutan di
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | boundary estimate |
 | Ketidakpastian | split between living and kitchen is thematic not a hard cut, approximate area is not measured, real location cannot be derived from style, actual materials cannot be authenticated from pixels, time of day or season cannot be proven, possible generated or stylized video not verified |
 

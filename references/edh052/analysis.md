@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -254,7 +254,6 @@ Tidak ada detail yang tercatat.
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | geographic location is not identifiable from architectural style, common regions are stylistic associations only, estimated floor area has no measured scale reference, material composition cannot be confirmed from video, camera translation cannot be fully distinguished from virtual zoom, yellow green foliage does not confirm calendar season |
 

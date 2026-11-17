@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -218,7 +218,6 @@ Melalui pintu kaca terlihat area luar berlapis paving batu pucat dan beberapa an
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | frame based approximately 0 03 s |
 | Ketidakpastian | actual geographic location not identifiable from video, europe is a stylistic association not a verified location, stone and wood materials described from visible appearance only, building floor area estimated without reliable scale reference, subtle camera movements inferred from viewpoint change, format duration includes about 0 12 s beyond last video frame, specific season cannot be established from green foliage |
 

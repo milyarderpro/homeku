@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** reviewed · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** reviewed
 
 ## 1. Informasi Video
 
@@ -253,11 +253,10 @@ Dari jendela persegi panjang terlihat tanah permukiman yang bersalju, batang dan
 | Parameter | Hasil |
 |---|---|
 | Status | reviewed |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | frame confirmed for cuts keyframes estimated |
 | Ketidakpastian | Primary architectural style is a visual interpretation, not an official design or geographic identification., Curved exterior wall finish looks like pale textured stone or masonry; precise construction material is unknown., Estimated building floor area 60-90 m2 is a broad visual estimate without measured scale., The raised rounded roof masses do not establish an upper floor or loft., Dark rectangular unit beneath the living-room television looks like a linear fireplace insert; functionality is unverified., Camera tracking versus panning is estimated from apparent perspective shift, not capture metadata., The first kitchen camera move is interpreted as leftward panning/tracking, differing from the older VID-004 rightward label., Pale kitchen and bathroom surfaces are described by appearance rather than verified wood, stone or tile product types., North America and Europe are stylistic associations only, not the location of the house., Interior continuity and exact room dimensions cannot be confirmed from independently edited shots. |
 
-**Catatan:** Re-analysis of the same edh001.mp4 source for existing VID-004 using Homeku v1.3. Updated 126 technical visible-detail labels and Indonesian per-shot narratives. The 5-shot 18.40 s timeline and original video identity are preserved. Git source blob: ba844313b645b154566a08a56ba500295ed4f021. Human verification of visual facts is not claimed; material, style, scale, and camera uncertainties remain estimations.
+**Catatan:** Re-analysis of the same edh001.mp4 source for existing VID-004 using Homeku v1.3. Updated 126 technical visible-detail labels and Indonesian per-shot narratives. The 5-shot 18.40 s timeline and original video identity are preserved. Git source blob: ba844313b645b154566a08a56ba500295ed4f021. Material, style, scale, and camera uncertainties remain estimations.
 
 ---
 

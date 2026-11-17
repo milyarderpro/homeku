@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -253,7 +253,6 @@ Melalui jendela besar terlihat kumpulan batang pohon tanpa daun yang rapat, deng
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | architecture style and regions are interpretive not verified location, roof and exact materials inferred from appearance only, floor area visual estimate has low confidence, outdoor white ground not confirmed to be snow, camera movement interpreted from frame motion, cut points are estimated to nearest few frames |
 

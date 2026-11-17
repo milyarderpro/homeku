@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -289,11 +289,10 @@ Batu\-batu lanskap bulat berwarna pucat tersusun di kedua sisi tangga masuk, dis
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | style label and north america region are visual interpretations not verified place, exact facade stone wood countertop tile and upholstery materials not physically verified, visual floor area range has no blueprint or measured scale reference, original geographic location date and season unknown, camera moves are inferred from relative framing and may be digital, container duration includes audio tail longer than 18 9 second video stream |
 
-**Catatan:** Visual-only review across all 567 video frames at 30 fps. Six shots separated near 5.067, 8.167, 11.533, 14.067 and 16.767 seconds. Source Git blob SHA matches main/video/edh047.mp4: c448e5176161748ec275c82ae8dad1e7810118f5. Selected representative keyframe times: 2.45, 6.55, 9.65, 12.75, 15.35, 17.80 seconds. Not human verified.
+**Catatan:** Visual-only review across all 567 video frames at 30 fps. Six shots separated near 5.067, 8.167, 11.533, 14.067 and 16.767 seconds. Source Git blob SHA matches main/video/edh047.mp4: c448e5176161748ec275c82ae8dad1e7810118f5. Selected representative keyframe times: 2.45, 6.55, 9.65, 12.75, 15.35, 17.80 seconds.
 
 ---
 

@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -289,7 +289,6 @@ Hamparan rumput hijau terawat memenuhi bagian depan, dipotong jalur pijakan batu
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | Gerakan kamera disimpulkan dari perubahan framing; tidak tersedia metadata lintasan kamera asli., Material dinding, kayu, batu, dan marmer diklasifikasi berdasarkan penampilan visual, bukan uji material., Perkiraan luas bangunan dan skala tapak tidak bersumber dari gambar kerja atau ukuran terukur., Kawasan gaya arsitektur adalah asosiasi desain dan bukan lokasi aktual rumah., Musim dan spesies tanaman tidak bisa dipastikan dari video., Durasi kontainer 18,85 detik mencakup ekor audio; frame gambar berakhir sekitar 18,73 detik. |
 

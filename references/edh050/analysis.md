@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -253,7 +253,6 @@ Daun\-daun hijau yang terang tampak melalui jendela kamar mandi.
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | regional association is style interpretation not property location, exact stucco wood stone and tile materials not verified, camera motion type inferred from onscreen parallax, building floor area and footprint are low confidence visual estimates, season and actual geographic location cannot be determined, video stream ends near 18 23 s while container audio extends to near 18 37 s |
 

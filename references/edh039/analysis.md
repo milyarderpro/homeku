@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -288,7 +288,6 @@ Di luar bukaan kaca terlihat tanaman berdaun hijau dan batu\-batu besar kelabu. 
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | frame based for hard cuts |
 | Ketidakpastian | regional association is stylistic not geographic location, building floor area is rough visual estimate without known dimensions, stone and wood materials are inferred from visible appearance, some camera movements can be digital zoom or generated camera motion, different room lighting does not establish same time of day, exterior rocky hills do not prove specific country or season |
 

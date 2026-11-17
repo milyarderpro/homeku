@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -219,7 +219,6 @@ Dari jendela kamar mandi terlihat salju di permukaan tanah dan batang\-batang po
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | architectural style and related regions are interpretations not property location, building floor area 90 to 160 m2 is low confidence visual estimate, exact wall floor and sink materials cannot be confirmed from video, camera moves may mix physical tracking with digital zoom or synthetic motion, winter like appearance does not verify geographic location or recording season, final time range uses container duration while last video frame is around 18 53 seconds |
 

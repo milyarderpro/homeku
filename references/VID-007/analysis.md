@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -323,7 +323,6 @@ Di bagian depan terlihat rumput hijau, jalur paving terang, serta hamparan bunga
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | frame based estimate |
 | Ketidakpastian | architectural style is interpretive not verified, estimated total floor area has no measured scale reference, exact wall floor roof and countertop materials not confirmed, camera translation vs digital zoom cannot be determined with certainty, flower and plant species not identifiable, same exterior shown at start and end does not prove interior is contiguous with that house, possible synthetic or composited visuals cannot be verified from video alone |
 

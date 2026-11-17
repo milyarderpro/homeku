@@ -24,7 +24,7 @@ Active aggregates and profile coverage were recalculated after removal. The form
 
 `video/dreamshome01.mp4` is available for [VID-001](../references/VID-001/analysis.yaml) and is fingerprinted in the manifest. FFprobe reports 720×1280 at 30 FPS, with a video-stream duration of 20.033333 seconds, consistent with the recorded 20.03-second annotation. The container duration is 20.176735 seconds; stream and container duration are different measurements.
 
-Source availability and metadata consistency do not change `analysis_quality.human_verified` or establish that every annotation is accurate.
+Source availability and metadata consistency do not establish that every annotation is accurate. AI review, confidence and recorded uncertainties describe annotation quality; manual verification is not required.
 
 ## Read-only verification
 

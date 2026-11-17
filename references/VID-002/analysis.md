@@ -2,7 +2,7 @@
 
 <!-- homeku_request_id: dreamsHouse002-20261102-reviewed-001 -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -183,7 +183,6 @@
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | Gaya arsitektur adalah klasifikasi visual, bukan identifikasi asal negara atau bangunan aktual., Perkiraan luas 55–95 m² dibuat dari proporsi fasad dan kemungkinan volume atas; tidak ada denah atau skala pengukuran., Gerakan kamera dapat menyerupai pan/dolly digital; jenis alat dan metode pengambilan gambar tidak diketahui., Tidak dapat dipastikan apakah finishing batu merupakan batu struktural atau lapisan dekoratif., Musim hanya disarankan oleh pohon hijau dan tanaman berbunga, tidak dapat dipastikan., Tidak ada bukti visual yang memastikan hubungan spasial setiap interior dengan eksterior yang ditampilkan. |
 

@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -253,7 +253,6 @@ Pohon besar berdaun jingga berdiri di sebelah kiri rumah, dengan tajuk jingga la
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | style region associations are not building location, floor area cannot be reliably inferred from partial exterior, dormers do not confirm an occupied upper floor, several stone wood and tile materials are visual appearances only, autumn like foliage does not confirm season or country, video is not independently verified as unedited real footage |
 

@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -253,11 +253,10 @@ Dari jendela bundar besar terlihat hutan konifer yang rapat dengan dahan bersalj
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | camera motion may include digital zoom rather than physical dolly, exact stone and wood materials not verified from video, building floor area is low confidence visual estimate, common regions reflect style association not actual location, snow suggests winter scene but not verified date or location, some bathroom right side glazing function is unclear, external roof projections appear chimney like but not confirmed |
 
-**Catatan:** Analisis visual seluruh shot pada video 720x1280 30 fps. Durasi gambar 17.80 detik; durasi kontainer sekitar 17.95 detik termasuk stream lain. Lima potongan terdeteksi di 5.30, 8.80, 11.87, dan 14.87 detik. Belum diverifikasi manusia atau disimpan ke GitHub.
+**Catatan:** Analisis visual seluruh shot pada video 720x1280 30 fps. Durasi gambar 17.80 detik; durasi kontainer sekitar 17.95 detik termasuk stream lain. Lima potongan terdeteksi di 5.30, 8.80, 11.87, dan 14.87 detik.
 
 ---
 

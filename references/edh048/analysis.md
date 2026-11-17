@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -288,7 +288,6 @@ Pepohonan tanpa daun dan permukaan luar bersalju tampak melalui jendela kamar ma
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | architectural style and common regions are interpretations not verified geographic origin, exact built materials not verified from visual appearance, floor area is rough visual range without floor plan or reference dimensions, camera movements may mix physical translation and digital zoom, video visual stream ends at about 20 07s while container duration is about 20 18s, snow suggests winter like conditions but actual season and location are unknown |
 

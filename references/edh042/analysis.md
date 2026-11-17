@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -253,7 +253,6 @@ Tidak ada detail yang tercatat.
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | frame based for hard cuts |
 | Ketidakpastian | architectural style and common regions are interpretations not verified location, estimated floor area based only on front facade and partial room views, flat roof is visual appearance only actual roof structure unknown, wood and marble finishes described by appearance not material testing, camera translation can include digital motion or stabilized zoom, exterior location date season and geographic origin unknown, visual stream ends at 22 point 700 seconds container extends to 22 point 847 seconds due to audio |
 

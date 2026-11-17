@@ -9,7 +9,7 @@
 3. `visual_style`: warna, pencahayaan, lingkungan, musim yang *tampak*, suasana.
 4. `video_structure`: pola urutan adegan dan tempo keseluruhan.
 5. `shots`: catatan per shot (waktu, scene, framing, gerakan kamera, detail terlihat, transisi, keyframe).
-6. `analysis_quality`: ketidakpastian, estimasi, dan status verifikasi.
+6. `analysis_quality`: status analisis, ketidakpastian, ketepatan timestamp dan catatan review AI.
 
 ## Standar v1.3 — Detailed Exterior & Environment Analysis
 
@@ -56,6 +56,13 @@
 - Pada analisis historis yang tidak memiliki field tersebut, data tetap valid. Validator memeriksa tipe, nilai dan duplikasi **jika field hadir**; kewajiban untuk draft baru ditegakkan melalui template dan review, bukan dengan menolak arsip lama.
 - Dalam laporan Markdown tampilkan sebagai **Wilayah terkait gaya desain** pada Identitas Desain. Jika kosong atau tidak ada, tampilkan **Tidak diketahui**. Jangan mengklaim rumah di video benar-benar berlokasi di kawasan itu.
 
+## Mutu analisis dan penggunaan kreatif
+
+- Review isi dilakukan oleh AI terhadap video, YAML dan narasi sebelum penyimpanan. Tidak ada syarat verifikasi manual atau flag verifikasi global.
+- Simpan status analisis, confidence, uncertainties, timestamp_precision dan notes. Jangan menaikkan status analisis lama secara massal tanpa review baru yang tercatat.
+- Semua referensi tersimpan dapat dipakai sebagai inspirasi. Confidence rendah membatasi kepastian klaim tentang sumber; pemilihan material, bentuk atau tata ruang untuk konsep baru tetap terbuka.
+- Contoh: permukaan sumber yang hanya tampak seperti batu boleh menginspirasi pemilihan batu alam untuk konsep baru. Keputusan baru itu tidak membuktikan material pada sumber.
+
 ## Aturan yang menjaga kualitas data untuk ratusan video
 
 - Satu file YAML = satu video, satu item `shots` = satu shot.
@@ -72,7 +79,7 @@
 - `analysis.yaml` tetap menjadi **satu-satunya sumber fakta**. Isi `analysis.md` harus mengikuti YAML yang sama; tidak boleh menambahkan observasi/interpretasi baru, angka, atau detail yang tidak tercatat dalam YAML. Jika YAML berubah, sinkronkan `analysis.md`.
 - Pada `analysis.md`, tampilkan **gambar setiap shot secara langsung** di bawah heading masing-masing, bukan tautan ke gambar. Gunakan contoh `<img src="shot-01.jpg" alt="Shot 01" width="360">` dengan nama berurutan (`shot-02.jpg`, dst.); gambar akan terlihat di GitHub tanpa membuka file terpisah. ID di YAML mengikuti nama file tanpa ekstensi: `shot-01`, `shot-02`, dst.; file gambar memakai format `shot-NN.jpg` (dua digit, dimulai dari `shot-01.jpg`). Path HTML di Markdown relatif terhadap folder video, sedangkan `shots[].keyframe` dalam YAML relatif terhadap root repository.
 - `analysis.md` mengikuti urutan: **judul dan sumber data → informasi video → storyboard gabungan → identitas arsitektur → ukuran & proporsi bangunan → warna/pencahayaan/atmosfer → timeline → analisis per shot dengan gambar inline → kualitas/ketidakpastian**.
-- Timeline `analysis.md` wajib sesuai `shots[]` di YAML (ID, urutan, start/end, gerakan kamera, scene, dan durasi). Cantumkan catatan confidence dan batas ketidakpastian, serta status verifikasi.
+- Timeline `analysis.md` wajib sesuai `shots[]` di YAML (ID, urutan, start/end, gerakan kamera, scene, dan durasi). Cantumkan catatan confidence dan batas ketidakpastian, serta status analisis.
 - `storyboard.jpg` merupakan ringkasan seluruh shot, **bukan pengganti gambar individual**. Tidak perlu menambah gambar lain di luar kebutuhan yang telah disepakati.
 - Tampilan storyboard v1.2 mengikuti **referensi editorial yang disepakati**: judul besar memakai nama video, subtitle durasi/jumlah shot/gaya utama, frame portrait seragam dengan margin konsisten, dan tiga baris caption di bawah tiap frame (nomor + scene, rentang waktu, gerakan kamera). **1–5 shot:** satu baris, jumlah kolom sama dengan jumlah shot. **6+ shot:** tiga kolom, jumlah baris otomatis. Gambar asli shot tidak di-crop/distorsi; generator menambahkan padding bila rasio frame berbeda. Scene dan camera berasal dari YAML, bukan teks buatan.
 - Analisis hanya berfokus pada **visual**; tidak perlu mencatat audio, musik, voiceover, atau membuat prompt dan ide konten.

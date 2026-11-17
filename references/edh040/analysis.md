@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -253,7 +253,6 @@ Tajuk pepohonan dewasa yang berdaun hijau membingkai bagian belakang atap. Batan
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | modern farmhouse style is visual interpretation, north america region is stylistic association not verified location, exact wall roof furniture and floor materials unverified from images, estimated total floor area has no reliable scale reference, precise camera translation for exterior closing shot is subtle, original date season and geographic location unknown |
 

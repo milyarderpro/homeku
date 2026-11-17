@@ -301,6 +301,29 @@ class ActionSaveTests(unittest.TestCase):
         self.assertIn(r"\*\*bingkai\*\*", md)
         self.assertIn(r"\[klik\]\(https://example.com\)", md)
 
+
+    def test_retired_quality_metadata_is_ignored_when_saving(self):
+        self.add_narratives()
+        self.data["analysis_quality"]["human_verified"] = True
+        self.data["analysis_quality"]["notes"] = (
+            "Camera movement remains inferred. Not human verified."
+        )
+        self.req["analysis_yaml"] = yaml.safe_dump(self.data, allow_unicode=True)
+        request_path = self.root / "requests/save.json"
+        request_path.write_text(json.dumps(self.req), encoding="utf-8")
+        original_request = request_path.read_bytes()
+        out = process(self.root, "actions-jpg-test")
+        package = self.root / "references" / out["video_id"]
+        stored = yaml.safe_load((package / "analysis.yaml").read_text())
+        self.assertNotIn("human_verified", stored["analysis_quality"])
+        self.assertEqual(stored["analysis_quality"]["status"], self.data["analysis_quality"]["status"])
+        self.assertEqual(stored["analysis_quality"]["notes"], "Camera movement remains inferred.")
+        report = (package / "analysis.md").read_text()
+        self.assertNotIn("Verifikasi manusia", report)
+        self.assertNotIn("Diverifikasi manusia", report)
+        self.assertNotIn("human verified", report)
+        self.assertEqual(request_path.read_bytes(), original_request)
+
     def test_idle_request_does_nothing(self):
         (self.root / "requests/save.json").write_text('{"schema_version":"1.0","status":"idle"}')
         self.assertEqual(process(self.root, "main"), {"status": "idle"})

@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -254,7 +254,6 @@ Melalui jendela kamar mandi terlihat batang pohon dan dedaunan hijau.
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | frame based cut detection approximate |
 | Ketidakpastian | exact wall and floor materials are visual appearances, house location and real world construction not verified, small upper roof volume may be loft or second level, floor area is rough visual estimate without measured scale, camera movements inferred from shifting viewpoint, season and vegetation species not confirmed, second white fixture in bathroom not identified with certainty |
 

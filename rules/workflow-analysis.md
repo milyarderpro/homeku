@@ -51,8 +51,8 @@ Setelah create_file berhasil laporkan **Queued/Processing**, bukan Saved. Chat l
 - **Not saved / Failed:** run gagal, source SHA tidak cocok, request korup, konflik git, atau remote tidak lengkap. Tampilkan error dan jalur `workflow_dispatch` untuk recovery, jangan membuat request baru.
 
 ## 6. Kompatibilitas dan batasan
-- Semua paket `references/VID-XXX/` lama dan video historis tetap utuh, tidak dimigrasi. Validator menerima ID legacy dan filename-based baru.
-- `requests/save.json`/`requests/result.json` legacy tetap read-only; tidak dipakai oleh jalur baru.
+- ID legacy dan filename-based tetap didukung. Migrasi metadata mutu yang diminta pemilik tidak mengubah video, shot atau detail visual. Field verifikasi manual lama tidak digunakan pada data aktif.
+- `requests/save.json`/`requests/result.json` legacy tetap read-only; tidak dipakai oleh jalur baru. Request historis tetap immutable sebagai catatan penyimpanan; pembaca mengabaikan metadata verifikasi manual lama saat menghasilkan analisis aktif.
 - `analysis.yaml` tetap Schema 2.1 (tanpa `shot_narratives`); narasi Indonesia hanya disisipkan ke Markdown. Request baru wajib punya narasi lengkap. Legacy renderer tetap tersedia untuk membaca/tes arsip lama.
 - **Optimasi instalasi FFmpeg terpisah** dari v1.4; pengujian regresi tetap berjalan.
 - Perubahan rules/README **tidak otomatis mengubah Project Instructions ChatGPT**. Salin instruksi pembaruan dari README ke Project agar semua chat memahami v1.4.

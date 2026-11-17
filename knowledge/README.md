@@ -28,4 +28,6 @@
 
 The knowledge set represents a **dated snapshot**. An additional reference does not silently update aggregated claims. See [methodology](methodology.md) and `scripts/refresh_design_catalog.py` for an explicit refresh path.
 
+All saved references may inform new concepts. Confidence and analysis status qualify source claims; they do not prohibit creative choices. See the usage policy in [methodology](methodology.md).
+
 **Claim classes:** `OBSERVATION` (one reference), `AGGREGATE` (counted source pattern), `INFERENCE` (interpretation), `DESIGN_PRINCIPLE` (general guidance, not a sourced historical fact). Never describe the last two as directly verified by video evidence.

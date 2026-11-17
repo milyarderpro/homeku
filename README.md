@@ -13,7 +13,7 @@ Start at **[knowledge/README.md](knowledge/README.md)**. The knowledge library c
 - [Evidence and uncertainty methodology](knowledge/methodology.md)
 - [Source integrity and canonical-source manifest](knowledge/source-integrity.md)
 
-The original evidence is at `references/<ID>/analysis.yaml`, with `analysis.md`, `storyboard.jpg`, and one `shot-NN.jpg` per annotated shot. `video/` holds source recordings. **Recorded annotations, material identities, dimensions and inferred camera movement are not fully human-verified.**
+The original evidence is at `references/<ID>/analysis.yaml`, with `analysis.md`, `storyboard.jpg`, and one `shot-NN.jpg` per annotated shot. `video/` holds source recordings. **Annotations are reviewed by AI before saving; material identities, dimensions and camera movement remain visual interpretations with recorded confidence and uncertainty.**
 
 ## Separation of responsibility
 

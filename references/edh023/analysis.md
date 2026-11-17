@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -253,7 +253,6 @@ Daun palem hijau berukuran besar terlihat melalui jendela kamar mandi.
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | frame aligned 30fps |
 | Ketidakpastian | camera movements inferred from screen motion, visible surface materials not physically verified, rear building depth and floor area not measurable, design style region is association not actual location, actual season and location unknown |
 

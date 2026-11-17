@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -288,7 +288,6 @@ Melalui jendela lengkung terlihat deretan pohon konifer bersalju, rumah\-rumah d
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | frame based estimate |
 | Ketidakpastian | exact architectural style is interpretive not proven, building floor area is rough visual estimate without measured scale, material identification limited to visual appearance for stucco stone wood marble and textiles, camera motion may be digital zoom or simulated dolly, snowy environment suggests winter appearance without verified location or date, room layout and connection between shots not verifiable, video duration includes short audio tail beyond last video frame |
 

@@ -22,7 +22,7 @@ ubah kode generator DAN acuan ini secara konsisten.
 
 <!-- homeku_request_id: {{request_id}} -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** {{analysis_quality.status}} · **Diverifikasi manusia:** {{analysis_quality.human_verified | humanize}}
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** {{analysis_quality.status}}
 
 ## 1. Informasi Video
 
@@ -131,7 +131,6 @@ ubah kode generator DAN acuan ini secara konsisten.
 | Parameter | Hasil |
 |---|---|
 | Status | {{analysis_quality.status}} |
-| Verifikasi manusia | {{analysis_quality.human_verified | humanize}} |
 | Ketepatan timestamp | {{analysis_quality.timestamp_precision | humanize}} |
 | Ketidakpastian | {{analysis_quality.uncertainties | join_humanize}} |
 

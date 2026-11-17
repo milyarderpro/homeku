@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -253,7 +253,6 @@ Tidak ada detail yang tercatat.
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | Perkiraan luas lantai 90–160 m² sangat kasar karena tidak ada ukuran pembanding yang pasti dan seluruh massa bangunan tidak terlihat., Sebagian label material memakai akhiran appearance/look karena jenis bahan sebenarnya tidak dapat dipastikan dari video., Arah gerakan kamera diperkirakan dari pergeseran elemen dalam frame; gerakan fisik kamera tidak dapat dikonfirmasi., Kawasan north america adalah asosiasi gaya arsitektur, bukan lokasi rumah., Durasi kontainer 17,67 detik, sedangkan frame visual berakhir sekitar 17,53 detik. |
 

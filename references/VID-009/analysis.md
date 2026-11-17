@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -253,7 +253,6 @@ Melalui jendela besar di belakang bak tampak dedaunan hijau yang rapat.
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | architectural style is visual interpretation not verified design origin, building floor area estimate has no measured scale reference, exact exterior and interior materials cannot be confirmed from video, actual geographic location and season are unknown, camera translation vs digital motion is not verifiable |
 

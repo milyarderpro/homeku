@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -288,7 +288,6 @@ Pepohonan tanpa daun di luar dengan permukaan tanah bersalju terlihat melalui je
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | exact home location not inferable from architecture, stylistic region is association not geolocation, exact natural stone and wood materials unverified, floor area estimate has no measured scale reference, upper floor or loft layout not visible, winter like conditions do not confirm calendar date, movement classification is visual interpretation, technical duration includes a short audio tail beyond last video frame |
 

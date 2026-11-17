@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -253,7 +253,6 @@ Tidak ada detail yang tercatat.
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | first three scene boundaries are semantic segments within one continuous camera movement not hard cuts, estimated floor area has no measured scale reference, roof profile and finish materials are visual appearances only, room spatial relationships beyond visible passage are not verified, exterior time of day and geographic location are not confirmed, architecture common regions are style associations not video location, some glass and reflections can obscure exterior details |
 

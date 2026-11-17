@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -252,7 +252,6 @@ Di balik jendela lengkung shower terlihat kehijauan tanaman luar yang kurang taj
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | Waktu perpindahan shot diperoleh dari perbedaan frame dan dibulatkan ke tiga desimal., Batu, kayu, dan tekstil dideskripsikan menurut penampakan; material aslinya tidak terbukti., Luas lantai 65–110 m² adalah perkiraan kasar dari proporsi fasad, dengan confidence rendah., Asosiasi gaya Eropa dan Amerika Utara bukan identifikasi lokasi bangunan., Rangkaian interior tidak membuktikan kesinambungan denah seluruh ruang., Objek putih yang terpotong di sisi kanan kamar mandi mungkin perangkat laundry, tetapi tidak dapat dipastikan. |
 

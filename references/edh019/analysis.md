@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -252,7 +252,6 @@ Cahaya siang lembut masuk melalui jendela berkisi hitam di atas bak mandi; objek
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | actual building location and construction system are unverified, architectural style and common regions are visual associations only, building floor area 130 to 200 m2 is low confidence visual estimate, wood stone metal and wall materials describe visible appearance not material tests, dolly versus digital zoom and small pans are not precisely distinguishable, season cannot be reliably determined from green foliage, video stream ends around 21 33s while container duration is 21 48s |
 

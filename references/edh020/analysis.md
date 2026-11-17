@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -253,7 +253,6 @@ Melalui jendela belakang terlihat bentang luar yang pucat dan bersalju. Cahaya l
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | frame aligned estimated |
 | Ketidakpastian | Jenis batu, kayu, penutup atap, dan countertop diidentifikasi dari penampakan, bukan pengujian material., Rentang luas lantai hanya perkiraan visual karena dimensi, kedalaman bangunan, dan denah utuh tidak terlihat., Kehadiran lantai loteng tidak dapat dipastikan dari tinggi atap dan plafon., Wilayah terkait gaya merupakan asosiasi arsitektur, bukan lokasi asli rumah., Salju dan pohon tanpa daun menyiratkan kondisi mirip musim dingin, bukan bukti bulan atau musim astronomis tertentu., Gerakan kamera merupakan interpretasi dari perubahan framing; hubungan spasial antarruang tidak dipastikan. |
 

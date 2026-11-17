@@ -22,7 +22,7 @@ def make_package(root: Path, vid: str = "PENDING") -> Path:
             {"id": "shot-01", "start_s": 0.0, "end_s": 3.0, "keyframe": f"references/{vid}/shot-01.jpg"},
             {"id": "shot-02", "start_s": 3.0, "end_s": 6.0, "keyframe": f"references/{vid}/shot-02.jpg"},
         ],
-        "analysis_quality": {"status": "draft", "human_verified": False},
+        "analysis_quality": {"status": "draft"},
     }
     (folder / "analysis.yaml").write_text(yaml.safe_dump(data), encoding="utf-8")
     (folder / "analysis.md").write_text(f"# {vid}\n![Storyboard](storyboard.jpg)\n## Shot 01\n<img src=\"shot-01.jpg\">\n## Shot 02\n<img src=\"shot-02.jpg\">\n", encoding="utf-8")
@@ -51,6 +51,15 @@ class ValidateTests(unittest.TestCase):
         md_path = self.folder / "analysis.md"
         md_path.write_text(md_path.read_text(encoding="utf-8") +
                            f"| Wilayah terkait gaya desain | {label} |\n", encoding="utf-8")
+
+
+    def test_invalid_analysis_status_still_rejected(self):
+        path = self.folder / "analysis.yaml"
+        data = yaml.safe_load(path.read_text())
+        data["analysis_quality"]["status"] = "invalid"
+        path.write_text(yaml.safe_dump(data))
+        with self.assertRaisesRegex(InvalidPackage, "Invalid analysis quality status"):
+            validate(self.folder)
 
     def test_valid(self):
         # Historical schema 2.1 packages without common_regions remain valid.

@@ -2,7 +2,7 @@
 
 > Tur visual rumah cottage dengan fasad sage green, teras depan, pepohonan rindang, dan interior hangat bernuansa country cottage / modern farmhouse.
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** `draft` · **Diverifikasi manusia:** Belum
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** `draft`
 
 ## 1. Informasi Video
 
@@ -210,7 +210,6 @@
 | Parameter | Hasil |
 |---|---|
 | Status | Draft |
-| Verifikasi manusia | Belum |
 | Ketepatan timestamp | Estimated |
 | Ketidakpastian | Exact shot boundaries, exact camera trajectories, exact paint colors, architectural style taxonomy |
 

@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -253,7 +253,6 @@ Helai daun hijau mirip palem terlihat melalui jendela lengkung belakang, dengan 
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | stylistic region association is not actual location, building floor area and upper floor configuration are visual estimates, stone wood and metal material names are based on visible appearance, camera movements may be digital reframing or physical movement, outdoor vegetation and season cannot be verified to species or calendar season |
 

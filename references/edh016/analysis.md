@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -254,7 +254,6 @@ Salju putih menutupi bedeng taman depan yang melengkung; dinding penahan batu ab
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | building floor area is visual estimate without measured scale, stone wood and plaster identifications are visual appearances, style and common regions are interpretations not real location, winter appearance does not prove calendar season or geographic location, first shot contains two areas in one unbroken camera move, video generation origin is not inferred from visuals |
 

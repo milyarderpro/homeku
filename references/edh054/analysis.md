@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -252,7 +252,6 @@ Pemandangan melalui jendela kamar mandi memperlihatkan ranting pohon yang tertut
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | building location and original geographic origin not identifiable from video, style region associations are interpretations not property location, full building depth and true floor area not visible, plaster wood stone and tile materials described by appearance only, camera motion could be digital zoom or simulated dolly, visible snow does not establish recording date or actual season |
 

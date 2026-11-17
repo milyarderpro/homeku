@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -288,7 +288,6 @@ Tidak ada detail yang tercatat.
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | primary architectural style and stylistic regions are interpretations not a verified location, only front and selected rooms are shown so total footprint and floor area have low confidence, wood stone plaster and marble materials are described by visible appearance only, camera motion labels cannot distinguish physical dolly from digital reframing with certainty, season and exact geographic location cannot be identified from tropical vegetation, partially visible curved white bathroom fixture at start of final shot may be a bathtub |
 

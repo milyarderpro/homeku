@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -288,7 +288,6 @@ Tidak ada detail yang tercatat.
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | frame approximate |
 | Ketidakpastian | building floor area is visual estimate without floor plan or scale, roof wall floor countertop materials identified by appearance not specification, visual architectural region association is not actual building location, season and geographic location cannot be confirmed, camera motion inferred from image sequence, minor object counts and room dimensions not measured |
 

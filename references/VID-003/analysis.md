@@ -2,7 +2,7 @@
 
 <!-- homeku_request_id: dreamsHouse003-20261102-reviewed-001 -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -264,7 +264,6 @@
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | Estimasi luas 100–160 m² hanya dari proporsi visual; tidak ada dimensi atau denah yang terverifikasi., Dormer mengisyaratkan ruang atap namun fungsi dan jumlah tingkat yang dapat dihuni belum pasti., Istilah dolly, pan, dan tracking menyatakan gerakan visual yang tampak; tidak dapat dipastikan apakah kamera fisik, digital zoom, atau gerakan video sintetis., Batas antar-shot diperkirakan pada frame terdekat; transisi eksterior ke interior menggunakan kilatan/dissolve singkat., Penampilan musim hanyalah interpretasi dari dedaunan dan pencahayaan, bukan tanggal/lokasi asli. |
 

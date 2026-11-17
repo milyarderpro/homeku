@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -253,7 +253,6 @@ Dari jendela kamar mandi tampak daun pohon hijau di luar, dengan sebagian strukt
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | actual building location not known, common region is stylistic association only, total floor area 75 to 130 m2 is low confidence visual estimate, exact wall stone flooring and counter materials unverified, architectural level count and full footprint partially obscured, season not determinable from green foliage alone, camera movements inferred from framing changes, final visible frame ends before container audio duration |
 

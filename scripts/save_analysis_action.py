@@ -14,7 +14,7 @@ import subprocess
 from pathlib import Path
 import yaml
 from storyboard import generate_storyboard
-from validate_analysis import validate, validate_narratives, narrative_text
+from validate_analysis import validate, validate_narratives, narrative_text, normalize_analysis_quality
 
 def git(*args):
     return subprocess.check_output(["git", *args], text=True).strip()
@@ -42,8 +42,7 @@ def markdown(d, rid, narratives=None):
     area_text = "Tidak diketahui" if area["min"] is None else str(area["min"]) + "–" + str(area["max"]) + " m²"
     lines = ["# " + v["id"] + " — " + fmt(a["primary_style"]).title(),
              "", "<!-- homeku_request_id: " + rid + " -->", "",
-             "**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** " + fmt(q["status"]) +
-             " · **Diverifikasi manusia:** " + fmt(q["human_verified"]), "",
+             "**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** " + fmt(q["status"]), "",
              "## 1. Informasi Video", "", "| Informasi | Nilai |", "|---|---|"]
     if narratives is not None:
         lines[4:4] = ["<!-- homeku_detail_narratives: chat-reviewed -->", ""]
@@ -108,7 +107,7 @@ def markdown(d, rid, narratives=None):
                   " · Detail visual "+fmt(s["confidence"].get("visual_details")),""]
     lines += ["## 8. Kualitas dan Ketidakpastian Analisis","",
               "| Parameter | Hasil |","|---|---|"]
-    for k,value in [("Status",q.get("status")),("Verifikasi manusia",q.get("human_verified")),
+    for k,value in [("Status",q.get("status")),
                     ("Ketepatan timestamp",q.get("timestamp_precision")),
                     ("Ketidakpastian",q.get("uncertainties"))]:
         lines.append(row(k,value))
@@ -138,6 +137,7 @@ def process(root,branch):
     require(isinstance(raw,str) and len(raw)>100,"Missing analysis_yaml")
     data=yaml.safe_load(raw)
     require(isinstance(data,dict) and str(data.get("schema_version"))=="2.1","Invalid YAML schema")
+    normalize_analysis_quality(data)
     v,shots=data["video"],data["shots"]
     times=req.get("keyframe_times_s")
     require(v["filename"]==source.name,"Wrong analysis filename")

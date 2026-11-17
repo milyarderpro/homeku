@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -287,7 +287,6 @@ Cahaya siang terang menembus jendela tinggi kamar mandi, tetapi pemandangan di l
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | room and material labels describe appearance not verified specifications, floor area estimated without measured dimensions, architectural style and camera motion are interpretations, transition between exterior and living room is visually smooth, final 0 15 seconds of container have no additional video frames, original building location and season unknown |
 

@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -288,7 +288,6 @@ Semak dengan bunga jingga kemerahan dan dedaunan hijau terlihat jelas di balik j
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | frame derived approximate |
 | Ketidakpastian | mediterranean cottage is a stylistic interpretation not a verified architectural provenance, common regions are style associations not actual building location, floor area is a low confidence visual estimate without measured dimensions, specific stucco stone wood and fabric materials are described by appearance where uncertain, season cannot be confirmed from sunlight and mixed green yellow foliage, camera moves may include digital zoom or synthetic motion |
 

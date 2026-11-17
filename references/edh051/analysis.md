@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -288,7 +288,6 @@ Semak berbunga merah muda memenuhi taman depan dan sisi kanan, dengan semak hija
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | frame based approximate |
 | Ketidakpastian | architectural style and associated regions are interpretive not verified location, floor area range is a low confidence visual estimate without measured scale, stated materials refer to visible appearance not lab verified composition, camera translation and digital zoom cannot be fully distinguished, visible green mountains and pink blooms do not establish geographic location or season, container runtime is approximately 18 50 s while video frames cover 18 37 s |
 

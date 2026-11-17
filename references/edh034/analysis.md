@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -253,7 +253,6 @@ Pohon\-pohon palem hijau tinggi menjulang dari balik atap, dengan pepohonan berd
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | exact building floor area and unseen footprint not measurable from video, stone wood and wall finishes described by visual appearance only, left bedroom arched surface could be mirror or glazed opening, camera movement types are interpretations of on screen motion, regional style association does not identify actual home location, season and actual geographic location cannot be verified visually |
 

@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -253,7 +253,6 @@ Melalui jendela di sisi bathtub terlihat cabang\-cabang pohon di luar dan cahaya
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | estimated |
 | Ketidakpastian | building floor area is visual estimate without measured scale, stone and wood materials described by appearance not confirmed composition, roof structure and upper level usage not fully visible, precise dolly vs digital reframe camera method cannot be verified, common regions describe style association not actual property location, season and geographic location are not verifiable from foliage |
 

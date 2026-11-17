@@ -20,7 +20,7 @@ import yaml
 
 from save_analysis_action import markdown
 from storyboard import generate_storyboard
-from validate_analysis import validate, validate_narratives
+from validate_analysis import validate, validate_narratives, normalize_analysis_quality
 
 STEM = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,63}\Z")
 VIDEO_PATH = re.compile(r"video/([A-Za-z0-9][A-Za-z0-9_.-]{0,63})\.mp4\Z")
@@ -136,6 +136,7 @@ def load_request(root, request_path, *, require_narratives=True):
     data = yaml.safe_load(raw)
     require(isinstance(data, dict) and str(data.get("schema_version")) == "2.1",
             "Invalid YAML schema")
+    normalize_analysis_quality(data)
     v = data.get("video")
     shots = data.get("shots")
     require(isinstance(v, dict) and v.get("filename") == video.name,

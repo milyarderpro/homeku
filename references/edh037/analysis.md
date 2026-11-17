@@ -4,7 +4,7 @@
 
 <!-- homeku_detail_narratives: chat-reviewed -->
 
-**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft · **Diverifikasi manusia:** Tidak
+**Sumber data:** [analysis.yaml](analysis.yaml) · **Status:** draft
 
 ## 1. Informasi Video
 
@@ -288,11 +288,10 @@ Gumpalan salju putih terlihat di sisi tangga dan dasar rumah, dengan petak rumpu
 | Parameter | Hasil |
 |---|---|
 | Status | draft |
-| Verifikasi manusia | Tidak |
 | Ketepatan timestamp | frame aligned |
 | Ketidakpastian | europe and north america are stylistic associations not verified geographic location, floor area estimate has no measured scale reference, white stone and wood materials are appearance based not verified, snowy landscape and palm in same scene do not verify real climate or season, some camera motions may be digital pushes or crops, room to room floorplan continuity is not verified from separate shots |
 
-**Catatan:** Video visual diamati melalui sampel lintas setiap shot dengan batas cut diperiksa pada frame penuh; belum diverifikasi manusia.
+**Catatan:** Video visual diamati melalui sampel lintas setiap shot dengan batas cut diperiksa pada frame penuh.
 
 ---
 
