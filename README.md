@@ -1,26 +1,25 @@
-# HOMEKU — Design knowledge for creative AI
+# HOMEKU — Pustaka desain rumah dan bahasa visual
 
-A source-grounded library for developing original house concepts and understanding home-tour visual language. Creative workflow and generator prompts belong in a separate plugin or master prompt.
+Pengetahuan dari analisis home-tour untuk membantu AI memahami desain rumah, ruang, interior, lanskap, cahaya, komposisi dan gerak. Penyusunan konsep proyek dan prompt akhir dijalankan oleh plugin atau master prompt.
 
-**Start with [Core knowledge](knowledge/ai-knowledge.md).** It explains design relationships, camera language and creative-use policy without requiring a local clone or script execution.
+**Mulai dari [Pengetahuan inti](knowledge/ai-knowledge.md).** Dokumen ini cukup untuk memahami prinsip dasar dan batas bukti. Tidak perlu membaca seluruh repository.
 
-| Read next | Purpose |
+| Kebutuhan bacaan | Buka |
 | --- | --- |
-| [Concept directories](knowledge/directories/README.md) | Find examples by style, scale, room, configuration, material appearance, lighting or camera |
-| [Reference profiles](knowledge/reference-profiles/README.md) | Read one source at a time and follow shot evidence |
-| [Design and temporal evidence](knowledge/design-evidence/README.md) | Review scope, relations and sampled shot progression for each source |
-| [Corpus patterns](knowledge/corpus-patterns.md) | Counted patterns, counterexamples and diversity |
-| [Bilingual vocabulary](knowledge/taxonomy/README.md) | Understand normalized terms and Indonesian/English aliases |
-| [Knowledge guide](knowledge/README.md) | Browse deeper thematic documents |
-| [Published snapshot](knowledge/release.json) | Identify the sources and revisions supporting this version |
-| [Access contract](knowledge/access-contract.md) | Read the same knowledge through web or a GitHub connector |
+| Memahami prinsip desain dan bahasa visual | [Pengetahuan inti](knowledge/ai-knowledge.md) |
+| Mendalami satu topik | [Peta bacaan](knowledge/README.md) |
+| Menemukan contoh sesuai gaya, ruang atau gerak | [Direktori konsep](knowledge/directories/README.md) |
+| Memahami satu referensi beserta sumbernya | [Profil referensi](knowledge/reference-profiles/README.md) |
 
-All saved references may inspire new designs. Confidence qualifies source claims; it does not prohibit creative material or layout decisions. Source appearances and camera movement remain visual interpretations. A cut between rooms does not establish a measured floorplan. See [methodology](knowledge/methodology.md).
+Informasi dibaca sesuai kebutuhan: inti → tema terkait → contoh relevan → bukti jika klaim memerlukan pemeriksaan. Profil menautkan analisis asli dan rincian shot. Tersedianya gambar tidak berarti gambar sudah dilihat.
 
-The library does not contain verified platform-level performance metrics or causal tests of virality.
+Semua referensi boleh menginspirasi desain baru. Confidence menjelaskan kepastian tentang sumber, bukan larangan memilih material atau tata ruang baru. Potongan video tidak membuktikan denah terukur, dan tidak ada formula virality yang teruji dalam koleksi ini.
 
-## Maintain the library
+<details>
+<summary>Akses, versi dan pemeliharaan — bacaan pendukung</summary>
 
-[Knowledge maintenance](docs/knowledge-maintenance.md) · [Source analysis/save workflow](rules/workflow-analysis.md) · [Source integrity](knowledge/source-integrity.md) · [Data contracts](schemas/README.md) · [Implementation plan](docs/knowledge-improvement-plan.md)
+[Web atau konektor GitHub](knowledge/access-contract.md) · [Snapshot sumber](knowledge/release.json) · [Metodologi bukti](knowledge/methodology.md) · [Pemeliharaan](docs/knowledge-maintenance.md)
 
-Archive ingestion and knowledge publication are separate. New archives do not silently change published profiles, counts or design interpretations.
+AI pembaca menggunakan berkas statis yang sama melalui web atau konektor. Clone, skrip, database dan API buatan khusus tidak diperlukan. Arsip baru masuk melalui proses penyimpanan; publikasi pengetahuan memilih snapshot secara eksplisit.
+
+</details>

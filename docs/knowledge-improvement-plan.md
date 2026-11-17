@@ -1,6 +1,6 @@
 # Rencana Peningkatan Pengetahuan HOMEKU
 
-Disusun dan diperjelas 17 November 2026. Status: tahap 1–5 sudah memiliki implementasi lokal. Tahap 3–5 mencakup seluruh 57 referensi dengan review storyboard terpilih, sampel temporal seluruh shot dan review temporal pada 12 pilot; 45 review temporal serta validasi gerak kontinu masih pending secara eksplisit. Tahap 6–7, termasuk uji konsumsi AI jarak jauh, belum selesai. Uji akses remote terhadap berkas baru menunggu publikasi ke GitHub. Dasar: 57 referensi aktif, 295 shot, dan 6.111 butir detail visual setelah perapian integritas sumber. Kontrak akses: URL repo GitHub menunjuk sumber pengetahuan; konsumen AI dapat membacanya melalui web atau konektor GitHub.
+Disusun dan diperjelas 17 November 2026. Tahap 1–6 memiliki implementasi dan kandidat publik pada branch codex/knowledge-stage-6-7. Tahap 7 mencakup audit, pemeliharaan dan uji akses terpandu dua jalur pada commit yang sama; benchmark AI independen belum dilakukan. Pengguna memilih cukup uji akses untuk tahap 7 saat ini. Dasar snapshot: 57 referensi, 295 shot, 6.111 detail visual. Review temporal 45 sumber tetap pending; uji akses tidak mengubah cakupan review isi.
 
 **Kemajuan tahap 1–2**
 
@@ -23,6 +23,17 @@ Disusun dan diperjelas 17 November 2026. Status: tahap 1–5 sudah memiliki impl
 - Pemeriksaan kemiripan 62 video pada 900 sampel menghasilkan nol kandidat menurut ambang terlapor; tidak dianggap bukti bebas overlap dan tidak menghapus sumber.
 - Tidak ada koreksi anotasi/video asli yang dipaksakan. Perbedaan alias scene disimpan sebagai discrepancy, bukan salah fakta yang sudah terbukti.
 - Rincian cakupan, batas review dan langkah berikutnya: [laporan tahap 3–5](stage-3-5-report.md).
+
+**Kemajuan tahap 6–7**
+
+- Pintu masuk 228 kata, peta bacaan 326 kata dan inti 788 kata; tema serta contoh dibuka sesuai kebutuhan.
+- Modul kontinuitas tersedia; profil 493–722 kata dan metadata pendukung dipisahkan secara penyajian. Bukti tetap pada path asli.
+- Kandidat dipublikasikan pada branch uji; web dan konektor diuji pada commit 217c63a473f5b6d9d967b1cb3372dae355ffed8b.
+- Kedua jalur membaca 32 path unik dan menghasilkan 40 respons berbukti. Masing-masing lulus 26 cek mekanis; 14 jawaban semantik tidak diberi skor independen.
+- Probe pencarian belum menemukan hasil target; navigasi path langsung berhasil. Gambar benar-benar ditampilkan melalui konektor; visual melalui web belum diklaim berhasil.
+- Satu respons manifest web bersifat parsial. Identitas rilis diperiksa dari field yang dikembalikan, tanpa menganggap seluruh binding telah dibaca.
+- Asisten memiliki konteks repo sebelumnya dan mengetahui jawaban acuan. Benchmark buta AI konsumen tetap pekerjaan terbuka, bukan hasil yang disimpulkan dari tes kode atau akses.
+- Hasil, batas pengukuran dan pemeliharaan: [laporan tahap 6–7](stage-6-7-report.md).
 
 **Tujuan**
 
@@ -180,6 +191,8 @@ Selesai ketika: semua referensi tercakup atau memiliki alasan penundaan yang eks
 
 **Tahap 6 — Terbitkan pengetahuan untuk akses web dan konektor GitHub**
 
+Status implementasi: pintu masuk ringkas, peta tema, modul kontinuitas, profil deskriptif dan navigasi direktori tersedia. Publikasi kandidat dan pengujian dua jalur dicatat dalam laporan tahap 6–7.
+
 Tujuan: dari URL repo, AI dapat memahami pengetahuan inti dan mengambil rincian yang relevan melalui web maupun konektor GitHub, menggunakan satu sumber pengetahuan yang sama.
 
 Pekerjaan:
@@ -202,6 +215,10 @@ Hasil: pintu masuk README, paket inti Markdown, modul tematik, direktori yang di
 Selesai ketika: pengujian web dan konektor masing-masing menunjukkan konsumen dapat menemukan, memahami dan merujuk pengetahuan dari URL repo tanpa clone atau menjalankan kode. Keberhasilan satu jalur tidak dianggap membuktikan keberhasilan jalur lain; keterbatasan akses gambar dicatat tersendiri.
 
 **Tahap 7 — Evaluasi rilis dan pemeliharaan berkelanjutan**
+
+Cakupan yang dipilih pengguna untuk implementasi saat ini: uji akses dan pemeliharaan; benchmark AI independen menjadi pengujian lanjutan.
+
+Status implementasi: audit bacaan dan validator rekaman remote tersedia. Uji akses terpandu dibedakan dari benchmark model independen; asisten ini memiliki konteks repo sebelumnya sehingga tidak memenuhi isolasi konteks benchmark buta.
 
 Tujuan: peningkatan jumlah data menghasilkan manfaat yang terukur dan tidak menurunkan mutu yang sudah ada.
 

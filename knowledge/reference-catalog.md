@@ -1,6 +1,6 @@
 # HOMEKU — Published reference catalog
 
-Knowledge release: 2026-11-17-stage-3-5. Source labels and timings remain recorded annotations.
+Knowledge release: 2026-11-17-stage-6-7. Source labels and timings remain recorded annotations.
 New archives do not enter this table until an explicit knowledge publication.
 
 [Reference profiles](reference-profiles/README.md) · [Core knowledge](ai-knowledge.md) · [Release](release.json)
