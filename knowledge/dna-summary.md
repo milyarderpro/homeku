@@ -4,9 +4,9 @@
 
 ## Snapshot of the reference set
 
-The original P1 audit (2026-11-09; source commit `80072ac`) identified **58 reference packages, 300 shots and keyframes**, and 6,226 recorded visual-detail items (not unique objects). There were 35 five-shot, 14 six-shot, six four-shot, two seven-shot, and one three-shot reference. All 58 annotated videos begin with exterior imagery; in five, exterior and living appear within the same first shot. These are **sample descriptions**, not recommended durations or universal patterns.
+The active source snapshot was refreshed on 2026-11-17 after removing an exact duplicate source and retaining its canonical reference. It contains **57 reference packages, 295 shots and keyframes**, and 6,111 recorded visual-detail items (not unique objects). There are 34 five-shot, 14 six-shot, 6 four-shot, 2 seven-shot, and 1 three-shot references. All 57 annotated videos begin with exterior imagery; in 4, exterior and living appear within the same first shot. These are **sample descriptions**, not recommended durations or universal patterns. Source bytes and canonical IDs are pinned in [source-manifest.json](source-manifest.json); see [source integrity](source-integrity.md).
 
-The median annotated video length was 20.19 seconds (range 15.300–27.233 seconds). Overall pace labels: 29 slow, 28 moderate, one slow-to-moderate. Source boundary estimates and interpretations have uncertainties. No performance metric was verified in these annotations, so patterns below cannot be called causal 'viral formulas'.
+The median annotated video length is 20.18 seconds (range 15.300–27.233 seconds). Overall pace labels: 29 slow, 27 moderate, one slow-to-moderate. Source boundary estimates and interpretations have uncertainties. No performance metric was verified in these annotations, so patterns below cannot be called causal 'viral formulas'.
 
 ## Seven observed layers
 
@@ -34,6 +34,6 @@ A **recognizable silhouette** plus a distinctive entrance and landscape foregrou
 
 ## How to read the intelligence
 
-Use [reference catalog](reference-catalog.md) and [all 58 source design profiles](reference-profiles/README.md) to locate examples; inspect the linked YAML and relevant original images before asserting shot-level facts. Use [compatibility](design-compatibility.md) and [originality](originality-framework.md) for explicitly reasoned design synthesis, and [spatial principles](spatial-design-principles.md) for geometric plausibility. Curated, field-level claim examples and limitations are listed in [evidence-index.yaml](evidence-index.yaml); this is a selective index rather than a complete mirror of the 58 source packages.
+Use [reference catalog](reference-catalog.md) and [all 57 source design profiles](reference-profiles/README.md) to locate examples; inspect the linked YAML and relevant original images before asserting shot-level facts. Use [compatibility](design-compatibility.md) and [originality](originality-framework.md) for explicitly reasoned design synthesis, and [spatial principles](spatial-design-principles.md) for geometric plausibility. Curated, field-level claim examples and limitations are listed in [evidence-index.yaml](evidence-index.yaml); this is a selective index rather than a complete mirror of the 57 source packages.
 
 **Exclusions:** mandatory shot timing, imagery/panel count, Flow/Omni controls, generation platform choices, cut rules, audio policy, approval gates, prompts, video QA, and file-save instructions for production.

@@ -44,8 +44,8 @@ class DesignIntelligenceTests(unittest.TestCase):
 
     def test_catalog_metadata_and_coverage(self):
         count, shots = verify_catalog()
-        self.assertEqual(count, 58)
-        self.assertEqual(shots, 300)
+        self.assertEqual(count, 57)
+        self.assertEqual(shots, 295)
 
     def test_catalog_refresh_renderer_is_complete(self):
         refreshed = markdown_rows(render_catalog())

@@ -2,9 +2,9 @@
 
 ## Dataset and provenance
 
-The baseline is 58 archived reference packages (10 legacy `VID-XXX`, 48 `edh...`), 300 annotated shots, at source snapshot commit [80072ac](https://github.com/milyarderpro/homeku/tree/80072accc56f7824d9575f144ed4e88dcf51a8bc), audited 2026-11-09 in the original P1 summary. The current knowledge migration was compared with `main` at commit `6bfe47ae3235ca5276097996de291e9318c3e7d5`. The catalog can be regenerated; **numbers must not be treated as live counters**.
+The active source snapshot contains 57 reference packages (10 legacy `VID-XXX`, 47 `edh...`) and 295 annotated shots after source-integrity cleanup on 2026-11-17. The earlier 2026-11-09 P1 audit at commit [80072ac](https://github.com/milyarderpro/homeku/tree/80072accc56f7824d9575f144ed4e88dcf51a8bc) described 58 packages and 300 shots before duplicate removal; its totals are historical, not current counters. See [source-integrity.md](source-integrity.md) and [source-manifest.json](source-manifest.json) for the current source bindings and SHA-256 fingerprints.
 
-Individual `analysis.yaml` records are source-of-record *annotations*, not independent measurements. Recorded `analysis_quality.human_verified` is false for the original 58; 57 have status `draft` and one is `reviewed`. Video cuts, focal lengths, materials, building area, world geography and seasons may remain uncertain. `common_regions` classifies stylistic association, not the location of a home.
+Individual `analysis.yaml` records are source-of-record *annotations*, not independent measurements. Recorded `analysis_quality.human_verified` is false for all 57 active references; 56 have status `draft` and 1 is `reviewed`. Source-byte integrity does not promote any annotation to human-verified. Video cuts, focal lengths, materials, building area, world geography and seasons may remain uncertain. `common_regions` classifies stylistic association, not the location of a home.
 
 ## Four claim types
 
@@ -17,9 +17,9 @@ Individual `analysis.yaml` records are source-of-record *annotations*, not indep
 
 `knowledge/evidence-index.yaml` stores `id`, `category`, `claim_type`, `statement`, `sources` (each with `reference_id`, `shot_id`, `field_path`), `confidence`, and `limitations`. A reference points to actual `references/<ID>/analysis.yaml`; `shot_id` must exist. `field_path` uses `shots[N].<path>` with a zero-based shot index, or a root field. A record with two source IDs is **not** a claim that those houses are physically connected.
 
-## Coverage of all 58 sources
+## Coverage of all 57 sources
 
-The [reference profiles](reference-profiles/README.md) contain concise source-metadata signatures for all 58 references: perceived scale, architectural features, color labels, lighting, scene sequence and opening camera annotation. The 23 initial curated records in `evidence-index.yaml` are **worked examples**, not 58 complete per-shot records, and should not be described as exhaustive. Profiles link directly to source YAML and retain its recorded field names. Deeper thematic inference still requires human/AI review of additional shots and original frames.
+The [reference profiles](reference-profiles/README.md) contain concise source-metadata signatures for all 57 references: perceived scale, architectural features, color labels, lighting, scene sequence and opening camera annotation. The 23 initial curated records in `evidence-index.yaml` are **worked examples**, not 57 complete per-shot records, and should not be described as exhaustive. Profiles link directly to source YAML and retain its recorded field names. Deeper thematic inference still requires human/AI review of additional shots and original frames.
 
 ## Interpretation safeguards
 

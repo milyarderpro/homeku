@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'requests/pending/*.json'
+      # Retired exact duplicate; deletion/restoration is not a save request.
+      - '!requests/pending/edh026.json'
   workflow_dispatch:
     inputs:
       request_path:

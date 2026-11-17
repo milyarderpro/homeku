@@ -6,8 +6,8 @@
 
 1. [methodology.md](methodology.md) — evidence classes, confidence, provenance and uncertainty.
 2. [dna-summary.md](dna-summary.md) — seven-layer cross-reference synthesis.
-3. [reference-catalog.md](reference-catalog.md) — 58-reference searchable metadata overview.
-4. [reference-profiles/README.md](reference-profiles/README.md) — individually traceable profiles of **all 58** sources.
+3. [reference-catalog.md](reference-catalog.md) — 57-reference searchable metadata overview.
+4. [reference-profiles/README.md](reference-profiles/README.md) — individually traceable profiles of **all 57** sources.
 5. [architecture-dna.md](architecture-dna.md) — massing, scale, roof, envelope and openings.
 6. [landscape-dna.md](landscape-dna.md) — setting, foreground, entrance and window views.
 7. [interior-dna.md](interior-dna.md) — rooms, furniture and visual relationships.
@@ -17,6 +17,8 @@
 11. [design-compatibility.md](design-compatibility.md) — style combinations and conflict reasoning.
 12. [originality-framework.md](originality-framework.md) — original design transformations.
 13. [evidence-index.yaml](evidence-index.yaml) — curated claim-level YAML provenance examples.
+14. [source-integrity.md](source-integrity.md) — canonical sources, retired IDs and byte-integrity checks.
+15. [source-manifest.json](source-manifest.json) — SHA-256 source bindings and separate unannotated inventory.
 
 ## Source hierarchy
 

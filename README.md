@@ -1,16 +1,17 @@
 # HOMEKU — Design Intelligence v2.0
 
-**A source-grounded visual design knowledge repository** for reasoning about original, architecturally coherent house concepts using a curated collection of 58 annotated home-tour references. HOMEKU stores *design evidence and intelligence*, not a video-generation workflow.
+**A source-grounded visual design knowledge repository** for reasoning about original, architecturally coherent house concepts using a curated collection of 57 annotated home-tour references. HOMEKU stores *design evidence and intelligence*, not a video-generation workflow.
 
 ## Read the knowledge
 
 Start at **[knowledge/README.md](knowledge/README.md)**. The knowledge library covers architectural form/scale, landscape and window-world, room and furniture relationships, spatial coherence, camera/visual narrative, design compatibility and creative originality.
 
 - [Cross-reference DNA synthesis](knowledge/dna-summary.md)
-- [Catalog of 58 reference sources](knowledge/reference-catalog.md)
-- [58 detailed source design signatures](knowledge/reference-profiles/README.md)
+- [Catalog of 57 reference sources](knowledge/reference-catalog.md)
+- [57 detailed source design signatures](knowledge/reference-profiles/README.md)
 - [Traceable evidence index](knowledge/evidence-index.yaml)
 - [Evidence and uncertainty methodology](knowledge/methodology.md)
+- [Source integrity and canonical-source manifest](knowledge/source-integrity.md)
 
 The original evidence is at `references/<ID>/analysis.yaml`, with `analysis.md`, `storyboard.jpg`, and one `shot-NN.jpg` per annotated shot. `video/` holds source recordings. **Recorded annotations, material identities, dimensions and inferred camera movement are not fully human-verified.**
 
@@ -25,7 +26,7 @@ The original evidence is at `references/<ID>/analysis.yaml`, with `analysis.md`,
 
 An external **Master Prompt** or creative brief can use this library; that prompt remains the independent control layer and may change without modifying the underlying design knowledge.
 
-The 58 references were selected for perceived/reported strong performance, but the repository does not contain verified platform-level views, watch time, completion or causal tests. Do **not** describe any roof style, color, framing or duration as a proven formula for viral reach.
+The 57 references were selected for perceived/reported strong performance, but the repository does not contain verified platform-level views, watch time, completion or causal tests. Do **not** describe any roof style, color, framing or duration as a proven formula for viral reach.
 
 ## Add new source analyses (ingestion, not production)
 
@@ -40,8 +41,9 @@ Existing `references/`, `video/`, `requests/`, schemas, scripts, analysis rules 
 ## Quality checks
 
 ```sh
+python scripts/verify_source_integrity.py --check
 python scripts/refresh_design_catalog.py --check
 python -m unittest discover -s tests -v
 ```
 
-A catalog refresh is deterministic and uses source YAML; AI-authored interpretations require separate review. The [evidence methodology](knowledge/methodology.md) explains source quality and the limits of any claim.
+The source manifest pins active MP4 bytes and canonical IDs; unannotated videos are listed separately. Intentional inventory changes require a reviewed manifest refresh. A catalog refresh is deterministic and uses source YAML; AI-authored interpretations require separate review. The [evidence methodology](knowledge/methodology.md) explains source quality and the limits of any claim.

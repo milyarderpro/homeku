@@ -4,7 +4,7 @@
 
 ## What the sources really show
 
-- **Observed combined rooms:** [edh060 shot-02](../references/edh060/analysis.yaml) describes an elongated living/kitchen/loft composition with stairs on the left and kitchen elements to the right/far end. [edh033 shot-02](../references/edh033/analysis.yaml) and [edh022 shot-02](../references/edh022/analysis.yaml) also label combined living/kitchen scenes. Do not extend this to all 58 homes.
+- **Observed combined rooms:** [edh060 shot-02](../references/edh060/analysis.yaml) describes an elongated living/kitchen/loft composition with stairs on the left and kitchen elements to the right/far end. [edh033 shot-02](../references/edh033/analysis.yaml) and [edh022 shot-02](../references/edh022/analysis.yaml) also label combined living/kitchen scenes. Do not extend this to all 57 homes.
 - **Observed distinct scenes, adjacency unknown:** [edh058 shot-02](../references/edh058/analysis.yaml) is living; [edh058 shot-03](../references/edh058/analysis.yaml) is kitchen. The separate frames do not establish that the rooms share one wall, door, orientation or camera position.
 - **Observed landscape through openings:** [edh058](../references/edh058/analysis.yaml) records vegetation and flower views through several interior openings; these constrain visual atmosphere, not compass direction or exact site plan.
 
@@ -27,4 +27,4 @@ If the kitchen is east of the living room and their shared opening lies in the l
 
 A defensible original-house model has: one floor-level graph; exterior footprint and entry; wall/window registry with positions; fixed features (stairs, fireplace, island, bath); furniture footprints; camera viewpoint coordinates; and landscape directions. Inconsistencies can be detected conceptually before any rendering. Exact dimensions remain estimates until designed.
 
-**Scope:** the principles above are architectural reasoning. They are not claims that specific 58 video houses are physically built according to this diagram, or proof that a generator will obey them.
+**Scope:** the principles above are architectural reasoning. They are not claims that specific 57 video houses are physically built according to this diagram, or proof that a generator will obey them.
