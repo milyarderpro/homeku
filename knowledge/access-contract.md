@@ -56,4 +56,4 @@ Request penyimpanan, fixture tes, rencana implementasi, laporan evaluasi dan ins
 
 Confidence dan cakupan review menjelaskan klaim sumber. Semua referensi tersimpan tetap boleh menginspirasi desain baru. Tidak ada syarat verifikasi manual.
 
-Hasil uji akses dan batas penilaiannya dicatat dalam [laporan pemeliharaan tahap 6–7](../docs/stage-6-7-report.md). Keberhasilan membuka file dan kualitas jawaban AI adalah pengukuran berbeda.
+Hasil uji akses dan batas penilaiannya dicatat dalam [catatan evaluasi akses](../evaluations/stage7/README.md). Keberhasilan membuka file dan kualitas jawaban AI adalah pengukuran berbeda.

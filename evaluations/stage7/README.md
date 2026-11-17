@@ -1,6 +1,6 @@
 # Stage 7 — reader access and maintenance evaluation
 
-[Local audit](local-report.json) · [Remote summary](remote-summary.json) · [Web trace](web.json) · [GitHub connector trace](github_connector.json) · [Implementation report](../../docs/stage-6-7-report.md)
+[Local audit](local-report.json) · [Remote summary](remote-summary.json) · [Web trace](web.json) · [GitHub connector trace](github_connector.json) · [Maintenance](../../docs/knowledge-maintenance.md)
 
 The [stage 3 bank](../stage3/cases.json) and baseline SHA remain frozen: 24 development and 16 heldout cases. Reference answers are visible to this evaluator. The current execution is a guided batch readthrough, not a blinded consumer-model experiment.
 

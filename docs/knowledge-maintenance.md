@@ -1,4 +1,4 @@
-# Knowledge maintenance — stages 1–7
+# Knowledge maintenance
 
 These commands are for maintainers. Creative consumers read static GitHub files through web or connector access and do not run these commands.
 
@@ -52,7 +52,7 @@ python scripts/knowledge_library.py --publish RELEASE_ID --date YYYY-MM-DD
 
 Default selection is all archives; use --references ID1 ID2 for a subset. An immutable release ID can be repeated identically but cannot acquire different contents. Publication snapshots existing annotations; it is not a blanket claim of visual verification.
 
-Manifests retain source/annotation hashes, taxonomy hash and computed counts under knowledge/releases/. Older artifacts and sources remain traceable through Git history; current working files are not a preserved copy of every historical release.
+Manifests retain source/annotation hashes, taxonomy hash and computed counts under knowledge/releases/. Keep the manifest and taxonomy for the active release in the working tree. Superseded manifests, taxonomies and implementation reports remain traceable through Git history; current working files are not a preserved copy of every historical release.
 
 ## Vocabulary changes
 
@@ -78,7 +78,7 @@ Build in dependency order:
 python scripts/design_evidence.py --write
 python scripts/video_similarity.py --write
 python scripts/knowledge_library.py --write
-python scripts/evaluate_knowledge.py --write current
+python scripts/evaluate_knowledge.py
 ~~~
 
 The first command creates observations, literal relations, source mention inventories, review records, aggregate counts, diversity and readable evidence. The similarity command scans all archived MP4 files, including unpublished/unannotated sources, and reports candidates only. Its report can need a refresh after archive growth even when published knowledge is unchanged.
@@ -87,11 +87,13 @@ Counts use each published video reference once. Content independence or physical
 
 The evaluation bank and baseline are frozen. Do not overwrite baseline or tune search on heldout answers. New evaluation versions require a new bank. The evaluator measures local positive retrieval examples and saved fields only; unmeasured creative/unknown answers retain null scores.
 
-## Remaining publication and evaluation
+## Publication and evidence coverage
 
-Newly generated files must be published before external web AND connector smoke tests in stages 6–7; local navigation tests do not substitute for remote testing. No source-processing command pushes commits or tests a consumer model automatically.
+Publish newly generated files before external web and connector access checks; local navigation checks do not substitute for remote testing. No source-processing command pushes commits or tests a consumer model automatically.
 
-[Stage 3–5 report](stage-3-5-report.md) records actual coverage and outstanding temporal-review limits.
+The current snapshot contains 57 references and 295 shots. AI storyboard review covers selected characteristics of all 57 references. Sampled temporal review covers twelve pilot references, 59 shots and 177 instants; 45 references remain pending temporal review. This does not establish continuous motion, exact camera mechanics or verification of every annotation tag. Use [evidence coverage](../knowledge/design-evidence/README.md) and [review scope](../knowledge/reviews/README.md) for the current records.
+
+[Recorded access evaluation](../evaluations/stage7/README.md) preserves the historical web/connector results and their tested commit. The user selected access checks only; independent consumer-model benchmarking and generator testing remain deferred. Later document changes are not remote retests. Implementation reports and obsolete release artifacts are available in Git history.
 
 ## Reader publication and recorded access evaluation
 
