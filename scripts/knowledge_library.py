@@ -294,10 +294,15 @@ def profile(doc, normalized, taxonomy, release_id):
         by_dimension[concept["dimension"]].add(cid)
     lines = [f"# {ident} — source design profile", "",
              f"Published knowledge: {BT}{release_id}{BT}. Source: [{ident} analysis]({link}/analysis.yaml).",
-             f"Repository path: {BT}{source['analysis_path']}{BT}. Annotation SHA-256: {BT}{source['analysis_sha256']}{BT}.",
+             f"Repository path: {BT}{source['analysis_path']}{BT}.",
              "", "[All profiles](README.md) · [Core knowledge](../ai-knowledge.md) · [Vocabulary](../taxonomy/README.md)", "",
              f"**Recorded style:** {md(doc['architecture']['primary_style'])}. "
              f"**Perceived scale:** {md(scale['perceived_size'])}; {md(scale['vertical_scale'])}.",
+             "", "## Readable source summary", "",
+             "This text restates saved labels; it does not independently verify their physical meaning.",
+             "The recorded design is " + md(doc["architecture"]["primary_style"].replace("_", " ")) +
+             ", with " + md(scale["vertical_scale"].replace("_", " ")) + ".",
+             "Interior: " + "; ".join(md(x.replace("_", " ")) for x in doc["architecture"].get("interior_style", [])) + ".",
              "", "## Source signature", "",
              "- Exterior: " + "; ".join(md(x) for x in doc["architecture"].get("exterior_features", [])),
              "- Palette: " + "; ".join(md(c["name"]) + " " + str(c.get("hex_approx")) for c in doc["visual_style"].get("dominant_colors", [])),
@@ -322,7 +327,11 @@ def profile(doc, normalized, taxonomy, release_id):
               "Confidence qualifies claims about this source; all saved references remain usable for new creative decisions.",
               "- Recorded uncertainties: " + "; ".join(md(x) for x in doc["analysis_quality"].get("uncertainties", [])),
               "- Mapping states: " + ", ".join(f"{k}: {v}" for k, v in sorted(states.items())),
-              "", f"[Structured mappings](../enrichment/{ident}.json) · [Full report]({link}/analysis.md) · [Storyboard]({link}/storyboard.jpg)", ""]
+              "", f"[Full report]({link}/analysis.md) · [Storyboard]({link}/storyboard.jpg)", "",
+              "<details>", "<summary>Source binding and normalization — supporting metadata</summary>", "",
+              f"Annotation SHA-256: {BT}{source['analysis_sha256']}{BT}. Source SHA-256: {BT}{source['source_sha256']}{BT}.",
+              f"[Structured mappings](../enrichment/{ident}.json). These hashes identify revisions, not visual certainty.",
+              "", "</details>", ""]
     return "\n".join(lines)
 
 
@@ -393,12 +402,17 @@ def render_outputs(root, release):
         doc = refs[ident]
         index.append(f"| [{ident}]({ident}.md) | {md(doc['architecture']['primary_style'])} | {md(doc['architecture']['building_scale']['perceived_size'])} |")
     outputs["knowledge/reference-profiles/README.md"] = "\n".join(index + [""])
-    dirs = ["# Knowledge directories", "", f"Published release {BT}{release['release_id']}{BT}.",
-            "Use the same repository paths through web links or a GitHub connector.",
-            "Concept matches are lexical/source-scoped. A reference may appear under several concepts.", "",
-            "[All profiles](../reference-profiles/README.md) · [Vocabulary](../taxonomy/README.md)", ""]
+    dirs = ["# Direktori contoh desain", "", f"Snapshot: {BT}{release['release_id']}{BT}.",
+            "Pilih dimensi yang relevan, lalu buka beberapa profil yang sesuai. Tidak perlu membuka semua daftar.",
+            "Hasil pengelompokan mengikuti label sumber dan alias; satu referensi dapat berada di beberapa kelompok.", "",
+            "[Pengetahuan inti](../ai-knowledge.md) · [Peta bacaan](../README.md) · [Semua profil](../reference-profiles/README.md)", "",
+            "| Kebutuhan | Direktori |", "| --- | --- |",
+            "| Bentuk dan identitas rumah | [Keluarga gaya](style_family.md), [pengaruh gaya](style_influence.md), [atap](roof_form.md), [bukaan](opening.md), [skala](scale.md) |",
+            "| Fungsi dan susunan ruang | [Jenis ruang](room_type.md), [konfigurasi](configuration.md) |",
+            "| Tampilan dan suasana | [Material appearance](material_appearance.md), [cahaya](lighting.md), [mood](mood.md) |",
+            "| Pengungkapan pandangan | [Bahasa gerak kamera](camera.md) |", "",
+            "Alias Indonesia/Inggris tersedia dalam [kamus](../taxonomy/README.md). Kategori skala merupakan kesan visual; material dan kamera tetap interpretasi sumber.", ""]
     for dimension in sorted(ALL_DIMENSIONS):
-        dirs.append(f"- [{dimension}]({dimension}.md)")
         lines = [f"# Directory: {dimension}", "", "[All directories](README.md) · [Vocabulary](../taxonomy/README.md)", ""]
         for cid, concept in taxonomy.concepts.items():
             if concept["dimension"] != dimension:
@@ -409,7 +423,7 @@ def render_outputs(root, release):
                           f"Concept ID: {BT}{cid}{BT}.",
                           ", ".join(f"[{i}](../reference-profiles/{i}.md)" for i in found), ""]
         outputs[f"knowledge/directories/{dimension}.md"] = "\n".join(lines)
-    outputs["knowledge/directories/README.md"] = "\n".join(dirs + [""])
+    outputs["knowledge/directories/README.md"] = "\n".join(dirs).rstrip() + "\n"
     from refresh_design_catalog import render_catalog
     outputs["knowledge/reference-catalog.md"] = render_catalog(
         {ident: refs[ident] for ident in normalized_all}, release_id=release["release_id"])

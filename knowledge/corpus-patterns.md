@@ -1,6 +1,6 @@
 # Corpus patterns and diversity
 
-Release: 2026-11-17-stage-3-5; 57 published video references; 295 shots. [Evidence coverage](design-evidence/README.md) · [Count definitions and full source lists](aggregates.json) · [Diversity data](diversity.json)
+Release: 2026-11-17-stage-6-7; 57 published video references; 295 shots. [Evidence coverage](design-evidence/README.md) · [Count definitions and full source lists](aggregates.json) · [Diversity data](diversity.json)
 
 ## Counted patterns — AGGREGATE
 

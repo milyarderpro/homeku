@@ -12,6 +12,8 @@ on:
       - 'tests/**'
       - 'README.md'
       - 'knowledge/**'
+      - 'evaluations/**'
+      - 'docs/**'
       - 'references/**'
       - 'video/**'
       - 'requests/**'
@@ -51,6 +53,11 @@ jobs:
         run: python -m compileall -q scripts tests
       - name: Run complete regression and parallel suite
         run: python -m unittest discover -s tests -v
+      - name: Verify published knowledge and recorded access evidence
+        run: |
+          python scripts/knowledge_library.py --check
+          python scripts/design_evidence.py --check
+          python scripts/knowledge_access.py --check
       - name: Verify no accidental changes to protected data
         shell: bash
         run: |

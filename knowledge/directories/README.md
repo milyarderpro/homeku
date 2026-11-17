@@ -1,19 +1,16 @@
-# Knowledge directories
+# Direktori contoh desain
 
-Published release `2026-11-17-stage-3-5`.
-Use the same repository paths through web links or a GitHub connector.
-Concept matches are lexical/source-scoped. A reference may appear under several concepts.
+Snapshot: `2026-11-17-stage-6-7`.
+Pilih dimensi yang relevan, lalu buka beberapa profil yang sesuai. Tidak perlu membuka semua daftar.
+Hasil pengelompokan mengikuti label sumber dan alias; satu referensi dapat berada di beberapa kelompok.
 
-[All profiles](../reference-profiles/README.md) · [Vocabulary](../taxonomy/README.md)
+[Pengetahuan inti](../ai-knowledge.md) · [Peta bacaan](../README.md) · [Semua profil](../reference-profiles/README.md)
 
-- [camera](camera.md)
-- [configuration](configuration.md)
-- [lighting](lighting.md)
-- [material_appearance](material_appearance.md)
-- [mood](mood.md)
-- [opening](opening.md)
-- [roof_form](roof_form.md)
-- [room_type](room_type.md)
-- [scale](scale.md)
-- [style_family](style_family.md)
-- [style_influence](style_influence.md)
+| Kebutuhan | Direktori |
+| --- | --- |
+| Bentuk dan identitas rumah | [Keluarga gaya](style_family.md), [pengaruh gaya](style_influence.md), [atap](roof_form.md), [bukaan](opening.md), [skala](scale.md) |
+| Fungsi dan susunan ruang | [Jenis ruang](room_type.md), [konfigurasi](configuration.md) |
+| Tampilan dan suasana | [Material appearance](material_appearance.md), [cahaya](lighting.md), [mood](mood.md) |
+| Pengungkapan pandangan | [Bahasa gerak kamera](camera.md) |
+
+Alias Indonesia/Inggris tersedia dalam [kamus](../taxonomy/README.md). Kategori skala merupakan kesan visual; material dan kamera tetap interpretasi sumber.

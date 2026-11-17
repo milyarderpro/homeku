@@ -1,36 +1,59 @@
-# Knowledge access contract
+# Akses pengetahuan melalui web dan konektor GitHub
 
-This library supports two reading routes: GitHub web/file access and a GitHub connector available to the consumer. The repository URL identifies the source; the route does not define a different knowledge corpus.
+Kedua jalur membaca pustaka yang sama. URL repository mengidentifikasi sumber; branch atau commit pada URL menentukan versi. Mulai dari [pengetahuan inti](ai-knowledge.md), lalu gunakan [peta bacaan](README.md).
 
-| Item | Canonical repository path |
+## Jalur bacaan yang ringkas
+
+Inti → tema terkait → direktori dan profil relevan → bukti yang diperlukan. Direktori repository bukan urutan baca wajib. Sampel temporal dan JSON pendukung tidak perlu dimuat sekaligus.
+
+| Peran | Berkas kanonis |
 | --- | --- |
-| Entry | README.md |
-| Core reading | knowledge/ai-knowledge.md |
-| Current published snapshot | knowledge/release.json |
-| Concept directories | knowledge/directories/README.md |
-| Reference profile | knowledge/reference-profiles/REFERENCE_ID.md |
-| Original annotation | references/REFERENCE_ID/analysis.yaml |
-| Original report | references/REFERENCE_ID/analysis.md |
-| Source image | references/REFERENCE_ID/shot-NN.jpg |
-| Separate normalization | knowledge/enrichment/REFERENCE_ID.json |
-| Original source inventory | knowledge/source-manifest.json |
+| Pintu masuk | README.md |
+| Pengetahuan inti | knowledge/ai-knowledge.md |
+| Peta tema | knowledge/README.md |
+| Menemukan contoh | knowledge/directories/README.md |
+| Memahami satu sumber | knowledge/reference-profiles/REFERENCE_ID.md |
+| Rincian hubungan dan framing | knowledge/design-evidence/REFERENCE_ID.md |
+| Anotasi sumber | references/REFERENCE_ID/analysis.yaml |
+| Narasi sumber | references/REFERENCE_ID/analysis.md |
+| Gambar sumber | references/REFERENCE_ID/shot-NN.jpg |
 
-[Core knowledge](ai-knowledge.md) · [Published profiles](reference-profiles/README.md) · [Vocabulary](taxonomy/README.md)
+## Web
 
-## Reading routes
+Buka README dan ikuti tautan Markdown pada versi repository yang dipilih. [Konten mentah pengetahuan inti pada branch default](https://raw.githubusercontent.com/milyarderpro/homeku/main/knowledge/ai-knowledge.md) merupakan alternatif bila alat dapat membaca konten mentah. Untuk versi yang dikunci, gunakan commit yang sama pada URL halaman dan URL mentah.
 
-Web readers start at the root README, follow Markdown links and open relevant profiles and evidence. Connector readers use the same paths and IDs to read or search files when their available tools support those operations. No custom search API, database, vector index, local clone or script execution is required for creative use.
+Halaman GitHub dapat mengandung navigasi tambahan. Gagal memuat halaman, gambar atau raw file merupakan kegagalan akses berkas tersebut; jangan mengisi isinya dari dugaan atau menganggap semua file repository sudah dibaca.
 
-A release ID and annotation/source SHA-256 bind each published profile to its source. Read the same branch/commit or release when comparing the two routes. A successful text fetch is not evidence that an image or video was viewed. Private repositories need an appropriately authenticated route. Reading failure is not permission to invent missing source content.
+## Konektor GitHub
 
-## Scope and growth
+Gunakan owner/repo, path kanonis di atas dan ref yang sama. Pencarian file dapat membantu bila alat mendukung dan indeksnya memuat versi yang dicari. Hasil pencarian branch default belum membuktikan isi commit lain; pembacaan file dengan ref eksplisit menjadi rujukan versinya.
 
-Saved archives remain available as creative references. A published snapshot describes the sources selected for the current derived knowledge library; selection is not a manual-verification or creative-eligibility gate. New archives do not silently change published counts, normalized labels, profiles or thematic interpretations.
+Tidak perlu clone, menjalankan skrip, memasang database atau memakai API pencarian buatan khusus. Repository privat memerlukan jalur terautentikasi yang memiliki akses.
 
-The original schema 2.1 annotation retains its labels. The normalization records point back to field paths and annotation hashes. A lexical match never establishes real material composition, house location or physical camera equipment.
+## Teks dan bukti visual
 
-## Prototype verification status
+Profil dan modul tematik dapat dibaca sebagai teks. Deskripsi tersebut melaporkan pengetahuan atau anotasi tersimpan; pembacaan teks tidak membuktikan AI sudah melihat gambar maupun video.
 
-Local validation checks navigation, field/path identities, snapshot hashes, alias behavior and deterministic build output. External web and connector reading of new files must be smoke-tested after these local changes are published to GitHub. This document does not claim that new, unpushed files have already been accessed through either remote route.
+Label gerak tetap interpretasi sampai didukung pemeriksaan yang sesuai. Tiga sampel temporal tidak membuktikan seluruh durasi. Bukti baru yang tidak bisa diakses tetap belum diperiksa.
 
-Suggested remote smoke test: starting with only the repo URL, read the core document, find a small-house example in a concept directory, open its profile and source annotation, compare the reference ID and annotation hash with the release, and separately test whether a shot image can actually be viewed. Repeat through the connector on the same commit. This is a knowledge-access test, not a video-production workflow.
+## Pendukung yang dibuka bila diperlukan
+
+| Pendukung | Fungsi |
+| --- | --- |
+| taxonomy/ dan enrichment/ | Kamus dan pemetaan label, bukan verifikasi visual |
+| design-evidence/*.json | Pointer dan catatan terstruktur pendamping halaman bukti |
+| temporal/ | Gambar sampel dan timestamp |
+| reviews/ | Cakupan review AI dan keterbatasannya |
+| aggregates.json dan diversity.json | Definisi hitungan dan daftar sumber |
+| release.json, releases/, source-manifest.json | Identitas snapshot dan revisi sumber |
+| similarity/ | Kandidat kemiripan untuk pemeliharaan |
+
+Request penyimpanan, fixture tes, rencana implementasi, laporan evaluasi dan instruksi pemeliharaan berada di luar bacaan kreatif utama. Penambahan arsip tidak otomatis memperbarui snapshot pengetahuan.
+
+## Penafsiran versi dan klaim
+
+[Snapshot sumber](release.json) mengikat ID dan hash anotasi/video. Commit Git mengikat versi dokumen yang dibaca. Bandingkan web dan konektor pada commit yang sama; jangan menyamakan keberhasilan satu jalur dengan jalur lainnya.
+
+Confidence dan cakupan review menjelaskan klaim sumber. Semua referensi tersimpan tetap boleh menginspirasi desain baru. Tidak ada syarat verifikasi manual.
+
+Hasil uji akses dan batas penilaiannya dicatat dalam [laporan pemeliharaan tahap 6–7](../docs/stage-6-7-report.md). Keberhasilan membuka file dan kualitas jawaban AI adalah pengukuran berbeda.

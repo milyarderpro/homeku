@@ -1,53 +1,63 @@
-# HOMEKU — Core design knowledge
+# HOMEKU — Pengetahuan inti desain dan bahasa visual
 
-Pintu masuk untuk mempelajari desain rumah dan bahasa visual home-tour. Ini adalah pustaka pengetahuan; alur kreatif proyek serta prompt generator dikelola plugin atau master prompt.
+Pustaka ini menjelaskan kualitas visual rumah dan cara ruang diungkap dalam home-tour. Prinsip di bawah mendukung penalaran kreatif; analisis referensi menyediakan contoh dan bukti. Alur proyek serta prompt akhir berada pada plugin atau master prompt.
 
-[Versi pengetahuan dan sumber](release.json) · [Direktori konsep](directories/README.md) · [Semua profil](reference-profiles/README.md) · [Bukti desain](design-evidence/README.md) · [Pola seluruh korpus](corpus-patterns.md) · [Kamus bilingual](taxonomy/README.md) · [Kontrak akses](access-contract.md)
+**Cukup mulai dari dokumen ini.** Tema dan contoh dibuka sesuai kebutuhan melalui [peta bacaan](README.md) dan [direktori konsep](directories/README.md). Tidak perlu memuat seluruh folder, JSON, review atau gambar sekaligus.
 
-## Bentuk rumah dan identitas
+## Identitas rumah: massa, atap dan bukaan
 
-Baca bentuk massa utama, bentuk atap, tingkat bangunan, proporsi bukaan dan pintu masuk sebagai satu sistem. Sebuah label gaya saja belum menjelaskan geometri atau ukuran ruang. Pengaruh beberapa gaya dapat dipakai bersama jika bentuk, proporsi dan hirarki materialnya koheren. Kategori skala pada sumber adalah kesan visual; estimasi luasnya bukan ukuran terukur.
+Identitas rumah dibentuk oleh hubungan massa utama, tingkat bangunan, bentuk atap, lebar fasad, pintu masuk, porch dan ritme bukaan. Label gaya membantu menemukan contoh, tetapi belum menjelaskan geometri atau ukuran. Kesan kecil juga bergantung pada tinggi, frontage, jumlah bay, skala pintu dan lingkungan.
 
-Penjelasan dan contoh: [arsitektur](architecture-dna.md), [kompatibilitas](design-compatibility.md). Temukan contoh melalui [keluarga gaya](directories/style_family.md), [pengaruh gaya](directories/style_influence.md), [atap](directories/roof_form.md), dan [skala](directories/scale.md).
+DESIGN_PRINCIPLE: pilih hubungan bentuk yang koheren untuk rumah baru. Gable, atap datar, lengkung atau volume bertingkat mempunyai konsekuensi visual terhadap plafon, tangga dan bukaan interior. Pengaruh beberapa gaya dapat digabungkan melalui proporsi dan hierarki bentuk yang jelas.
 
-## Interior, lanskap, cahaya dan material
+Contoh pembanding: [edh058](reference-profiles/edh058.md) memiliki penampilan cottage Mediterania, [edh020](reference-profiles/edh020.md) memakai bahasa stone/storybook, dan [edh060](reference-profiles/edh060.md) memperlihatkan rumah kecil dengan loft serta teras atas. Ini rumah referensi berbeda, bukan bagian dari satu bangunan.
 
-Karakter interior berasal dari hubungan objek dan arsitektur: arah sofa terhadap titik perhatian, letak meja, bukaan, sirkulasi dan elemen tetap. Lanskap membentuk pendekatan ke pintu, foreground serta pemandangan melalui jendela. Palet, tampilan material, tekstur, cahaya jendela dan lampu membantu membangun karakter yang konsisten.
+Dalami [arsitektur](architecture-dna.md), [kompatibilitas](design-compatibility.md) dan [orisinalitas](originality-framework.md).
 
-Baca [interior](interior-dna.md), [lanskap](landscape-dna.md), serta [cahaya dan palet](lighting-and-palette-dna.md). Gunakan direktori [ruang](directories/room_type.md), [material appearance](directories/material_appearance.md), [bukaan](directories/opening.md), [pencahayaan](directories/lighting.md) dan [mood](directories/mood.md).
+## Ruang dan interior: hubungan lebih penting daripada daftar objek
 
-## Hubungan ruang dan kontinuitas
+Ruang dipahami melalui posisi relatif objek, titik perhatian, bukaan, bidang pembatas dan ruang sirkulasi. Sofa yang menghadap fireplace memberi hubungan berbeda dari sofa yang membelakangi jendela. Meja, pulau dapur dan tangga mempunyai footprint; penempatannya harus menyisakan lintasan yang masuk akal pada konsep baru.
 
-Dua ruangan dalam potongan video yang berbeda belum membuktikan posisi atau sambungannya. Satu pandangan yang memperlihatkan living dan kitchen mendukung deskripsi ruang yang terlihat bersama, tetapi belum menghasilkan denah terukur.
+OBSERVATION dari anotasi: [edh033](reference-profiles/edh033.md) dan [edh060](reference-profiles/edh060.md) menamai fungsi living/kitchen dan sleeping loft dalam pandangan bersama. Loft adalah area tidur bertingkat; label itu tidak otomatis berarti kamar tidur terpisah. Pada [edh058](reference-profiles/edh058.md), living dan kitchen disajikan dalam shot berbeda sehingga adjacency belum diketahui.
 
-Untuk rumah baru, posisi ruang, bukaan, lantai, atap, elemen tetap dan dunia di luar jendela dapat dirancang sebagai keputusan kreatif yang konsisten. Perubahan viewpoint tidak semestinya mengubah geometri rumah secara tidak disengaja. Bedakan orientasi rumah dari kiri/kanan pada gambar.
+Kiri/kanan gambar mengikuti pandangan kamera. Posisi itu tidak boleh langsung diubah menjadi kiri/kanan rumah atau arah mata angin. Denah, ukuran dan orientasi rumah baru merupakan keputusan desain baru jika sumber tidak membuktikannya.
 
-Baca [prinsip ruang](spatial-design-principles.md) dan [konfigurasi](directories/configuration.md).
+Dalami [interior](interior-dna.md), [prinsip ruang](spatial-design-principles.md) dan [kontinuitas](continuity-dna.md).
 
-## Bahasa visual dan gerak
+## Material, cahaya dan lanskap
 
-Komposisi menjelaskan apa yang terlihat dan menjadi titik perhatian. Framing awal–akhir menunjukkan bagaimana informasi ruang diungkap. Translasi kamera, pan, tilt dan perubahan framing adalah konsep berbeda. Gerak relatif foreground terhadap background dapat membantu memahami perubahan viewpoint, tetapi label kamera tetap berupa interpretasi visual.
+Tampilan permukaan mencakup warna, tekstur, kilap, pola sambungan dan respons terhadap cahaya. Penampilan seperti batu, kayu atau stucco belum membuktikan material fisiknya. Warna hex dalam anotasi merupakan pendekatan visual, bukan kalibrasi warna.
 
-Urutan eksterior–interior merupakan salah satu pola dalam koleksi, dengan beragam pengecualian. Jumlah shot dan durasi sumber tidak menjadi aturan wajib produksi.
+Cahaya siang menyebar, sinar terarah, lampu tanam, wall sconce dan lampu dekoratif memberikan informasi visual berbeda. Warna cahaya hangat tidak selalu berasal dari lampu: cahaya siang pun dapat tampak hangat. Arah bayangan atau sorot hanya boleh dinyatakan sebagai fakta sumber bila terlihat atau tercatat.
 
-Baca [sinematografi](cinematography-dna.md) dan [gerak kamera](directories/camera.md). Profil individual menautkan scene, label kamera dan frame setiap shot; untuk menguji gerak, periksa video atau bukti temporal yang tersedia. Tautan gambar tidak berarti AI sudah melihat gambar itu.
+Lanskap membentuk foreground, pendekatan pintu, skala dan pemandangan melalui bukaan. Daun, salju atau bunga menunjukkan penampilan lingkungan; lokasi dan musim aktual belum tentu diketahui. Pada rumah baru, taman eksterior dan dunia di luar jendela dapat dirancang sebagai satu lingkungan yang konsisten.
 
-## Menyusun desain baru dari referensi
+Dalami [cahaya dan palet](lighting-and-palette-dna.md) serta [lanskap](landscape-dna.md).
 
-Gunakan referensi sebagai kosakata bentuk dan hubungan visual. Orisinalitas dapat dikembangkan melalui massa, skala, bukaan, tata ruang, hirarki material, lanskap dan titik perhatian. Penggabungan referensi perlu menghasilkan satu rumah yang masuk akal. Beberapa sumber inspirasi tidak membuktikan adanya satu rumah gabungan yang sudah ada.
+## Framing, perubahan pandangan dan gerak
 
-Baca [orisinalitas](originality-framework.md), [kompatibilitas](design-compatibility.md) dan [sintesis DNA](dna-summary.md).
+Framing menjelaskan isi gambar: subjek utama, skala relatif, foreground, background, sudut pandang dan oklusi. Perubahan framing awal–akhir menjelaskan informasi yang menjadi terlihat atau keluar dari bingkai.
 
-## Ketidakpastian sumber dan kebebasan kreatif
+Pan dan tilt mengubah arah pandang; tracking atau dolly mendeskripsikan perpindahan posisi kamera. Dolly in dan zoom in dapat sama-sama membesarkan subjek pada gambar, tetapi mempunyai penjelasan visual berbeda. Pergeseran relatif foreground/background dapat menjadi petunjuk parallax; itu belum memastikan perangkat atau lintasan kamera fisik.
 
-Semua referensi tersimpan dapat menjadi inspirasi. Confidence mengukur kepastian klaim tentang sumber, bukan larangan memilih elemen desain baru. Tampilan seperti batu pada sumber yang komposisinya belum diketahui boleh menginspirasi keputusan menggunakan batu alam pada rumah baru. Keputusan itu tidak membuktikan bahwa sumber memakai batu alam.
+Gerak objek perlu dibedakan dari gerak kamera. Transisi antarscene juga berbeda dari keduanya. Sampel awal–tengah–akhir membantu memeriksa perubahan yang tersampel, tetapi tidak membuktikan seluruh kejadian di antaranya. Label gerak pada analisis tetap merupakan interpretasi visual.
 
-Pisahkan pengamatan, agregat yang dihitung, interpretasi dan prinsip desain. Jawab “belum diketahui” untuk fakta sumber yang tidak didukung, sambil tetap membuat keputusan kreatif yang jelas saat merancang konsep baru. Tidak ada syarat verifikasi manual. Pemetaan istilah bersifat leksikal dan tidak menggantikan review visual AI.
+Deskripsi visual yang presisi menyatakan subjek, bentuk dan proporsi yang relevan, tampilan material, hubungan posisi, komposisi, cahaya, perubahan framing dan identitas yang tetap. Ketelitian tersebut tidak memerlukan angka focal length atau koordinat fisik yang tidak didukung sumber.
 
-Baca [metodologi](methodology.md), [cakupan bukti seluruh koleksi](design-evidence/README.md) dan [indeks contoh terkurasi](evidence-index.yaml). Review storyboard mencakup ciri terpilih; review temporal hanya diklaim pada sumber yang tercatat. Sampel tersedia tidak otomatis berarti sudah ditinjau.
+Dalami [sinematografi](cinematography-dna.md) dan [kontinuitas visual](continuity-dna.md).
 
-## Menelusuri rincian
+## Pengetahuan sumber dan kebebasan desain baru
 
-[Direktori](directories/README.md) → profil referensi → analysis.yaml/analysis.md dan frame shot. Catat ID sumber dan versi pengetahuan saat mengutip bukti. Jika akses file atau gambar gagal, nyatakan bagian yang belum terbaca.
+OBSERVATION melaporkan satu sumber; AGGREGATE menghitung pola snapshot; INFERENCE merupakan interpretasi; DESIGN_PRINCIPLE membantu merancang konsep baru. Hitungan menyertakan denominator dan pengecualian pada [pola korpus](corpus-patterns.md). Frekuensi tidak membuktikan kualitas desain atau sebab virality.
 
-Web dan konektor GitHub menggunakan berkas yang sama. Konsumen tidak perlu clone atau menjalankan skrip. Arsip baru dapat tumbuh sebelum masuk snapshot ini; [inventaris sumber](source-manifest.json) dan [manifest pengetahuan terbit](release.json) memiliki tanggung jawab berbeda.
+Semua referensi tersimpan boleh menjadi inspirasi. Confidence membatasi kepastian klaim tentang sumber, bukan pilihan kreatif. Permukaan yang diduga seperti batu dengan confidence rendah boleh menginspirasi penggunaan batu alam pada rumah baru. Pilihan baru itu tidak membuktikan komposisi material sumber.
+
+Ketiadaan data denah tidak melarang merancang denah baru. Hubungan baru harus koheren dan dinyatakan sebagai keputusan kreatif. Penggabungan referensi juga tidak membuktikan adanya satu rumah gabungan yang sudah ada.
+
+## Membuka rincian yang relevan
+
+Direktori mengelompokkan istilah dengan alias Indonesia/Inggris. Profil memberi ringkasan dan shot; analisis asli menyimpan rincian. Rincian sumber dirujuk dengan ID referensi dan shot. Catatan relasi membedakan label anotasi dari observasi visual tambahan.
+
+Review terbatas tidak berarti semua tag sudah diverifikasi ulang. Bukti yang tersedia belum tentu sudah dilihat AI pembaca. Jika file atau gambar gagal diakses, isi yang belum terbaca tetap belum diketahui.
+
+[Metodologi](methodology.md) · [Profil referensi](reference-profiles/README.md) · [Akses web/konektor](access-contract.md)

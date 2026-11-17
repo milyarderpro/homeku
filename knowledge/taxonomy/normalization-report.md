@@ -1,6 +1,6 @@
 # Vocabulary coverage
 
-Release: `2026-11-17-stage-3-5`; taxonomy `1.0.1`.
+Release: `2026-11-17-stage-6-7`; taxonomy `1.0.1`.
 
 | State | Source values |
 | --- | ---: |

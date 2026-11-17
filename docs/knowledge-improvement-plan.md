@@ -180,6 +180,8 @@ Selesai ketika: semua referensi tercakup atau memiliki alasan penundaan yang eks
 
 **Tahap 6 — Terbitkan pengetahuan untuk akses web dan konektor GitHub**
 
+Status implementasi: pintu masuk ringkas, peta tema, modul kontinuitas, profil deskriptif dan navigasi direktori tersedia. Publikasi kandidat dan pengujian dua jalur dicatat dalam laporan tahap 6–7.
+
 Tujuan: dari URL repo, AI dapat memahami pengetahuan inti dan mengambil rincian yang relevan melalui web maupun konektor GitHub, menggunakan satu sumber pengetahuan yang sama.
 
 Pekerjaan:
@@ -202,6 +204,8 @@ Hasil: pintu masuk README, paket inti Markdown, modul tematik, direktori yang di
 Selesai ketika: pengujian web dan konektor masing-masing menunjukkan konsumen dapat menemukan, memahami dan merujuk pengetahuan dari URL repo tanpa clone atau menjalankan kode. Keberhasilan satu jalur tidak dianggap membuktikan keberhasilan jalur lain; keterbatasan akses gambar dicatat tersendiri.
 
 **Tahap 7 — Evaluasi rilis dan pemeliharaan berkelanjutan**
+
+Status implementasi: audit bacaan dan validator rekaman remote tersedia. Uji akses terpandu dibedakan dari benchmark model independen; asisten ini memiliki konteks repo sebelumnya sehingga tidak memenuhi isolasi konteks benchmark buta.
 
 Tujuan: peningkatan jumlah data menghasilkan manfaat yang terukur dan tidak menurunkan mutu yang sudah ada.
 

@@ -1,4 +1,4 @@
-# Knowledge maintenance — stages 1–5
+# Knowledge maintenance — stages 1–7
 
 These commands are for maintainers. Creative consumers read static GitHub files through web or connector access and do not run these commands.
 
@@ -17,6 +17,7 @@ python scripts/verify_source_integrity.py --check
 python scripts/knowledge_library.py --check
 python scripts/refresh_design_catalog.py --check
 python scripts/design_evidence.py --check
+python scripts/knowledge_access.py --check
 python scripts/video_similarity.py --check
 python -m unittest discover -s tests -v
 ~~~
@@ -91,3 +92,25 @@ The evaluation bank and baseline are frozen. Do not overwrite baseline or tune s
 Newly generated files must be published before external web AND connector smoke tests in stages 6–7; local navigation tests do not substitute for remote testing. No source-processing command pushes commits or tests a consumer model automatically.
 
 [Stage 3–5 report](stage-3-5-report.md) records actual coverage and outstanding temporal-review limits.
+
+## Reader publication and recorded access evaluation
+
+The primary reading sequence is README → core → relevant theme/example → evidence when needed. Supporting media, review metadata and JSON remain available without becoming mandatory reading.
+
+The access audit checks word budgets (root 350, guide 600, core 1100, profile 1200), local links and canonical annotation access. Counts are whitespace words, not model tokens. It fingerprints reader files and the release; changes require a fresh local report.
+
+~~~sh
+python scripts/knowledge_library.py --write
+python scripts/knowledge_access.py --write
+python scripts/knowledge_access.py --check
+~~~
+
+Remote testing requires publishing the exact candidate commit first. Record web and connector on that same commit in evaluations/stage7/web.json and github_connector.json, using only actual returned content or explicit access failures. The frozen stage3 bank is reused unchanged.
+
+Each event records route, commit, path, tool, status, returned text, SHA-256 and character count. Source extraction must match actual fetched text. Responses cite exact fetched excerpts. No failed read may acquire an answer from local files or the other route. Record image and search capability separately.
+
+The current assistant has prior repository context, so guided readthroughs are not blind consumer-model experiments. Mechanical retrieval/source checks and unscored semantic responses are separate. A future independent evaluation must start with only the repo URL, question and allowed route; it records model/build, answers and evidence use before judging. Do not report model accuracy from a navigation test.
+
+For source corrections, dependency_impact in scripts/knowledge_access.py identifies source-specific profiles, mappings, evidence and review/media dependencies plus shared aggregates/directories. Published taxonomy changes refresh mappings; mixed taxonomy/source edits still require new source review. Unpublished archive additions do not change published interpretation.
+
+CI verifies generated knowledge, scoped evidence and recorded access reports without making remote network calls or rewriting results. The snapshot and fingerprints describe which inputs were checked; Git history retains prior versions.

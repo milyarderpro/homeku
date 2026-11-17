@@ -1,46 +1,40 @@
-# HOMEKU Design Intelligence v2.0 — Knowledge Entry Point
+# Peta bacaan pengetahuan HOMEKU
 
-**Purpose:** a source-grounded design knowledge library for originating coherent, distinctive house concepts from a curated collection of visual home-tour references. This directory is **not** a production workflow, prompt library, image-generation specification, or model-specific tutorial.
+**Bacaan awal: [Pengetahuan inti](ai-knowledge.md).** Setelah itu, buka tema dan contoh yang berhubungan dengan kebutuhan. Seluruh folder tidak perlu dibaca atau dimuat sebagai satu konteks.
 
-Start at [Core knowledge](ai-knowledge.md), then [concept directories](directories/README.md) or [individual profiles](reference-profiles/README.md). Both web and connector readers use these same files. See [access contract](access-contract.md) and [published release](release.json).
+## Tema desain dan bahasa visual
 
-## Knowledge navigation
+| Yang ingin dipahami | Pengetahuan |
+| --- | --- |
+| Massa, atap, skala dan bukaan | [Arsitektur](architecture-dna.md) |
+| Tata objek, titik perhatian dan karakter ruang | [Interior](interior-dna.md) |
+| Pendekatan rumah, taman dan dunia luar jendela | [Lanskap](landscape-dna.md) |
+| Cahaya, palet dan tampilan permukaan | [Cahaya dan palet](lighting-and-palette-dna.md) |
+| Hubungan ruang dan perubahan sudut pandang | [Prinsip ruang](spatial-design-principles.md) |
+| Identitas satu rumah dari berbagai pandangan | [Kontinuitas visual](continuity-dna.md) |
+| Framing, pengungkapan ruang, kamera dan transisi | [Sinematografi](cinematography-dna.md) |
+| Hubungan beberapa pengaruh desain | [Kompatibilitas](design-compatibility.md) |
+| Mengembangkan identitas yang berbeda dari sumber | [Orisinalitas](originality-framework.md) |
 
-1. [methodology.md](methodology.md) — evidence classes, confidence, provenance and uncertainty.
-2. [dna-summary.md](dna-summary.md) — seven-layer cross-reference synthesis.
-3. [reference-catalog.md](reference-catalog.md) — published snapshot metadata overview.
-4. [reference-profiles/README.md](reference-profiles/README.md) — individually traceable profiles of the published sources.
-5. [architecture-dna.md](architecture-dna.md) — massing, scale, roof, envelope and openings.
-6. [landscape-dna.md](landscape-dna.md) — setting, foreground, entrance and window views.
-7. [interior-dna.md](interior-dna.md) — rooms, furniture and visual relationships.
-8. [lighting-and-palette-dna.md](lighting-and-palette-dna.md) — source palette values, natural/practical light and mood.
-9. [spatial-design-principles.md](spatial-design-principles.md) — geometry, reciprocal views and plausible adjacency.
-10. [cinematography-dna.md](cinematography-dna.md) — framing, reveal, movement and visual sequence.
-11. [design-compatibility.md](design-compatibility.md) — style combinations and conflict reasoning.
-12. [originality-framework.md](originality-framework.md) — original design transformations.
-13. [evidence-index.yaml](evidence-index.yaml) — curated claim-level YAML provenance examples.
-14. [source-integrity.md](source-integrity.md) — canonical sources, retired IDs and byte-integrity checks.
-15. [source-manifest.json](source-manifest.json) — SHA-256 source bindings and separate unannotated inventory.
+## Contoh dan pola
 
-16. [ai-knowledge.md](ai-knowledge.md) — compact core reading for creative AI.
-17. [access-contract.md](access-contract.md) — shared web/connector reading paths.
-18. [taxonomy/README.md](taxonomy/README.md) — versioned Indonesian/English vocabulary.
-19. [directories/README.md](directories/README.md) — examples grouped by normalized concepts.
+[Direktori konsep](directories/README.md) membantu menemukan gaya, ukuran visual, ruang, material appearance, cahaya dan kamera. Buka profil yang sesuai, lalu ikuti sumber atau bukti shot bila dibutuhkan.
 
-## Source hierarchy
+[Profil referensi](reference-profiles/README.md) · [Katalog](reference-catalog.md) · [Sintesis DNA](dna-summary.md) · [Pola korpus dan pengecualian](corpus-patterns.md)
 
-`references/<ID>/analysis.yaml` (primary recorded observation) → `analysis.md` (human-readable narrative from those fields) → `storyboard.jpg` and `shot-NN.jpg` (visual orientation and sanity check). The original video under `video/` is the strongest source when inspecting motion; a keyframe alone cannot prove a camera path.
+Frekuensi dihitung per referensi pada snapshot yang disebutkan, bukan per rumah fisik yang telah dipastikan independen. Pola koleksi bukan aturan wajib untuk konsep atau video baru.
 
-**No file here specifies** a required number of images, duration, generation platform, approval gate, video prompt, editing schedule, or audio policy. Any external master prompt or creative brief is a separate layer and does not retroactively become source evidence.
+## Cara memahami klaim
 
-The knowledge set represents a **dated snapshot**. An additional reference does not silently update aggregated claims. See [methodology](methodology.md) and [maintenance](../docs/knowledge-maintenance.md) for explicit snapshot publication. Catalog regeneration alone does not publish new sources.
+Pengamatan sumber, hitungan, interpretasi dan prinsip desain memiliki arti berbeda. Material seperti batu pada sumber tidak membuktikan komposisinya; rumah baru tetap boleh memilih batu alam secara eksplisit. Urutan living lalu kitchen tidak membuktikan sambungan kedua ruang.
 
-All saved references may inform new concepts. Confidence and analysis status qualify source claims; they do not prohibit creative choices. See the usage policy in [methodology](methodology.md).
+Baca [metodologi](methodology.md) jika perlu menafsirkan ketidakpastian atau perbedaan jenis klaim. Analisis asli tetap menjadi sumber anotasi; pengayaan menyimpan penelusuran dan batas bukti.
 
-**Claim classes:** `OBSERVATION` (one reference), `AGGREGATE` (counted source pattern), `INFERENCE` (interpretation), `DESIGN_PRINCIPLE` (general guidance, not a sourced historical fact). Never describe the last two as directly verified by video evidence.
+<details>
+<summary>Bukti dan bantuan akses — buka sesuai kebutuhan</summary>
 
-## Full-corpus evidence and patterns
+[Relasi dan bukti per referensi](design-evidence/README.md) · [Kosakata Indonesia/Inggris](taxonomy/README.md) · [Kontrak akses web/konektor](access-contract.md)
 
-[Design evidence coverage](design-evidence/README.md) · [Counted patterns and diversity](corpus-patterns.md) · [Video similarity candidates](similarity/README.md) · [AI review scope](reviews/README.md).
+Folder temporal berisi sampel gambar, bukan bab pengetahuan wajib. JSON normalisasi, review, manifest, rilis dan kemiripan merupakan data pendukung untuk penelusuran atau pemeliharaan. Request penyimpanan, fixture tes, evaluasi dan rencana implementasi berada di luar bacaan kreatif.
 
-The older evidence-index.yaml remains a selective worked-example index. Full-corpus records distinguish saved annotations, scoped AI observations, aggregates, inferences and design principles. Available samples do not automatically create review events.
+</details>

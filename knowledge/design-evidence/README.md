@@ -1,6 +1,6 @@
 # Design evidence coverage
 
-Release: 2026-11-17-stage-3-5. [Core knowledge](../ai-knowledge.md) · [Corpus patterns](../corpus-patterns.md) · [Coverage data](coverage.json) · [Review method](../reviews/README.md)
+Release: 2026-11-17-stage-6-7. [Core knowledge](../ai-knowledge.md) · [Corpus patterns](../corpus-patterns.md) · [Coverage data](coverage.json) · [Review method](../reviews/README.md)
 
 OBSERVATION records distinguish saved annotations from selected AI visual observations. Literal relation extraction never proves world coordinates or room adjacency. All saved references remain usable for creative inspiration.
 
