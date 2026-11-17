@@ -80,3 +80,11 @@ Sumber references/, video/ dan requests/ tetap dipertahankan. Review temporal 45
 Seluruh 158 tes lulus. Pemeriksaan source integrity, knowledge library, design evidence, similarity dan knowledge access lulus. Seluruh video, anotasi asli serta requests tetap utuh. Bank evaluasi awal tidak diubah.
 
 Perubahan dipublikasikan sebagai kandidat pada branch uji. Branch utama dan staging workspace tetap berada dalam kendali pengguna.
+
+## Penyempurnaan setelah pengujian manual
+
+Temuan pengujian manual ditindaklanjuti pada metodologi atribusi, pengetahuan gerak–framing, dan ringkasan inti. Contoh edh052 mempertahankan label sumber lush_tropical_landscaping; taman tropis yang lebih ringan dijelaskan sebagai adaptasi baru. Pembahasan kamera membedakan ukuran subjek, field of view dan pengungkapan akibat berkurangnya oklusi.
+
+Prinsip umum dibedakan dari keputusan proyek dan alternatif yang masih terbuka. Pemilihan alternatif serta pemeriksaan prompt final tetap berada pada plugin/master prompt eksternal. Tidak ada perubahan pada video, anotasi asli, normalisasi atau catatan review sumber.
+
+Revisi dokumen ini memperbarui fingerprint bacaan lokal. Rekaman akses remote tetap merupakan hasil historis pada commit 217c63a473f5b6d9d967b1cb3372dae355ffed8b, bukan pengujian ulang revisi ini. Pernyataan kesamaan fingerprint pada publikasi tahap 6–7 merujuk versi yang diterbitkan pada commit 2e8ca457be7151edce7c61c9a82bdfe40de0280f. Tidak ada benchmark AI atau pengujian generator baru.

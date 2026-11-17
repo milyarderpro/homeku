@@ -40,6 +40,8 @@ Framing menjelaskan isi gambar: subjek utama, skala relatif, foreground, backgro
 
 Pan dan tilt mengubah arah pandang; tracking atau dolly mendeskripsikan perpindahan posisi kamera. Dolly in dan zoom in dapat sama-sama membesarkan subjek pada gambar, tetapi mempunyai penjelasan visual berbeda. Pergeseran relatif foreground/background dapat menjadi petunjuk parallax; itu belum memastikan perangkat atau lintasan kamera fisik.
 
+Dengan lensa/zoom tetap dan subjek yang sama, mendekati subjek biasanya membuatnya lebih besar dalam gambar. Informasi ruang bisa bertambah ketika oklusi berkurang; itu tidak otomatis berarti cakupan sudut lensa (field of view) melebar. Perubahan framing perlu dijelaskan relatif terhadap subjek dan informasi yang menjadi terlihat.
+
 Gerak objek perlu dibedakan dari gerak kamera. Transisi antarscene juga berbeda dari keduanya. Sampel awal–tengah–akhir membantu memeriksa perubahan yang tersampel, tetapi tidak membuktikan seluruh kejadian di antaranya. Label gerak pada analisis tetap merupakan interpretasi visual.
 
 Deskripsi visual yang presisi menyatakan subjek, bentuk dan proporsi yang relevan, tampilan material, hubungan posisi, komposisi, cahaya, perubahan framing dan identitas yang tetap. Ketelitian tersebut tidak memerlukan angka focal length atau koordinat fisik yang tidak didukung sumber.
@@ -51,6 +53,8 @@ Dalami [sinematografi](cinematography-dna.md) dan [kontinuitas visual](continuit
 OBSERVATION melaporkan satu sumber; AGGREGATE menghitung pola snapshot; INFERENCE merupakan interpretasi; DESIGN_PRINCIPLE membantu merancang konsep baru. Hitungan menyertakan denominator dan pengecualian pada [pola korpus](corpus-patterns.md). Frekuensi tidak membuktikan kualitas desain atau sebab virality.
 
 Semua referensi tersimpan boleh menjadi inspirasi. Confidence membatasi kepastian klaim tentang sumber, bukan pilihan kreatif. Permukaan yang diduga seperti batu dengan confidence rendah boleh menginspirasi penggunaan batu alam pada rumah baru. Pilihan baru itu tidak membuktikan komposisi material sumber.
+
+Sifat yang diminta dalam brief bukan bukti tentang sumber. Jika lanskap tropis sumber disederhanakan menjadi taman lebih ringan, penyederhanaan itu merupakan keputusan desain baru. Prinsip umum juga berbeda dari pilihan material atau posisi ruang pada satu proyek tertentu; alternatif yang belum dipilih belum menetapkan satu geometri.
 
 Ketiadaan data denah tidak melarang merancang denah baru. Hubungan baru harus koheren dan dinyatakan sebagai keputusan kreatif. Penggabungan referensi juga tidak membuktikan adanya satu rumah gabungan yang sudah ada.
 

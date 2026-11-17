@@ -38,6 +38,30 @@ For example, a source may show a stone-like surface with uncertain composition. 
 
 Review is performed by AI as part of analysis and may be repeated for targeted corrections or enrichment. There is no manual-verification gate and no replacement blanket verification flag. Preserve claim-level uncertainty and distinguish creative decisions from source observations.
 
+## Attribution when adapting a reference
+
+A source attribute needs support at the level being claimed: reference ID, relevant shot or source field, and the wording or visible evidence that supports it. A link to a general theme establishes context; it does not establish every adjective about a particular reference. A recorded label is also not an independent physical measurement.
+
+A requested brief describes the desired new house. Its attributes do not become facts about whichever references are selected. Keep the source attribute, any interpretation, and the proposed transformation distinct.
+
+For example, [edh052's annotation](../references/edh052/analysis.yaml) records `lush_tropical_landscaping` at `/visual_style/setting/1`. This is a qualitative source label, not a measured planting-density value.
+
+| Statement | Status |
+| --- | --- |
+| The edh052 annotation records lush tropical landscaping | Traceable source statement |
+| A new house uses its tropical vocabulary with lighter, more spaced planting | Creative adaptation |
+| edh052 proves that its garden is sparse because the brief requests a light tropical garden | Unsupported attribution |
+
+The same distinction applies to material composition, proportions, lighting, room relationships and camera paths. A transformation may deliberately simplify, intensify or combine source qualities. It remains usable even when the original attribute has low confidence; it must not be presented as a newly verified property of the source.
+
+## Principles, project choices and unresolved alternatives
+
+A DESIGN_PRINCIPLE is general reasoning, such as keeping connecting openings compatible across reciprocal views. Choosing natural stone for one new house or placing its kitchen north of its living room is a project-specific creative decision, not an observation about a reference and not itself a general principle.
+
+An alternative such as “stone or tile” describes several possible designs. A specified material describes one design. Likewise, “island or peninsula if space allows” leaves geometry unresolved. These levels of specificity should not be conflated with a single established arrangement.
+
+This library explains those distinctions. Selecting project alternatives and checking their use in final descriptions belong to the external plugin or master prompt.
+
 ## Maintenance
 
 New references enter through the existing analysis-and-save pipeline and append-only source inventory. Explicit knowledge publication selects their source/annotation revisions, builds profiles and vocabulary mappings, and leaves thematic interpretations subject to separate AI review. Source corrections invalidate published bindings until a new release is selected. See [maintenance](../docs/knowledge-maintenance.md). The build script intentionally **does not use AI to invent insights**. Creative statements require review; do not auto-promote a count into a design rule.
