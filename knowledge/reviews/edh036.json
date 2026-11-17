@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh036",
+    "analysis_path": "references/edh036/analysis.yaml",
+    "analysis_sha256": "493103ba8c01470fcc6a0dedcf9e1ca3f223b61e07e2f0caf851221075457aaa",
+    "source_path": "video/edh036.mp4",
+    "source_sha256": "0fcf82b922948925f2eae59bbf4613155391ede13a0f78a0bd55b76919bf1c15"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh036.review.storyboard",
+      "source": {
+        "reference_id": "edh036",
+        "analysis_path": "references/edh036/analysis.yaml",
+        "analysis_sha256": "493103ba8c01470fcc6a0dedcf9e1ca3f223b61e07e2f0caf851221075457aaa",
+        "source_path": "video/edh036.mp4",
+        "source_sha256": "0fcf82b922948925f2eae59bbf4613155391ede13a0f78a0bd55b76919bf1c15"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh036/storyboard.jpg",
+          "sha256": "7aca94a7d8d3e662cab9e022020532b64370154af7161ba792a142d1e3cacbf7",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Closing view shows pale facade, stone-like tall arched bay, black gables and entry steps. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "First saved frame is living within an exterior-to-living shot; bathroom/laundry contains stacked machines beside shower. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

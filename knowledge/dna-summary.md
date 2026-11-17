@@ -39,3 +39,9 @@ A **recognizable silhouette** plus a distinctive entrance and landscape foregrou
 Use [reference catalog](reference-catalog.md) and [all 57 source design profiles](reference-profiles/README.md) to locate examples; inspect the linked YAML and relevant original images before asserting shot-level facts. Use [compatibility](design-compatibility.md) and [originality](originality-framework.md) for explicitly reasoned design synthesis, and [spatial principles](spatial-design-principles.md) for geometric plausibility. Curated, field-level claim examples and limitations are listed in [evidence-index.yaml](evidence-index.yaml); this is a selective index rather than a complete mirror of the 57 source packages.
 
 **Exclusions:** mandatory shot timing, imagery/panel count, Flow/Omni controls, generation platform choices, cut rules, audio policy, approval gates, prompts, video QA, and file-save instructions for production.
+
+## Corpus-linked enrichment
+
+The current counted synthesis provides exact numerators, denominators, source lists and annotation counterexamples. It supersedes using the selective worked examples as an estimate of corpus-wide frequency.
+
+See [counted patterns and diversity](corpus-patterns.md) and [source-bound design evidence](design-evidence/README.md). Counts describe published video references; content independence and physical-house identity are not established by unique file hashes.

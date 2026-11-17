@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh019",
+    "analysis_path": "references/edh019/analysis.yaml",
+    "analysis_sha256": "3ad174b67127d739f93b47a827923fd2bfef2f663f8b05ea8766e6c2ff0af0e1",
+    "source_path": "video/edh019.mp4",
+    "source_sha256": "a4147f9013c31dd35d38d161bbd881628c88cd6ca1b3926b6e4af9399330c97a"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh019.review.storyboard",
+      "source": {
+        "reference_id": "edh019",
+        "analysis_path": "references/edh019/analysis.yaml",
+        "analysis_sha256": "3ad174b67127d739f93b47a827923fd2bfef2f663f8b05ea8766e6c2ff0af0e1",
+        "source_path": "video/edh019.mp4",
+        "source_sha256": "a4147f9013c31dd35d38d161bbd881628c88cd6ca1b3926b6e4af9399330c97a"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh019/storyboard.jpg",
+          "sha256": "3dfdc405edec7197436046da6e6c8520b98faa1e08f94a92d990c590c79e97fa",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "White barrel-vault-like upper form, dark-framed arch and upper balcony above raised entry. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Curved ceiling/rib language recurs across kitchen, bedroom and bathroom; this is visual coherence, not structural proof. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

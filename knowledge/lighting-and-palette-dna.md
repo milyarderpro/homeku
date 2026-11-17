@@ -27,3 +27,9 @@
 6. **World continuity.** Weather appearance, exterior foliage, window views, temperature of practical lights and wall finishes belong to one coherent hypothetical home; visually incompatible climates or colors require a design reason.
 
 **Boundaries:** color labels may depend on grading, white balance, compression and image synthesis. The archive gives no calibrated illumination levels or camera exposure measurements. Material names and season labels are visually inferred, not verified physically.
+
+## Corpus-linked enrichment
+
+Source-level light and palette descriptions remain available in profiles and shot evidence. A recurring warm/pale appearance is a design vocabulary, not a measured photometric or color-calibration result.
+
+See [counted patterns and diversity](corpus-patterns.md) and [source-bound design evidence](design-evidence/README.md). Counts describe published video references; content independence and physical-house identity are not established by unique file hashes.

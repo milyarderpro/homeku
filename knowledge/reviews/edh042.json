@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh042",
+    "analysis_path": "references/edh042/analysis.yaml",
+    "analysis_sha256": "620931176c3cb6d18ab9529269aa43c20cc119a80488c39e5c3ca18caf1fe57a",
+    "source_path": "video/edh042.mp4",
+    "source_sha256": "f47b74e26999bcf1dbb09bf7545be75e7ccb8597c735aa271792f30015224917"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh042.review.storyboard",
+      "source": {
+        "reference_id": "edh042",
+        "analysis_path": "references/edh042/analysis.yaml",
+        "analysis_sha256": "620931176c3cb6d18ab9529269aa43c20cc119a80488c39e5c3ca18caf1fe57a",
+        "source_path": "video/edh042.mp4",
+        "source_sha256": "f47b74e26999bcf1dbb09bf7545be75e7ccb8597c735aa271792f30015224917"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh042/storyboard.jpg",
+          "sha256": "cf0e93524361795426109932a928ac9aa52b6768119cf923d1eb1cb097fbcf11",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Pale low rectilinear mass with wood-tone opening frames and tropical-looking planting. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living, kitchen and bedroom frames share pale finishes and daylight; separate cuts do not locate those rooms relative to each other. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh042.review.temporal",
+      "source": {
+        "reference_id": "edh042",
+        "analysis_path": "references/edh042/analysis.yaml",
+        "analysis_sha256": "620931176c3cb6d18ab9529269aa43c20cc119a80488c39e5c3ca18caf1fe57a",
+        "source_path": "video/edh042.mp4",
+        "source_sha256": "f47b74e26999bcf1dbb09bf7545be75e7ccb8597c735aa271792f30015224917"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "Visual review of start/middle/end contact sheets only; not continuous playback or camera-mechanism verification."
+      ],
+      "evidence": [
+        {
+          "path": "knowledge/temporal/edh042/contact.jpg",
+          "sha256": "c240abb3afa700ff1457d62154228dd4315f709e9b107167526bf2bc704075bb",
+          "kind": "temporal_contact"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/shots/0/framing",
+          "status": "supported",
+          "reason": "Trees recede from foreground while facade grows in frame. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/1/framing",
+          "status": "supported",
+          "reason": "Living view widens from TV wall toward seating and corner windows. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/2/framing",
+          "status": "supported",
+          "reason": "Kitchen samples emphasize sink/window and narrow work aisle. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/3/framing",
+          "status": "supported",
+          "reason": "Bedroom view widens around bed and timber-like ceiling. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/4/framing",
+          "status": "supported",
+          "reason": "Bathroom shifts toward shower screen; tub partly leaves frame. This supports sampled framing changes, not the exact saved camera label."
+        }
+      ]
+    }
+  ]
+}

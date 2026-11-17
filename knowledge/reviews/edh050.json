@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh050",
+    "analysis_path": "references/edh050/analysis.yaml",
+    "analysis_sha256": "01d3330d599ea8abf24e4685c3e87b76d9443efd1cbcadab9426a534d060a72d",
+    "source_path": "video/edh050.mp4",
+    "source_sha256": "bb575892f3053f0b166cf4f137551d84184ec7d153bba2f382505ba1c21a6b5c"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh050.review.storyboard",
+      "source": {
+        "reference_id": "edh050",
+        "analysis_path": "references/edh050/analysis.yaml",
+        "analysis_sha256": "01d3330d599ea8abf24e4685c3e87b76d9443efd1cbcadab9426a534d060a72d",
+        "source_path": "video/edh050.mp4",
+        "source_sha256": "bb575892f3053f0b166cf4f137551d84184ec7d153bba2f382505ba1c21a6b5c"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh050/storyboard.jpg",
+          "sha256": "c75f11d6b1ca29c58da52d54702c90dfb7c613363cdbf7d8c83764e166bd3967",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Cream cottage with warm tiled roof, shallow entry porch and red/white flower beds. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Bedroom frame includes open wardrobe behind/alongside sleeping area; bathroom/laundry frame has shower and a front-loading appliance at edge. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

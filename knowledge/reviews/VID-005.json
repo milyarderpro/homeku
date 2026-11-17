@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "VID-005",
+    "analysis_path": "references/VID-005/analysis.yaml",
+    "analysis_sha256": "e074274fb73f5216a49a11ef385cf50c4e3d4c8b1eff723146c96bc2732d504b",
+    "source_path": "video/edh002.mp4",
+    "source_sha256": "3be6a6e1e75804ccd2038be5b92120aee3369c80af84c89f86f671e143d0f02f"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "VID-005.review.storyboard",
+      "source": {
+        "reference_id": "VID-005",
+        "analysis_path": "references/VID-005/analysis.yaml",
+        "analysis_sha256": "e074274fb73f5216a49a11ef385cf50c4e3d4c8b1eff723146c96bc2732d504b",
+        "source_path": "video/edh002.mp4",
+        "source_sha256": "3be6a6e1e75804ccd2038be5b92120aee3369c80af84c89f86f671e143d0f02f"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/VID-005/storyboard.jpg",
+          "sha256": "3582ce80ac19e0b99588c3b7aff17a05d2b7a591c59c79ed523a7df4f3844774",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Stacked rounded volumes with a curved exterior circulation element and rooftop umbrella. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Tall kitchen view contains island and plants near an upper opening; curved forms recur indoors without proving a complete floorplan. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "VID-005.review.temporal",
+      "source": {
+        "reference_id": "VID-005",
+        "analysis_path": "references/VID-005/analysis.yaml",
+        "analysis_sha256": "e074274fb73f5216a49a11ef385cf50c4e3d4c8b1eff723146c96bc2732d504b",
+        "source_path": "video/edh002.mp4",
+        "source_sha256": "3be6a6e1e75804ccd2038be5b92120aee3369c80af84c89f86f671e143d0f02f"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "Visual review of start/middle/end contact sheets only; not continuous playback or camera-mechanism verification."
+      ],
+      "evidence": [
+        {
+          "path": "knowledge/temporal/VID-005/contact.jpg",
+          "sha256": "4c81dae07206d05c225e762384749c3bd945dcabea9ac54fca5efe38ff5f659e",
+          "kind": "temporal_contact"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/shots/0/framing",
+          "status": "supported",
+          "reason": "Exterior moves closer to spiral stair and glazing. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/1/framing",
+          "status": "supported",
+          "reason": "Living samples shift toward television/fireplace wall. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/2/framing",
+          "status": "supported",
+          "reason": "Kitchen framing widens to island and ceiling opening. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/3/framing",
+          "status": "supported",
+          "reason": "Bedroom framing tightens around bed and illuminated arch. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/4/framing",
+          "status": "supported",
+          "reason": "Bathroom framing shifts across basins and tub. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/5/framing",
+          "status": "supported",
+          "reason": "Closing exterior widens to show full curved stair composition. This supports sampled framing changes, not the exact saved camera label."
+        }
+      ]
+    }
+  ]
+}

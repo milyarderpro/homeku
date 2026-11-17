@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "HOMEKU knowledge contracts",
-  "description": "Local contracts for derived data. Source analysis remains schema 2.1. Review and observation contracts are reserved for later phases; no review events are inferred.",
+  "description": "Source-bound derived knowledge. Review events report actual scoped AI inspection; no blanket verification is inferred.",
   "$defs": {
     "source": {
       "type": "object",
@@ -300,6 +300,18 @@
             ],
             "additionalProperties": false
           }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/media"
+          }
+        },
+        "model_version": {
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "required": [
@@ -360,6 +372,20 @@
           "items": {
             "type": "string",
             "minLength": 1
+          }
+        },
+        "basis": {
+          "enum": [
+            "recorded_annotation",
+            "ai_storyboard_review",
+            "ai_sampled_temporal_review"
+          ]
+        },
+        "raw": {},
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/media"
           }
         }
       },
@@ -444,6 +470,523 @@
         "reference_ids",
         "exceptions",
         "limitations"
+      ],
+      "additionalProperties": false
+    },
+    "media": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "relation": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "shot_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "field_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "raw": {
+          "type": "string",
+          "minLength": 1
+        },
+        "claim_type": {
+          "const": "OBSERVATION"
+        },
+        "basis": {
+          "const": "recorded_annotation_literal_relation"
+        },
+        "confidence": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "subject_mention": {
+          "type": "string",
+          "minLength": 1
+        },
+        "predicate": {
+          "type": "string",
+          "minLength": 1
+        },
+        "object_mention": {
+          "type": "string",
+          "minLength": 1
+        },
+        "coordinate_system": {
+          "const": "camera_view_relative"
+        },
+        "world_orientation": {
+          "type": "null"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "id",
+        "source",
+        "shot_id",
+        "field_path",
+        "raw",
+        "claim_type",
+        "basis",
+        "confidence",
+        "subject_mention",
+        "predicate",
+        "object_mention",
+        "coordinate_system",
+        "world_orientation",
+        "limitations"
+      ],
+      "additionalProperties": false
+    },
+    "design_evidence": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        },
+        "review_coverage": {
+          "type": "object",
+          "properties": {
+            "storyboard": {
+              "enum": [
+                "selected_characteristics",
+                "pending"
+              ]
+            },
+            "temporal": {
+              "enum": [
+                "sampled_pilot",
+                "pending"
+              ]
+            },
+            "pending_reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "storyboard",
+            "temporal",
+            "pending_reason"
+          ],
+          "additionalProperties": false
+        },
+        "reviews": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/review"
+          }
+        },
+        "observations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/observation"
+          }
+        },
+        "relations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/relation"
+          }
+        },
+        "shots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/design_shot"
+          }
+        },
+        "sequence_links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "from_shot": {
+                "type": "string",
+                "minLength": 1
+              },
+              "to_shot": {
+                "type": "string",
+                "minLength": 1
+              },
+              "relation": {
+                "const": "edit_sequence_only"
+              },
+              "physical_room_adjacency": {
+                "const": "unknown"
+              }
+            },
+            "required": [
+              "from_shot",
+              "to_shot",
+              "relation",
+              "physical_room_adjacency"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "unknowns": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "annotation_discrepancies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "field_path": {
+                "type": "string"
+              },
+              "status": {
+                "const": "ambiguous"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "field_path",
+              "status",
+              "reason"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "source",
+        "review_coverage",
+        "reviews",
+        "observations",
+        "relations",
+        "shots",
+        "sequence_links",
+        "unknowns",
+        "limitations",
+        "annotation_discrepancies"
+      ],
+      "additionalProperties": false
+    },
+    "entity_mention": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_mention": {
+          "type": "string",
+          "minLength": 1
+        },
+        "field_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_category": {
+          "enum": [
+            "architectural",
+            "furniture_and_props",
+            "environment"
+          ]
+        },
+        "role": {
+          "enum": [
+            "architectural_anchor_candidate",
+            "furniture_or_prop",
+            "environment"
+          ]
+        },
+        "role_basis": {
+          "const": "source_category_inference"
+        },
+        "physical_identity_across_shots": {
+          "const": "unknown"
+        }
+      },
+      "required": [
+        "id",
+        "source_mention",
+        "field_path",
+        "source_category",
+        "role",
+        "role_basis",
+        "physical_identity_across_shots"
+      ],
+      "additionalProperties": false
+    },
+    "temporal_frame": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "enum": [
+            "start",
+            "middle",
+            "end"
+          ]
+        },
+        "timestamp_s": {
+          "type": "number",
+          "minimum": 0
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "dhash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{16}$"
+        },
+        "contrast": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "label",
+        "timestamp_s",
+        "path",
+        "sha256",
+        "dhash",
+        "contrast"
+      ],
+      "additionalProperties": false
+    },
+    "temporal_shot": {
+      "type": "object",
+      "properties": {
+        "shot_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "annotation_start_s": {
+          "type": "number",
+          "minimum": 0
+        },
+        "annotation_end_s": {
+          "type": "number",
+          "minimum": 0
+        },
+        "sample_end_limit_s": {
+          "type": "number",
+          "minimum": 0
+        },
+        "frames": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "$ref": "#/$defs/temporal_frame"
+          }
+        }
+      },
+      "required": [
+        "shot_id",
+        "annotation_start_s",
+        "annotation_end_s",
+        "sample_end_limit_s",
+        "frames"
+      ],
+      "additionalProperties": false
+    },
+    "design_shot": {
+      "type": "object",
+      "properties": {
+        "shot_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scene": {
+          "type": "string",
+          "minLength": 1
+        },
+        "field_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "focal_subject": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "framing_recorded": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "camera_recorded": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "subject_motion": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "const": "unknown"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "state",
+            "reason"
+          ],
+          "additionalProperties": false
+        },
+        "transition_recorded": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "light_recorded": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "entities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/entity_mention"
+          }
+        },
+        "co_visible_functions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "co_visibility_basis": {
+          "enum": [
+            "explicit_open_plan_annotation",
+            "unknown"
+          ]
+        },
+        "window_world_mentions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/entity_mention"
+          }
+        },
+        "temporal_samples": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/temporal_shot"
+            }
+          ]
+        },
+        "temporal_visual_review": {
+          "type": "object",
+          "properties": {
+            "state": {
+              "enum": [
+                "sampled_review",
+                "pending"
+              ]
+            },
+            "finding": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "state",
+            "finding",
+            "reason"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "shot_id",
+        "scene",
+        "field_path",
+        "focal_subject",
+        "framing_recorded",
+        "camera_recorded",
+        "subject_motion",
+        "transition_recorded",
+        "light_recorded",
+        "entities",
+        "co_visible_functions",
+        "co_visibility_basis",
+        "window_world_mentions",
+        "temporal_samples",
+        "temporal_visual_review"
       ],
       "additionalProperties": false
     }

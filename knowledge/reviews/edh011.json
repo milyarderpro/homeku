@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh011",
+    "analysis_path": "references/edh011/analysis.yaml",
+    "analysis_sha256": "5e1305a2d80ab9aafac7b0489afb9dbba7a5e21587125bc05b430eb55ec1339e",
+    "source_path": "video/edh011.mp4",
+    "source_sha256": "9fdfe6346d4365bc906b042f77b11e8531c8fa15f02f9686b0c45547fcda43e7"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh011.review.storyboard",
+      "source": {
+        "reference_id": "edh011",
+        "analysis_path": "references/edh011/analysis.yaml",
+        "analysis_sha256": "5e1305a2d80ab9aafac7b0489afb9dbba7a5e21587125bc05b430eb55ec1339e",
+        "source_path": "video/edh011.mp4",
+        "source_sha256": "9fdfe6346d4365bc906b042f77b11e8531c8fa15f02f9686b0c45547fcda43e7"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh011/storyboard.jpg",
+          "sha256": "86d7a5172fa7a75a076b3b3b51fcd4d2c25717b5af1cf89640d99a1aff1603d5",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Compact pale cottage with warm sloped roof, darker stone-like front section and raised front steps. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living shows seating and TV/media console; bathroom has tub under large dark-framed window and stone-like wall panels. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

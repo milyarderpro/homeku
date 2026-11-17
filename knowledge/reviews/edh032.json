@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh032",
+    "analysis_path": "references/edh032/analysis.yaml",
+    "analysis_sha256": "b8f9b0bbd37fd59fe07b74de906a1a88c4d132afc6c8a7fcd7e5ba50920e22d9",
+    "source_path": "video/edh032.mp4",
+    "source_sha256": "2dce2df9dca393bd04f76051d250255a1416c1adff731ca9af9ea4d21db77ad1"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh032.review.storyboard",
+      "source": {
+        "reference_id": "edh032",
+        "analysis_path": "references/edh032/analysis.yaml",
+        "analysis_sha256": "b8f9b0bbd37fd59fe07b74de906a1a88c4d132afc6c8a7fcd7e5ba50920e22d9",
+        "source_path": "video/edh032.mp4",
+        "source_sha256": "2dce2df9dca393bd04f76051d250255a1416c1adff731ca9af9ea4d21db77ad1"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh032/storyboard.jpg",
+          "sha256": "f17aacda2a1245986fbbd4095866d5d5be3b08c2a0ea644872ef3b4cfb6490ae",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Small pink-clad house with a shallow sloping roof and covered side deck in an open green landscape. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living and sleeping frames show compact furniture and rural-looking views; no kitchen or bathroom shot is supplied in this four-shot source. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

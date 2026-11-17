@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh033",
+    "analysis_path": "references/edh033/analysis.yaml",
+    "analysis_sha256": "9fd6d318cc1d2b1f61484c60c34b98669d33fac7140c3cf6345a7d12fd3a28b2",
+    "source_path": "video/edh033.mp4",
+    "source_sha256": "32e3bf82d23fd1b0aa8b7e3ec2c4d9b3e3b5af64322dc97d64b67ea49ea88f6c"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh033.review.storyboard",
+      "source": {
+        "reference_id": "edh033",
+        "analysis_path": "references/edh033/analysis.yaml",
+        "analysis_sha256": "9fd6d318cc1d2b1f61484c60c34b98669d33fac7140c3cf6345a7d12fd3a28b2",
+        "source_path": "video/edh033.mp4",
+        "source_sha256": "32e3bf82d23fd1b0aa8b7e3ec2c4d9b3e3b5af64322dc97d64b67ea49ea88f6c"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh033/storyboard.jpg",
+          "sha256": "450d12601787d7b3395eaa4ca03f7b25fe56b01d26fed282c99ce1b3fa84225f",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Pale compact mass, exterior stair to an upper terrace and rounded stone-like surround to an opening. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living, dining, kitchen and sleeping loft appear in one frame with stairs to the left; laundry appliance is visible within bathroom. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh033.review.temporal",
+      "source": {
+        "reference_id": "edh033",
+        "analysis_path": "references/edh033/analysis.yaml",
+        "analysis_sha256": "9fd6d318cc1d2b1f61484c60c34b98669d33fac7140c3cf6345a7d12fd3a28b2",
+        "source_path": "video/edh033.mp4",
+        "source_sha256": "32e3bf82d23fd1b0aa8b7e3ec2c4d9b3e3b5af64322dc97d64b67ea49ea88f6c"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "Visual review of start/middle/end contact sheets only; not continuous playback or camera-mechanism verification."
+      ],
+      "evidence": [
+        {
+          "path": "knowledge/temporal/edh033/contact.jpg",
+          "sha256": "1641a43736eb52a8f7b91c9632de5bdb6bb573b945820ac6b1fa4dd22524e177",
+          "kind": "temporal_contact"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/shots/0/framing",
+          "status": "supported",
+          "reason": "Exterior framing tightens toward stair and front glazing. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/1/framing",
+          "status": "supported",
+          "reason": "Living, dining, kitchen and sleeping loft are co-visible; framing increasingly emphasizes loft. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/2/framing",
+          "status": "supported",
+          "reason": "Utility view tightens toward laundry beneath counter. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/3/framing",
+          "status": "supported",
+          "reason": "Closing exterior framing widens to garden and facade. This supports sampled framing changes, not the exact saved camera label."
+        }
+      ]
+    }
+  ]
+}

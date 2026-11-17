@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh022",
+    "analysis_path": "references/edh022/analysis.yaml",
+    "analysis_sha256": "dbb8bbd420ad738c49c72fd64e163e157b271c5753599afaac6464d6294229d9",
+    "source_path": "video/edh022.mp4",
+    "source_sha256": "1b0fa02140fab19bb1df5239d1d0a3473448690fe8b6a1897e4951764bf53f05"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh022.review.storyboard",
+      "source": {
+        "reference_id": "edh022",
+        "analysis_path": "references/edh022/analysis.yaml",
+        "analysis_sha256": "dbb8bbd420ad738c49c72fd64e163e157b271c5753599afaac6464d6294229d9",
+        "source_path": "video/edh022.mp4",
+        "source_sha256": "1b0fa02140fab19bb1df5239d1d0a3473448690fe8b6a1897e4951764bf53f05"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh022/storyboard.jpg",
+          "sha256": "18fbd0cef6907dad4a93c461d778b5fa9f6abc8f2a73ea55b30c708c1a270000",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Compact pale rectilinear facade with flat dark roof edge and black-framed openings. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "One interior frame shows sofa foreground/right and kitchen behind; this supports a shared view, not measured dimensions. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh022.review.temporal",
+      "source": {
+        "reference_id": "edh022",
+        "analysis_path": "references/edh022/analysis.yaml",
+        "analysis_sha256": "dbb8bbd420ad738c49c72fd64e163e157b271c5753599afaac6464d6294229d9",
+        "source_path": "video/edh022.mp4",
+        "source_sha256": "1b0fa02140fab19bb1df5239d1d0a3473448690fe8b6a1897e4951764bf53f05"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "Visual review of start/middle/end contact sheets only; not continuous playback or camera-mechanism verification."
+      ],
+      "evidence": [
+        {
+          "path": "knowledge/temporal/edh022/contact.jpg",
+          "sha256": "a5e5a01f8b2068bf3c5fe323eb3c70d31ce0883e1948d8ee6a1c36e36d0278ff",
+          "kind": "temporal_contact"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/shots/0/framing",
+          "status": "supported",
+          "reason": "Exterior framing tightens toward front steps. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/1/framing",
+          "status": "supported",
+          "reason": "Living and kitchen are co-visible at start; later samples emphasize kitchen. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/2/framing",
+          "status": "supported",
+          "reason": "Bedroom framing widens around bed and cupboards. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/3/framing",
+          "status": "supported",
+          "reason": "Bathroom framing widens modestly; basin, toilet and shower remain visible. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/4/framing",
+          "status": "supported",
+          "reason": "Closing exterior framing widens around entry and garden. This supports sampled framing changes, not the exact saved camera label."
+        }
+      ]
+    }
+  ]
+}

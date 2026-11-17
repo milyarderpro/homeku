@@ -25,3 +25,9 @@
 [edh058 shot-02](../references/edh058/analysis.yaml) and [shot-03](../references/edh058/analysis.yaml) are separate shots of living and kitchen. Their appearance does not prove they connect through any particular door or that one sits to the right of the other. For a *new* design, that adjacency is a distinct creative decision supported by [spatial-design-principles.md](spatial-design-principles.md).
 
 **Inference:** interior originality is visible through the configuration of furniture and architectural openings, not just changing textiles or colors.
+
+## Corpus-linked enrichment
+
+The evidence pages retain furniture, architectural-anchor candidates and environment separately. Explicit source relations remain camera-relative mentions; repeated props do not establish one persistent object across cuts.
+
+See [counted patterns and diversity](corpus-patterns.md) and [source-bound design evidence](design-evidence/README.md). Counts describe published video references; content independence and physical-house identity are not established by unique file hashes.

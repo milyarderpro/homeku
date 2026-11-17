@@ -8,11 +8,13 @@ Source analyses remain schema 2.1. [knowledge.schema.json](knowledge.schema.json
 | release | Explicit snapshot selection, counts, taxonomy version and source revisions |
 | normalization | Source-bound lexical mappings retaining every selected raw value |
 | mapping | Field pointer, raw value, dimensions, state, coverage, candidates and modifiers |
-| observation | Future claim-level observation/inference/principle with evidence and limits |
-| review | Future AI review event with method, scope, source revision and findings |
-| aggregate | Future counted statement with numerator, denominator and release identity |
+| observation | Claim-level record with basis, evidence, source revision, confidence and limits |
+| review | Scoped AI review event with method, scope, source revision and findings |
+| aggregate | Counted statement with numerator, denominator and release identity |
 
-The observation, review and aggregate contracts prepare later stages. This implementation does not invent review events, measured floorplans or new source observations.
+Stage 3–5 activates observation, review and aggregate contracts. Additional relation, entity_mention, temporal_frame, temporal_shot, design_shot and design_evidence contracts constrain source-bound enrichment. World orientation and cross-cut adjacency remain unknown. Review events are generated only from actual source/media-bound AI notes; sampled-frame availability alone cannot create an event.
+
+OBSERVATION explicitly distinguishes recorded_annotation, ai_storyboard_review and ai_sampled_temporal_review. A literal recorded relation is evidence of the saved description, not a fresh endorsement of physical geometry. Metadata alias discrepancies are mechanical findings outside visual review events. Exact runtime model build is unavailable and recorded as null.
 
 Observation IDs are stable within their source revision. Normalization IDs are deterministic from reference ID, field pointer and raw value; reordering source arrays requires a new annotation revision, not silent reuse of old evidence. Actual source terms are never overwritten by normalized values.
 

@@ -1,0 +1,453 @@
+{
+  "schema_version": "1.0",
+  "created_on": "2026-11-17",
+  "frozen_before_enrichment": true,
+  "baseline_release_id": "2026-11-17-stage-1-2-r2",
+  "scope": "AI-authored reference answers; not a measured consumer-model benchmark.",
+  "pilot_reference_ids": [
+    "VID-001",
+    "VID-004",
+    "VID-005",
+    "edh013",
+    "edh020",
+    "edh022",
+    "edh033",
+    "edh042",
+    "edh054",
+    "edh058",
+    "edh059",
+    "edh060"
+  ],
+  "cases": [
+    {
+      "id": "Q01",
+      "kind": "retrieval",
+      "question": "Cari contoh farmhouse berukuran kecil.",
+      "query": "kecil rumah farmhouse",
+      "expected_reference_ids": [
+        "edh060"
+      ],
+      "limitations": [
+        "Positive example recall only; this case does not measure precision of every returned source."
+      ],
+      "split": "development"
+    },
+    {
+      "id": "Q02",
+      "kind": "retrieval",
+      "question": "Cari cottage dengan karakter Mediterania.",
+      "query": "Mediterania cottage",
+      "expected_reference_ids": [
+        "edh058"
+      ],
+      "limitations": [
+        "Positive example recall only; this case does not measure precision of every returned source."
+      ],
+      "split": "development"
+    },
+    {
+      "id": "Q03",
+      "kind": "retrieval",
+      "question": "Cari karakter storybook dengan tampilan batu.",
+      "query": "storybook stone",
+      "expected_reference_ids": [
+        "edh020"
+      ],
+      "limitations": [
+        "Positive example recall only; this case does not measure precision of every returned source."
+      ],
+      "split": "development"
+    },
+    {
+      "id": "Q04",
+      "kind": "retrieval",
+      "question": "Cari rumah berkarakter tropis.",
+      "query": "tropical",
+      "expected_reference_ids": [
+        "edh042"
+      ],
+      "limitations": [
+        "Positive example recall only; this case does not measure precision of every returned source."
+      ],
+      "split": "heldout"
+    },
+    {
+      "id": "Q05",
+      "kind": "retrieval",
+      "question": "Cari fasad neoklasik.",
+      "query": "neoclassical",
+      "expected_reference_ids": [
+        "edh054"
+      ],
+      "limitations": [
+        "Positive example recall only; this case does not measure precision of every returned source."
+      ],
+      "split": "heldout"
+    },
+    {
+      "id": "Q06",
+      "kind": "retrieval",
+      "question": "Cari ruang dengan loft.",
+      "query": "loft",
+      "expected_reference_ids": [
+        "edh033"
+      ],
+      "limitations": [
+        "Positive example recall only; this case does not measure precision of every returned source."
+      ],
+      "split": "development"
+    },
+    {
+      "id": "Q07",
+      "kind": "retrieval",
+      "question": "Cari ruang dengan fungsi laundry.",
+      "query": "laundry",
+      "expected_reference_ids": [
+        "VID-004"
+      ],
+      "limitations": [
+        "Positive example recall only; this case does not measure precision of every returned source."
+      ],
+      "split": "development"
+    },
+    {
+      "id": "Q08",
+      "kind": "retrieval",
+      "question": "Cari contoh label kamera pan ke kanan.",
+      "query": "pan right",
+      "expected_reference_ids": [
+        "edh060"
+      ],
+      "limitations": [
+        "Positive example recall only; this case does not measure precision of every returned source."
+      ],
+      "split": "development"
+    },
+    {
+      "id": "Q09",
+      "kind": "retrieval",
+      "question": "Cari sumber dengan atap pelana.",
+      "query": "atap pelana",
+      "expected_reference_ids": [
+        "edh058"
+      ],
+      "limitations": [
+        "Positive example recall only; this case does not measure precision of every returned source."
+      ],
+      "split": "heldout"
+    },
+    {
+      "id": "Q10",
+      "kind": "retrieval",
+      "question": "Cari contoh tampilan permukaan batu.",
+      "query": "tampilan batu",
+      "expected_reference_ids": [
+        "edh020"
+      ],
+      "limitations": [
+        "Positive example recall only; this case does not measure precision of every returned source."
+      ],
+      "split": "heldout"
+    },
+    {
+      "id": "Q11",
+      "kind": "retrieval",
+      "question": "Cari sumber yang memperlihatkan kamar tidur.",
+      "query": "kamar tidur",
+      "expected_reference_ids": [
+        "edh058"
+      ],
+      "limitations": [
+        "Positive example recall only; this case does not measure precision of every returned source."
+      ],
+      "split": "development"
+    },
+    {
+      "id": "Q12",
+      "kind": "retrieval",
+      "question": "Cari contoh dapur.",
+      "query": "dapur",
+      "expected_reference_ids": [
+        "edh042"
+      ],
+      "limitations": [
+        "Positive example recall only; this case does not measure precision of every returned source."
+      ],
+      "split": "development"
+    },
+    {
+      "id": "Q13",
+      "kind": "source_value",
+      "question": "Apa kategori skala visual edh060?",
+      "reference_id": "edh060",
+      "field_path": "/architecture/building_scale/perceived_size",
+      "expected": "small",
+      "answer_basis": "recorded_annotation_not_independent_measurement",
+      "split": "development"
+    },
+    {
+      "id": "Q14",
+      "kind": "source_value",
+      "question": "Apa label gaya utama edh060?",
+      "reference_id": "edh060",
+      "field_path": "/architecture/primary_style",
+      "expected": "modern_farmhouse_tiny_house",
+      "answer_basis": "recorded_annotation_not_independent_measurement",
+      "split": "heldout"
+    },
+    {
+      "id": "Q15",
+      "kind": "source_value",
+      "question": "Apa label gaya utama edh058?",
+      "reference_id": "edh058",
+      "field_path": "/architecture/primary_style",
+      "expected": "mediterranean_cottage",
+      "answer_basis": "recorded_annotation_not_independent_measurement",
+      "split": "heldout"
+    },
+    {
+      "id": "Q16",
+      "kind": "source_value",
+      "question": "Berapa shot yang tercatat pada edh058?",
+      "reference_id": "edh058",
+      "field_path": "/video/shot_count",
+      "expected": 6,
+      "answer_basis": "recorded_annotation_not_independent_measurement",
+      "split": "development"
+    },
+    {
+      "id": "Q17",
+      "kind": "source_value",
+      "question": "Apa label gaya utama edh020?",
+      "reference_id": "edh020",
+      "field_path": "/architecture/primary_style",
+      "expected": "storybook_stone_cottage",
+      "answer_basis": "recorded_annotation_not_independent_measurement",
+      "split": "development"
+    },
+    {
+      "id": "Q18",
+      "kind": "source_value",
+      "question": "Apa label gaya utama edh054?",
+      "reference_id": "edh054",
+      "field_path": "/architecture/primary_style",
+      "expected": "contemporary_neoclassical_townhouse",
+      "answer_basis": "recorded_annotation_not_independent_measurement",
+      "split": "development"
+    },
+    {
+      "id": "Q19",
+      "kind": "source_value",
+      "question": "Apa kategori skala visual VID-005?",
+      "reference_id": "VID-005",
+      "field_path": "/architecture/building_scale/perceived_size",
+      "expected": "medium",
+      "answer_basis": "recorded_annotation_not_independent_measurement",
+      "split": "heldout"
+    },
+    {
+      "id": "Q20",
+      "kind": "source_value",
+      "question": "Apa kategori skala visual VID-001?",
+      "reference_id": "VID-001",
+      "field_path": "/architecture/building_scale/perceived_size",
+      "expected": "tiny",
+      "answer_basis": "recorded_annotation_not_independent_measurement",
+      "split": "heldout"
+    },
+    {
+      "id": "Q21",
+      "kind": "source_value",
+      "question": "Berapa shot yang tercatat pada edh033?",
+      "reference_id": "edh033",
+      "field_path": "/video/shot_count",
+      "expected": 4,
+      "answer_basis": "recorded_annotation_not_independent_measurement",
+      "split": "development"
+    },
+    {
+      "id": "Q22",
+      "kind": "source_value",
+      "question": "Apa label gaya utama edh042?",
+      "reference_id": "edh042",
+      "field_path": "/architecture/primary_style",
+      "expected": "modern_tropical_minimalist",
+      "answer_basis": "recorded_annotation_not_independent_measurement",
+      "split": "development"
+    },
+    {
+      "id": "Q23",
+      "kind": "source_value",
+      "question": "Apa scene shot-02 edh060?",
+      "reference_id": "edh060",
+      "field_path": "/shots/1/scene",
+      "expected": "living_room_kitchen_and_sleeping_loft",
+      "answer_basis": "recorded_annotation_not_independent_measurement",
+      "split": "development"
+    },
+    {
+      "id": "Q24",
+      "kind": "source_value",
+      "question": "Apa scene shot-03 edh058?",
+      "reference_id": "edh058",
+      "field_path": "/shots/2/scene",
+      "expected": "kitchen",
+      "answer_basis": "recorded_annotation_not_independent_measurement",
+      "split": "heldout"
+    },
+    {
+      "id": "Q25",
+      "kind": "source_value",
+      "question": "Apa label gaya utama edh059?",
+      "reference_id": "edh059",
+      "field_path": "/architecture/primary_style",
+      "expected": "storybook_rustic_stone_cottage",
+      "answer_basis": "recorded_annotation_not_independent_measurement",
+      "split": "heldout"
+    },
+    {
+      "id": "Q26",
+      "kind": "source_value",
+      "question": "Apa label gaya utama edh013?",
+      "reference_id": "edh013",
+      "field_path": "/architecture/primary_style",
+      "expected": "whimsical_organic_mediterranean_tower_house",
+      "answer_basis": "recorded_annotation_not_independent_measurement",
+      "split": "development"
+    },
+    {
+      "id": "Q27",
+      "kind": "source_uncertainty",
+      "question": "Apakah tersedia denah terukur edh058?",
+      "reference_id": "edh058",
+      "expected_answer_kind": "unknown_source_fact",
+      "reference_answer": "Tidak; rentang luas visual dan potongan ruangan bukan denah terukur.",
+      "policy_path": "knowledge/methodology.md",
+      "split": "development"
+    },
+    {
+      "id": "Q28",
+      "kind": "source_uncertainty",
+      "question": "Apakah kitchen pasti berada di timur living?",
+      "reference_id": "edh058",
+      "expected_answer_kind": "unknown_source_fact",
+      "reference_answer": "Belum diketahui; potongan ruangan terpisah tidak menetapkan arah atau adjacency.",
+      "policy_path": "knowledge/methodology.md",
+      "split": "development"
+    },
+    {
+      "id": "Q29",
+      "kind": "source_uncertainty",
+      "question": "Apa jenis geologi batu asli pada fasad?",
+      "reference_id": "edh020",
+      "expected_answer_kind": "unknown_source_fact",
+      "reference_answer": "Belum diketahui; tampilan seperti batu tidak mengidentifikasi komposisi.",
+      "policy_path": "knowledge/methodology.md",
+      "split": "heldout"
+    },
+    {
+      "id": "Q30",
+      "kind": "source_uncertainty",
+      "question": "Di negara mana rumah ini benar-benar dibangun?",
+      "reference_id": "edh042",
+      "expected_answer_kind": "unknown_source_fact",
+      "reference_answer": "Belum diketahui; common_regions adalah asosiasi gaya.",
+      "policy_path": "knowledge/methodology.md",
+      "split": "heldout"
+    },
+    {
+      "id": "Q31",
+      "kind": "source_uncertainty",
+      "question": "Berapa focal length lensa kamera?",
+      "reference_id": "edh060",
+      "expected_answer_kind": "unknown_source_fact",
+      "reference_answer": "Belum diketahui; label gerak tidak mengukur lensa.",
+      "policy_path": "knowledge/methodology.md",
+      "split": "development"
+    },
+    {
+      "id": "Q32",
+      "kind": "source_uncertainty",
+      "question": "Apakah rumah ini terbukti bangunan fisik?",
+      "reference_id": "VID-001",
+      "expected_answer_kind": "unknown_source_fact",
+      "reference_answer": "Belum diketahui; video adalah sumber visual tanpa bukti pembangunan.",
+      "policy_path": "knowledge/methodology.md",
+      "split": "development"
+    },
+    {
+      "id": "Q33",
+      "kind": "source_uncertainty",
+      "question": "Apakah tower tersebut terbukti layak struktur?",
+      "reference_id": "edh013",
+      "expected_answer_kind": "unknown_source_fact",
+      "reference_answer": "Belum diketahui; penampilan bukan perhitungan rekayasa.",
+      "policy_path": "knowledge/methodology.md",
+      "split": "development"
+    },
+    {
+      "id": "Q34",
+      "kind": "source_uncertainty",
+      "question": "Apa tanggal musim yang sebenarnya?",
+      "reference_id": "edh059",
+      "expected_answer_kind": "unknown_source_fact",
+      "reference_answer": "Belum diketahui; season appearance bukan tanggal terverifikasi.",
+      "policy_path": "knowledge/methodology.md",
+      "split": "heldout"
+    },
+    {
+      "id": "Q35",
+      "kind": "creative_boundary",
+      "question": "Bolehkah memilih batu alam untuk konsep baru jika komposisi permukaan sumber belum pasti?",
+      "expected_answer_kind": "creative_decision_allowed",
+      "reference_answer": "Boleh; pilih batu alam sebagai keputusan desain baru tanpa menyatakan sumber terbukti memakai batu alam.",
+      "policy_path": "knowledge/methodology.md",
+      "split": "heldout"
+    },
+    {
+      "id": "Q36",
+      "kind": "creative_boundary",
+      "question": "Bolehkah menetapkan adjacency living-kitchen baru?",
+      "expected_answer_kind": "creative_decision_allowed",
+      "reference_answer": "Boleh; rancang hubungan ruang baru yang konsisten dan labeli sebagai keputusan kreatif.",
+      "policy_path": "knowledge/methodology.md",
+      "split": "development"
+    },
+    {
+      "id": "Q37",
+      "kind": "creative_boundary",
+      "question": "Bolehkah denah yang diciptakan disebut denah terukur dari video sumber?",
+      "expected_answer_kind": "unsupported_source_fact",
+      "reference_answer": "Tidak; denah baru adalah rancangan hipotetis, bukan pengukuran sumber.",
+      "policy_path": "knowledge/methodology.md",
+      "split": "development"
+    },
+    {
+      "id": "Q38",
+      "kind": "creative_boundary",
+      "question": "Bolehkah menggabungkan tiga gaya menjadi rumah baru?",
+      "expected_answer_kind": "creative_decision_with_constraints",
+      "reference_answer": "Boleh jika massa, bukaan, material, skala dan ruang memiliki logika yang koheren.",
+      "policy_path": "knowledge/methodology.md",
+      "split": "development"
+    },
+    {
+      "id": "Q39",
+      "kind": "creative_boundary",
+      "question": "Apakah confidence rendah membuat sumber dilarang sebagai inspirasi?",
+      "expected_answer_kind": "do_not_exclude",
+      "reference_answer": "Tidak; confidence membatasi kepastian klaim sumber, bukan kebebasan kreatif.",
+      "policy_path": "knowledge/methodology.md",
+      "split": "heldout"
+    },
+    {
+      "id": "Q40",
+      "kind": "creative_boundary",
+      "question": "Apakah pola gaya yang sering muncul terbukti menyebabkan viral?",
+      "expected_answer_kind": "unsupported_causal_claim",
+      "reference_answer": "Tidak; kumpulan ini tidak menyediakan pengujian sebab-akibat performa.",
+      "policy_path": "knowledge/methodology.md",
+      "split": "heldout"
+    }
+  ]
+}

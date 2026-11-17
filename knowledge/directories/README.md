@@ -1,6 +1,6 @@
 # Knowledge directories
 
-Published release `2026-11-17-stage-1-2-r2`.
+Published release `2026-11-17-stage-3-5`.
 Use the same repository paths through web links or a GitHub connector.
 Concept matches are lexical/source-scoped. A reference may appear under several concepts.
 

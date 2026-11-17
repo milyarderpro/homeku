@@ -38,3 +38,9 @@ The knowledge set represents a **dated snapshot**. An additional reference does 
 All saved references may inform new concepts. Confidence and analysis status qualify source claims; they do not prohibit creative choices. See the usage policy in [methodology](methodology.md).
 
 **Claim classes:** `OBSERVATION` (one reference), `AGGREGATE` (counted source pattern), `INFERENCE` (interpretation), `DESIGN_PRINCIPLE` (general guidance, not a sourced historical fact). Never describe the last two as directly verified by video evidence.
+
+## Full-corpus evidence and patterns
+
+[Design evidence coverage](design-evidence/README.md) · [Counted patterns and diversity](corpus-patterns.md) · [Video similarity candidates](similarity/README.md) · [AI review scope](reviews/README.md).
+
+The older evidence-index.yaml remains a selective worked-example index. Full-corpus records distinguish saved annotations, scoped AI observations, aggregates, inferences and design principles. Available samples do not automatically create review events.

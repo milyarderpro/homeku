@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh029",
+    "analysis_path": "references/edh029/analysis.yaml",
+    "analysis_sha256": "ee2177104080cafd6443bcee8350100acdd06a08d98e7dae30913be43354e0a2",
+    "source_path": "video/edh029.mp4",
+    "source_sha256": "9edd30d76492e4f0470b15a3ff4c03abd5f5d0be426aa45cb83e5c2d16b0db6c"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh029.review.storyboard",
+      "source": {
+        "reference_id": "edh029",
+        "analysis_path": "references/edh029/analysis.yaml",
+        "analysis_sha256": "ee2177104080cafd6443bcee8350100acdd06a08d98e7dae30913be43354e0a2",
+        "source_path": "video/edh029.mp4",
+        "source_sha256": "9edd30d76492e4f0470b15a3ff4c03abd5f5d0be426aa45cb83e5c2d16b0db6c"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh029/storyboard.jpg",
+          "sha256": "66e241e3eeef4a49442dc658d89c20035d45927866a3a30e7660048161b260c1",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Low pale house with staggered flat/dark roof edges and broad entry steps in snow-like setting. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living centers a media/fireplace wall, with wood storage below; bedroom and bathroom show snowy views through dark frames. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

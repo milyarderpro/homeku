@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh047",
+    "analysis_path": "references/edh047/analysis.yaml",
+    "analysis_sha256": "41106c7e5ac6c8e9b0594fe760c461eb36f81584f64fea8e0f1783c3a47d77d2",
+    "source_path": "video/edh047.mp4",
+    "source_sha256": "95f52324e79ed56197d6f8637fd1b41228e96a70e2de12f4f5bb389245a9d5fa"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh047.review.storyboard",
+      "source": {
+        "reference_id": "edh047",
+        "analysis_path": "references/edh047/analysis.yaml",
+        "analysis_sha256": "41106c7e5ac6c8e9b0594fe760c461eb36f81584f64fea8e0f1783c3a47d77d2",
+        "source_path": "video/edh047.mp4",
+        "source_sha256": "95f52324e79ed56197d6f8637fd1b41228e96a70e2de12f4f5bb389245a9d5fa"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh047/storyboard.jpg",
+          "sha256": "681f0fb23ea51e8214cc4c0cd534dc3111b761c93adc642ca1bc3ff1fa7e6c63",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Pale rounded two-level mass with upper balcony, pebble-like stone accents and front steps. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living and kitchen show tall spaces; narrow bathroom/laundry frame combines shower, basin and stacked dark-front machines. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

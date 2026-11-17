@@ -23,3 +23,9 @@ A believable visual world retains similar vegetation and daylight across exterio
 - Species of plants, geology and building materials are visual guesses unless otherwise corroborated.
 - `common_regions` is architectural-style association, not a map coordinate.
 - A newly designed home can borrow the principle of layered landscape depth without copying the source walkway, tree positions or garden bed outline.
+
+## Corpus-linked enrichment
+
+Compare the green-garden edh042 and snowy-looking edh059. Exterior planting and window-world mentions are traceable appearances; neither confirms geographic location or season.
+
+See [counted patterns and diversity](corpus-patterns.md) and [source-bound design evidence](design-evidence/README.md). Counts describe published video references; content independence and physical-house identity are not established by unique file hashes.

@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh013",
+    "analysis_path": "references/edh013/analysis.yaml",
+    "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+    "source_path": "video/edh013.mp4",
+    "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh013.review.storyboard",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh013/storyboard.jpg",
+          "sha256": "1b96ba7dac22a14e1a2704098cd35fd051ec0f981319d223e20966f26069dd3f",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "White tower-like volumes, round openings and a sweeping external curved stair/ramp surrounded by flowers. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living view includes curved stairs and large arched glazing; bathroom has a round opening above the tub. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.review.temporal",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "Visual review of start/middle/end contact sheets only; not continuous playback or camera-mechanism verification."
+      ],
+      "evidence": [
+        {
+          "path": "knowledge/temporal/edh013/contact.jpg",
+          "sha256": "ece6158f2b227ceaff8aa89fcaf4975793b50b90719965a6291c1e3f0feeca5d",
+          "kind": "temporal_contact"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/shots/0/framing",
+          "status": "supported",
+          "reason": "Foreground trunks move out of the view as facade grows larger. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/1/framing",
+          "status": "supported",
+          "reason": "Living framing widens around curved sofa, round glazing and stairs. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/2/framing",
+          "status": "supported",
+          "reason": "Kitchen view shifts along curved counter and recessed shelves. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/3/framing",
+          "status": "supported",
+          "reason": "Bedroom view widens around bed and circular opening. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/4/framing",
+          "status": "supported",
+          "reason": "Bathroom framing tightens toward tub and round window. This supports sampled framing changes, not the exact saved camera label."
+        }
+      ]
+    }
+  ]
+}

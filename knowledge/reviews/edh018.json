@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh018",
+    "analysis_path": "references/edh018/analysis.yaml",
+    "analysis_sha256": "25f6544c899bba811b817e221c918fd2eb765090c6be172e11eb8c7d9c0f54f0",
+    "source_path": "video/edh018.mp4",
+    "source_sha256": "2cc280b303b4dc1dfb284c624aba3681cef862dceb8068702f808de8fcaf8dca"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh018.review.storyboard",
+      "source": {
+        "reference_id": "edh018",
+        "analysis_path": "references/edh018/analysis.yaml",
+        "analysis_sha256": "25f6544c899bba811b817e221c918fd2eb765090c6be172e11eb8c7d9c0f54f0",
+        "source_path": "video/edh018.mp4",
+        "source_sha256": "2cc280b303b4dc1dfb284c624aba3681cef862dceb8068702f808de8fcaf8dca"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh018/storyboard.jpg",
+          "sha256": "3dd97dc3e8bb8e7472eaa2c9feef18c5aca633541b8b93d5f65e39d7bd6b3cdb",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Pale cottage with dark roof planes, a raised covered porch and low garden fence. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Bathroom/laundry view includes stacked machines, glass shower and wood vanity; bedroom has a sliding barn-style door. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

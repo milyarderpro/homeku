@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "VID-008",
+    "analysis_path": "references/VID-008/analysis.yaml",
+    "analysis_sha256": "830b236a5dc2c24920778234baeeba55736e8704b69eba580e344d6a8dd0dc51",
+    "source_path": "video/edh005.mp4",
+    "source_sha256": "6d4a8fe50229a94f3dec83deee6da09486c60c3c30a823500b7101c905506618"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "VID-008.review.storyboard",
+      "source": {
+        "reference_id": "VID-008",
+        "analysis_path": "references/VID-008/analysis.yaml",
+        "analysis_sha256": "830b236a5dc2c24920778234baeeba55736e8704b69eba580e344d6a8dd0dc51",
+        "source_path": "video/edh005.mp4",
+        "source_sha256": "6d4a8fe50229a94f3dec83deee6da09486c60c3c30a823500b7101c905506618"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/VID-008/storyboard.jpg",
+          "sha256": "3a6ac41c84c48e35cf831aa01eea1ac31b629c9113c1f8fe30c12da6085d4e6d",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Compact pale facade with dark roof edge, stone-like corner pier and dark-framed arched openings. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living shows fireplace/media wall opposite seating; bathroom view contains toilet and bathtub/shower zone. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh024",
+    "analysis_path": "references/edh024/analysis.yaml",
+    "analysis_sha256": "5f1a5963842a687219176d9d77b72e1c1753db6eb0a62d5033b052919ad240b2",
+    "source_path": "video/edh024.mp4",
+    "source_sha256": "b74bf27e79c612202d42362e59acf18b6dc05614968d1618d1c64748fb72bea6"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh024.review.storyboard",
+      "source": {
+        "reference_id": "edh024",
+        "analysis_path": "references/edh024/analysis.yaml",
+        "analysis_sha256": "5f1a5963842a687219176d9d77b72e1c1753db6eb0a62d5033b052919ad240b2",
+        "source_path": "video/edh024.mp4",
+        "source_sha256": "b74bf27e79c612202d42362e59acf18b6dc05614968d1618d1c64748fb72bea6"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh024/storyboard.jpg",
+          "sha256": "9d522c103ca65164b4873f1d7318e31b712c24fda589b033bcc07251800d1e86",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Two-level pale rectilinear house with upper balcony and exterior stairs on image right. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living seating faces fireplace/media wall; kitchen island and high glazing are visible, without a measured connection between cuts. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

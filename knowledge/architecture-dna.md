@@ -25,3 +25,9 @@
 [edh058](../references/edh058/analysis.yaml) is annotated `small`, single-story, front-entry gable; [edh060](../references/edh060/analysis.yaml) is a small trailer-based form with loft and upper terrace; [edh055](../references/edh055/analysis.yaml) is `large` and tropical. Their features should not be treated as size-equivalent. `architecture.building_scale.estimated_floor_area_m2` is low-confidence in examples and is not a permit-ready area calculation.
 
 **Inference:** a distinctive roof silhouette paired with a restrained opening/material system is a stronger basis for original architecture than reusing a source's exact facade arrangement. See [originality framework](originality-framework.md).
+
+## Corpus-linked enrichment
+
+Compare arched stone-like edh020, organic edh013 and rectilinear edh060. Opening and roof identity can inform a new design; these examples do not establish material composition or structural feasibility.
+
+See [counted patterns and diversity](corpus-patterns.md) and [source-bound design evidence](design-evidence/README.md). Counts describe published video references; content independence and physical-house identity are not established by unique file hashes.

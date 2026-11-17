@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "VID-001",
+    "analysis_path": "references/VID-001/analysis.yaml",
+    "analysis_sha256": "50dbd2138b1531f2df2380af9305f7509021c6e51e901ea4b8dec38da4304cbd",
+    "source_path": "video/dreamshome01.mp4",
+    "source_sha256": "8c758281d12053bc0f6150cb163e0d103f704240f366b6dd95c97cd5a4a6a80d"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "VID-001.review.storyboard",
+      "source": {
+        "reference_id": "VID-001",
+        "analysis_path": "references/VID-001/analysis.yaml",
+        "analysis_sha256": "50dbd2138b1531f2df2380af9305f7509021c6e51e901ea4b8dec38da4304cbd",
+        "source_path": "video/dreamshome01.mp4",
+        "source_sha256": "8c758281d12053bc0f6150cb163e0d103f704240f366b6dd95c97cd5a4a6a80d"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/VID-001/storyboard.jpg",
+          "sha256": "a1259239ae38625ec39764a7ad03ffa953b1fe12e6689dfd9da51f5290c60ca4",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Low curved/gabled cottage silhouette, pale green cladding and white porch; trees behind. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living frame shows stone-like fireplace behind a wood coffee table; kitchen sink sits below the window. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "VID-001.review.temporal",
+      "source": {
+        "reference_id": "VID-001",
+        "analysis_path": "references/VID-001/analysis.yaml",
+        "analysis_sha256": "50dbd2138b1531f2df2380af9305f7509021c6e51e901ea4b8dec38da4304cbd",
+        "source_path": "video/dreamshome01.mp4",
+        "source_sha256": "8c758281d12053bc0f6150cb163e0d103f704240f366b6dd95c97cd5a4a6a80d"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "Visual review of start/middle/end contact sheets only; not continuous playback or camera-mechanism verification."
+      ],
+      "evidence": [
+        {
+          "path": "knowledge/temporal/VID-001/contact.jpg",
+          "sha256": "6beba6b54965591dfb8e11f27f67db3dbf978dcba9c6c4e3b2f9c1f184d6aaa7",
+          "kind": "temporal_contact"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/shots/0/framing",
+          "status": "supported",
+          "reason": "Exterior framing tightens toward the porch; last sample is heavily blurred by transition. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/1/framing",
+          "status": "supported",
+          "reason": "Living view widens to include seating and large window. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/2/framing",
+          "status": "supported",
+          "reason": "Kitchen framing tightens toward sink and window. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/3/framing",
+          "status": "supported",
+          "reason": "Bedroom view widens to show bed, rug and window. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/4/framing",
+          "status": "supported",
+          "reason": "Bathroom framing moves toward window; vanity leaves the frame. This supports sampled framing changes, not the exact saved camera label."
+        }
+      ]
+    }
+  ]
+}

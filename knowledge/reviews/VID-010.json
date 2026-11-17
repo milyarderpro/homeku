@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "VID-010",
+    "analysis_path": "references/VID-010/analysis.yaml",
+    "analysis_sha256": "5c0d9ad83016526cec08342be17eb8f5dbeb93973b7438a1ef24652dcefb5c5c",
+    "source_path": "video/edh010.mp4",
+    "source_sha256": "114235ad921653a2fad2446dd69947d67ea5dc530b39417657e9243dde9417d2"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "VID-010.review.storyboard",
+      "source": {
+        "reference_id": "VID-010",
+        "analysis_path": "references/VID-010/analysis.yaml",
+        "analysis_sha256": "5c0d9ad83016526cec08342be17eb8f5dbeb93973b7438a1ef24652dcefb5c5c",
+        "source_path": "video/edh010.mp4",
+        "source_sha256": "114235ad921653a2fad2446dd69947d67ea5dc530b39417657e9243dde9417d2"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/VID-010/storyboard.jpg",
+          "sha256": "016046927af0552ac989fc748d42947b95d3069abd1e0f18c52a0b1573854ab6",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Tall pale sculptural house with chimney, curved entry steps and dark arched glazing in snowy-looking surroundings. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Laundry frame combines side-by-side machines and hanging clothes beneath a large curved opening; bath is framed by an oversized arched window. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

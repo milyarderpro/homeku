@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh046",
+    "analysis_path": "references/edh046/analysis.yaml",
+    "analysis_sha256": "2a09660b6c5a26237cd91051621098e3ccb1a44e67db34dba7b307133def5cff",
+    "source_path": "video/edh046.mp4",
+    "source_sha256": "a8b950f4e043f357101d8f3bdd3dbab21a6d3d90b67a050e1ec2f413329c0ce0"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh046.review.storyboard",
+      "source": {
+        "reference_id": "edh046",
+        "analysis_path": "references/edh046/analysis.yaml",
+        "analysis_sha256": "2a09660b6c5a26237cd91051621098e3ccb1a44e67db34dba7b307133def5cff",
+        "source_path": "video/edh046.mp4",
+        "source_sha256": "a8b950f4e043f357101d8f3bdd3dbab21a6d3d90b67a050e1ec2f413329c0ce0"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh046/storyboard.jpg",
+          "sha256": "2c3f205288d40b58be331a8a75d388c460f8c40c9aeef7f44e05c01602221d14",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Pale low house with stone-like vertical elements, dark roof edges, snowy-looking planting and festive lights. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living centers fireplace/media wall; kitchen and bedroom share restrained pale/wood appearance, while bathroom has black-edged glass shower. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

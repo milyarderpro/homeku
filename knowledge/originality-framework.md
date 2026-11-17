@@ -29,3 +29,9 @@ This document contains **creative design principles**, not a production workflow
 Compare source and new idea on silhouette, roofline, opening positions, plan adjacency, proportions, path/garden arrangement and focal detail. No single metric provides an originality guarantee. Source traceability and visible differences should coexist; the new idea is intentionally created and must be labeled as such.
 
 **Reminder:** the reference set may contain AI-generated or staged spaces. Source descriptions are visual references, not rights clearance, building plans or verified physical provenance.
+
+## Corpus-linked enrichment
+
+Originality remains a new design decision. Combine relationships and visual principles across sources while changing the overall identity coherently. Neither high frequency nor low source confidence restricts which new material or arrangement may be chosen.
+
+See [counted patterns and diversity](corpus-patterns.md) and [source-bound design evidence](design-evidence/README.md). Counts describe published video references; content independence and physical-house identity are not established by unique file hashes.

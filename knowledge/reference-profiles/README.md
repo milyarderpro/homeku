@@ -1,6 +1,6 @@
 # Published reference profiles
 
-Release `2026-11-17-stage-1-2-r2`: 57 sources / 295 shots.
+Release `2026-11-17-stage-3-5`: 57 sources / 295 shots.
 One file per source. Archive additions do not silently join this published snapshot.
 
 [Core knowledge](../ai-knowledge.md) · [Directories](../directories/README.md) · [Archive inventory](../source-manifest.json)

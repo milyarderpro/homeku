@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh060",
+    "analysis_path": "references/edh060/analysis.yaml",
+    "analysis_sha256": "f6738cce01b63eae1f117ebe836870dd902989f60ee50d0e6b0e1359e1d22d7a",
+    "source_path": "video/edh060.mp4",
+    "source_sha256": "67602db6c9e59ab68561760c23892ea2db2c47bfc5746d1c3299e574f8bdd9dd"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh060.review.storyboard",
+      "source": {
+        "reference_id": "edh060",
+        "analysis_path": "references/edh060/analysis.yaml",
+        "analysis_sha256": "f6738cce01b63eae1f117ebe836870dd902989f60ee50d0e6b0e1359e1d22d7a",
+        "source_path": "video/edh060.mp4",
+        "source_sha256": "67602db6c9e59ab68561760c23892ea2db2c47bfc5746d1c3299e574f8bdd9dd"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh060/storyboard.jpg",
+          "sha256": "102b9c3ae39c1bd33c787ba2df6ddc7b9dbce0077ab4a28ecd43206c04599744",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Compact white house with raised deck and visible upper terrace/railings. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "One interior view contains living seating, galley kitchen and sleeping loft with stairs at image left; precise construction and floor area are unknown. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh060.review.temporal",
+      "source": {
+        "reference_id": "edh060",
+        "analysis_path": "references/edh060/analysis.yaml",
+        "analysis_sha256": "f6738cce01b63eae1f117ebe836870dd902989f60ee50d0e6b0e1359e1d22d7a",
+        "source_path": "video/edh060.mp4",
+        "source_sha256": "67602db6c9e59ab68561760c23892ea2db2c47bfc5746d1c3299e574f8bdd9dd"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "Visual review of start/middle/end contact sheets only; not continuous playback or camera-mechanism verification."
+      ],
+      "evidence": [
+        {
+          "path": "knowledge/temporal/edh060/contact.jpg",
+          "sha256": "6decfad8a1afe895d6bc391549413df71b2ea103a6545d995af726d55841e5d3",
+          "kind": "temporal_contact"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/shots/0/framing",
+          "status": "supported",
+          "reason": "Foreground trunks move out of view while terrace and entry grow in frame; dark wheels are discernible along left lower edge in early sample. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/1/framing",
+          "status": "supported",
+          "reason": "Start and middle show seating, galley kitchen and sleeping loft together; end emphasizes loft and kitchen. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/2/framing",
+          "status": "supported",
+          "reason": "Bathroom view shifts from vanity/toilet toward curtained tub and window; vanity exits frame. This supports sampled framing changes, not the exact saved camera label."
+        }
+      ]
+    }
+  ]
+}

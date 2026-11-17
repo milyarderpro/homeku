@@ -1,0 +1,4178 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh013",
+    "analysis_path": "references/edh013/analysis.yaml",
+    "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+    "source_path": "video/edh013.mp4",
+    "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+  },
+  "review_coverage": {
+    "storyboard": "selected_characteristics",
+    "temporal": "sampled_pilot",
+    "pending_reason": "Continuous playback/exact camera mechanism not reviewed in this enrichment pass."
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh013.review.storyboard",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh013/storyboard.jpg",
+          "sha256": "1b96ba7dac22a14e1a2704098cd35fd051ec0f981319d223e20966f26069dd3f",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "White tower-like volumes, round openings and a sweeping external curved stair/ramp surrounded by flowers. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living view includes curved stairs and large arched glazing; bathroom has a round opening above the tub. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.review.temporal",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "Visual review of start/middle/end contact sheets only; not continuous playback or camera-mechanism verification."
+      ],
+      "evidence": [
+        {
+          "path": "knowledge/temporal/edh013/contact.jpg",
+          "sha256": "ece6158f2b227ceaff8aa89fcaf4975793b50b90719965a6291c1e3f0feeca5d",
+          "kind": "temporal_contact"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/shots/0/framing",
+          "status": "supported",
+          "reason": "Foreground trunks move out of the view as facade grows larger. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/1/framing",
+          "status": "supported",
+          "reason": "Living framing widens around curved sofa, round glazing and stairs. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/2/framing",
+          "status": "supported",
+          "reason": "Kitchen view shifts along curved counter and recessed shelves. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/3/framing",
+          "status": "supported",
+          "reason": "Bedroom view widens around bed and circular opening. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/4/framing",
+          "status": "supported",
+          "reason": "Bathroom framing tightens toward tub and round window. This supports sampled framing changes, not the exact saved camera label."
+        }
+      ]
+    }
+  ],
+  "annotation_discrepancies": [],
+  "observations": [
+    {
+      "schema_version": "1.0",
+      "id": "edh013.overview.9828b70b8b45f671",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": null,
+      "field_path": "/architecture/exterior_features",
+      "statement": "White tower-like volumes, round openings and a sweeping external curved stair/ramp surrounded by flowers.",
+      "claim_type": "OBSERVATION",
+      "confidence": "medium",
+      "basis": "ai_storyboard_review",
+      "raw": null,
+      "evidence": [
+        {
+          "path": "references/edh013/storyboard.jpg",
+          "sha256": "1b96ba7dac22a14e1a2704098cd35fd051ec0f981319d223e20966f26069dd3f",
+          "kind": "storyboard"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "Selected characteristics only; other tags at this location have not all been rechecked."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.overview.2f2c055b9a6ced00",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": null,
+      "field_path": "/architecture/interior_style",
+      "statement": "Living view includes curved stairs and large arched glazing; bathroom has a round opening above the tub.",
+      "claim_type": "OBSERVATION",
+      "confidence": "medium",
+      "basis": "ai_storyboard_review",
+      "raw": null,
+      "evidence": [
+        {
+          "path": "references/edh013/storyboard.jpg",
+          "sha256": "1b96ba7dac22a14e1a2704098cd35fd051ec0f981319d223e20966f26069dd3f",
+          "kind": "storyboard"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "Selected characteristics only; other tags at this location have not all been rechecked."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-01.7a41633f7b6067e7",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-01",
+      "field_path": "/shots/0/scene",
+      "statement": "Recorded scene: exterior_front",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "exterior_front",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-01.jpg",
+          "sha256": "97549b49ca0997b5e3397023704b51e2784303ec332571335ecabc671fbd4799",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-01.85d31ef64db6699d",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-01",
+      "field_path": "/shots/0/focal_subject",
+      "statement": "Recorded focal_subject: white_cylindrical_tower_house_with_spiral_exterior_stair",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "white_cylindrical_tower_house_with_spiral_exterior_stair",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-01.jpg",
+          "sha256": "97549b49ca0997b5e3397023704b51e2784303ec332571335ecabc671fbd4799",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-01.5e1e39b60c04eb0c",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-01",
+      "field_path": "/shots/0/framing/start",
+      "statement": "Recorded framing/start: wide_three_quarter_exterior_view_with_foreground_tree",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "wide_three_quarter_exterior_view_with_foreground_tree",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-01.jpg",
+          "sha256": "97549b49ca0997b5e3397023704b51e2784303ec332571335ecabc671fbd4799",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-01.c824a98b77e35d18",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-01",
+      "field_path": "/shots/0/framing/end",
+      "statement": "Recorded framing/end: medium_wide_frontal_view_of_tower_and_entry",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "medium_wide_frontal_view_of_tower_and_entry",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-01.jpg",
+          "sha256": "97549b49ca0997b5e3397023704b51e2784303ec332571335ecabc671fbd4799",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-01.0dea21d7c5c1b3f8",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-01",
+      "field_path": "/shots/0/framing/view_angle",
+      "statement": "Recorded framing/view_angle: eye_level_slightly_elevated_frontal_three_quarter",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "eye_level_slightly_elevated_frontal_three_quarter",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-01.jpg",
+          "sha256": "97549b49ca0997b5e3397023704b51e2784303ec332571335ecabc671fbd4799",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-01.f172e5d14696d885",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-01",
+      "field_path": "/shots/0/camera/movements",
+      "statement": "Recorded camera/movements: tracking_right, subtle_dolly_in",
+      "claim_type": "OBSERVATION",
+      "confidence": "medium",
+      "basis": "recorded_annotation",
+      "raw": [
+        "tracking_right",
+        "subtle_dolly_in"
+      ],
+      "evidence": [
+        {
+          "path": "references/edh013/shot-01.jpg",
+          "sha256": "97549b49ca0997b5e3397023704b51e2784303ec332571335ecabc671fbd4799",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-01.2535696eec143017",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-01",
+      "field_path": "/shots/0/camera/speed",
+      "statement": "Recorded camera/speed: slow",
+      "claim_type": "OBSERVATION",
+      "confidence": "medium",
+      "basis": "recorded_annotation",
+      "raw": "slow",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-01.jpg",
+          "sha256": "97549b49ca0997b5e3397023704b51e2784303ec332571335ecabc671fbd4799",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-01.4d0dbb1e9bb45fd9",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-01",
+      "field_path": "/shots/0/lighting",
+      "statement": "Recorded lighting: warm_directional_daylight_with_clear_soft_shadows",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "warm_directional_daylight_with_clear_soft_shadows",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-01.jpg",
+          "sha256": "97549b49ca0997b5e3397023704b51e2784303ec332571335ecabc671fbd4799",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-01.5a1fdf191b68b510",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-01",
+      "field_path": "/shots/0/transition_out",
+      "statement": "Recorded transition_out: hard_cut",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "hard_cut",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-01.jpg",
+          "sha256": "97549b49ca0997b5e3397023704b51e2784303ec332571335ecabc671fbd4799",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-01.ffffc64b26f0d9c5",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-01",
+      "field_path": "/shots/0/observation_note",
+      "statement": "Recorded observation_note: Tangkapan bergerak ke kanan sehingga batang pohon foreground bergeser keluar dan fasad semakin terbuka; material dibaca dari tampilan, bukan spesifikasi.",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "Tangkapan bergerak ke kanan sehingga batang pohon foreground bergeser keluar dan fasad semakin terbuka; material dibaca dari tampilan, bukan spesifikasi.",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-01.jpg",
+          "sha256": "97549b49ca0997b5e3397023704b51e2784303ec332571335ecabc671fbd4799",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-01.b567bbffb499ed55",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-01",
+      "field_path": "/shots/0/framing",
+      "statement": "Foreground trunks move out of the view as facade grows larger.",
+      "claim_type": "OBSERVATION",
+      "confidence": "medium",
+      "basis": "ai_sampled_temporal_review",
+      "raw": null,
+      "evidence": [
+        {
+          "path": "knowledge/temporal/edh013/shot-01-start.jpg",
+          "sha256": "7946f1b67a3b882c592643f415a3fef7f429ad462c36a406ca4189a491773aad",
+          "kind": "sampled_video_frame"
+        },
+        {
+          "path": "knowledge/temporal/edh013/shot-01-middle.jpg",
+          "sha256": "5f2641e1be5e64829c8c9e44949aceb2406fca025eeda749be9bd2a9aa6441a2",
+          "kind": "sampled_video_frame"
+        },
+        {
+          "path": "knowledge/temporal/edh013/shot-01-end.jpg",
+          "sha256": "98f884f5ac6ad33003baf68024d85611665120362aeb3707801811d14fe0882e",
+          "kind": "sampled_video_frame"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "Selected characteristics only; other tags at this location have not all been rechecked."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-02.b90036421db4af3b",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-02",
+      "field_path": "/shots/1/scene",
+      "statement": "Recorded scene: living_room",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "living_room",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-02.jpg",
+          "sha256": "990fd8a43cdef579f4c70b797adecaf947606f298f74c3bc1c1bc19444fe64ee",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-02.f433282e838854dc",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-02",
+      "field_path": "/shots/1/focal_subject",
+      "statement": "Recorded focal_subject: bright_curving_living_room_with_round_windows_and_cream_sectional_sofa",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "bright_curving_living_room_with_round_windows_and_cream_sectional_sofa",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-02.jpg",
+          "sha256": "990fd8a43cdef579f4c70b797adecaf947606f298f74c3bc1c1bc19444fe64ee",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-02.6d7147e014a6ea00",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-02",
+      "field_path": "/shots/1/framing/start",
+      "statement": "Recorded framing/start: medium_view_of_sofa_round_window_and_left_stair",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "medium_view_of_sofa_round_window_and_left_stair",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-02.jpg",
+          "sha256": "990fd8a43cdef579f4c70b797adecaf947606f298f74c3bc1c1bc19444fe64ee",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-02.36328e4f6fc6a329",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-02",
+      "field_path": "/shots/1/framing/end",
+      "statement": "Recorded framing/end: wide_view_revealing_full_seating_area_and_raised_floor_edge",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "wide_view_revealing_full_seating_area_and_raised_floor_edge",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-02.jpg",
+          "sha256": "990fd8a43cdef579f4c70b797adecaf947606f298f74c3bc1c1bc19444fe64ee",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-02.ca545197ad362d8c",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-02",
+      "field_path": "/shots/1/framing/view_angle",
+      "statement": "Recorded framing/view_angle: eye_level_interior_three_quarter",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "eye_level_interior_three_quarter",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-02.jpg",
+          "sha256": "990fd8a43cdef579f4c70b797adecaf947606f298f74c3bc1c1bc19444fe64ee",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-02.3716b2c45ef25346",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-02",
+      "field_path": "/shots/1/camera/movements",
+      "statement": "Recorded camera/movements: dolly_out",
+      "claim_type": "OBSERVATION",
+      "confidence": "medium",
+      "basis": "recorded_annotation",
+      "raw": [
+        "dolly_out"
+      ],
+      "evidence": [
+        {
+          "path": "references/edh013/shot-02.jpg",
+          "sha256": "990fd8a43cdef579f4c70b797adecaf947606f298f74c3bc1c1bc19444fe64ee",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-02.be13f9fc1fa7ab36",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-02",
+      "field_path": "/shots/1/camera/speed",
+      "statement": "Recorded camera/speed: slow",
+      "claim_type": "OBSERVATION",
+      "confidence": "medium",
+      "basis": "recorded_annotation",
+      "raw": "slow",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-02.jpg",
+          "sha256": "990fd8a43cdef579f4c70b797adecaf947606f298f74c3bc1c1bc19444fe64ee",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-02.033591550c66ab0d",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-02",
+      "field_path": "/shots/1/lighting",
+      "statement": "Recorded lighting: bright_soft_daylight_through_large_windows_and_warm_recessed_ceiling_lights",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "bright_soft_daylight_through_large_windows_and_warm_recessed_ceiling_lights",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-02.jpg",
+          "sha256": "990fd8a43cdef579f4c70b797adecaf947606f298f74c3bc1c1bc19444fe64ee",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-02.d0e72b437f125ef9",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-02",
+      "field_path": "/shots/1/transition_out",
+      "statement": "Recorded transition_out: hard_cut",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "hard_cut",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-02.jpg",
+          "sha256": "990fd8a43cdef579f4c70b797adecaf947606f298f74c3bc1c1bc19444fe64ee",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-02.ba311d3523fa0d7b",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-02",
+      "field_path": "/shots/1/observation_note",
+      "statement": "Recorded observation_note: Frame berangsur melebar; bagian karpet, lantai depan, tanaman kanan dan lengkung tangga terlihat semakin lengkap.",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "Frame berangsur melebar; bagian karpet, lantai depan, tanaman kanan dan lengkung tangga terlihat semakin lengkap.",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-02.jpg",
+          "sha256": "990fd8a43cdef579f4c70b797adecaf947606f298f74c3bc1c1bc19444fe64ee",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-02.5646204d1d6ff783",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-02",
+      "field_path": "/shots/1/framing",
+      "statement": "Living framing widens around curved sofa, round glazing and stairs.",
+      "claim_type": "OBSERVATION",
+      "confidence": "medium",
+      "basis": "ai_sampled_temporal_review",
+      "raw": null,
+      "evidence": [
+        {
+          "path": "knowledge/temporal/edh013/shot-02-start.jpg",
+          "sha256": "52dc3da75347be7e197e73d082e0a7c9408f4aaad831896bdeb66af9478b66c0",
+          "kind": "sampled_video_frame"
+        },
+        {
+          "path": "knowledge/temporal/edh013/shot-02-middle.jpg",
+          "sha256": "fb155c812d948aed3cca0492693033867fee4723d0e1f4322c7db3919c1b7413",
+          "kind": "sampled_video_frame"
+        },
+        {
+          "path": "knowledge/temporal/edh013/shot-02-end.jpg",
+          "sha256": "9f389c1f298d32488180b4b27e05b7da70a9a36928e1b669b322bb43c70695d6",
+          "kind": "sampled_video_frame"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "Selected characteristics only; other tags at this location have not all been rechecked."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-03.1833f0490b74fac0",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-03",
+      "field_path": "/shots/2/scene",
+      "statement": "Recorded scene: kitchen",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "kitchen",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-03.jpg",
+          "sha256": "8ba5ba7620264876d6ea0e2d434e6a98559ceacfa157fcb2bb4a4a151617bf3a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-03.990a17a2e379c916",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-03",
+      "field_path": "/shots/2/focal_subject",
+      "statement": "Recorded focal_subject: organic_white_kitchen_with_rounded_counter_and_arched_display_shelves",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "organic_white_kitchen_with_rounded_counter_and_arched_display_shelves",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-03.jpg",
+          "sha256": "8ba5ba7620264876d6ea0e2d434e6a98559ceacfa157fcb2bb4a4a151617bf3a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-03.8a06508b9a59c31e",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-03",
+      "field_path": "/shots/2/framing/start",
+      "statement": "Recorded framing/start: wide_view_of_curved_kitchen_peninsula_and_wall_shelves",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "wide_view_of_curved_kitchen_peninsula_and_wall_shelves",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-03.jpg",
+          "sha256": "8ba5ba7620264876d6ea0e2d434e6a98559ceacfa157fcb2bb4a4a151617bf3a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-03.3910f64c061d525e",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-03",
+      "field_path": "/shots/2/framing/end",
+      "statement": "Recorded framing/end: medium_close_view_of_cooktop_oven_and_display_shelves",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "medium_close_view_of_cooktop_oven_and_display_shelves",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-03.jpg",
+          "sha256": "8ba5ba7620264876d6ea0e2d434e6a98559ceacfa157fcb2bb4a4a151617bf3a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-03.96e7331fbdf800c6",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-03",
+      "field_path": "/shots/2/framing/view_angle",
+      "statement": "Recorded framing/view_angle: eye_level_slightly_high_interior_three_quarter",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "eye_level_slightly_high_interior_three_quarter",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-03.jpg",
+          "sha256": "8ba5ba7620264876d6ea0e2d434e6a98559ceacfa157fcb2bb4a4a151617bf3a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-03.4f86c2f56a12e9d2",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-03",
+      "field_path": "/shots/2/camera/movements",
+      "statement": "Recorded camera/movements: tracking_right, dolly_in",
+      "claim_type": "OBSERVATION",
+      "confidence": "medium",
+      "basis": "recorded_annotation",
+      "raw": [
+        "tracking_right",
+        "dolly_in"
+      ],
+      "evidence": [
+        {
+          "path": "references/edh013/shot-03.jpg",
+          "sha256": "8ba5ba7620264876d6ea0e2d434e6a98559ceacfa157fcb2bb4a4a151617bf3a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-03.0a1259b94966109d",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-03",
+      "field_path": "/shots/2/camera/speed",
+      "statement": "Recorded camera/speed: slow",
+      "claim_type": "OBSERVATION",
+      "confidence": "medium",
+      "basis": "recorded_annotation",
+      "raw": "slow",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-03.jpg",
+          "sha256": "8ba5ba7620264876d6ea0e2d434e6a98559ceacfa157fcb2bb4a4a151617bf3a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-03.42afc1ab14faeb23",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-03",
+      "field_path": "/shots/2/lighting",
+      "statement": "Recorded lighting: warm_pendant_and_shelf_lighting_combined_with_bright_diffuse_daylight",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "warm_pendant_and_shelf_lighting_combined_with_bright_diffuse_daylight",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-03.jpg",
+          "sha256": "8ba5ba7620264876d6ea0e2d434e6a98559ceacfa157fcb2bb4a4a151617bf3a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-03.9def69bf204d5e51",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-03",
+      "field_path": "/shots/2/transition_out",
+      "statement": "Recorded transition_out: hard_cut",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "hard_cut",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-03.jpg",
+          "sha256": "8ba5ba7620264876d6ea0e2d434e6a98559ceacfa157fcb2bb4a4a151617bf3a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-03.8d18e795014ae84c",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-03",
+      "field_path": "/shots/2/observation_note",
+      "statement": "Recorded observation_note: Gerakan menyeberang ke kanan dan mendekat, membuat rak, tekstur backsplash, kompor serta oven lebih menonjol.",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "Gerakan menyeberang ke kanan dan mendekat, membuat rak, tekstur backsplash, kompor serta oven lebih menonjol.",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-03.jpg",
+          "sha256": "8ba5ba7620264876d6ea0e2d434e6a98559ceacfa157fcb2bb4a4a151617bf3a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-03.065d4a8d23d83f2b",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-03",
+      "field_path": "/shots/2/framing",
+      "statement": "Kitchen view shifts along curved counter and recessed shelves.",
+      "claim_type": "OBSERVATION",
+      "confidence": "medium",
+      "basis": "ai_sampled_temporal_review",
+      "raw": null,
+      "evidence": [
+        {
+          "path": "knowledge/temporal/edh013/shot-03-start.jpg",
+          "sha256": "1cc9ac807fe9a89f85812681eba7f1a35c6f876ee88d0304cfde09dc816c0901",
+          "kind": "sampled_video_frame"
+        },
+        {
+          "path": "knowledge/temporal/edh013/shot-03-middle.jpg",
+          "sha256": "30c52ea4fee8d567a087a05a739ff7aa0373d53b0e61b7303a6d5a5161d2caeb",
+          "kind": "sampled_video_frame"
+        },
+        {
+          "path": "knowledge/temporal/edh013/shot-03-end.jpg",
+          "sha256": "8479ecafd135acac627bc507ab35acd7542bfe2568742499f532b307ada1a8b0",
+          "kind": "sampled_video_frame"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "Selected characteristics only; other tags at this location have not all been rechecked."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-04.f7f7f07a2a6a36a4",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-04",
+      "field_path": "/shots/3/scene",
+      "statement": "Recorded scene: bedroom",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "bedroom",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-04.jpg",
+          "sha256": "de4ff8fb53fecd16cf43fdc6c4bab1b6491726ef8d0e8b959181b0e4436da64a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-04.9340a3d86a58402d",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-04",
+      "field_path": "/shots/3/focal_subject",
+      "statement": "Recorded focal_subject: white_bed_on_raised_wood_platform_under_large_round_window",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "white_bed_on_raised_wood_platform_under_large_round_window",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-04.jpg",
+          "sha256": "de4ff8fb53fecd16cf43fdc6c4bab1b6491726ef8d0e8b959181b0e4436da64a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-04.ef082c3f8e8d568f",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-04",
+      "field_path": "/shots/3/framing/start",
+      "statement": "Recorded framing/start: medium_close_frontal_view_of_bed_and_round_window",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "medium_close_frontal_view_of_bed_and_round_window",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-04.jpg",
+          "sha256": "de4ff8fb53fecd16cf43fdc6c4bab1b6491726ef8d0e8b959181b0e4436da64a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-04.c132fb494a7d0bea",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-04",
+      "field_path": "/shots/3/framing/end",
+      "statement": "Recorded framing/end: wide_three_quarter_view_of_raised_bed_and_right_archway",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "wide_three_quarter_view_of_raised_bed_and_right_archway",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-04.jpg",
+          "sha256": "de4ff8fb53fecd16cf43fdc6c4bab1b6491726ef8d0e8b959181b0e4436da64a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-04.1bf5d695f818bdd5",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-04",
+      "field_path": "/shots/3/framing/view_angle",
+      "statement": "Recorded framing/view_angle: eye_level_interior_three_quarter",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "eye_level_interior_three_quarter",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-04.jpg",
+          "sha256": "de4ff8fb53fecd16cf43fdc6c4bab1b6491726ef8d0e8b959181b0e4436da64a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-04.b33965788b84f241",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-04",
+      "field_path": "/shots/3/camera/movements",
+      "statement": "Recorded camera/movements: tracking_right, dolly_out",
+      "claim_type": "OBSERVATION",
+      "confidence": "medium",
+      "basis": "recorded_annotation",
+      "raw": [
+        "tracking_right",
+        "dolly_out"
+      ],
+      "evidence": [
+        {
+          "path": "references/edh013/shot-04.jpg",
+          "sha256": "de4ff8fb53fecd16cf43fdc6c4bab1b6491726ef8d0e8b959181b0e4436da64a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-04.4d4435dad55ddd4c",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-04",
+      "field_path": "/shots/3/camera/speed",
+      "statement": "Recorded camera/speed: slow",
+      "claim_type": "OBSERVATION",
+      "confidence": "medium",
+      "basis": "recorded_annotation",
+      "raw": "slow",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-04.jpg",
+          "sha256": "de4ff8fb53fecd16cf43fdc6c4bab1b6491726ef8d0e8b959181b0e4436da64a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-04.3ad6c619c8d3499d",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-04",
+      "field_path": "/shots/3/lighting",
+      "statement": "Recorded lighting: bright_warm_daylight_entering_circular_window_with_soft_golden_pendant_accents",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "bright_warm_daylight_entering_circular_window_with_soft_golden_pendant_accents",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-04.jpg",
+          "sha256": "de4ff8fb53fecd16cf43fdc6c4bab1b6491726ef8d0e8b959181b0e4436da64a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-04.6db1d7c962d29ad1",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-04",
+      "field_path": "/shots/3/transition_out",
+      "statement": "Recorded transition_out: hard_cut",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "hard_cut",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-04.jpg",
+          "sha256": "de4ff8fb53fecd16cf43fdc6c4bab1b6491726ef8d0e8b959181b0e4436da64a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-04.c812a2d30842bd86",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-04",
+      "field_path": "/shots/3/observation_note",
+      "statement": "Recorded observation_note: Awal berpusat pada kasur dan jendela bulat; kamera bergeser kanan dan mundur, menyingkap lemari buku, platform kayu serta lengkungan ruang samping.",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "Awal berpusat pada kasur dan jendela bulat; kamera bergeser kanan dan mundur, menyingkap lemari buku, platform kayu serta lengkungan ruang samping.",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-04.jpg",
+          "sha256": "de4ff8fb53fecd16cf43fdc6c4bab1b6491726ef8d0e8b959181b0e4436da64a",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-04.8fbd3c02eae85f2e",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-04",
+      "field_path": "/shots/3/framing",
+      "statement": "Bedroom view widens around bed and circular opening.",
+      "claim_type": "OBSERVATION",
+      "confidence": "medium",
+      "basis": "ai_sampled_temporal_review",
+      "raw": null,
+      "evidence": [
+        {
+          "path": "knowledge/temporal/edh013/shot-04-start.jpg",
+          "sha256": "3dc136ddb2575bd72774a14b56fb58ab2bb5b5b023b333ccefe0098ec809f1ed",
+          "kind": "sampled_video_frame"
+        },
+        {
+          "path": "knowledge/temporal/edh013/shot-04-middle.jpg",
+          "sha256": "1b4a4466c71ac0082a8f3183abc8b3df1cf3ae7a6447ced3c88b6d9064d67b80",
+          "kind": "sampled_video_frame"
+        },
+        {
+          "path": "knowledge/temporal/edh013/shot-04-end.jpg",
+          "sha256": "de9e9e7d940fab9f1f005eba75c3c20476bad6d3ed646e88c349fa214e850d00",
+          "kind": "sampled_video_frame"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "Selected characteristics only; other tags at this location have not all been rechecked."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-05.96846a78ac579dde",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-05",
+      "field_path": "/shots/4/scene",
+      "statement": "Recorded scene: bathroom",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "bathroom",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-05.jpg",
+          "sha256": "802347761a5da89a51ffc1e57c508a904649c52ca1c5410927abb23dda1ac9e3",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-05.0a37d87749b298f9",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-05",
+      "field_path": "/shots/4/focal_subject",
+      "statement": "Recorded focal_subject: freestanding_white_oval_bathtub_beneath_giant_circular_window",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "freestanding_white_oval_bathtub_beneath_giant_circular_window",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-05.jpg",
+          "sha256": "802347761a5da89a51ffc1e57c508a904649c52ca1c5410927abb23dda1ac9e3",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-05.39d0d461c68754e8",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-05",
+      "field_path": "/shots/4/framing/start",
+      "statement": "Recorded framing/start: wide_view_from_bathroom_entrance_with_tub_vanity_toilet",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "wide_view_from_bathroom_entrance_with_tub_vanity_toilet",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-05.jpg",
+          "sha256": "802347761a5da89a51ffc1e57c508a904649c52ca1c5410927abb23dda1ac9e3",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-05.bdd9a9b4b0abdf1c",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-05",
+      "field_path": "/shots/4/framing/end",
+      "statement": "Recorded framing/end: close_three_quarter_view_of_freestanding_tub_and_round_window",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "close_three_quarter_view_of_freestanding_tub_and_round_window",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-05.jpg",
+          "sha256": "802347761a5da89a51ffc1e57c508a904649c52ca1c5410927abb23dda1ac9e3",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-05.fbabc79912468c95",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-05",
+      "field_path": "/shots/4/framing/view_angle",
+      "statement": "Recorded framing/view_angle: eye_level_interior_three_quarter",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "eye_level_interior_three_quarter",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-05.jpg",
+          "sha256": "802347761a5da89a51ffc1e57c508a904649c52ca1c5410927abb23dda1ac9e3",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-05.5944bbd9dcf1079d",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-05",
+      "field_path": "/shots/4/camera/movements",
+      "statement": "Recorded camera/movements: dolly_in, subtle_tracking_right",
+      "claim_type": "OBSERVATION",
+      "confidence": "medium",
+      "basis": "recorded_annotation",
+      "raw": [
+        "dolly_in",
+        "subtle_tracking_right"
+      ],
+      "evidence": [
+        {
+          "path": "references/edh013/shot-05.jpg",
+          "sha256": "802347761a5da89a51ffc1e57c508a904649c52ca1c5410927abb23dda1ac9e3",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-05.a50c12d724468d05",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-05",
+      "field_path": "/shots/4/camera/speed",
+      "statement": "Recorded camera/speed: slow",
+      "claim_type": "OBSERVATION",
+      "confidence": "medium",
+      "basis": "recorded_annotation",
+      "raw": "slow",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-05.jpg",
+          "sha256": "802347761a5da89a51ffc1e57c508a904649c52ca1c5410927abb23dda1ac9e3",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-05.8d9fa88e3b5316cb",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-05",
+      "field_path": "/shots/4/lighting",
+      "statement": "Recorded lighting: strong_soft_daylight_through_round_window_with_warm_ceiling_and_pendant_glow",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "strong_soft_daylight_through_round_window_with_warm_ceiling_and_pendant_glow",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-05.jpg",
+          "sha256": "802347761a5da89a51ffc1e57c508a904649c52ca1c5410927abb23dda1ac9e3",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-05.25072fbdc0762490",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-05",
+      "field_path": "/shots/4/transition_out",
+      "statement": "Recorded transition_out: end_of_video",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "end_of_video",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-05.jpg",
+          "sha256": "802347761a5da89a51ffc1e57c508a904649c52ca1c5410927abb23dda1ac9e3",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-05.d91ac4906563a2dd",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-05",
+      "field_path": "/shots/4/observation_note",
+      "statement": "Recorded observation_note: Kamera perlahan mendekati bak mandi; toilet dan vanity keluar dari bingkai sementara permukaan ubin, rak kiri dan jendela bulat semakin detail.",
+      "claim_type": "OBSERVATION",
+      "confidence": "high",
+      "basis": "recorded_annotation",
+      "raw": "Kamera perlahan mendekati bak mandi; toilet dan vanity keluar dari bingkai sementara permukaan ubin, rak kiri dan jendela bulat semakin detail.",
+      "evidence": [
+        {
+          "path": "references/edh013/shot-05.jpg",
+          "sha256": "802347761a5da89a51ffc1e57c508a904649c52ca1c5410927abb23dda1ac9e3",
+          "kind": "source_keyframe"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "This reports a saved annotation; it is not a new visual endorsement of that label."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-05.fe86805235a9e526",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-05",
+      "field_path": "/shots/4/framing",
+      "statement": "Bathroom framing tightens toward tub and round window.",
+      "claim_type": "OBSERVATION",
+      "confidence": "medium",
+      "basis": "ai_sampled_temporal_review",
+      "raw": null,
+      "evidence": [
+        {
+          "path": "knowledge/temporal/edh013/shot-05-start.jpg",
+          "sha256": "b3f90bf6332f66bfc0159132ffd74ba6fafa056066ce2af52252a0e1abf4f75b",
+          "kind": "sampled_video_frame"
+        },
+        {
+          "path": "knowledge/temporal/edh013/shot-05-middle.jpg",
+          "sha256": "31c834fbec6ed0ada811a9a603cbd413168b74cdcabf49d55eb43890cbe8084b",
+          "kind": "sampled_video_frame"
+        },
+        {
+          "path": "knowledge/temporal/edh013/shot-05-end.jpg",
+          "sha256": "dbd3a4a27b7fb7cf7cec12a63b153632aba870dc9644c2a0e34bf0f7b677ab79",
+          "kind": "sampled_video_frame"
+        }
+      ],
+      "limitations": [
+        "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+        "Recorded annotations and AI visual review have separate evidence bases.",
+        "Material names describe appearance; composition, dimensions and structural feasibility remain unknown.",
+        "Selected characteristics only; other tags at this location have not all been rechecked."
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-01.relation.f97d5fcff209273a",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-01",
+      "field_path": "/shots/0/visible_details/furniture_and_props/4",
+      "raw": "pair_of_dark_outdoor_chairs_beside_lower_left_side_door",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "pair_of_dark_outdoor_chairs",
+      "predicate": "beside",
+      "object_mention": "lower_left_side_door",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-01.relation.ab1af9be81d2d53f",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-01",
+      "field_path": "/shots/0/visible_details/environment/5",
+      "raw": "dense_medium_green_trees_behind_house",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "dense_medium_green_trees",
+      "predicate": "behind",
+      "object_mention": "house",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-01.relation.75f4d851924c1e60",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-01",
+      "field_path": "/shots/0/visible_details/environment/8",
+      "raw": "broad_green_mountain_ridges_behind_tower",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "broad_green_mountain_ridges",
+      "predicate": "behind",
+      "object_mention": "tower",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-02.relation.6cc693fe6845105f",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-02",
+      "field_path": "/shots/1/visible_details/architectural/6",
+      "raw": "smaller_high_round_window_above_seating",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "smaller_high_round_window",
+      "predicate": "above",
+      "object_mention": "seating",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-02.relation.1a5f45d5891da08a",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-02",
+      "field_path": "/shots/1/visible_details/architectural/8",
+      "raw": "recessed_wall_niches_and_light_wood_floating_shelves_above_sofa",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "recessed_wall_niches_and_light_wood_floating_shelves",
+      "predicate": "above",
+      "object_mention": "sofa",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-02.relation.89b4ca275304e9bc",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-02",
+      "field_path": "/shots/1/visible_details/furniture_and_props/0",
+      "raw": "large_low_cream_l_shaped_sectional_sofa_beneath_windows",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "large_low_cream_l_shaped_sectional_sofa",
+      "predicate": "below",
+      "object_mention": "windows",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-02.relation.30bd031be79cd628",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-02",
+      "field_path": "/shots/1/visible_details/furniture_and_props/2",
+      "raw": "large_low_round_light_wood_coffee_table_in_front_of_sofa",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "large_low_round_light_wood_coffee_table",
+      "predicate": "in_front_of",
+      "object_mention": "sofa",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-02.relation.ea141eeb11535e31",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-02",
+      "field_path": "/shots/1/visible_details/furniture_and_props/3",
+      "raw": "round_warm_brown_pedestal_base_under_coffee_table",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "round_warm_brown_pedestal_base",
+      "predicate": "below",
+      "object_mention": "coffee_table",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-02.relation.3a872c5ec2f49493",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-02",
+      "field_path": "/shots/1/visible_details/furniture_and_props/4",
+      "raw": "round_cream_openwork_pattern_area_rug_beneath_table",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "round_cream_openwork_pattern_area_rug",
+      "predicate": "below",
+      "object_mention": "table",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-02.relation.faa431511bb34a67",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-02",
+      "field_path": "/shots/1/visible_details/environment/0",
+      "raw": "sunlit_green_trees_visible_through_round_and_arched_windows",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "sunlit_green_trees",
+      "predicate": "visible_through",
+      "object_mention": "round_and_arched_windows",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-03.relation.16556feb1fab1460",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-03",
+      "field_path": "/shots/2/visible_details/architectural/3",
+      "raw": "pale_blush_beige_curved_lower_cabinets_beneath_counter",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "pale_blush_beige_curved_lower_cabinets",
+      "predicate": "below",
+      "object_mention": "counter",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-03.relation.82b7ca2b892fde0d",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-03",
+      "field_path": "/shots/2/visible_details/architectural/4",
+      "raw": "vertical_light_wood_slat_panels_below_front_peninsula_edge",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "vertical_light_wood_slat_panels",
+      "predicate": "below",
+      "object_mention": "front_peninsula_edge",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-03.relation.7891bf1b4afda89c",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-03",
+      "field_path": "/shots/2/visible_details/architectural/10",
+      "raw": "black_built_in_oven_below_black_gas_cooktop_on_right_counter",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "black_built_in_oven",
+      "predicate": "below",
+      "object_mention": "black_gas_cooktop_on_right_counter",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-04.relation.bd2ae704cee5e066",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-04",
+      "field_path": "/shots/3/visible_details/architectural/0",
+      "raw": "deep_set_large_circular_window_with_pale_wood_tone_frame_centered_above_bed",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "deep_set_large_circular_window_with_pale_wood_tone_frame_centered",
+      "predicate": "above",
+      "object_mention": "bed",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-04.relation.70fce72f5c589c4a",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-04",
+      "field_path": "/shots/3/visible_details/architectural/2",
+      "raw": "floor_to_ceiling_wood_tone_bookshelves_to_right_of_round_window",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "floor_to_ceiling_wood_tone_bookshelves",
+      "predicate": "right_of",
+      "object_mention": "round_window",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-04.relation.88bf8b3dca9c4230",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-04",
+      "field_path": "/shots/3/visible_details/furniture_and_props/2",
+      "raw": "two_large_blush_pink_pillows_in_front_of_white_pillows",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "two_large_blush_pink_pillows",
+      "predicate": "in_front_of",
+      "object_mention": "white_pillows",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-04.relation.a38d112cd6a5a3ed",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-04",
+      "field_path": "/shots/3/visible_details/furniture_and_props/5",
+      "raw": "stacked_books_beneath_left_bedside_flowers",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "stacked_books",
+      "predicate": "below",
+      "object_mention": "left_bedside_flowers",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-04.relation.db472367de9ff2c2",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-04",
+      "field_path": "/shots/3/visible_details/environment/1",
+      "raw": "pale_bright_sky_visible_through_circular_window",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "pale_bright_sky",
+      "predicate": "visible_through",
+      "object_mention": "circular_window",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-05.relation.995d469d579f7453",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-05",
+      "field_path": "/shots/4/visible_details/architectural/1",
+      "raw": "large_round_wood_tone_framed_window_above_bathtub",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "large_round_wood_tone_framed_window",
+      "predicate": "above",
+      "object_mention": "bathtub",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-05.relation.fa89e99217ebff3b",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-05",
+      "field_path": "/shots/4/visible_details/architectural/3",
+      "raw": "terracotta_and_cream_patterned_tiles_beneath_bathtub",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "terracotta_and_cream_patterned_tiles",
+      "predicate": "below",
+      "object_mention": "bathtub",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-05.relation.4fa971be8deb745a",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-05",
+      "field_path": "/shots/4/visible_details/architectural/6",
+      "raw": "small_wood_tone_floating_shelves_left_of_round_window",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "small_wood_tone_floating_shelves",
+      "predicate": "left_of",
+      "object_mention": "round_window",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-05.relation.7a12d52ec62b80dd",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-05",
+      "field_path": "/shots/4/visible_details/furniture_and_props/0",
+      "raw": "large_white_freestanding_oval_bathtub_centered_below_round_window",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "large_white_freestanding_oval_bathtub_centered",
+      "predicate": "below",
+      "object_mention": "round_window",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-05.relation.f658336b43aaaf6e",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-05",
+      "field_path": "/shots/4/visible_details/furniture_and_props/1",
+      "raw": "polished_gold_tone_tub_filler_and_faucet_to_left_of_bathtub",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "polished_gold_tone_tub_filler_and_faucet",
+      "predicate": "left_of",
+      "object_mention": "bathtub",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-05.relation.26b061170d1625b4",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-05",
+      "field_path": "/shots/4/visible_details/furniture_and_props/5",
+      "raw": "rolled_beige_and_dusty_rose_towels_on_open_shelf_beneath_vanity",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "rolled_beige_and_dusty_rose_towels_on_open_shelf",
+      "predicate": "below",
+      "object_mention": "vanity",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-05.relation.6ad1bebda02857b6",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-05",
+      "field_path": "/shots/4/visible_details/furniture_and_props/11",
+      "raw": "small_glass_and_gold_tone_pendant_orbs_hang_near_right_of_window",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "small_glass_and_gold_tone_pendant_orbs_hang_near",
+      "predicate": "right_of",
+      "object_mention": "window",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh013.shot-05.relation.5732fa689b325017",
+      "source": {
+        "reference_id": "edh013",
+        "analysis_path": "references/edh013/analysis.yaml",
+        "analysis_sha256": "7b405500454baafac311f516c6074769d151eca39683bf85ac0adf914fe7bdd7",
+        "source_path": "video/edh013.mp4",
+        "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb"
+      },
+      "shot_id": "shot-05",
+      "field_path": "/shots/4/visible_details/environment/0",
+      "raw": "pale_blue_sky_and_faint_distant_horizon_visible_through_round_window",
+      "claim_type": "OBSERVATION",
+      "basis": "recorded_annotation_literal_relation",
+      "confidence": "high",
+      "subject_mention": "pale_blue_sky_and_faint_distant_horizon",
+      "predicate": "visible_through",
+      "object_mention": "round_window",
+      "coordinate_system": "camera_view_relative",
+      "world_orientation": null,
+      "limitations": [
+        "Literal source mentions; compound targets are not resolved into a measured object graph.",
+        "Left/right/depth refer to this view, never cardinal directions or a permanent house coordinate."
+      ]
+    }
+  ],
+  "shots": [
+    {
+      "shot_id": "shot-01",
+      "scene": "exterior_front",
+      "field_path": "/shots/0",
+      "focal_subject": "white_cylindrical_tower_house_with_spiral_exterior_stair",
+      "framing_recorded": {
+        "start": "wide_three_quarter_exterior_view_with_foreground_tree",
+        "end": "medium_wide_frontal_view_of_tower_and_entry",
+        "view_angle": "eye_level_slightly_elevated_frontal_three_quarter"
+      },
+      "camera_recorded": {
+        "movements": [
+          "tracking_right",
+          "subtle_dolly_in"
+        ],
+        "speed": "slow"
+      },
+      "subject_motion": {
+        "state": "unknown",
+        "reason": "No independent object-motion track; still samples cannot prove stillness."
+      },
+      "transition_recorded": "hard_cut",
+      "light_recorded": "warm_directional_daylight_with_clear_soft_shadows",
+      "entities": [
+        {
+          "id": "edh013.shot-01.mention.c869dd4da037cab6",
+          "source_mention": "three_level_white_stucco_appearance_cylindrical_tower_mass",
+          "field_path": "/shots/0/visible_details/architectural/0",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.72759dbfe3c53f3b",
+          "source_mention": "flat_rounded_parapet_at_top_of_main_tower",
+          "field_path": "/shots/0/visible_details/architectural/1",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.aff5f902f7829876",
+          "source_mention": "curved_white_exterior_staircase_wraps_right_side_from_ground_to_upper_terrace",
+          "field_path": "/shots/0/visible_details/architectural/2",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.089746935200a603",
+          "source_mention": "solid_white_curved_outer_stair_balustrade",
+          "field_path": "/shots/0/visible_details/architectural/3",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.1112c4f24bc5aafe",
+          "source_mention": "broad_curved_white_entrance_steps_lead_to_ground_floor_door",
+          "field_path": "/shots/0/visible_details/architectural/4",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.0a590d2d22feea02",
+          "source_mention": "tall_arched_wood_tone_glazed_double_entry_doors_at_ground_center",
+          "field_path": "/shots/0/visible_details/architectural/5",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.63d3c28c7e866fc7",
+          "source_mention": "arched_wood_tone_glazed_door_on_middle_terrace",
+          "field_path": "/shots/0/visible_details/architectural/6",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.75a9229ea8a1f726",
+          "source_mention": "tall_narrow_arched_wood_framed_glazing_on_left_tower_face",
+          "field_path": "/shots/0/visible_details/architectural/7",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.5889b11628d154f9",
+          "source_mention": "small_round_porthole_windows_on_white_tower_wall",
+          "field_path": "/shots/0/visible_details/architectural/8",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.62228a5a000ae909",
+          "source_mention": "upper_right_balcony_with_thin_warm_metal_railings",
+          "field_path": "/shots/0/visible_details/architectural/9",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.737e48aba936dbe5",
+          "source_mention": "small_left_side_balcony_with_matching_metal_railings",
+          "field_path": "/shots/0/visible_details/architectural/10",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.09d847081486b176",
+          "source_mention": "rounded_white_balcony_underside_and_smooth_curving_wall_edges",
+          "field_path": "/shots/0/visible_details/architectural/11",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.712875606c691a10",
+          "source_mention": "large_pink_flower_clusters_in_planters_on_upper_balconies",
+          "field_path": "/shots/0/visible_details/furniture_and_props/0",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.fad186b6e1453998",
+          "source_mention": "long_trailing_green_vines_from_upper_balconies",
+          "field_path": "/shots/0/visible_details/furniture_and_props/1",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.de7611e50b8837d6",
+          "source_mention": "potted_leafy_green_plants_flank_ground_floor_entry",
+          "field_path": "/shots/0/visible_details/furniture_and_props/2",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.42daef95017c714a",
+          "source_mention": "short_black_path_lights_line_front_walkway",
+          "field_path": "/shots/0/visible_details/furniture_and_props/3",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.f97d5fcff209273a",
+          "source_mention": "pair_of_dark_outdoor_chairs_beside_lower_left_side_door",
+          "field_path": "/shots/0/visible_details/furniture_and_props/4",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.3d1aff5e1caf24a6",
+          "source_mention": "dense_pink_flowering_bushes_on_both_sides_of_front_path",
+          "field_path": "/shots/0/visible_details/environment/0",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.67cf449b5f916a22",
+          "source_mention": "low_round_dark_green_topiary_bushes_along_curved_walkway",
+          "field_path": "/shots/0/visible_details/environment/1",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.78302cc92e2506e0",
+          "source_mention": "short_green_lawn_in_foreground",
+          "field_path": "/shots/0/visible_details/environment/2",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.8033e0eabb97160f",
+          "source_mention": "light_stone_appearance_curving_walkway_approaches_entrance_steps",
+          "field_path": "/shots/0/visible_details/environment/3",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.08384a227b333c59",
+          "source_mention": "pale_ornamental_grasses_near_front_path",
+          "field_path": "/shots/0/visible_details/environment/4",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.ab1af9be81d2d53f",
+          "source_mention": "dense_medium_green_trees_behind_house",
+          "field_path": "/shots/0/visible_details/environment/5",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.59304a101992ab6b",
+          "source_mention": "large_pale_barked_tree_trunk_partly_obscures_left_frame_at_start",
+          "field_path": "/shots/0/visible_details/environment/6",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.5a9a8c072fd12551",
+          "source_mention": "overhanging_green_tree_branches_frame_top_corners",
+          "field_path": "/shots/0/visible_details/environment/7",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.75f4d851924c1e60",
+          "source_mention": "broad_green_mountain_ridges_behind_tower",
+          "field_path": "/shots/0/visible_details/environment/8",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.6f658913ffa7f8f4",
+          "source_mention": "pale_blue_sky_with_small_white_clouds",
+          "field_path": "/shots/0/visible_details/environment/9",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-01.mention.2347791bf5d6ee22",
+          "source_mention": "small_conifer_like_shrubs_around_garden_borders",
+          "field_path": "/shots/0/visible_details/environment/10",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        }
+      ],
+      "co_visible_functions": [],
+      "co_visibility_basis": "unknown",
+      "window_world_mentions": [],
+      "temporal_samples": {
+        "shot_id": "shot-01",
+        "annotation_start_s": 0.0,
+        "annotation_end_s": 4.6,
+        "sample_end_limit_s": 4.6,
+        "frames": [
+          {
+            "label": "start",
+            "timestamp_s": 0.12,
+            "path": "knowledge/temporal/edh013/shot-01-start.jpg",
+            "sha256": "7946f1b67a3b882c592643f415a3fef7f429ad462c36a406ca4189a491773aad",
+            "dhash": "b082c06953312323",
+            "contrast": 64.365
+          },
+          {
+            "label": "middle",
+            "timestamp_s": 2.3,
+            "path": "knowledge/temporal/edh013/shot-01-middle.jpg",
+            "sha256": "5f2641e1be5e64829c8c9e44949aceb2406fca025eeda749be9bd2a9aa6441a2",
+            "dhash": "0361445b23ab0d9f",
+            "contrast": 59.824
+          },
+          {
+            "label": "end",
+            "timestamp_s": 4.48,
+            "path": "knowledge/temporal/edh013/shot-01-end.jpg",
+            "sha256": "98f884f5ac6ad33003baf68024d85611665120362aeb3707801811d14fe0882e",
+            "dhash": "6584b8b3c3531b1d",
+            "contrast": 55.091
+          }
+        ]
+      },
+      "temporal_visual_review": {
+        "state": "sampled_review",
+        "finding": "Foreground trunks move out of the view as facade grows larger.",
+        "reason": "Three sampled instants; intervals not verified."
+      }
+    },
+    {
+      "shot_id": "shot-02",
+      "scene": "living_room",
+      "field_path": "/shots/1",
+      "focal_subject": "bright_curving_living_room_with_round_windows_and_cream_sectional_sofa",
+      "framing_recorded": {
+        "start": "medium_view_of_sofa_round_window_and_left_stair",
+        "end": "wide_view_revealing_full_seating_area_and_raised_floor_edge",
+        "view_angle": "eye_level_interior_three_quarter"
+      },
+      "camera_recorded": {
+        "movements": [
+          "dolly_out"
+        ],
+        "speed": "slow"
+      },
+      "subject_motion": {
+        "state": "unknown",
+        "reason": "No independent object-motion track; still samples cannot prove stillness."
+      },
+      "transition_recorded": "hard_cut",
+      "light_recorded": "bright_soft_daylight_through_large_windows_and_warm_recessed_ceiling_lights",
+      "entities": [
+        {
+          "id": "edh013.shot-02.mention.36f8ee199de3bb8f",
+          "source_mention": "high_white_curvilinear_ceiling_with_recessed_spotlights",
+          "field_path": "/shots/1/visible_details/architectural/0",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.ae9328d00c2d48bf",
+          "source_mention": "white_spiral_staircase_rises_along_left_wall",
+          "field_path": "/shots/1/visible_details/architectural/1",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.c83527c062d73443",
+          "source_mention": "slim_gold_tone_stair_railings_follow_curved_steps",
+          "field_path": "/shots/1/visible_details/architectural/2",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.4007ba3812ad235e",
+          "source_mention": "light_wood_appearance_stair_treads",
+          "field_path": "/shots/1/visible_details/architectural/3",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.42653aa2d7dcb4fb",
+          "source_mention": "very_large_round_window_with_wood_tone_trim_on_right_wall",
+          "field_path": "/shots/1/visible_details/architectural/4",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.142786547ce83e35",
+          "source_mention": "black_cross_mullions_within_large_round_window",
+          "field_path": "/shots/1/visible_details/architectural/5",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.6cc693fe6845105f",
+          "source_mention": "smaller_high_round_window_above_seating",
+          "field_path": "/shots/1/visible_details/architectural/6",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.f5d58feff492518b",
+          "source_mention": "multiple_tall_arched_windows_and_rear_glazed_archway",
+          "field_path": "/shots/1/visible_details/architectural/7",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.1a5f45d5891da08a",
+          "source_mention": "recessed_wall_niches_and_light_wood_floating_shelves_above_sofa",
+          "field_path": "/shots/1/visible_details/architectural/8",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.c6a0f2453cdb2f32",
+          "source_mention": "light_wood_appearance_floor_with_shallow_raised_edge_in_foreground",
+          "field_path": "/shots/1/visible_details/architectural/9",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.be6032226f99e8b0",
+          "source_mention": "smooth_white_curved_archways_connect_room_areas",
+          "field_path": "/shots/1/visible_details/architectural/10",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.89b4ca275304e9bc",
+          "source_mention": "large_low_cream_l_shaped_sectional_sofa_beneath_windows",
+          "field_path": "/shots/1/visible_details/furniture_and_props/0",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.5b7bae2c6f03c853",
+          "source_mention": "row_of_beige_and_cream_throw_cushions_on_sectional",
+          "field_path": "/shots/1/visible_details/furniture_and_props/1",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.30bd031be79cd628",
+          "source_mention": "large_low_round_light_wood_coffee_table_in_front_of_sofa",
+          "field_path": "/shots/1/visible_details/furniture_and_props/2",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.ea141eeb11535e31",
+          "source_mention": "round_warm_brown_pedestal_base_under_coffee_table",
+          "field_path": "/shots/1/visible_details/furniture_and_props/3",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.3a872c5ec2f49493",
+          "source_mention": "round_cream_openwork_pattern_area_rug_beneath_table",
+          "field_path": "/shots/1/visible_details/furniture_and_props/4",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.85104a4a3632bbc0",
+          "source_mention": "clear_glass_vase_with_dried_tan_grass_stems_on_table",
+          "field_path": "/shots/1/visible_details/furniture_and_props/5",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.c78b6cac12e3f536",
+          "source_mention": "small_neutral_vessels_and_books_on_coffee_table",
+          "field_path": "/shots/1/visible_details/furniture_and_props/6",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.caf5f19158b2b5b8",
+          "source_mention": "pink_flowering_green_vines_on_upper_wall_shelves",
+          "field_path": "/shots/1/visible_details/furniture_and_props/7",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.411b202025dbb0d9",
+          "source_mention": "small_books_and_potted_plants_on_floating_shelves",
+          "field_path": "/shots/1/visible_details/furniture_and_props/8",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.b515af32754ededb",
+          "source_mention": "group_of_candles_on_lower_left_stair_treads",
+          "field_path": "/shots/1/visible_details/furniture_and_props/9",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.874c48d50b9b802b",
+          "source_mention": "large_potted_broadleaf_plant_at_lower_right",
+          "field_path": "/shots/1/visible_details/furniture_and_props/10",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.4129609d78c93de1",
+          "source_mention": "dense_pink_flowers_hang_over_upper_right_frame_edge",
+          "field_path": "/shots/1/visible_details/furniture_and_props/11",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.faa431511bb34a67",
+          "source_mention": "sunlit_green_trees_visible_through_round_and_arched_windows",
+          "field_path": "/shots/1/visible_details/environment/0",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.3f3f7014c3e1365c",
+          "source_mention": "bright_pink_outdoor_flower_clusters_visible_beyond_right_window",
+          "field_path": "/shots/1/visible_details/environment/1",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        }
+      ],
+      "co_visible_functions": [],
+      "co_visibility_basis": "unknown",
+      "window_world_mentions": [
+        {
+          "id": "edh013.shot-02.mention.faa431511bb34a67",
+          "source_mention": "sunlit_green_trees_visible_through_round_and_arched_windows",
+          "field_path": "/shots/1/visible_details/environment/0",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-02.mention.3f3f7014c3e1365c",
+          "source_mention": "bright_pink_outdoor_flower_clusters_visible_beyond_right_window",
+          "field_path": "/shots/1/visible_details/environment/1",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        }
+      ],
+      "temporal_samples": {
+        "shot_id": "shot-02",
+        "annotation_start_s": 4.6,
+        "annotation_end_s": 8.07,
+        "sample_end_limit_s": 8.07,
+        "frames": [
+          {
+            "label": "start",
+            "timestamp_s": 4.72,
+            "path": "knowledge/temporal/edh013/shot-02-start.jpg",
+            "sha256": "52dc3da75347be7e197e73d082e0a7c9408f4aaad831896bdeb66af9478b66c0",
+            "dhash": "c8f0f09a19981ab9",
+            "contrast": 51.258
+          },
+          {
+            "label": "middle",
+            "timestamp_s": 6.335,
+            "path": "knowledge/temporal/edh013/shot-02-middle.jpg",
+            "sha256": "fb155c812d948aed3cca0492693033867fee4723d0e1f4322c7db3919c1b7413",
+            "dhash": "a36278500b993bf0",
+            "contrast": 52.22
+          },
+          {
+            "label": "end",
+            "timestamp_s": 7.95,
+            "path": "knowledge/temporal/edh013/shot-02-end.jpg",
+            "sha256": "9f389c1f298d32488180b4b27e05b7da70a9a36928e1b669b322bb43c70695d6",
+            "dhash": "0737b1b18b0b1b23",
+            "contrast": 52.601
+          }
+        ]
+      },
+      "temporal_visual_review": {
+        "state": "sampled_review",
+        "finding": "Living framing widens around curved sofa, round glazing and stairs.",
+        "reason": "Three sampled instants; intervals not verified."
+      }
+    },
+    {
+      "shot_id": "shot-03",
+      "scene": "kitchen",
+      "field_path": "/shots/2",
+      "focal_subject": "organic_white_kitchen_with_rounded_counter_and_arched_display_shelves",
+      "framing_recorded": {
+        "start": "wide_view_of_curved_kitchen_peninsula_and_wall_shelves",
+        "end": "medium_close_view_of_cooktop_oven_and_display_shelves",
+        "view_angle": "eye_level_slightly_high_interior_three_quarter"
+      },
+      "camera_recorded": {
+        "movements": [
+          "tracking_right",
+          "dolly_in"
+        ],
+        "speed": "slow"
+      },
+      "subject_motion": {
+        "state": "unknown",
+        "reason": "No independent object-motion track; still samples cannot prove stillness."
+      },
+      "transition_recorded": "hard_cut",
+      "light_recorded": "warm_pendant_and_shelf_lighting_combined_with_bright_diffuse_daylight",
+      "entities": [
+        {
+          "id": "edh013.shot-03.mention.12c23133c67c14f6",
+          "source_mention": "continuous_white_curved_ceiling_and_rounded_archways",
+          "field_path": "/shots/2/visible_details/architectural/0",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.030cd5e3e5be81c4",
+          "source_mention": "small_recessed_round_ceiling_spotlights",
+          "field_path": "/shots/2/visible_details/architectural/1",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.c9181782d84fac15",
+          "source_mention": "curved_white_countertop_forms_looping_front_peninsula",
+          "field_path": "/shots/2/visible_details/architectural/2",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.16556feb1fab1460",
+          "source_mention": "pale_blush_beige_curved_lower_cabinets_beneath_counter",
+          "field_path": "/shots/2/visible_details/architectural/3",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.82b7ca2b892fde0d",
+          "source_mention": "vertical_light_wood_slat_panels_below_front_peninsula_edge",
+          "field_path": "/shots/2/visible_details/architectural/4",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.6bb910d1497c9b55",
+          "source_mention": "white_marble_appearance_counter_surface_with_faint_gray_veins",
+          "field_path": "/shots/2/visible_details/architectural/5",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.e9b09b3b676c6ba2",
+          "source_mention": "broad_open_white_shelves_set_into_curving_right_wall",
+          "field_path": "/shots/2/visible_details/architectural/6",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.9914d343044c2bad",
+          "source_mention": "off_white_organic_raised_relief_pattern_backsplash",
+          "field_path": "/shots/2/visible_details/architectural/7",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.e3adcb1d66dc28c1",
+          "source_mention": "warm_under_shelf_strip_lighting_highlights_back_wall",
+          "field_path": "/shots/2/visible_details/architectural/8",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.74eb8e11fdc2e179",
+          "source_mention": "three_arched_recessed_display_niches_on_left_wall",
+          "field_path": "/shots/2/visible_details/architectural/9",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.7891bf1b4afda89c",
+          "source_mention": "black_built_in_oven_below_black_gas_cooktop_on_right_counter",
+          "field_path": "/shots/2/visible_details/architectural/10",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.3d0cf86e4f42e822",
+          "source_mention": "deep_rust_red_rectangular_sink_in_left_counter",
+          "field_path": "/shots/2/visible_details/architectural/11",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.207919de5bcf09f9",
+          "source_mention": "narrow_rust_rose_patterned_runner_rug_on_floor_of_cooking_aisle",
+          "field_path": "/shots/2/visible_details/architectural/12",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.594d0fca595f7031",
+          "source_mention": "three_woven_look_tiered_pendant_lamps_over_left_counter",
+          "field_path": "/shots/2/visible_details/furniture_and_props/0",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.8cc49afed91e57a1",
+          "source_mention": "warm_gold_tone_wall_sconces_within_left_arches",
+          "field_path": "/shots/2/visible_details/furniture_and_props/1",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.670a9d7672d2488c",
+          "source_mention": "gold_tone_faucet_at_rust_colored_sink",
+          "field_path": "/shots/2/visible_details/furniture_and_props/2",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.7e0343d9a60bff5d",
+          "source_mention": "woven_storage_baskets_and_pottery_on_high_open_shelves",
+          "field_path": "/shots/2/visible_details/furniture_and_props/3",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.c544131c104203fd",
+          "source_mention": "glass_jars_and_metallic_drinkware_on_right_wall_shelves",
+          "field_path": "/shots/2/visible_details/furniture_and_props/4",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.dd11220766725b8d",
+          "source_mention": "trailing_green_potted_plants_on_open_shelves",
+          "field_path": "/shots/2/visible_details/furniture_and_props/5",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.c50b4803ddeeee5b",
+          "source_mention": "wooden_cooking_spoons_in_containers_on_back_counter",
+          "field_path": "/shots/2/visible_details/furniture_and_props/6",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.3c4bf8a9f44de364",
+          "source_mention": "plates_and_small_bowls_on_front_peninsula",
+          "field_path": "/shots/2/visible_details/furniture_and_props/7",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.3457fb7f28bf44d8",
+          "source_mention": "wooden_tray_with_neutral_color_dishes_on_front_counter",
+          "field_path": "/shots/2/visible_details/furniture_and_props/8",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.c2cb2c560357d0b7",
+          "source_mention": "small_brown_food_like_items_on_front_counter",
+          "field_path": "/shots/2/visible_details/furniture_and_props/9",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.c87f61d607fa0a25",
+          "source_mention": "potted_palm_like_green_plant_near_back_left_counter",
+          "field_path": "/shots/2/visible_details/furniture_and_props/10",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-03.mention.534e0ffd25dcca0c",
+          "source_mention": "gold_and_copper_tone_vases_and_decor_inside_wall_niches",
+          "field_path": "/shots/2/visible_details/furniture_and_props/11",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        }
+      ],
+      "co_visible_functions": [],
+      "co_visibility_basis": "unknown",
+      "window_world_mentions": [],
+      "temporal_samples": {
+        "shot_id": "shot-03",
+        "annotation_start_s": 8.07,
+        "annotation_end_s": 11.63,
+        "sample_end_limit_s": 11.63,
+        "frames": [
+          {
+            "label": "start",
+            "timestamp_s": 8.19,
+            "path": "knowledge/temporal/edh013/shot-03-start.jpg",
+            "sha256": "1cc9ac807fe9a89f85812681eba7f1a35c6f876ee88d0304cfde09dc816c0901",
+            "dhash": "96dc6cb494b4747c",
+            "contrast": 50.214
+          },
+          {
+            "label": "middle",
+            "timestamp_s": 9.85,
+            "path": "knowledge/temporal/edh013/shot-03-middle.jpg",
+            "sha256": "30c52ea4fee8d567a087a05a739ff7aa0373d53b0e61b7303a6d5a5161d2caeb",
+            "dhash": "ccd99cdcd86cbcb2",
+            "contrast": 49.778
+          },
+          {
+            "label": "end",
+            "timestamp_s": 11.51,
+            "path": "knowledge/temporal/edh013/shot-03-end.jpg",
+            "sha256": "8479ecafd135acac627bc507ab35acd7542bfe2568742499f532b307ada1a8b0",
+            "dhash": "63e7d8dae0d1b1f0",
+            "contrast": 53.182
+          }
+        ]
+      },
+      "temporal_visual_review": {
+        "state": "sampled_review",
+        "finding": "Kitchen view shifts along curved counter and recessed shelves.",
+        "reason": "Three sampled instants; intervals not verified."
+      }
+    },
+    {
+      "shot_id": "shot-04",
+      "scene": "bedroom",
+      "field_path": "/shots/3",
+      "focal_subject": "white_bed_on_raised_wood_platform_under_large_round_window",
+      "framing_recorded": {
+        "start": "medium_close_frontal_view_of_bed_and_round_window",
+        "end": "wide_three_quarter_view_of_raised_bed_and_right_archway",
+        "view_angle": "eye_level_interior_three_quarter"
+      },
+      "camera_recorded": {
+        "movements": [
+          "tracking_right",
+          "dolly_out"
+        ],
+        "speed": "slow"
+      },
+      "subject_motion": {
+        "state": "unknown",
+        "reason": "No independent object-motion track; still samples cannot prove stillness."
+      },
+      "transition_recorded": "hard_cut",
+      "light_recorded": "bright_warm_daylight_entering_circular_window_with_soft_golden_pendant_accents",
+      "entities": [
+        {
+          "id": "edh013.shot-04.mention.bd2ae704cee5e066",
+          "source_mention": "deep_set_large_circular_window_with_pale_wood_tone_frame_centered_above_bed",
+          "field_path": "/shots/3/visible_details/architectural/0",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.f0223fe2e4e5a8f5",
+          "source_mention": "thick_white_curved_plaster_appearance_surround_around_round_window",
+          "field_path": "/shots/3/visible_details/architectural/1",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.70fce72f5c589c4a",
+          "source_mention": "floor_to_ceiling_wood_tone_bookshelves_to_right_of_round_window",
+          "field_path": "/shots/3/visible_details/architectural/2",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.5d48ffb48c3a429b",
+          "source_mention": "large_white_curving_archway_to_right_side_of_bed",
+          "field_path": "/shots/3/visible_details/architectural/3",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.2028dd84c8e4f985",
+          "source_mention": "white_floating_shelves_beyond_right_archway",
+          "field_path": "/shots/3/visible_details/architectural/4",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.f595f13d436bcf87",
+          "source_mention": "raised_wood_appearance_bed_platform_with_two_shallow_front_steps",
+          "field_path": "/shots/3/visible_details/architectural/5",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.8774c39b2ba2d2ea",
+          "source_mention": "smooth_cream_wall_and_ceiling_with_recessed_spotlights",
+          "field_path": "/shots/3/visible_details/architectural/6",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.e0a0dc6234589b43",
+          "source_mention": "warm_gold_tone_drop_pendant_lamps_hang_either_side_of_bed",
+          "field_path": "/shots/3/visible_details/architectural/7",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.4526c56041466cae",
+          "source_mention": "low_white_upholstered_double_bed_on_raised_wood_platform",
+          "field_path": "/shots/3/visible_details/furniture_and_props/0",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.3e6d26f69499647e",
+          "source_mention": "rumpled_white_duvet_with_textured_cream_throw",
+          "field_path": "/shots/3/visible_details/furniture_and_props/1",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.88bf8b3dca9c4230",
+          "source_mention": "two_large_blush_pink_pillows_in_front_of_white_pillows",
+          "field_path": "/shots/3/visible_details/furniture_and_props/2",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.47d8fdda85c6e66f",
+          "source_mention": "compact_light_wood_bedside_shelves_on_both_sides_of_bed",
+          "field_path": "/shots/3/visible_details/furniture_and_props/3",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.f0b08962e1209732",
+          "source_mention": "small_metallic_vase_of_pale_pink_roses_on_left_bedside",
+          "field_path": "/shots/3/visible_details/furniture_and_props/4",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.a38d112cd6a5a3ed",
+          "source_mention": "stacked_books_beneath_left_bedside_flowers",
+          "field_path": "/shots/3/visible_details/furniture_and_props/5",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.87ab8cdf50e1d303",
+          "source_mention": "gold_tone_vase_with_pink_flower_stems_at_foot_of_bed",
+          "field_path": "/shots/3/visible_details/furniture_and_props/6",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.04603ac0437bf12e",
+          "source_mention": "small_wooden_bowl_and_white_pitcher_on_bed_platform",
+          "field_path": "/shots/3/visible_details/furniture_and_props/7",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.cf0b1a2ed009022e",
+          "source_mention": "two_small_decorative_animal_figures_in_round_window_recess",
+          "field_path": "/shots/3/visible_details/furniture_and_props/8",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.e283087d72971e2f",
+          "source_mention": "books_stacked_in_right_wood_bookshelves",
+          "field_path": "/shots/3/visible_details/furniture_and_props/9",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.0062b00525c0074e",
+          "source_mention": "cascading_green_leafy_vines_on_left_wall_and_right_bookshelf",
+          "field_path": "/shots/3/visible_details/furniture_and_props/10",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.4cfc4f0b507a6f7e",
+          "source_mention": "large_potted_broadleaf_plants_beyond_right_archway",
+          "field_path": "/shots/3/visible_details/furniture_and_props/11",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.d2c36d41f39d90bf",
+          "source_mention": "green_palm_like_fronds_visible_just_outside_large_circular_window",
+          "field_path": "/shots/3/visible_details/environment/0",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.db472367de9ff2c2",
+          "source_mention": "pale_bright_sky_visible_through_circular_window",
+          "field_path": "/shots/3/visible_details/environment/1",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        }
+      ],
+      "co_visible_functions": [],
+      "co_visibility_basis": "unknown",
+      "window_world_mentions": [
+        {
+          "id": "edh013.shot-04.mention.d2c36d41f39d90bf",
+          "source_mention": "green_palm_like_fronds_visible_just_outside_large_circular_window",
+          "field_path": "/shots/3/visible_details/environment/0",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-04.mention.db472367de9ff2c2",
+          "source_mention": "pale_bright_sky_visible_through_circular_window",
+          "field_path": "/shots/3/visible_details/environment/1",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        }
+      ],
+      "temporal_samples": {
+        "shot_id": "shot-04",
+        "annotation_start_s": 11.63,
+        "annotation_end_s": 16.67,
+        "sample_end_limit_s": 16.67,
+        "frames": [
+          {
+            "label": "start",
+            "timestamp_s": 11.75,
+            "path": "knowledge/temporal/edh013/shot-04-start.jpg",
+            "sha256": "3dc136ddb2575bd72774a14b56fb58ab2bb5b5b023b333ccefe0098ec809f1ed",
+            "dhash": "1f0f21fc99895898",
+            "contrast": 48.737
+          },
+          {
+            "label": "middle",
+            "timestamp_s": 14.15,
+            "path": "knowledge/temporal/edh013/shot-04-middle.jpg",
+            "sha256": "1b4a4466c71ac0082a8f3183abc8b3df1cf3ae7a6447ced3c88b6d9064d67b80",
+            "dhash": "1c1e1eebaba58010",
+            "contrast": 54.082
+          },
+          {
+            "label": "end",
+            "timestamp_s": 16.55,
+            "path": "knowledge/temporal/edh013/shot-04-end.jpg",
+            "sha256": "de9e9e7d940fab9f1f005eba75c3c20476bad6d3ed646e88c349fa214e850d00",
+            "dhash": "202032367644c4f8",
+            "contrast": 53.299
+          }
+        ]
+      },
+      "temporal_visual_review": {
+        "state": "sampled_review",
+        "finding": "Bedroom view widens around bed and circular opening.",
+        "reason": "Three sampled instants; intervals not verified."
+      }
+    },
+    {
+      "shot_id": "shot-05",
+      "scene": "bathroom",
+      "field_path": "/shots/4",
+      "focal_subject": "freestanding_white_oval_bathtub_beneath_giant_circular_window",
+      "framing_recorded": {
+        "start": "wide_view_from_bathroom_entrance_with_tub_vanity_toilet",
+        "end": "close_three_quarter_view_of_freestanding_tub_and_round_window",
+        "view_angle": "eye_level_interior_three_quarter"
+      },
+      "camera_recorded": {
+        "movements": [
+          "dolly_in",
+          "subtle_tracking_right"
+        ],
+        "speed": "slow"
+      },
+      "subject_motion": {
+        "state": "unknown",
+        "reason": "No independent object-motion track; still samples cannot prove stillness."
+      },
+      "transition_recorded": "end_of_video",
+      "light_recorded": "strong_soft_daylight_through_round_window_with_warm_ceiling_and_pendant_glow",
+      "entities": [
+        {
+          "id": "edh013.shot-05.mention.91b37220d3f74c1e",
+          "source_mention": "vaulted_white_ceiling_with_overlapping_curved_arches",
+          "field_path": "/shots/4/visible_details/architectural/0",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.995d469d579f7453",
+          "source_mention": "large_round_wood_tone_framed_window_above_bathtub",
+          "field_path": "/shots/4/visible_details/architectural/1",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.ea1193cc0478eb1e",
+          "source_mention": "raised_rounded_bath_platform_reached_by_two_light_marble_appearance_steps",
+          "field_path": "/shots/4/visible_details/architectural/2",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.fa89e99217ebff3b",
+          "source_mention": "terracotta_and_cream_patterned_tiles_beneath_bathtub",
+          "field_path": "/shots/4/visible_details/architectural/3",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.f44a7b3c54f6112a",
+          "source_mention": "white_marble_appearance_floor_and_steps_with_gray_veining",
+          "field_path": "/shots/4/visible_details/architectural/4",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.ee7202ab8f782065",
+          "source_mention": "built_in_wood_tone_recessed_shelves_on_left_wall",
+          "field_path": "/shots/4/visible_details/architectural/5",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.4fa971be8deb745a",
+          "source_mention": "small_wood_tone_floating_shelves_left_of_round_window",
+          "field_path": "/shots/4/visible_details/architectural/6",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.17d1a63e55eab83c",
+          "source_mention": "oval_gold_tone_framed_mirror_over_right_vanity",
+          "field_path": "/shots/4/visible_details/architectural/7",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.49c875c1fd68d8ba",
+          "source_mention": "white_rectangular_vanity_top_with_light_wood_look_lower_shelves",
+          "field_path": "/shots/4/visible_details/architectural/8",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.6e3aa7c70129d2f2",
+          "source_mention": "small_recessed_ceiling_spotlights",
+          "field_path": "/shots/4/visible_details/architectural/9",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.ed5c72dc31de0799",
+          "source_mention": "white_curved_archway_frames_rear_tub_area",
+          "field_path": "/shots/4/visible_details/architectural/10",
+          "source_category": "architectural",
+          "role": "architectural_anchor_candidate",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.7a12d52ec62b80dd",
+          "source_mention": "large_white_freestanding_oval_bathtub_centered_below_round_window",
+          "field_path": "/shots/4/visible_details/furniture_and_props/0",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.f658336b43aaaf6e",
+          "source_mention": "polished_gold_tone_tub_filler_and_faucet_to_left_of_bathtub",
+          "field_path": "/shots/4/visible_details/furniture_and_props/1",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.9238cf49b04fd9df",
+          "source_mention": "white_round_vessel_sink_on_right_vanity",
+          "field_path": "/shots/4/visible_details/furniture_and_props/2",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.fb12379053d3a846",
+          "source_mention": "gold_tone_faucet_on_right_vanity",
+          "field_path": "/shots/4/visible_details/furniture_and_props/3",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.69745612e5301316",
+          "source_mention": "white_modern_toilet_in_lower_left_foreground",
+          "field_path": "/shots/4/visible_details/furniture_and_props/4",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.26b061170d1625b4",
+          "source_mention": "rolled_beige_and_dusty_rose_towels_on_open_shelf_beneath_vanity",
+          "field_path": "/shots/4/visible_details/furniture_and_props/5",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.ffc9be6389c7239d",
+          "source_mention": "small_pink_rectangular_patterned_rug_in_center_walkway",
+          "field_path": "/shots/4/visible_details/furniture_and_props/6",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.8d2fe5a5001628e0",
+          "source_mention": "several_potted_green_plants_around_tub_and_arches",
+          "field_path": "/shots/4/visible_details/furniture_and_props/7",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.7afc613e18adb011",
+          "source_mention": "hanging_green_vines_drape_from_upper_arched_recesses",
+          "field_path": "/shots/4/visible_details/furniture_and_props/8",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.f44dc6fa527bddd9",
+          "source_mention": "folded_light_color_towels_and_small_bottles_on_left_shelves",
+          "field_path": "/shots/4/visible_details/furniture_and_props/9",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.4022ef73ec52d0ed",
+          "source_mention": "small_dark_container_and_amber_bottle_on_tub_ledge",
+          "field_path": "/shots/4/visible_details/furniture_and_props/10",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.6ad1bebda02857b6",
+          "source_mention": "small_glass_and_gold_tone_pendant_orbs_hang_near_right_of_window",
+          "field_path": "/shots/4/visible_details/furniture_and_props/11",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.2fde587acefc32a8",
+          "source_mention": "soap_dispenser_and_small_bath_accessories_on_right_vanity",
+          "field_path": "/shots/4/visible_details/furniture_and_props/12",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.0219420a89ccdfce",
+          "source_mention": "gold_tone_and_wood_tone_bathroom_decor_in_left_recess",
+          "field_path": "/shots/4/visible_details/furniture_and_props/13",
+          "source_category": "furniture_and_props",
+          "role": "furniture_or_prop",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        },
+        {
+          "id": "edh013.shot-05.mention.5732fa689b325017",
+          "source_mention": "pale_blue_sky_and_faint_distant_horizon_visible_through_round_window",
+          "field_path": "/shots/4/visible_details/environment/0",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        }
+      ],
+      "co_visible_functions": [],
+      "co_visibility_basis": "unknown",
+      "window_world_mentions": [
+        {
+          "id": "edh013.shot-05.mention.5732fa689b325017",
+          "source_mention": "pale_blue_sky_and_faint_distant_horizon_visible_through_round_window",
+          "field_path": "/shots/4/visible_details/environment/0",
+          "source_category": "environment",
+          "role": "environment",
+          "role_basis": "source_category_inference",
+          "physical_identity_across_shots": "unknown"
+        }
+      ],
+      "temporal_samples": {
+        "shot_id": "shot-05",
+        "annotation_start_s": 16.67,
+        "annotation_end_s": 21.477,
+        "sample_end_limit_s": 21.333333,
+        "frames": [
+          {
+            "label": "start",
+            "timestamp_s": 16.79,
+            "path": "knowledge/temporal/edh013/shot-05-start.jpg",
+            "sha256": "b3f90bf6332f66bfc0159132ffd74ba6fafa056066ce2af52252a0e1abf4f75b",
+            "dhash": "7d4c07270406070f",
+            "contrast": 57.955
+          },
+          {
+            "label": "middle",
+            "timestamp_s": 19.001666,
+            "path": "knowledge/temporal/edh013/shot-05-middle.jpg",
+            "sha256": "31c834fbec6ed0ada811a9a603cbd413168b74cdcabf49d55eb43890cbe8084b",
+            "dhash": "9cbca667c70b6306",
+            "contrast": 54.828
+          },
+          {
+            "label": "end",
+            "timestamp_s": 21.213333,
+            "path": "knowledge/temporal/edh013/shot-05-end.jpg",
+            "sha256": "dbd3a4a27b7fb7cf7cec12a63b153632aba870dc9644c2a0e34bf0f7b677ab79",
+            "dhash": "dc868a86060b1f0e",
+            "contrast": 53.492
+          }
+        ]
+      },
+      "temporal_visual_review": {
+        "state": "sampled_review",
+        "finding": "Bathroom framing tightens toward tub and round window.",
+        "reason": "Three sampled instants; intervals not verified."
+      }
+    }
+  ],
+  "sequence_links": [
+    {
+      "from_shot": "shot-01",
+      "to_shot": "shot-02",
+      "relation": "edit_sequence_only",
+      "physical_room_adjacency": "unknown"
+    },
+    {
+      "from_shot": "shot-02",
+      "to_shot": "shot-03",
+      "relation": "edit_sequence_only",
+      "physical_room_adjacency": "unknown"
+    },
+    {
+      "from_shot": "shot-03",
+      "to_shot": "shot-04",
+      "relation": "edit_sequence_only",
+      "physical_room_adjacency": "unknown"
+    },
+    {
+      "from_shot": "shot-04",
+      "to_shot": "shot-05",
+      "relation": "edit_sequence_only",
+      "physical_room_adjacency": "unknown"
+    }
+  ],
+  "unknowns": [
+    "measured_floorplan",
+    "cardinal_orientation",
+    "physical_dimensions",
+    "geological_material_identity",
+    "physical_building_existence",
+    "exact_lens_focal_length",
+    "camera_path_in_world_coordinates",
+    "structural_feasibility",
+    "same_physical_object_across_cuts"
+  ],
+  "limitations": [
+    "Image-relative appearance, not measured geometry or a reconstructed floorplan.",
+    "Recorded annotations and AI visual review have separate evidence bases.",
+    "Material names describe appearance; composition, dimensions and structural feasibility remain unknown."
+  ]
+}

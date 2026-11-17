@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh048",
+    "analysis_path": "references/edh048/analysis.yaml",
+    "analysis_sha256": "f9f6f9e055c67fe097174266b2037fee1fe564f795fac3617eb2e495b4397ead",
+    "source_path": "video/edh048.mp4",
+    "source_sha256": "d70047130b4322a9ba2957d990d7ac628339b1be7c19c723c28621101910d800"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh048.review.storyboard",
+      "source": {
+        "reference_id": "edh048",
+        "analysis_path": "references/edh048/analysis.yaml",
+        "analysis_sha256": "f9f6f9e055c67fe097174266b2037fee1fe564f795fac3617eb2e495b4397ead",
+        "source_path": "video/edh048.mp4",
+        "source_sha256": "d70047130b4322a9ba2957d990d7ac628339b1be7c19c723c28621101910d800"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh048/storyboard.jpg",
+          "sha256": "f25f99d9fa13824a01062160ad6299f66fba5195660602323257331044afc6d0",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Two-level pale sculptural facade with arched upper glazing, curved entry steps and stone-like chimney in snowy-looking setting. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Walk-in closet is distinct from laundry/basin frame; the saved laundry frame alone does not establish every bathroom fixture. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

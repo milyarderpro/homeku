@@ -28,3 +28,9 @@ If the kitchen is east of the living room and their shared opening lies in the l
 A defensible original-house model has: one floor-level graph; exterior footprint and entry; wall/window registry with positions; fixed features (stairs, fireplace, island, bath); furniture footprints; camera viewpoint coordinates; and landscape directions. Inconsistencies can be detected conceptually before any rendering. Exact dimensions remain estimates until designed.
 
 **Scope:** the principles above are architectural reasoning. They are not claims that specific 57 video houses are physically built according to this diagram, or proof that a generator will obey them.
+
+## Corpus-linked enrichment
+
+Shared-function evidence in edh033 and edh060 supports co-visible living/kitchen/loft descriptions. Separate edited views in edh058 leave room adjacency unknown. A new project may choose its own plan as a creative decision.
+
+See [counted patterns and diversity](corpus-patterns.md) and [source-bound design evidence](design-evidence/README.md). Counts describe published video references; content independence and physical-house identity are not established by unique file hashes.

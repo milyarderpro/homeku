@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh016",
+    "analysis_path": "references/edh016/analysis.yaml",
+    "analysis_sha256": "f43a8e043f540f6c0f3fea6aff680f1b7f67ae57558afa603a1f2ca9da3aa6c7",
+    "source_path": "video/edh016.mp4",
+    "source_sha256": "454321dd3b0db81fb0e9ee0d2d788c2acf3b316add28df034e2e3e97efdd559b"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh016.review.storyboard",
+      "source": {
+        "reference_id": "edh016",
+        "analysis_path": "references/edh016/analysis.yaml",
+        "analysis_sha256": "f43a8e043f540f6c0f3fea6aff680f1b7f67ae57558afa603a1f2ca9da3aa6c7",
+        "source_path": "video/edh016.mp4",
+        "source_sha256": "454321dd3b0db81fb0e9ee0d2d788c2acf3b316add28df034e2e3e97efdd559b"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh016/storyboard.jpg",
+          "sha256": "d1379f906ede847391c746a3078605276e2508966f44d7d0013d6bcd52052eb9",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Closing frame shows steep curving gable, pale facade, stone-like chimney and snow-like ground. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "First keyframe is living within an exterior-to-living annotated shot; bath/laundry view contains bathtub and paired machines. Motion requires temporal evidence. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

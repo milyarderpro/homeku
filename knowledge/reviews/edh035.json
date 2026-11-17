@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh035",
+    "analysis_path": "references/edh035/analysis.yaml",
+    "analysis_sha256": "ecf78f98ccd294aa60e301f8eaa26f1a02f09c56f83cf37a8069311a62877d96",
+    "source_path": "video/edh035.mp4",
+    "source_sha256": "093d4a5052d14960e185c0fc3fedd08ce81e1eb5755de3e806bcbf358e75ac83"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh035.review.storyboard",
+      "source": {
+        "reference_id": "edh035",
+        "analysis_path": "references/edh035/analysis.yaml",
+        "analysis_sha256": "ecf78f98ccd294aa60e301f8eaa26f1a02f09c56f83cf37a8069311a62877d96",
+        "source_path": "video/edh035.mp4",
+        "source_sha256": "093d4a5052d14960e185c0fc3fedd08ce81e1eb5755de3e806bcbf358e75ac83"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh035/storyboard.jpg",
+          "sha256": "fc6f9eba9c19cd7675e8cf52c87971146e2943127f5df7f04fbdedf5e18fea58",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Low pale rectilinear facade with dark roof edge, front steps and flowering pots. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "The first shot is annotated exterior-to-living, while saved frame shows exterior; kitchen, stone-like bedroom wall and small bathroom appear in later cuts. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

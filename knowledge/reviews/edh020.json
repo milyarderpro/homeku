@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh020",
+    "analysis_path": "references/edh020/analysis.yaml",
+    "analysis_sha256": "2d60171184723b78d8eb67e3db6859a38c635f557ae17b75af18011ea4668cfd",
+    "source_path": "video/edh020.mp4",
+    "source_sha256": "872f1560571053840f9cac780ab20468ef1f5919a55ed0b226a27ad2e08a6ecf"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh020.review.storyboard",
+      "source": {
+        "reference_id": "edh020",
+        "analysis_path": "references/edh020/analysis.yaml",
+        "analysis_sha256": "2d60171184723b78d8eb67e3db6859a38c635f557ae17b75af18011ea4668cfd",
+        "source_path": "video/edh020.mp4",
+        "source_sha256": "872f1560571053840f9cac780ab20468ef1f5919a55ed0b226a27ad2e08a6ecf"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh020/storyboard.jpg",
+          "sha256": "63afb3b431dbbcdb226be837afef822f525b23c7047ebf016270dfb2dd9e6dc8",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Steep sculptural dark roof, stone-like facade, arched glazing and snow-like surroundings. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living frame places a wood coffee table before fireplace and seating; visible stone appearance does not identify geological composition. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh020.review.temporal",
+      "source": {
+        "reference_id": "edh020",
+        "analysis_path": "references/edh020/analysis.yaml",
+        "analysis_sha256": "2d60171184723b78d8eb67e3db6859a38c635f557ae17b75af18011ea4668cfd",
+        "source_path": "video/edh020.mp4",
+        "source_sha256": "872f1560571053840f9cac780ab20468ef1f5919a55ed0b226a27ad2e08a6ecf"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "Visual review of start/middle/end contact sheets only; not continuous playback or camera-mechanism verification."
+      ],
+      "evidence": [
+        {
+          "path": "knowledge/temporal/edh020/contact.jpg",
+          "sha256": "f658659a9e779b9b516c1728045c42b821e685ca7cf47d30fe860932278e3431",
+          "kind": "temporal_contact"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/shots/0/framing",
+          "status": "supported",
+          "reason": "Facade framing tightens toward arched entrance. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/1/framing",
+          "status": "supported",
+          "reason": "Living view tightens toward stone-like fireplace wall. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/2/framing",
+          "status": "supported",
+          "reason": "Kitchen framing widens around island and arched window. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/3/framing",
+          "status": "supported",
+          "reason": "Bedroom framing tightens toward headboard. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/4/framing",
+          "status": "supported",
+          "reason": "Bathroom framing widens from vanity/shower to tub and sloped ceiling. This supports sampled framing changes, not the exact saved camera label."
+        }
+      ]
+    }
+  ]
+}

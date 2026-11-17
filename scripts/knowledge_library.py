@@ -49,6 +49,8 @@ def validate_contract(name, value):
     contract_validator(name).validate(value)
     if name == "release":
         CalendarDate.fromisoformat(value["published_on"])
+    if name == "review":
+        CalendarDate.fromisoformat(value["reviewed_on"])
     if name == "aggregate" and value["numerator"] > value["denominator"]:
         raise ValueError("Aggregate numerator exceeds denominator")
 
@@ -336,6 +338,15 @@ def render_outputs(root, release):
         normalized_all[ident] = normalized
         outputs[f"knowledge/enrichment/{ident}.json"] = dump(normalized)
         outputs[f"knowledge/reference-profiles/{ident}.md"] = profile(refs[ident], normalized, taxonomy, release["release_id"])
+        evidence_path = root / f"knowledge/design-evidence/{ident}.json"
+        if evidence_path.is_file():
+            evidence = json.loads(evidence_path.read_text())
+            state = "Source-bound enrichment" if evidence.get("source") == source else "Older source revision; review/rebuild required"
+            outputs[f"knowledge/reference-profiles/{ident}.md"] += (
+                f"\n## Design relationships and temporal evidence\n\n"
+                f"{state}: [readable evidence](../design-evidence/{ident}.md) · "
+                f"[structured records](../design-evidence/{ident}.json). "
+                "The evidence page states the actual review scope; available samples are not automatically reviewed.\n")
         for row in normalized["mappings"]:
             if row["state"] in ("unmapped", "ambiguous"):
                 key = (row["state"], json.dumps(row["raw"], ensure_ascii=False))

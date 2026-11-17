@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "VID-002",
+    "analysis_path": "references/VID-002/analysis.yaml",
+    "analysis_sha256": "444b8fb3ff97fbef6c05b1d0afc51a83836921b9a5a198017f8ca37acd27df7b",
+    "source_path": "video/dreamsHouse002.mp4",
+    "source_sha256": "86009fb719dd84b699eff378516aca9c25b7e02b80c581a93dca5c1b9a43aaab"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "VID-002.review.storyboard",
+      "source": {
+        "reference_id": "VID-002",
+        "analysis_path": "references/VID-002/analysis.yaml",
+        "analysis_sha256": "444b8fb3ff97fbef6c05b1d0afc51a83836921b9a5a198017f8ca37acd27df7b",
+        "source_path": "video/dreamsHouse002.mp4",
+        "source_sha256": "86009fb719dd84b699eff378516aca9c25b7e02b80c581a93dca5c1b9a43aaab"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/VID-002/storyboard.jpg",
+          "sha256": "50feb53a56cf5502b6fc84d1b3cc93356f78f6858d354cda46db11cb2a5ff2de",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Compact stone-like rectangular volume with flat roof terrace, dark railing and raised wood-toned entry deck. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Bathroom shows blue-gray vanity beside toilet and wood shelves above the toilet; separate bedroom/living cuts do not prove adjacency. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

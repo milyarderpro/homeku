@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh044",
+    "analysis_path": "references/edh044/analysis.yaml",
+    "analysis_sha256": "5c2b81e717692a372d8ad79396165e166780ed4ab39be6c0d16430d4a81222bc",
+    "source_path": "video/edh044.mp4",
+    "source_sha256": "35a28e9d9b65ccf91c78cb0ae63af332c97d74b8112f73d2ef64271b2ce4cea7"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh044.review.storyboard",
+      "source": {
+        "reference_id": "edh044",
+        "analysis_path": "references/edh044/analysis.yaml",
+        "analysis_sha256": "5c2b81e717692a372d8ad79396165e166780ed4ab39be6c0d16430d4a81222bc",
+        "source_path": "video/edh044.mp4",
+        "source_sha256": "35a28e9d9b65ccf91c78cb0ae63af332c97d74b8112f73d2ef64271b2ce4cea7"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh044/storyboard.jpg",
+          "sha256": "7e42b31bf9825a34daca36c075048875b356339bcfcbd201fdd50e0547eb453e",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Steep dark gables, stone-like chimney/facade, arched glazing and snow-like ground. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living fireplace, kitchen and laundry repeat stone/wood visual language; laundry has sink between paired machines in one view. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

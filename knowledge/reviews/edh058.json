@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh058",
+    "analysis_path": "references/edh058/analysis.yaml",
+    "analysis_sha256": "826da275126c120c8770d1e9ca0fcc6f58aebb087c138d5b7aac370d4e45dca9",
+    "source_path": "video/edh058.mp4",
+    "source_sha256": "823be3ce9ee96fc07a6ab263010a09a3d60e72cfcf334ef2fbe5a38e7a550731"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh058.review.storyboard",
+      "source": {
+        "reference_id": "edh058",
+        "analysis_path": "references/edh058/analysis.yaml",
+        "analysis_sha256": "826da275126c120c8770d1e9ca0fcc6f58aebb087c138d5b7aac370d4e45dca9",
+        "source_path": "video/edh058.mp4",
+        "source_sha256": "823be3ce9ee96fc07a6ab263010a09a3d60e72cfcf334ef2fbe5a38e7a550731"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh058/storyboard.jpg",
+          "sha256": "c9ee12bcd621ee02b07aaaab69abe5673767b4d96f8a3dcd6a13887c5d206583",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Small cream cottage appearance, warm tiled gables, black-framed openings and curved garden approach. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living, kitchen and closet are distinct frames; arched openings and greenery recur, without proving their adjacency. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "edh058.review.temporal",
+      "source": {
+        "reference_id": "edh058",
+        "analysis_path": "references/edh058/analysis.yaml",
+        "analysis_sha256": "826da275126c120c8770d1e9ca0fcc6f58aebb087c138d5b7aac370d4e45dca9",
+        "source_path": "video/edh058.mp4",
+        "source_sha256": "823be3ce9ee96fc07a6ab263010a09a3d60e72cfcf334ef2fbe5a38e7a550731"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "Visual review of start/middle/end contact sheets only; not continuous playback or camera-mechanism verification."
+      ],
+      "evidence": [
+        {
+          "path": "knowledge/temporal/edh058/contact.jpg",
+          "sha256": "6d01c8820223ddf5260ba53118708e19fd8775f9d9424df00099ed33d7802f35",
+          "kind": "temporal_contact"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/shots/0/framing",
+          "status": "supported",
+          "reason": "Exterior framing tightens toward entry; trees move out of foreground. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/1/framing",
+          "status": "supported",
+          "reason": "Living view widens from TV niche toward sofa and coffee table. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/2/framing",
+          "status": "supported",
+          "reason": "Kitchen framing tightens toward cooker and hood. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/3/framing",
+          "status": "supported",
+          "reason": "Bedroom framing widens to reveal more of bed and window. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/4/framing",
+          "status": "supported",
+          "reason": "Wardrobe framing tightens toward far window. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/5/framing",
+          "status": "supported",
+          "reason": "Bathroom framing widens from tub/window to vanity and toilet. This supports sampled framing changes, not the exact saved camera label."
+        }
+      ]
+    }
+  ]
+}

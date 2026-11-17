@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh034",
+    "analysis_path": "references/edh034/analysis.yaml",
+    "analysis_sha256": "5a5981da93eb80f81f9c7ab79fcb31f354b7a0e41d9caa3a98c8420dd34762a0",
+    "source_path": "video/edh034.mp4",
+    "source_sha256": "fe3f02b5edb6426328735d797224469f635842fc8328bdc7b17b0f6154b9bfb5"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh034.review.storyboard",
+      "source": {
+        "reference_id": "edh034",
+        "analysis_path": "references/edh034/analysis.yaml",
+        "analysis_sha256": "5a5981da93eb80f81f9c7ab79fcb31f354b7a0e41d9caa3a98c8420dd34762a0",
+        "source_path": "video/edh034.mp4",
+        "source_sha256": "fe3f02b5edb6426328735d797224469f635842fc8328bdc7b17b0f6154b9bfb5"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh034/storyboard.jpg",
+          "sha256": "625bacf253df61f6b5c5eb918694374d10f3c8a1ac55770d8b67c50f63f471ad",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Small pale gabled cottage with stone-like front section, dark frames and palms behind. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Sofa foreground and kitchen island/cabinets appear together; separate bedroom/bath cuts do not establish room adjacency. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

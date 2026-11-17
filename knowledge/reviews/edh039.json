@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh039",
+    "analysis_path": "references/edh039/analysis.yaml",
+    "analysis_sha256": "56be873d39cb4d3e70ad73b727e2f67e3d3a28669bc6803dd45c281b165f9d07",
+    "source_path": "video/edh039.mp4",
+    "source_sha256": "b7812579d5b50b6c8a127caa839ba77b98667caa9bc9214b2b252f3906dbf82d"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh039.review.storyboard",
+      "source": {
+        "reference_id": "edh039",
+        "analysis_path": "references/edh039/analysis.yaml",
+        "analysis_sha256": "56be873d39cb4d3e70ad73b727e2f67e3d3a28669bc6803dd45c281b165f9d07",
+        "source_path": "video/edh039.mp4",
+        "source_sha256": "b7812579d5b50b6c8a127caa839ba77b98667caa9bc9214b2b252f3906dbf82d"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh039/storyboard.jpg",
+          "sha256": "4d3912f2c7bcb42b5893c1a8e0f84e053bb5c8039e4b5744c6eaf9e02a14105b",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Sculptural oval/curved front mass, tall stone-like pier, roof terrace and illuminated entry steps. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Kitchen includes round window; laundry has stacked dark appliances; bathroom has an arched glazed boundary and floating vanity. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

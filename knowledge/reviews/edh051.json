@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh051",
+    "analysis_path": "references/edh051/analysis.yaml",
+    "analysis_sha256": "8f7b8b31fdc09b7241fa1d11efac466efa7117f54a73b69275dbebaa6cc3d2fb",
+    "source_path": "video/edh051.mp4",
+    "source_sha256": "d80262613ab75b59c1b1907e4d37ead14303b791cb37a89f558186257f2f062c"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh051.review.storyboard",
+      "source": {
+        "reference_id": "edh051",
+        "analysis_path": "references/edh051/analysis.yaml",
+        "analysis_sha256": "8f7b8b31fdc09b7241fa1d11efac466efa7117f54a73b69275dbebaa6cc3d2fb",
+        "source_path": "video/edh051.mp4",
+        "source_sha256": "d80262613ab75b59c1b1907e4d37ead14303b791cb37a89f558186257f2f062c"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh051/storyboard.jpg",
+          "sha256": "7c31b208902f7de9573d6286d0c159d6640e2970bf52fa58046683ae1a281b2d",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "White rounded volumes, sweeping balcony/stair form, circular roof canopy and colorful garden. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living has tall curved openings and media/fireplace wall; bathroom places tub below a circular opening. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

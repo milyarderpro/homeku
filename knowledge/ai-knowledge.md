@@ -2,7 +2,7 @@
 
 Pintu masuk untuk mempelajari desain rumah dan bahasa visual home-tour. Ini adalah pustaka pengetahuan; alur kreatif proyek serta prompt generator dikelola plugin atau master prompt.
 
-[Versi pengetahuan dan sumber](release.json) · [Direktori konsep](directories/README.md) · [Semua profil](reference-profiles/README.md) · [Kamus bilingual](taxonomy/README.md) · [Kontrak akses](access-contract.md)
+[Versi pengetahuan dan sumber](release.json) · [Direktori konsep](directories/README.md) · [Semua profil](reference-profiles/README.md) · [Bukti desain](design-evidence/README.md) · [Pola seluruh korpus](corpus-patterns.md) · [Kamus bilingual](taxonomy/README.md) · [Kontrak akses](access-contract.md)
 
 ## Bentuk rumah dan identitas
 
@@ -44,7 +44,7 @@ Semua referensi tersimpan dapat menjadi inspirasi. Confidence mengukur kepastian
 
 Pisahkan pengamatan, agregat yang dihitung, interpretasi dan prinsip desain. Jawab “belum diketahui” untuk fakta sumber yang tidak didukung, sambil tetap membuat keputusan kreatif yang jelas saat merancang konsep baru. Tidak ada syarat verifikasi manual. Pemetaan istilah bersifat leksikal dan tidak menggantikan review visual AI.
 
-Baca [metodologi](methodology.md) dan [indeks contoh bukti](evidence-index.yaml).
+Baca [metodologi](methodology.md), [cakupan bukti seluruh koleksi](design-evidence/README.md) dan [indeks contoh terkurasi](evidence-index.yaml). Review storyboard mencakup ciri terpilih; review temporal hanya diklaim pada sumber yang tercatat. Sampel tersedia tidak otomatis berarti sudah ditinjau.
 
 ## Menelusuri rincian
 

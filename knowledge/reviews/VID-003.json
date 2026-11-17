@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "VID-003",
+    "analysis_path": "references/VID-003/analysis.yaml",
+    "analysis_sha256": "1091621f670de5cc932593e908fa01204de0aaf8214913d44dd7eccf1bf31e10",
+    "source_path": "video/dreamsHouse003.mp4",
+    "source_sha256": "5d8fcdcb82b965b9f171a16a1c510e5814685d6f499370bd3ac5166e200ed75e"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "VID-003.review.storyboard",
+      "source": {
+        "reference_id": "VID-003",
+        "analysis_path": "references/VID-003/analysis.yaml",
+        "analysis_sha256": "1091621f670de5cc932593e908fa01204de0aaf8214913d44dd7eccf1bf31e10",
+        "source_path": "video/dreamsHouse003.mp4",
+        "source_sha256": "5d8fcdcb82b965b9f171a16a1c510e5814685d6f499370bd3ac5166e200ed75e"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/VID-003/storyboard.jpg",
+          "sha256": "02b795251228167f09838ec825ba1238043c2bdce30712e7601a08d78479217e",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Pale porch-front cottage with dark upper gable and stone-like chimney. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Dining table and kitchen share a frame; laundry machines appear side by side in a separate room view. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

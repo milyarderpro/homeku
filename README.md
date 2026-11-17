@@ -8,6 +8,8 @@ A source-grounded library for developing original house concepts and understandi
 | --- | --- |
 | [Concept directories](knowledge/directories/README.md) | Find examples by style, scale, room, configuration, material appearance, lighting or camera |
 | [Reference profiles](knowledge/reference-profiles/README.md) | Read one source at a time and follow shot evidence |
+| [Design and temporal evidence](knowledge/design-evidence/README.md) | Review scope, relations and sampled shot progression for each source |
+| [Corpus patterns](knowledge/corpus-patterns.md) | Counted patterns, counterexamples and diversity |
 | [Bilingual vocabulary](knowledge/taxonomy/README.md) | Understand normalized terms and Indonesian/English aliases |
 | [Knowledge guide](knowledge/README.md) | Browse deeper thematic documents |
 | [Published snapshot](knowledge/release.json) | Identify the sources and revisions supporting this version |

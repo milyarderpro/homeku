@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh057",
+    "analysis_path": "references/edh057/analysis.yaml",
+    "analysis_sha256": "af409f1950d8c600a57552029f226a374d60a051e01671bd3a7152a69cc73f40",
+    "source_path": "video/edh057.mp4",
+    "source_sha256": "601b9b1e8ef333212dc7ca1e1037a4b19fdea0ec83f7afca994b645ef4b7e0e6"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh057.review.storyboard",
+      "source": {
+        "reference_id": "edh057",
+        "analysis_path": "references/edh057/analysis.yaml",
+        "analysis_sha256": "af409f1950d8c600a57552029f226a374d60a051e01671bd3a7152a69cc73f40",
+        "source_path": "video/edh057.mp4",
+        "source_sha256": "601b9b1e8ef333212dc7ca1e1037a4b19fdea0ec83f7afca994b645ef4b7e0e6"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh057/storyboard.jpg",
+          "sha256": "cc342d770b075dcb268ec6cf0470deef5dcda81c2a1c5b5d47067a1d27f6b7c6",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Stone-like gabled cottage with timber-tone door and exterior stair rising at image right. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living includes fireplace, stairs and kitchen glimpsed behind within a shared view; bedroom and bath repeat stone/wood appearance. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

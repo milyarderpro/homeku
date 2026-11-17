@@ -1,6 +1,6 @@
 # Rencana Peningkatan Pengetahuan HOMEKU
 
-Disusun dan diperjelas 17 November 2026. Status: tahap 1 dan 2 sudah diimplementasikan secara lokal; tahap 3–7 belum dijalankan. Uji akses remote terhadap berkas baru menunggu publikasi ke GitHub. Dasar: 57 referensi aktif, 295 shot, dan 6.111 butir detail visual setelah perapian integritas sumber. Kontrak akses: URL repo GitHub menunjuk sumber pengetahuan; konsumen AI dapat membacanya melalui web atau konektor GitHub.
+Disusun dan diperjelas 17 November 2026. Status: tahap 1–5 sudah memiliki implementasi lokal. Tahap 3–5 mencakup seluruh 57 referensi dengan review storyboard terpilih, sampel temporal seluruh shot dan review temporal pada 12 pilot; 45 review temporal serta validasi gerak kontinu masih pending secara eksplisit. Tahap 6–7, termasuk uji konsumsi AI jarak jauh, belum selesai. Uji akses remote terhadap berkas baru menunggu publikasi ke GitHub. Dasar: 57 referensi aktif, 295 shot, dan 6.111 butir detail visual setelah perapian integritas sumber. Kontrak akses: URL repo GitHub menunjuk sumber pengetahuan; konsumen AI dapat membacanya melalui web atau konektor GitHub.
 
 **Kemajuan tahap 1–2**
 
@@ -12,6 +12,17 @@ Disusun dan diperjelas 17 November 2026. Status: tahap 1 dan 2 sudah diimplement
 - Penyimpanan paralel memperbarui inventaris setelah rebase tanpa menerbitkan pengetahuan baru.
 - Pengujian lokal meliputi pertumbuhan arsip, koreksi anotasi, sumber hilang, snapshot/kamus immutable, pemetaan dan penyimpanan paralel. Smoke test web dan konektor untuk konten baru belum dijalankan karena perubahan belum dipush.
 - Rincian pemakaian dan hasil tersedia di [pemeliharaan](knowledge-maintenance.md) dan [laporan tahap 1–2](stage-1-2-report.md).
+
+**Kemajuan tahap 3–5**
+
+- Bank 40 kasus dibekukan sebelum pengayaan: 24 development, 16 heldout. Baseline dan hasil terkini lulus 26/26 cek lokal; 14 jawaban acuan tidak diberi skor model konsumen.
+- Dua belas pilot mencakup 59 shot. Review AI terikat hash sumber dan media, dengan cakupan yang tercatat serta versi build model null karena tidak tersedia.
+- Seluruh 57 storyboard mendapat review ciri terpilih. Tersedia 885 sampel temporal untuk 295 shot; 12 sumber ditinjau pada sampel temporal, 45 lainnya diberi alasan pending.
+- Paket bukti berisi 3.123 observasi dan 1.826 relasi literal yang menelusuri pointer anotasi. Koordinat dunia, denah dan adjacency lintas cut tidak ditebak.
+- Agregat dan laporan keragaman menyertakan definisi, denominator, pendukung dan pengecualian. Tema desain terhubung ke sintesis seluruh korpus.
+- Pemeriksaan kemiripan 62 video pada 900 sampel menghasilkan nol kandidat menurut ambang terlapor; tidak dianggap bukti bebas overlap dan tidak menghapus sumber.
+- Tidak ada koreksi anotasi/video asli yang dipaksakan. Perbedaan alias scene disimpan sebagai discrepancy, bukan salah fakta yang sudah terbukti.
+- Rincian cakupan, batas review dan langkah berikutnya: [laporan tahap 3–5](stage-3-5-report.md).
 
 **Tujuan**
 
@@ -46,7 +57,7 @@ Pengetahuan harus cukup kaya untuk mendukung seluruh rentang dari konsep rumah s
 Indeks JSON/YAML/JSONL membantu pemeliharaan dan konsumen yang mendukungnya, tetapi pengetahuan penting tetap tersedia sebagai Markdown. Mesin pencarian semantik, embedding, database vektor dan API tidak menjadi prasyarat rencana ini.
 
 
-**Kondisi awal**
+**Kondisi awal sebelum implementasi tahap 1–5**
 
 | Bagian | Kondisi |
 | --- | --- |
@@ -105,6 +116,8 @@ Selesai ketika: setiap label terpetakan atau masuk daftar ambigu yang terlihat j
 
 **Tahap 3 — Tetapkan evaluasi awal dan tinjau kelompok percontohan**
 
+Status: format review dan baseline sudah diterapkan. Review baru mencakup storyboard terpilih dan sampel temporal pilot; tidak mengklaim validasi ulang semua gerak sepanjang shot.
+
 Tujuan: membuktikan format baru meningkatkan mutu sebelum diterapkan ke seluruh koleksi.
 
 Mulai dengan sekitar 10–15 referensi yang mewakili keluarga gaya, skala, konfigurasi, lingkungan, dan tingkat kesulitan berbeda. Jumlah ini usulan awal; pilihan final mengikuti hasil inventaris dan kamus. Jangan hanya memilih sumber yang paling kaya anotasinya.
@@ -123,6 +136,8 @@ Hasil: kelompok percontohan yang ditinjau, catatan perbedaan, contoh bukti terst
 Selesai ketika: format menangani kasus benar, salah, ambigu dan unknown; review AI tercatat tanpa menciptakan kepastian baru yang tidak didukung sumber.
 
 **Tahap 4 — Perkaya hubungan desain dan bukti temporal**
+
+Status: relasi literal, inventaris mention, koordinat pandangan, pemisahan framing/kamera/objek/transisi dan sampel temporal sudah tersedia untuk semua shot; geometri yang tidak terbukti tetap unknown.
 
 Tujuan: pengetahuan menjelaskan susunan dan perubahan visual, bukan hanya daftar objek.
 
@@ -144,6 +159,8 @@ Hasil: data relasi dan bukti temporal yang dapat dirujuk per shot. Ini adalah de
 Selesai ketika: pertanyaan relasi dapat dijawab dengan bukti atau unknown, dan perubahan sudut pandang tidak menghasilkan klaim posisi yang saling bertentangan.
 
 **Tahap 5 — Perluas cakupan dan perbarui sintesis**
+
+Status: seluruh referensi memiliki paket bukti dan laporan cakupan. Review temporal 45 sumber ditunda dengan alasan eksplisit. Agregat, keragaman, kemiripan dan sintesis korpus sudah tersedia.
 
 Tujuan: pengetahuan mewakili seluruh koleksi dan tidak terus bergantung pada sedikit contoh.
 
@@ -212,18 +229,21 @@ Setiap rilis pengetahuan mencatat versi skema/kamus, daftar sumber dan revisinya
 
 Selesai ketika: build dapat diulang, perubahan dapat dibandingkan dengan versi sebelumnya, dan penurunan mutu terdeteksi sebelum indeks baru dipakai konsumen.
 
-**Struktur tambahan yang diusulkan**
+**Struktur implementasi dan kelanjutan**
 
-Nama berikut adalah usulan, belum merupakan file yang tersedia:
+Struktur tahap 1–5 yang sudah tersedia:
 - schemas/: kontrak observasi, review, relasi dan versi pengetahuan.
 - knowledge/taxonomy/: kamus dan alias.
 - knowledge/reference-profiles/<reference_id>.md: profil per sumber.
-- knowledge/enrichment/<reference_id>.yaml: normalisasi dan hubungan yang ditautkan ke sumber.
-- knowledge/reviews/<reference_id>.yaml: catatan review dengan cakupan dan revisi.
-- knowledge/evidence/: record bukti dengan ID stabil.
+- knowledge/enrichment/<reference_id>.json: normalisasi yang ditautkan ke sumber.
+- knowledge/design-evidence/<reference_id>.json dan .md: observasi, relasi, mention dan bukti shot.
+- knowledge/temporal/<reference_id>/: indeks timestamp, frame sampel dan contact sheet.
+- knowledge/reviews/<reference_id>.json: catatan review dengan cakupan dan revisi.
+- knowledge/aggregates.json, diversity.json dan corpus-patterns.md: hitungan dan sintesis.
+- knowledge/similarity/: kandidat kemiripan dan sampel arsip.
 - knowledge/ai-knowledge.md: paket inti Markdown yang sama untuk akses web dan konektor GitHub.
 - knowledge/directories/: direktori Markdown menurut tema/gaya/ruang.
-- knowledge/indexes/: indeks terstruktur pendamping yang dihasilkan otomatis; bukan prasyarat akses.
+- Indeks pendamping tahap 6 hanya ditambah bila diperlukan; bukan prasyarat akses.
 - knowledge/releases/: manifest versi pengetahuan.
 - evaluations/: pertanyaan acuan dan laporan evaluasi; dikecualikan dari korpus pengetahuan.
 

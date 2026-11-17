@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "VID-009",
+    "analysis_path": "references/VID-009/analysis.yaml",
+    "analysis_sha256": "1d51ad42f004de49a726049df41bfadb5facbedc2a17829dde585766321387f3",
+    "source_path": "video/edh006.mp4",
+    "source_sha256": "6d109c8d5c1ae3e6a16655e6adb73efc00c27d67157658ebf699d10f77130cc4"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "VID-009.review.storyboard",
+      "source": {
+        "reference_id": "VID-009",
+        "analysis_path": "references/VID-009/analysis.yaml",
+        "analysis_sha256": "1d51ad42f004de49a726049df41bfadb5facbedc2a17829dde585766321387f3",
+        "source_path": "video/edh006.mp4",
+        "source_sha256": "6d109c8d5c1ae3e6a16655e6adb73efc00c27d67157658ebf699d10f77130cc4"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/VID-009/storyboard.jpg",
+          "sha256": "be069968ad916560dca2de99f9770d331dabab5fe833fbb78f995a2ff99666ea",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Tall curved white volumes with exterior sweeping stair and several terraces against mountain-like backdrop. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living includes an upper gallery and interior staircase; kitchen has a dark island and wood-toned cabinetry. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

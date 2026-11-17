@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh055",
+    "analysis_path": "references/edh055/analysis.yaml",
+    "analysis_sha256": "b39d2377f397fa2380342c1291af0382bc7d1bb6f9e47a9b8a6ae7bcc8cf0368",
+    "source_path": "video/edh055.mp4",
+    "source_sha256": "41c27f0131cb6bafb886ce5797bb874086010c35ebb1cb407868fcfb130c64ce"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh055.review.storyboard",
+      "source": {
+        "reference_id": "edh055",
+        "analysis_path": "references/edh055/analysis.yaml",
+        "analysis_sha256": "b39d2377f397fa2380342c1291af0382bc7d1bb6f9e47a9b8a6ae7bcc8cf0368",
+        "source_path": "video/edh055.mp4",
+        "source_sha256": "41c27f0131cb6bafb886ce5797bb874086010c35ebb1cb407868fcfb130c64ce"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh055/storyboard.jpg",
+          "sha256": "8183d8eb30dd9f3116cc79843675f98314204ec86d21b001c41fd8871c82e2b8",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Low pale villa-like facade with broad warm/dark roof planes, raised entry and palms. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living has media cabinetry and seating; bedroom has large dark-framed glazing, while closet and bathroom appear separately. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

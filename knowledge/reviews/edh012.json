@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh012",
+    "analysis_path": "references/edh012/analysis.yaml",
+    "analysis_sha256": "fd42f35493c3f3aa85609d9ab102779bf9800a2c428558ea04dcc435fa50f5be",
+    "source_path": "video/edh012.mp4",
+    "source_sha256": "6caa5d0660e46522e58941b5a539961d27590bc121fc875b6f6ee88295d2046c"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh012.review.storyboard",
+      "source": {
+        "reference_id": "edh012",
+        "analysis_path": "references/edh012/analysis.yaml",
+        "analysis_sha256": "fd42f35493c3f3aa85609d9ab102779bf9800a2c428558ea04dcc435fa50f5be",
+        "source_path": "video/edh012.mp4",
+        "source_sha256": "6caa5d0660e46522e58941b5a539961d27590bc121fc875b6f6ee88295d2046c"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh012/storyboard.jpg",
+          "sha256": "cc9d3fa515ac3ea9914fdc52260cea20940dca9a418440c6ee2cab520f2c5554",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Pale rectilinear stepped volumes with a tall stone-like chimney/pier and dark roof trims. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living and bedroom emphasize large black-framed windows; bathroom shows a round mirror above the basin. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

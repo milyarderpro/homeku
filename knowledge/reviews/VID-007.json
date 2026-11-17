@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "VID-007",
+    "analysis_path": "references/VID-007/analysis.yaml",
+    "analysis_sha256": "f6e52472eb636b669f0e65960eb605101217ebebb54f40c0afcec7b4f007e9ff",
+    "source_path": "video/edh014.mp4",
+    "source_sha256": "dfbac92d9b352872fcaeb9ede1c6cb774b60eb17ef9d2cb9ae19aab4df0ef0f4"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "VID-007.review.storyboard",
+      "source": {
+        "reference_id": "VID-007",
+        "analysis_path": "references/VID-007/analysis.yaml",
+        "analysis_sha256": "f6e52472eb636b669f0e65960eb605101217ebebb54f40c0afcec7b4f007e9ff",
+        "source_path": "video/edh014.mp4",
+        "source_sha256": "dfbac92d9b352872fcaeb9ede1c6cb774b60eb17ef9d2cb9ae19aab4df0ef0f4"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/VID-007/storyboard.jpg",
+          "sha256": "41f4b11092df44ff31215b873cd160ac025f6dc751e7e220efc6c9e309ab289e",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Two-level pale facade with warm tiled gables, upper balcony and flowered approach. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living frame clearly contains tall glazing and an upper gallery; bath sits below a window in its own view. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

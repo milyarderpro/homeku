@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh030",
+    "analysis_path": "references/edh030/analysis.yaml",
+    "analysis_sha256": "ec292dcd22c377cdb9f430d3ec1e65ffbded6490745e5ac3e32f41db51a7bf29",
+    "source_path": "video/edh030.mp4",
+    "source_sha256": "2af60b409e3643dadc01f23d82e4fe0d020de46afef263d5a741c6be1bbbc11f"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh030.review.storyboard",
+      "source": {
+        "reference_id": "edh030",
+        "analysis_path": "references/edh030/analysis.yaml",
+        "analysis_sha256": "ec292dcd22c377cdb9f430d3ec1e65ffbded6490745e5ac3e32f41db51a7bf29",
+        "source_path": "video/edh030.mp4",
+        "source_sha256": "2af60b409e3643dadc01f23d82e4fe0d020de46afef263d5a741c6be1bbbc11f"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh030/storyboard.jpg",
+          "sha256": "cc8752f1c1273b11367d49f971e42c13f9247d01adbe0301706791c3340295a5",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Cream stucco-like cottage with warm tiled sloping roofs, arched entry and a tree-framed garden path. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Sofa and kitchen island share one frame; laundry machines sit beneath a wood-framed window. Do not mistake the kitchen cooking surround for a proven fireplace. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

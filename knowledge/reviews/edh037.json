@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh037",
+    "analysis_path": "references/edh037/analysis.yaml",
+    "analysis_sha256": "30d116e614fd61df136df17208cfc04543e8be7eb88ece6d96adb84d771ecc8b",
+    "source_path": "video/edh037.mp4",
+    "source_sha256": "0dc13686fb2f28442de709d81c24526b7b43799658f503c409d50b82ae0806af"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh037.review.storyboard",
+      "source": {
+        "reference_id": "edh037",
+        "analysis_path": "references/edh037/analysis.yaml",
+        "analysis_sha256": "30d116e614fd61df136df17208cfc04543e8be7eb88ece6d96adb84d771ecc8b",
+        "source_path": "video/edh037.mp4",
+        "source_sha256": "0dc13686fb2f28442de709d81c24526b7b43799658f503c409d50b82ae0806af"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh037/storyboard.jpg",
+          "sha256": "caf55b41580b8f9242734f27a32ef792cf5d3917ee68fd3e58653d74e374c01f",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Two-level pale facade with rounded terraces, dark roof plane and snow-like ground; palm-like foliage is also visible. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living includes stairs, fireplace/media wall and high glazing; mixed vegetation/snow appearances do not verify geographic climate. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh031",
+    "analysis_path": "references/edh031/analysis.yaml",
+    "analysis_sha256": "14511c3de62fabee4c9b53f2756d5e8edc3c08077831db70f05ad036e8cbf517",
+    "source_path": "video/edh031.mp4",
+    "source_sha256": "278f65a06e84a55a0a1ac9712a3c1bbe5fc867c59cabd513056a29f08edb53c9"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh031.review.storyboard",
+      "source": {
+        "reference_id": "edh031",
+        "analysis_path": "references/edh031/analysis.yaml",
+        "analysis_sha256": "14511c3de62fabee4c9b53f2756d5e8edc3c08077831db70f05ad036e8cbf517",
+        "source_path": "video/edh031.mp4",
+        "source_sha256": "278f65a06e84a55a0a1ac9712a3c1bbe5fc867c59cabd513056a29f08edb53c9"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh031/storyboard.jpg",
+          "sha256": "984e0d039a59e56cb1e5f52e1c751c396bd8259c7222aa7c3408c715fe327c8a",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "White two-level volume with rounded upper balcony, wood-toned soffits and dark horizontal railings. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "The annotated first shot spans exterior/living while its saved frame emphasizes exterior; kitchen shows nearby stairs. Temporal evidence is required for the transition. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

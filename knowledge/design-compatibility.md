@@ -26,3 +26,9 @@ These are **INFERENCES / DESIGN PRINCIPLES**, not recorded laws or proven associ
 Multiple reference IDs mean **multiple inspirations**, not evidence of one existing hybrid house. Compatibility depends on a newly established structural story; it cannot be inferred by concatenating three style names. When observations conflict, preserve their source identity and write an explicit new synthesis instead of changing the factual claim.
 
 A strong hybrid feels like a distinct coherent house, not a collage of identifiable facade sections from different source videos.
+
+## Corpus-linked enrichment
+
+Compatibility is a design principle for a new concept. Use mass, opening geometry, proportions, light and window-world cues coherently; mixing references does not prove a composite source house exists.
+
+See [counted patterns and diversity](corpus-patterns.md) and [source-bound design evidence](design-evidence/README.md). Counts describe published video references; content independence and physical-house identity are not established by unique file hashes.

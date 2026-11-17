@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "VID-004",
+    "analysis_path": "references/VID-004/analysis.yaml",
+    "analysis_sha256": "0c863b3bb7796f40585d46334a4fd5711d62f7768ea5107f595b1362b26840a4",
+    "source_path": "video/edh001.mp4",
+    "source_sha256": "3ccf8acf75ca46922025d39b3198e3cf460f9cb3c96c4dc670be0fa2d23c0de8"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "VID-004.review.storyboard",
+      "source": {
+        "reference_id": "VID-004",
+        "analysis_path": "references/VID-004/analysis.yaml",
+        "analysis_sha256": "0c863b3bb7796f40585d46334a4fd5711d62f7768ea5107f595b1362b26840a4",
+        "source_path": "video/edh001.mp4",
+        "source_sha256": "3ccf8acf75ca46922025d39b3198e3cf460f9cb3c96c4dc670be0fa2d23c0de8"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/VID-004/storyboard.jpg",
+          "sha256": "95145ed232e175a5d72a64278454658da7affb61275aae7f3daeefb4d9c1e2ed",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Rounded light masonry-like facade, curved dark roof edges and snow-like ground. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Bathroom/laundry frame shows shower and stacked washer/dryer in one view; room adjacency elsewhere remains unknown. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    },
+    {
+      "schema_version": "1.0",
+      "id": "VID-004.review.temporal",
+      "source": {
+        "reference_id": "VID-004",
+        "analysis_path": "references/VID-004/analysis.yaml",
+        "analysis_sha256": "0c863b3bb7796f40585d46334a4fd5711d62f7768ea5107f595b1362b26840a4",
+        "source_path": "video/edh001.mp4",
+        "source_sha256": "3ccf8acf75ca46922025d39b3198e3cf460f9cb3c96c4dc670be0fa2d23c0de8"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "Visual review of start/middle/end contact sheets only; not continuous playback or camera-mechanism verification."
+      ],
+      "evidence": [
+        {
+          "path": "knowledge/temporal/VID-004/contact.jpg",
+          "sha256": "220a6b9cdaa318580876ec84f034a3fbc14fd17acd1b9377a4108827cbf108a1",
+          "kind": "temporal_contact"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/shots/0/framing",
+          "status": "supported",
+          "reason": "Exterior framing tightens toward dark entry under curved canopy. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/1/framing",
+          "status": "supported",
+          "reason": "Living framing widens toward curved glazing and sectional. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/2/framing",
+          "status": "supported",
+          "reason": "Kitchen view changes toward refrigerator and cabinetry. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/3/framing",
+          "status": "supported",
+          "reason": "Bedroom framing widens around bed and round window. This supports sampled framing changes, not the exact saved camera label."
+        },
+        {
+          "field_path": "/shots/4/framing",
+          "status": "supported",
+          "reason": "Bathroom samples shift toward round window, shower and stacked laundry. This supports sampled framing changes, not the exact saved camera label."
+        }
+      ]
+    }
+  ]
+}

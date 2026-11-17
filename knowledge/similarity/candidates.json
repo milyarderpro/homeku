@@ -1,0 +1,395 @@
+{
+  "schema_version": "1.0",
+  "method": "content_crop_dhash64_greedy_unique_matches_v1",
+  "release_id": "2026-11-17-stage-3-5",
+  "thresholds": {
+    "max_hamming_distance": 6,
+    "minimum_unique_matches": 2,
+    "minimum_grayscale_contrast": 12
+  },
+  "video_count": 62,
+  "sample_count": 900,
+  "source_inventory": [
+    {
+      "id": "VID-002",
+      "source_path": "video/dreamsHouse002.mp4",
+      "source_sha256": "86009fb719dd84b699eff378516aca9c25b7e02b80c581a93dca5c1b9a43aaab",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "VID-003",
+      "source_path": "video/dreamsHouse003.mp4",
+      "source_sha256": "5d8fcdcb82b965b9f171a16a1c510e5814685d6f499370bd3ac5166e200ed75e",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "VID-001",
+      "source_path": "video/dreamshome01.mp4",
+      "source_sha256": "8c758281d12053bc0f6150cb163e0d103f704240f366b6dd95c97cd5a4a6a80d",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "VID-004",
+      "source_path": "video/edh001.mp4",
+      "source_sha256": "3ccf8acf75ca46922025d39b3198e3cf460f9cb3c96c4dc670be0fa2d23c0de8",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "VID-005",
+      "source_path": "video/edh002.mp4",
+      "source_sha256": "3be6a6e1e75804ccd2038be5b92120aee3369c80af84c89f86f671e143d0f02f",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "VID-006",
+      "source_path": "video/edh003.mp4",
+      "source_sha256": "2f46cea39f65283276a11ba43f32de7cf14c5054d05d9bde5c4ee999e778f176",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "archive-edh004",
+      "source_path": "video/edh004.mp4",
+      "source_sha256": "4c5172796bfca9b4680fc5ddf9da0868855371bd5c20784bc467ca51d2166d6f",
+      "sampling": "three_uniform_interior_timestamps"
+    },
+    {
+      "id": "VID-008",
+      "source_path": "video/edh005.mp4",
+      "source_sha256": "6d4a8fe50229a94f3dec83deee6da09486c60c3c30a823500b7101c905506618",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "VID-009",
+      "source_path": "video/edh006.mp4",
+      "source_sha256": "6d109c8d5c1ae3e6a16655e6adb73efc00c27d67157658ebf699d10f77130cc4",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "archive-edh007",
+      "source_path": "video/edh007.mp4",
+      "source_sha256": "e1b7f418086abbe256a0537cd7e55a314d85c770b7793ff0a709559078b5bcd5",
+      "sampling": "three_uniform_interior_timestamps"
+    },
+    {
+      "id": "archive-edh008",
+      "source_path": "video/edh008.mp4",
+      "source_sha256": "3f620caf278df8b9a392b66d998e5123ee8c6032fa1b6919c11da4c65327f185",
+      "sampling": "three_uniform_interior_timestamps"
+    },
+    {
+      "id": "archive-edh009",
+      "source_path": "video/edh009.mp4",
+      "source_sha256": "a2921c4aa1171ca30d7e0c3805369921671cd677c09f57ddccef9769ed1dfdfd",
+      "sampling": "three_uniform_interior_timestamps"
+    },
+    {
+      "id": "VID-010",
+      "source_path": "video/edh010.mp4",
+      "source_sha256": "114235ad921653a2fad2446dd69947d67ea5dc530b39417657e9243dde9417d2",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh011",
+      "source_path": "video/edh011.mp4",
+      "source_sha256": "9fdfe6346d4365bc906b042f77b11e8531c8fa15f02f9686b0c45547fcda43e7",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh012",
+      "source_path": "video/edh012.mp4",
+      "source_sha256": "6caa5d0660e46522e58941b5a539961d27590bc121fc875b6f6ee88295d2046c",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh013",
+      "source_path": "video/edh013.mp4",
+      "source_sha256": "4b921b4f7b5dbdad3b05862dd754515c5effb74f613a04bdee4878909a3cc1eb",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "VID-007",
+      "source_path": "video/edh014.mp4",
+      "source_sha256": "dfbac92d9b352872fcaeb9ede1c6cb774b60eb17ef9d2cb9ae19aab4df0ef0f4",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh015",
+      "source_path": "video/edh015.mp4",
+      "source_sha256": "4ef34959d600806a478cb78f9a64dfcc0d108663a0d6624c62846641a3bc6cac",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh016",
+      "source_path": "video/edh016.mp4",
+      "source_sha256": "454321dd3b0db81fb0e9ee0d2d788c2acf3b316add28df034e2e3e97efdd559b",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh017",
+      "source_path": "video/edh017.mp4",
+      "source_sha256": "d315b7dbbbbfd051f69238b63ff35ca94a9ca40d4ad4c64d7b383a6a20a921ab",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh018",
+      "source_path": "video/edh018.mp4",
+      "source_sha256": "2cc280b303b4dc1dfb284c624aba3681cef862dceb8068702f808de8fcaf8dca",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh019",
+      "source_path": "video/edh019.mp4",
+      "source_sha256": "a4147f9013c31dd35d38d161bbd881628c88cd6ca1b3926b6e4af9399330c97a",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh020",
+      "source_path": "video/edh020.mp4",
+      "source_sha256": "872f1560571053840f9cac780ab20468ef1f5919a55ed0b226a27ad2e08a6ecf",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh021",
+      "source_path": "video/edh021.mp4",
+      "source_sha256": "03eecf4ecf7b7cb8b2b13751b44c144bac71d90fc2c24179523806c4b62f75dc",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh022",
+      "source_path": "video/edh022.mp4",
+      "source_sha256": "1b0fa02140fab19bb1df5239d1d0a3473448690fe8b6a1897e4951764bf53f05",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh023",
+      "source_path": "video/edh023.mp4",
+      "source_sha256": "533b65eb10fddf1a3beb1938b8a81f6eea651adc52cdd1b392f1e9da60db8ac1",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh024",
+      "source_path": "video/edh024.mp4",
+      "source_sha256": "b74bf27e79c612202d42362e59acf18b6dc05614968d1618d1c64748fb72bea6",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh025",
+      "source_path": "video/edh025.mp4",
+      "source_sha256": "9db5e38e55fc21735dbe63d8aff7fe7181229dab155d2a02cf8cbf8b69f6313a",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh027",
+      "source_path": "video/edh027.mp4",
+      "source_sha256": "bb87ba3a1006245e157e2fee6d15e28edd7c72ede54a2647827db36ff06df0af",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "archive-edh028",
+      "source_path": "video/edh028.mp4",
+      "source_sha256": "85ffe514fae678d8811197c833fb4a18a42a1eb1ecc1852e3a193b6b88c6d313",
+      "sampling": "three_uniform_interior_timestamps"
+    },
+    {
+      "id": "edh029",
+      "source_path": "video/edh029.mp4",
+      "source_sha256": "9edd30d76492e4f0470b15a3ff4c03abd5f5d0be426aa45cb83e5c2d16b0db6c",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh030",
+      "source_path": "video/edh030.mp4",
+      "source_sha256": "2af60b409e3643dadc01f23d82e4fe0d020de46afef263d5a741c6be1bbbc11f",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh031",
+      "source_path": "video/edh031.mp4",
+      "source_sha256": "278f65a06e84a55a0a1ac9712a3c1bbe5fc867c59cabd513056a29f08edb53c9",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh032",
+      "source_path": "video/edh032.mp4",
+      "source_sha256": "2dce2df9dca393bd04f76051d250255a1416c1adff731ca9af9ea4d21db77ad1",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh033",
+      "source_path": "video/edh033.mp4",
+      "source_sha256": "32e3bf82d23fd1b0aa8b7e3ec2c4d9b3e3b5af64322dc97d64b67ea49ea88f6c",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh034",
+      "source_path": "video/edh034.mp4",
+      "source_sha256": "fe3f02b5edb6426328735d797224469f635842fc8328bdc7b17b0f6154b9bfb5",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh035",
+      "source_path": "video/edh035.mp4",
+      "source_sha256": "093d4a5052d14960e185c0fc3fedd08ce81e1eb5755de3e806bcbf358e75ac83",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh036",
+      "source_path": "video/edh036.mp4",
+      "source_sha256": "0fcf82b922948925f2eae59bbf4613155391ede13a0f78a0bd55b76919bf1c15",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh037",
+      "source_path": "video/edh037.mp4",
+      "source_sha256": "0dc13686fb2f28442de709d81c24526b7b43799658f503c409d50b82ae0806af",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh038",
+      "source_path": "video/edh038.mp4",
+      "source_sha256": "1c0a4a20bd7df1880c01cab36dfd221e52a422b5928e87ff9b4d322f3209e018",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh039",
+      "source_path": "video/edh039.mp4",
+      "source_sha256": "b7812579d5b50b6c8a127caa839ba77b98667caa9bc9214b2b252f3906dbf82d",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh040",
+      "source_path": "video/edh040.mp4",
+      "source_sha256": "63dc69a219eeb51324f3c4d9aeed50db51f362d56d9b760c940df8f54c4a0f98",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh041",
+      "source_path": "video/edh041.mp4",
+      "source_sha256": "2599b8097f751c9902e3fde0ee89a39c3f4727b2a379ace1dbaaeb4eeaafb0e9",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh042",
+      "source_path": "video/edh042.mp4",
+      "source_sha256": "f47b74e26999bcf1dbb09bf7545be75e7ccb8597c735aa271792f30015224917",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh043",
+      "source_path": "video/edh043.mp4",
+      "source_sha256": "a7fb9908148819c815e1b7e439761cb58f1bb0d761454f3b7c4fb855c01638cd",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh044",
+      "source_path": "video/edh044.mp4",
+      "source_sha256": "35a28e9d9b65ccf91c78cb0ae63af332c97d74b8112f73d2ef64271b2ce4cea7",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh045",
+      "source_path": "video/edh045.mp4",
+      "source_sha256": "1474d735ca8b8519749cc555c42e15f172f3d1ab2324f3cf34a8e7c22f14c86c",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh046",
+      "source_path": "video/edh046.mp4",
+      "source_sha256": "a8b950f4e043f357101d8f3bdd3dbab21a6d3d90b67a050e1ec2f413329c0ce0",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh047",
+      "source_path": "video/edh047.mp4",
+      "source_sha256": "95f52324e79ed56197d6f8637fd1b41228e96a70e2de12f4f5bb389245a9d5fa",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh048",
+      "source_path": "video/edh048.mp4",
+      "source_sha256": "d70047130b4322a9ba2957d990d7ac628339b1be7c19c723c28621101910d800",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh049",
+      "source_path": "video/edh049.mp4",
+      "source_sha256": "6fd4ad23b08cba44e74e5ae2e8cf9cdeb78247b483d308b3cb231a5d96bb4f7e",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh050",
+      "source_path": "video/edh050.mp4",
+      "source_sha256": "bb575892f3053f0b166cf4f137551d84184ec7d153bba2f382505ba1c21a6b5c",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh051",
+      "source_path": "video/edh051.mp4",
+      "source_sha256": "d80262613ab75b59c1b1907e4d37ead14303b791cb37a89f558186257f2f062c",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh052",
+      "source_path": "video/edh052.mp4",
+      "source_sha256": "3096e6a8b2d3a63734713dfb3a6d464cda40f82b7b4fcec244ae340fa53d10ac",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh053",
+      "source_path": "video/edh053.mp4",
+      "source_sha256": "3c1ea0ae24ac7c3e38f1cb6b8bf07180a11750f44039be31490b0c81fa91b973",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh054",
+      "source_path": "video/edh054.mp4",
+      "source_sha256": "4a2cc664ed2f02873875dde4f1beaf65d76027e535a7d792fb8a3a6856aee1e7",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh055",
+      "source_path": "video/edh055.mp4",
+      "source_sha256": "41c27f0131cb6bafb886ce5797bb874086010c35ebb1cb407868fcfb130c64ce",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh056",
+      "source_path": "video/edh056.mp4",
+      "source_sha256": "8a7ea6c7a49959ae4a7c7bc393490698639a3bcdf414897524274e0ff59e279d",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh057",
+      "source_path": "video/edh057.mp4",
+      "source_sha256": "601b9b1e8ef333212dc7ca1e1037a4b19fdea0ec83f7afca994b645ef4b7e0e6",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh058",
+      "source_path": "video/edh058.mp4",
+      "source_sha256": "823be3ce9ee96fc07a6ab263010a09a3d60e72cfcf334ef2fbe5a38e7a550731",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh059",
+      "source_path": "video/edh059.mp4",
+      "source_sha256": "f46097ba18975612f2cfe26de83669a34f3316f882e68d6ff70141350d575e5c",
+      "sampling": "three_per_annotated_shot"
+    },
+    {
+      "id": "edh060",
+      "source_path": "video/edh060.mp4",
+      "source_sha256": "67602db6c9e59ab68561760c23892ea2db2c47bfc5746d1c3299e574f8bdd9dd",
+      "sampling": "three_per_annotated_shot"
+    }
+  ],
+  "compared_video_pairs": 1891,
+  "candidate_count": 0,
+  "candidates": [],
+  "limitations": [
+    "Candidate screen only, not a calibrated duplicate classifier.",
+    "Similar compositions may yield false positives; crops, heavy edits and unsampled content may be missed.",
+    "Three uniform samples on unannotated videos have lower coverage than annotated videos.",
+    "No automatic deletion, merging, count adjustment or claim of independent houses."
+  ]
+}

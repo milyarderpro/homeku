@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh053",
+    "analysis_path": "references/edh053/analysis.yaml",
+    "analysis_sha256": "9cc8a25141d11032d97667471259dc9b521762e039a2005e6c360af30c0f1efc",
+    "source_path": "video/edh053.mp4",
+    "source_sha256": "3c1ea0ae24ac7c3e38f1cb6b8bf07180a11750f44039be31490b0c81fa91b973"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh053.review.storyboard",
+      "source": {
+        "reference_id": "edh053",
+        "analysis_path": "references/edh053/analysis.yaml",
+        "analysis_sha256": "9cc8a25141d11032d97667471259dc9b521762e039a2005e6c360af30c0f1efc",
+        "source_path": "video/edh053.mp4",
+        "source_sha256": "3c1ea0ae24ac7c3e38f1cb6b8bf07180a11750f44039be31490b0c81fa91b973"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh053/storyboard.jpg",
+          "sha256": "26a7d9935b2a20029ff2f64a40db3b147641b116bc4c4e4055bedbe669063812",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Pale two-level villa-like volume with warm tiled roof, curved balcony and dark arched glazing. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living has high ceiling/gallery and fireplace; kitchen island and bedroom skylight appear in separate views. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

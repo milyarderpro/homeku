@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh049",
+    "analysis_path": "references/edh049/analysis.yaml",
+    "analysis_sha256": "953c0248eb27b5888b7ff3354f8c4a874f47a003c68783895514296d8263415e",
+    "source_path": "video/edh049.mp4",
+    "source_sha256": "6fd4ad23b08cba44e74e5ae2e8cf9cdeb78247b483d308b3cb231a5d96bb4f7e"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh049.review.storyboard",
+      "source": {
+        "reference_id": "edh049",
+        "analysis_path": "references/edh049/analysis.yaml",
+        "analysis_sha256": "953c0248eb27b5888b7ff3354f8c4a874f47a003c68783895514296d8263415e",
+        "source_path": "video/edh049.mp4",
+        "source_sha256": "6fd4ad23b08cba44e74e5ae2e8cf9cdeb78247b483d308b3cb231a5d96bb4f7e"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh049/storyboard.jpg",
+          "sha256": "beb44d09a8d5b6f251fe901b61269f95402eb729033365757871b8b1ea89ff53",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Rounded stone-like two-level volume with glazed curved frontage, terrace and external stairs. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Kitchen includes curved counter in tall glazed space; bedroom and bath use arch/vault language. No separate living shot is supplied. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

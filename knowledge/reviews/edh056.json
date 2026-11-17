@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh056",
+    "analysis_path": "references/edh056/analysis.yaml",
+    "analysis_sha256": "9eff31b4eeb05c8e0dc8cc25eb87f20d98c1125fa04cfcb671d1a95f0e908043",
+    "source_path": "video/edh056.mp4",
+    "source_sha256": "8a7ea6c7a49959ae4a7c7bc393490698639a3bcdf414897524274e0ff59e279d"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh056.review.storyboard",
+      "source": {
+        "reference_id": "edh056",
+        "analysis_path": "references/edh056/analysis.yaml",
+        "analysis_sha256": "9eff31b4eeb05c8e0dc8cc25eb87f20d98c1125fa04cfcb671d1a95f0e908043",
+        "source_path": "video/edh056.mp4",
+        "source_sha256": "8a7ea6c7a49959ae4a7c7bc393490698639a3bcdf414897524274e0ff59e279d"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh056/storyboard.jpg",
+          "sha256": "86033a10d1418c38cd845a9cbcfcc62a95d546319a938f57a28819f8a1e1293d",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Two-level pale rectilinear volumes, terraces, lit entry steps and surrounding woodland. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Living and kitchen share a frame, with a second kitchen detail view; bath uses wood cabinetry and dark shower fittings. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "reference_id": "edh017",
+    "analysis_path": "references/edh017/analysis.yaml",
+    "analysis_sha256": "95734fadc9cf84d39b70a01415f93df20f1c99c13233fc9b4ddfd8de3ee9f907",
+    "source_path": "video/edh017.mp4",
+    "source_sha256": "d315b7dbbbbfd051f69238b63ff35ca94a9ca40d4ad4c64d7b383a6a20a921ab"
+  },
+  "reviews": [
+    {
+      "schema_version": "1.0",
+      "id": "edh017.review.storyboard",
+      "source": {
+        "reference_id": "edh017",
+        "analysis_path": "references/edh017/analysis.yaml",
+        "analysis_sha256": "95734fadc9cf84d39b70a01415f93df20f1c99c13233fc9b4ddfd8de3ee9f907",
+        "source_path": "video/edh017.mp4",
+        "source_sha256": "d315b7dbbbbfd051f69238b63ff35ca94a9ca40d4ad4c64d7b383a6a20a921ab"
+      },
+      "method": "ai_visual_review",
+      "reviewer": "Codex AI; exact model build is not exposed by the runtime",
+      "model_version": null,
+      "reviewed_on": "2026-11-17",
+      "scope": [
+        "All existing storyboards visually inspected in this session; selected characteristics only, not every detailed annotation."
+      ],
+      "evidence": [
+        {
+          "path": "references/edh017/storyboard.jpg",
+          "sha256": "3664a5b40a7c12aa036afaec9b806ff5613bf2d7f0fa07ae77ef5cf5fd781905",
+          "kind": "storyboard"
+        }
+      ],
+      "findings": [
+        {
+          "field_path": "/architecture/exterior_features",
+          "status": "supported",
+          "reason": "Pale yellow farmhouse-like facade with wraparound porch, multiple gables and a pointed projecting bay. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/interior_style",
+          "status": "supported",
+          "reason": "Kitchen has yellow lower cabinets and white upper storage; laundry and bathroom appear as separate scene views. Scope: selected appearance only, not every source tag."
+        },
+        {
+          "field_path": "/architecture/building_scale/estimated_floor_area_m2",
+          "status": "unknown",
+          "reason": "No measured dimensions available from storyboard."
+        }
+      ]
+    }
+  ]
+}

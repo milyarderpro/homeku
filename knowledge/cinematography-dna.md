@@ -22,3 +22,9 @@ This file records **observed shot language** and distinct visual effects. It doe
 - **Transitions:** straight cuts often appear, with observed variations including blur/dissolve in [VID-001](../references/VID-001/analysis.yaml) and [VID-003](../references/VID-003/analysis.yaml). No transition is universal.
 
 **Interpretation:** visual storytelling derives from how identity, environment, function and intimate detail are disclosed in sequence. It does not imply that a particular sequence or shot length caused audience retention. Camera names in YAML are visual-motion labels, not equipment verification.
+
+## Corpus-linked enrichment
+
+Start/middle/end evidence distinguishes recorded camera labels, observed sampled framing, unknown object motion and edited transitions. VID-001 includes transition blur at the end of its first sampled shot. These samples do not certify a physical camera path.
+
+See [counted patterns and diversity](corpus-patterns.md) and [source-bound design evidence](design-evidence/README.md). Counts describe published video references; content independence and physical-house identity are not established by unique file hashes.
