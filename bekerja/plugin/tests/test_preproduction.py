@@ -19,7 +19,7 @@ from urllib.parse import unquote, urlsplit
 
 import yaml
 
-from test_project_rules import PLUGIN, SKILL, VALIDATOR, WORKSPACE, blank
+from test_project_rules import PLUGIN, SKILL, VALIDATOR, WORKSPACE, blank, planning
 
 REPOSITORY = WORKSPACE.parents[1]
 COMMIT = "26c5e56cb0de66d5c1ab4f93a1285654180382a0"
@@ -43,76 +43,44 @@ SOURCE_AREAS = {
 
 
 def source_case(reference_id):
-    """Build a planning fixture from saved source fields, not synthetic evidence."""
+    """Replay actual annotation structure; numeric camera choices remain adaptations."""
     raw = (REPOSITORY / "references" / reference_id / "analysis.yaml").read_bytes()
     if hashlib.sha256(raw).hexdigest() != SOURCE_HASHES[reference_id]:
         raise AssertionError("Source changed; review and repin the acceptance snapshot.")
     source = yaml.safe_load(raw)
     kinds, _ = CASES[reference_id]
-    project = blank()
-    project.update(
-        project_id="test-" + reference_id,
-        stage="shot_plan",
-        brief="Contract replay from saved annotation; not a user production.",
-        concept={
-            "title": "Test " + source["architecture"]["primary_style"],
-            "summary": "Source-backed planning fixture; decisions are not user approvals.",
-        },
+    project = planning(kinds)
+    project["project_id"] = "test-" + reference_id
+    project["knowledge"].update(ref=None, commit=COMMIT, route="github_connector")
+    project["knowledge"]["evidence"] = []
+    project["design"].update(
+        architecture=source["architecture"]["primary_style"],
+        materials=", ".join(source["architecture"]["interior_style"]),
+        lighting=", ".join(source["visual_style"]["lighting"]),
+        environment=", ".join(source["visual_style"]["setting"]),
+        ceiling="Test project decision; no measured source geometry is claimed.",
+        connections=["Test adaptation of the annotated area connection."],
+        anchors=source["architecture"]["exterior_features"][:2],
     )
-    project["knowledge"].update(commit=COMMIT, route="github_connector")
-    project["design"] = {
-        "architecture": source["architecture"]["primary_style"],
-        "layout": "Test adaptation of the shot sequence; not a measured floor plan: "
-                  + ", ".join(shot["scene"] for shot in source["shots"][:len(kinds)]),
-        "materials": ", ".join(source["architecture"]["interior_style"]),
-        "lighting": ", ".join(source["visual_style"]["lighting"]),
-        "environment": ", ".join(source["visual_style"]["setting"]),
-        "anchors": source["architecture"]["exterior_features"][:2],
-    }
     project["revision_notes"] = [
-        "Source durations are adapted to the agreed 6/4-second production rules.",
-        "Timing relationships of compound camera labels are test adaptations, not verified source timing.",
+        "6/4-second duration, travel estimates and 12-degree pan are test project adaptations.",
+        "Compound source labels do not prove the original timing relationship.",
     ]
-    for index, (kind, shot) in enumerate(zip(kinds, source["shots"])):
-        evidence_id = f"ev-{index + 1:02d}"
-        areas = SOURCE_AREAS[shot["scene"]].copy()
+    for index, shot in enumerate(project["shots"]):
+        annotated = source["shots"][index]
         project["knowledge"]["evidence"].append({
-            "evidence_id": evidence_id,
-            "reference_id": reference_id,
-            "shot_ids": [shot["id"]],
+            "evidence_id": shot["evidence_ids"][0], "reference_id": reference_id,
+            "shot_ids": [annotated["id"]],
             "analysis_url": f"https://github.com/milyarderpro/homeku/blob/{COMMIT}/references/{reference_id}/analysis.yaml",
-            "field_paths": [
-                f"/shots/{index}/scene",
-                f"/shots/{index}/framing/start",
-                f"/shots/{index}/framing/end",
-                f"/shots/{index}/camera/movements",
-                f"/shots/{index}/observation_note",
-                f"/shots/{index}/transition_out",
-            ],
-            "excerpt": shot["scene"] + " | " + shot["observation_note"],
-            "covered_areas": areas.copy(),
-            "continuity": "annotated_continuous",
-            "access_status": "read",
-            "error": None,
+            "field_paths": [f"/shots/{index}/scene", f"/shots/{index}/framing/start",
+                            f"/shots/{index}/framing/end", f"/shots/{index}/camera/movements",
+                            f"/shots/{index}/observation_note", f"/shots/{index}/transition_out"],
+            "excerpt": annotated["scene"] + " | " + annotated["observation_note"],
+            "covered_areas": SOURCE_AREAS[annotated["scene"]].copy(),
+            "continuity": "annotated_continuous", "access_status": "read", "error": None,
         })
-        movements = shot["camera"]["movements"]
-        project["shots"].append({
-            "shot_id": f"shot-{index + 1:02d}",
-            "kind": kind,
-            "covered_areas": areas,
-            "duration_s": VALIDATOR.RULES["shot_kinds"][kind]["duration_s"],
-            "continuous": True,
-            "evidence_ids": [evidence_id],
-            "framing": {key: shot["framing"][key] for key in ("start", "end")},
-            "camera": {
-                "description": "Test adaptation of source movement labels: " + ", ".join(movements)
-                               + ". Compound movements run together in this test plan.",
-                "motion_relationship": "single" if len(movements) == 1 else "simultaneous",
-            },
-            "frames": {"start": None, "end": None},
-            "prompt": None,
-        })
-    project["total_duration_s"] = sum(shot["duration_s"] for shot in project["shots"])
+        shot["framing"] = {key: annotated["framing"][key] for key in ("start", "end")}
+        shot["camera"]["description"] = "Test adaptation of source labels: " + ", ".join(annotated["camera"]["movements"])
     return project, source
 
 
@@ -124,6 +92,7 @@ class SourcePlanningTests(unittest.TestCase):
         self.assertTrue(result["valid"], result)
         self.assertEqual(result["total_duration_s"], expected)
         self.assertEqual(len(project["shots"]), 4)
+        self.assertEqual(len(project["image_plan"]), 5)
         areas = [area for shot in project["shots"] for area in shot["covered_areas"]]
         self.assertEqual(len(areas), len(set(areas)))
         self.assertEqual(areas.count("kitchen"), 1)
@@ -150,7 +119,7 @@ class SourcePlanningTests(unittest.TestCase):
             self.assertEqual(json.loads(run.stdout)["total_duration_s"], expected)
             # The same record cannot move into visual production without a decision.
             next_stage = deepcopy(project)
-            next_stage["stage"] = "visual_draft"
+            next_stage["stage"] = "image_draft"
             self.assertFalse(VALIDATOR.validate_project(next_stage)["valid"])
 
     def test_living_kitchen_source_plan_is_twenty_seconds(self):

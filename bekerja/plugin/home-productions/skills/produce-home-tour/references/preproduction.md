@@ -1,71 +1,45 @@
-# Menyusun brief, konsep dan daftar shot
+# Brief, satu rumah, shot dan daftar gambar
 
-Gunakan panduan ini untuk praproduksi baru atau revisi. Aturan mesin ada pada [production-rules.yaml](production-rules.yaml); struktur project.json ada pada [project-contract.md](project-contract.md). Jangan menyalin pustaka desain ke dalam paket skill.
+Baca [aturan produksi](production-rules.yaml) dan [kontrak](project-contract.md). Gunakan [akses repo](repo-access.md) untuk mengambil sumber. Runtime memakai URL web atau konektor GitHub, bukan salinan pustaka dalam plugin.
 
-## Brief dan pilihan
+## Konsep dan desain
 
-Rangkum arah desain, skala visual, suasana, lingkungan, area yang hendak ditampilkan dan target video. Bedakan kebutuhan yang sudah pasti dengan pertanyaan terbuka. Tidak ada kewajiban mengisi formulir panjang sebelum mulai mencari contoh.
+Ringkas brief, suasana, skala, lingkungan serta area yang diinginkan. Tidak perlu formulir panjang atau opsi baru ketika keputusan sudah tersedia. Pilih acuan utama untuk struktur video dan pendukung desain yang kompatibel; catat bagian sumber dan adaptasinya.
 
-Baca sumber yang relevan sebelum menawarkan konsep. Setiap opsi perlu menjelaskan:
+Isi design.architecture, layout, ceiling, materials, lighting, environment, connections dan anchors. Jelaskan hubungan yang menentukan pandangan kamera. Plafon mencakup bentuk/tingkat, sambungan, susunan lampu dan balok bila memang dirancang. Jangan menambahkan balok, pintu atau furnitur hanya untuk dijadikan penanda.
 
-- Identitas bentuk rumah, material/palet, lighting dan lingkungan.
-- Hubungan fungsi ruang serta pola shot yang akan digunakan.
-- Referensi utama/pendukung dan ciri yang diadaptasi.
-- Perubahan kreatif yang dipilih dan hal yang belum diketahui.
+Connections menjelaskan hubungan ruang/bukaan pada rumah baru. Denah tidak disimpulkan hanya dari urutan shot. Kiri/kanan mengikuti pandangan kamera; elemen tetap berada pada posisi rumah yang sama. Perbedaan plafon antararea boleh mengikuti desain, tanpa berubah tak sengaja pada area yang sama.
 
-Contoh jumlah opsi adalah tiga ketika pengguna masih memilih; itu bukan jumlah wajib. Jika konsep sudah dipilih atau pengguna meminta perbaikan kecil, pertahankan keputusan yang masih sesuai.
+## Shot dan kebutuhan gambar
 
-Sebelum pilihan ditetapkan, catat kebutuhan/opsi terbuka pada brief dan pertahankan stage: brief. Isi concept sebagai konsep pilihan dan naikkan stage: concept setelah pengguna memilih atau mendelegasikan pemilihan. Jangan menyimpan semua opsi seolah-olah sudah menjadi satu rumah yang disetujui.
+Satu shot kontinu tanpa cut. Pilih jenis/cakupan yang didukung sumber, tandai fungsi yang sudah diungkap, lalu lanjutkan ke fungsi baru. Bedroom/sleeping loft tetap satu kelompok fungsi tidur. Jangan menambah dining/loft/laundry/wardrobe di luar pola referensi.
 
-Confidence rendah tentang material sumber tidak menghalangi memilih material untuk rumah baru. Pilihan tersebut dicatat sebagai keputusan proyek. Jangan menyatakan bahan atau geometri sumber sudah terverifikasi.
+Daftar untuk pengguna memuat shot, cakupan, acuan, durasi, posisi/arah awal–akhir, gerak, bukti gerak dan daftar gambar. Hitung total sesudah cakupan ditetapkan. Jangan menyamaratakan menjadi 4 detik atau memangkas otomatis.
 
-## Satu rumah yang koheren
+Buat image_plan berisi satu gambar aktif per area tujuan. reference_image_ids pada shot dan shot_ids pada gambar harus saling cocok. area_ids menyatakan fungsi yang memang ingin dijelaskan gambar; background insidental tidak otomatis menjadi tujuan baru.
 
-Isi design.architecture, layout, materials, lighting, environment dan anchors. Tuliskan bentuk serta hubungan yang menentukan pandangan kamera, bukan daftar dekorasi saja.
+Living-to-kitchen memerlukan primary_area living dan kitchen dalam dua gambar berbeda. Exterior-to-living memerlukan exterior dan living. Dua file identik tidak menggantikan dua pandangan area. Untuk fungsi terpadu, area_ids pada gambar dapat memuat beberapa fungsi sesuai rancangan; kebutuhan referensinya dipetakan eksplisit. Jangan menambah shot karena jumlah referensi lebih dari satu.
 
-- Arsitektur: massa, atap, proporsi dan keluarga bukaan sesuai acuan.
-- Tata ruang: fungsi yang benar-benar dipilih, bukaan penghubung dan jalur kamera yang masuk akal.
-- Material dan cahaya: tampilan, warna serta keadaan yang dipertahankan.
-- Lingkungan: tanaman, cuaca visual dan pemandangan melalui jendela yang koheren.
-- Anchors: elemen tetap seperti pintu, jendela, dinding fitur atau furnitur utama yang relevan pada sumber.
+Contoh:
+- Lima area terpisah: lima shot, lima gambar, 22 detik.
+- Exterior + living-to-kitchen + bedroom + bathroom: empat shot, lima gambar, 20 detik.
+- Exterior-to-living + kitchen + bedroom + bathroom: empat shot, lima gambar, 18 detik.
+- Tambahan laundry pada contoh 20 detik: lima shot, enam gambar, 24 detik.
 
-Bedakan ciri sumber dari adaptasi baru dalam uraian desain. Potongan video tidak menyediakan denah terukur; posisi yang diperlukan untuk rumah baru ditetapkan sebagai keputusan desain, tanpa menambah jenis/jumlah area di luar pola referensi. Kiri/kanan mengikuti pandangan kamera dan tidak menjadi arah tetap rumah.
+## Rencana kamera yang dapat diterapkan
 
-## Daftar shot sebagai unit produksi
+camera.components menguraikan translation, pan, orbit atau tilt yang benar-benar dipilih, dengan description, start_s, duration_s, distance_m dan angle_deg. Angka merupakan perkiraan produksi, bukan hasil pengukuran sumber. Untuk translation, jarak positif diperlukan; pan/orbit minimal 12 derajat. Tilt tidak otomatis mewarisi batas pan.
 
-Untuk setiap shot, isi shot_id berurutan, kind, covered_areas, duration_s, continuous, evidence_ids, framing, camera, frames dan prompt sesuai template/schema.
+single berarti satu komponen sepanjang durasi shot. simultaneous berarti dua atau lebih komponen berlangsung sepanjang durasi yang sama. sequential berarti dua atau lebih fase berurutan yang tersambung, totalnya tepat durasi shot. Catat timing_note dan visible_motion_evidence.
 
-Catat fungsi yang sudah diungkap setelah setiap shot, lalu pilih fungsi berikutnya yang belum tercakup. Satu ruang terbuka dapat mencakup beberapa fungsi; jangan menambahkan kitchen atau bedroom tersendiri setelah fungsi tersebut sudah diungkap dalam shot gabungan. Bedroom/sleeping loft dibatasi sesuai aturan, tanpa menambah kamar dengan mengganti namanya.
+Bedakan posisi bergerak mengitari fokus (orbit), rotasi arah pandang (pan), dan pembesaran perspektif karena kamera mendekat. Jangan mengganti gerak kamera dengan memutar objek/rumah, zoom digital atau roll yang tidak diminta.
 
-Tabel untuk pengguna berisi:
+Untuk 4 detik, pilih lintasan pendek/komponen yang masuk akal; jangan menggabungkan jarak panjang, banyak fase dan kata slow tanpa alokasi waktu. Jika perlu mengubah rancangan yang sudah disetujui, jelaskan dampaknya. Tidak menambah/menghapus jenis gerak secara diam-diam.
 
-| Kolom | Isi |
-| --- | --- |
-| Shot dan jenis | Urutan serta pola satu gerakan kontinu tanpa cut |
-| Cakupan | Area/fungsi yang sudah ditampilkan |
-| Durasi | Nilai dari aturan dan total penjumlahannya |
-| Awal–akhir | Subjek, sudut pandang, foreground, fokus dan informasi yang terungkap |
-| Gerak | Perpindahan/rotasi kamera, kecepatan dan hubungan gerak |
-| Acuan | ID referensi/shot serta kutipan/pointer yang mendukung |
+Bukti gerak dipilih dari elemen yang ada: foreground membesar saat kamera maju, perspektif berubah saat orbit, sisi ruang/kitchen terungkap saat pan. Label gerak sumber belum membuktikan simultan/sekuensial; nyatakan pilihan waktu sebagai adaptasi bila sumber belum memastikan.
 
-Gerak simultan dinyatakan sebagai berjalan bersamaan, misalnya maju sambil pan. Gerak sekuensial menyatakan urutan, misalnya maju kemudian pan. Pilih motion_relationship: single, simultaneous atau sequential secara sesuai. Jangan menyatakan sumber membuktikan urutan waktu hanya dari daftar nama gerak; jika alokasi gerak merupakan adaptasi proyek, jelaskan.
+## Keputusan dan tahap
 
-Jarak perjalanan, framing dan reveal harus masuk akal dalam durasi baku. Tidak mengubah seluruh klip menjadi 4 detik, menambah shot pengulangan atau mempercepat otomatis demi total tertentu. Jika total yang diminta tidak cocok, tunjukkan hitungannya dan keputusan cakupan yang perlu dipilih pengguna.
+Sebelum konsep dipilih, stage brief; sesudah dipilih/didelegasikan, concept; saat desain, shot, kamera dan image_plan lengkap, shot_plan. prompt gambar boleh belum lengkap dan aset belum ada pada perencanaan.
 
-Audio selalu mengikuti aturan proyek: cukup ambient halus tanpa musik. Musik atau transisi dramatis dari referensi tidak otomatis dibawa ke proyek.
-
-## Keputusan, penyimpanan dan kelanjutan
-
-Pilihan konsep dan persetujuan desain/daftar shot adalah dua titik keputusan praproduksi. Gunakan by: user untuk keputusan yang memang diberikan dan by: delegated untuk delegasi yang dinyatakan. Isi note dengan dasar keputusan yang sebenarnya; validator tidak memberikan persetujuan atas nama pengguna.
-
-Naikkan revision ketika keputusan yang sudah disetujui berubah. Pengisian rancangan tahap berikutnya dalam keputusan yang sama tidak harus membuat revisi baru. Jangan menganggap pengisian JSON saja sebagai persetujuan.
-
-Pada revisi, tinjau keputusan dan sumber yang terdampak. Pertahankan yang tidak berubah berdasarkan arahan yang sudah berlaku. Catat dasar penerusan keputusan pada revision_notes; jangan mengganti nomor revisi aset/prompt untuk menyamarkan data usang. Bila proyek sudah memiliki aset, minta berkas yang diperlukan untuk menilai dampaknya.
-
-Keluaran tahap ini memakai stage: shot_plan. assets tetap [], frames.start/end null dan prompt null. approvals.visual tetap null karena gambar belum diperiksa. approvals.shot_plan boleh null sambil menunggu keputusan pengguna; jangan menyebutnya siap dieksekusi sebelum keputusan itu diberikan atau didelegasikan.
-
-Simpan satu catatan aktif sesuai kontrak, dengan ringkasan yang mudah dibaca. Gunakan direktori proyek pada lingkungan kerja host; saat mengembangkan di repo ini, gunakan runs/ yang diabaikan Git. Jangan menulis file proyek ke pustaka sumber atau mengubah template paket menjadi proyek pengguna.
-
-Jalankan validator pada catatan proyek. Perbaiki kesalahan data sesuai tahap, tanpa mengarang kutipan atau bukti sumber demi meluluskan pemeriksaan. Jika pemeriksaan tidak dapat dijalankan, sampaikan batasnya.
-
-Serahkan konsep rumah pilihan, ringkasan DNA desain dan video, daftar shot beserta total, acuan dan adaptasi, serta catatan proyek. Jika alat file tidak tersedia, berikan isi catatan secara jelas dan nyatakan file unduhan belum dibuat. Tidak mengklaim kolase atau prompt video final sebagai hasil tahap ini.
+Sesudah desain disetujui, pilih image_mode sekali lalu lanjutkan [dua mode gambar](image-workflow.md). Catat approval concept/shot_plan sesuai keputusan/delegasi aktual. Jangan memalsukan persetujuan, bukti sumber atau gambar demi meluluskan validator.

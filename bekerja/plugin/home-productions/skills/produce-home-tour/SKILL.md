@@ -1,65 +1,67 @@
 ---
 name: produce-home-tour
-description: Susun brief, konsep rumah, continuous shot, pasangan frame dan prompt video Omni Flash berbasis pustaka HOMEKU. Gunakan untuk memulai, melanjutkan atau merevisi proyek home tour sampai paket produksi; analisis referensi saja tidak memulai produksi lengkap.
+description: Susun brief, konsep rumah, continuous shot, prompt atau batch gambar area individual, dan prompt R2V Omni Flash. Gunakan untuk memulai, melanjutkan atau merevisi produksi home tour berbasis HOMEKU sampai paket proyek; analisis sumber saja tidak memulai seluruh produksi.
 ---
 
-# Produksi home tour
+# Produksi home tour R2V
 
-Bantu pengguna menetapkan satu rumah dan cara mengungkapnya mengikuti DNA desain serta video referensi. Keluaran mencakup konsep, rancangan shot, pasangan frame final dan paket prompt per shot yang dapat dibawa ke sesi lain.
+Bangun satu rumah dan bahasa videonya dari DNA referensi HOMEKU. Gambar individual menetapkan identitas area; satu shot menghasilkan satu prompt R2V dan satu klip, termasuk shot penghubung dengan dua gambar area. Generate video, perangkaian dan publikasi dilakukan pengguna.
 
-## Sumber kerja
+## Bacaan sesuai tugas
 
-- Baca [aturan produksi](references/production-rules.yaml) saat membuat atau merevisi proyek. Ini sumber durasi, jenis/cakupan shot, audio dan batas area.
-- Baca bagian tahap/revisi pada [kontrak proyek](references/project-contract.md) sebelum mengisi catatan proyek. [Template](assets/project-template.json) dipakai saat proyek baru; [schema](assets/project.schema.json) membantu mengoreksi data bila diperlukan.
-- Saat mengambil pengetahuan, gunakan [akses repo](references/repo-access.md). Pustaka dibaca melalui URL web atau konektor GitHub; tidak memerlukan clone, indeks lokal atau API pencarian khusus.
-- Saat menyusun konsep dan shot, baca [panduan praproduksi](references/preproduction.md).
-- Saat membuat, merevisi atau memotong gambar, baca [alur visual](references/image-workflow.md).
-- Saat menyusun prompt, menyerahkan paket atau merevisi hasil, baca [panduan Omni Flash dan paket](references/omni-flash.md). Muat rincian sesuai tugas, bukan semua file repo sekaligus.
+- Baca [aturan](references/production-rules.yaml) dan [kontrak proyek](references/project-contract.md) saat menyiapkan/merevisi catatan. Gunakan [template proyek](assets/project-template.json); [schema](assets/project.schema.json) dan [validator](scripts/validate_project.py) memeriksa data.
+- Untuk sumber, baca [akses repo](references/repo-access.md). Gunakan URL web atau konektor GitHub secara selektif; jangan mewajibkan clone atau memuat seluruh pustaka.
+- Untuk konsep, rumah, kamera dan daftar gambar, baca [praproduksi](references/preproduction.md).
+- Untuk dua mode gambar, batch, naturalitas dan review, baca [alur gambar](references/image-workflow.md) dan [template gambar](assets/image-prompt-template.md).
+- Untuk sembilan bagian R2V, penyerahan/revisi dan sesi baru, baca [panduan Omni Flash](references/omni-flash.md) dan [template R2V](assets/prompt-template.md).
 
-## Memulai atau melanjutkan
+## Mulai, lanjutkan atau revisi
 
-Pahami permintaan saat ini dan batas pekerjaan yang sudah diizinkan. Jika pengguna hanya meminta brief, pilihan konsep, revisi shot atau crop aset yang tersedia, kerjakan bagian itu. Untuk analisis sumber saja, jawab analisis tanpa membuat proyek produksi.
+Kerjakan bagian yang diminta pengguna. Analisis sumber saja tidak memulai produksi lengkap. Pada proyek baru, ringkas brief dan tanyakan hanya keputusan yang mengubah hasil. Pada kelanjutan, baca project.json, keputusan percakapan dan aset asli; pertahankan persetujuan/delegasi yang masih berlaku.
 
-Pada proyek baru, rangkum brief dan hal penting yang belum diketahui. Tanyakan hanya keputusan yang mengubah arah hasil; pilihan rutin dapat diajukan sebagai asumsi yang terlihat. Jangan menambah ruang, jumlah kamar atau pola shot yang tidak memiliki contoh sumber.
+Bedakan fakta sumber, dugaan analisis dan adaptasi desain. Confidence rendah tidak melarang memilih bahan baru. Jangan mengarang kutipan, ukuran fisik atau denah. Tidak ada human_verified atau kewajiban review manual setiap referensi.
 
-Pada kelanjutan, baca catatan proyek dan keputusan percakapan yang tersedia. Pertahankan konsep serta persetujuan yang masih berlaku. Minta hanya catatan/aset yang diperlukan tetapi belum tersedia; nama file bukan bukti file dapat dibuka. Jika hasil gambar asli tersedia langsung dari alat, gunakan tanpa meminta unggah ulang. Jangan mengulang pertanyaan yang sudah dijawab atau meminta persetujuan ulang atas langkah yang telah didelegasikan.
+Proyek schema 1.0 perlu ditinjau dalam salinan V2 bila diminta. Frame lama tidak otomatis menjadi gambar full area dan persetujuan visual lama tidak otomatis diteruskan. Jangan menimpa proyek V1 atau menambahkan menu produksi kolase/interpolasi ke V2.
 
-Arahan eksplisit terbaru pengguna menjadi pegangan. Bila arahan mengubah aturan baku, catat perubahan secara jelas dan sesuaikan kontraknya dalam cakupan yang diminta; jangan menyembunyikan pelanggaran dengan catatan sumber palsu atau menghapus error validator.
+Arahan terbaru pengguna menjadi pegangan. Perubahan aturan dicatat dan diterapkan pada versi kontrak/rules yang sesuai; jangan menyamarkan pelanggaran dengan evidence atau review palsu.
 
-## Dari referensi ke rancangan
+## Konsep dan rancangan satu rumah
 
-1. Ambil pengetahuan inti dan contoh yang relevan melalui jalur akses yang tersedia. Catat hanya isi yang benar-benar dikembalikan alat. Referensi yang gagal dibaca belum boleh mendukung klaim atau shot.
-2. Pilih referensi utama untuk bahasa video serta pendukung desain yang kompatibel. Jelaskan bentuk, tata ruang, material, lighting, lingkungan, framing, gerak dan urutan yang diadaptasi. Confidence sumber membatasi klaim fisik, bukan kebebasan memilih bahan baru.
-3. Tawarkan arah konsep yang cukup untuk membantu keputusan, misalnya tiga opsi bila pengguna masih menjelajah. Jangan memperbanyak opsi ketika konsep sudah dipilih. Catat konsep terpilih setelah pengguna memilih atau memberi delegasi.
-4. Tetapkan spesifikasi satu rumah dan elemen tetapnya. Bedakan fakta sumber dengan keputusan desain proyek; urutan edit tidak membuktikan denah atau adjacency.
-5. Susun daftar shot kontinu tanpa cut dari pola yang didukung sumber. Catat area yang sudah tercakup setelah setiap shot. Living-to-kitchen mencakup keduanya; exterior-to-living mencakup exterior dan living. Jangan menambah pengungkapan area yang sama, bedroom lain, atau cut hanya karena label ruang berganti.
-6. Isi framing awal–akhir dan gerak dengan jelas. Bedakan maju sambil pan dari maju lalu pan; daftar label kamera belum memastikan urutan waktunya. Pertahankan proporsi, cahaya, dunia luar jendela dan lintasan yang masuk akal.
-7. Terapkan durasi dan audio dari aturan. Tampilkan total hasil penjumlahan; jangan mempercepat atau memangkas otomatis untuk mengejar durasi referensi.
+Pilih referensi utama untuk bahasa video serta pendukung desain yang kompatibel. Pertahankan desain, tata ruang, plafon, bukaan, material, cahaya, lingkungan, framing, gerak, reveal dan ritme yang dipilih dari sumber. Tawarkan opsi bila konsep belum dipilih; jangan mengulang pemilihan yang sudah selesai.
 
-## Dari rancangan ke visual
+Rancangan menetapkan plafon tiap area dan sambungannya, bukaan, furnitur utama serta elemen tetap. Perbedaan antararea yang memang dirancang boleh ada; jangan memaksa semua plafon identik. Posisi yang belum dibuktikan sumber dinyatakan sebagai keputusan proyek.
 
-Setelah desain dan daftar shot disetujui atau didelegasikan, lanjutkan dengan satu kolase per shot sesuai alur visual. Kiri adalah awal, kanan adalah akhir; dua panel sama besar, masing-masing 9:16, tanpa teks, garis atau bingkai. Sertakan acuan rumah yang sudah diperiksa melalui mekanisme gambar alat yang tersedia.
+Susun shot tanpa cut dan tanpa pengungkapan area berulang. Bedroom/area tidur maksimal satu. Laundry, wardrobe, dining atau loft mengikuti pola sumber. Living-to-kitchen dan exterior-to-living masing-masing satu shot 6 detik, memakai dua gambar individual sesuai kedua areanya. Exterior 6 detik; shot area lainnya 4 detik. Jangan menumpuk dua penghubung yang mengulang living.
 
-Periksa konsistensi dalam pasangan dan antarshot sebelum menentukan crop. Potong file asli memakai [split_frames.py](scripts/split_frames.py), tanpa resize atau generate ulang. Ukuran aktual dan batas panel diperiksa; ketidaksesuaian tidak dibetulkan dengan peregangan atau crop sembarang. Lihat kedua hasil individu dan catat temuan nyata, termasuk bila detail/resolusinya belum cukup.
+Tampilkan jumlah shot, daftar gambar area, pemetaan referensi dan total durasi. Empat shot exterior → living-to-kitchen → bedroom → bathroom berarti lima gambar dan 20 detik.
 
-Gunakan visual_draft selama pengerjaan atau keputusan masih terbuka. Hubungkan dua aset ke shot serta revisi yang benar. visual_final memerlukan seluruh pasangan, review aktual dan persetujuan visual pengguna atau delegasi yang sudah berlaku. Script crop tidak memberi persetujuan atau membuktikan konsistensi rumah.
+Kamera mencatat komponen, hubungan waktu, perkiraan jarak/sudut, bukti gerak dan alasan ritmenya masuk akal. Pan/orbit yang dipilih minimal 12°. Jangan menambahkan rotasi pada translasi murni. Maju sambil pan berjalan bersamaan; maju lalu pan mempunyai fase berurutan. Sesuaikan jarak/fase dengan durasi, bukan sekadar menambahkan kata slow.
 
-## Dari visual ke paket prompt
+## Dua mode gambar
 
-Lihat dua frame final setiap shot dan cocokkan dengan rancangan aktif. Susun prompt memakai [template](assets/prompt-template.md) serta panduan Omni Flash: subjek/cahaya, framing awal–akhir, lintasan, kecepatan, reveal dan elemen tetap. Bedakan gerak simultan/sekuensial secara eksplisit. Jangan memakai transformasi bentuk atau cut internal untuk menyambung dua gambar.
+Setelah desain/shot disetujui atau didelegasikan, gunakan image_mode yang dipilih pengguna. Minta pilihan hanya jika belum tersedia.
 
-Gunakan durasi shot dan salin instruksi continuous shot serta ambient tanpa musik dari aturan ke setiap prompt. Pasangkan ID aset, nama file dan revisi yang benar; isi seluruh penanda template. Catatan cut antarklip terpisah dari prompt satu continuous shot.
+- prompt_to_image: serahkan seluruh prompt individual; satu prompt untuk satu gambar. Jangan otomatis generate. Gambar hasil alat pengguna dibaca saat tersedia sebelum review dan prompt video final.
+- generate_image: buat seluruh gambar area individual sekaligus sesuai rancangan. Tujuh berarti tujuh file, bukan satu kolase atau hasil yang berhenti setelah satu area. Satu per satu hanya jika diminta spesifik pengguna.
 
-Validasi prompt_package beserta file asli, lalu ekspor dengan [pembuat paket proyek](scripts/build_production_package.py). Helper menyalin keputusan, gambar dan prompt yang sudah selesai; ia tidak membuat persetujuan atau menulis isi kreatif. Serahkan panduan produksi, project.json, prompt tiap shot dan dua tautan frame individu. Jangan menyebut paket dapat dilanjutkan bila gambar aslinya belum tersedia.
+Gunakan spesifikasi rumah yang sama pada seluruh prompt. Periksa cakupan luas, naturalitas, plafon dan hubungan ruang dari piksel aktual. Gambar referensi tidak wajib menjadi komposisi awal/akhir video; jangan memaksanya dengan crop 9:16 yang membuang informasi.
+
+Catat image_batch dari pelaksanaan yang benar-benar diamati atau laporan pengguna. Jangan memberi execution: parallel hanya karena prompt meminta batch, karena file berjumlah tujuh, atau karena tes kode lulus. Bila alat menunjukkan batas/kegagalan, catat unknown/failed sesuai fakta, laporkan temuan, dan pertahankan image_draft. Jangan diam-diam beralih ke alur satu per satu atau API berbayar.
+
+## Gambar final dan prompt R2V
+
+Lihat gambar individual dan bandingkan seluruh area sebagai satu rumah. Dua referensi penghubung harus menggambarkan hubungan ruang yang sama. Perubahan struktur, plafon atau material yang tak direncanakan direvisi sebelum final. Tidak perlu meminta persetujuan setiap gambar satu per satu.
+
+Setelah paket gambar direview dan disetujui/didelegasikan, isi sembilan bagian prompt R2V dari gambar dan rancangan yang sama. Jelaskan peran setiap ID gambar sebagai identitas area, perjalanan kamera, bukti gerak dan komposisi akhir. Jangan memakai referensi sebagai kontrol first/last frame wajib atau menutupi perbedaan ruang dengan morphing.
+
+Durasi mengikuti shot, video 9:16, satu continuous shot, ambient halus tanpa musik/narasi/dialog/efek dramatis. Cut antarklip berada di panduan perangkaian, bukan instruksi di dalam shot. Periksa isi prompt secara utuh; pencantuman instruksi wajib tidak membuktikan semua kalimat sudah selaras.
 
 ## Keputusan dan penyerahan
 
-Tiga titik keputusan adalah pilihan konsep, persetujuan desain beserta daftar shot, dan paket visual final. Pengguna tidak wajib menyetujui setiap kolase satu per satu. Catat persetujuan hanya dari instruksi pengguna atau delegasi yang benar-benar diberikan.
+Tiga titik keputusan: konsep, desain/shot dan paket gambar final. Delegasi tetap berlaku. Pilihan mode gambar tidak menambah persetujuan per area. Catat keputusan/review hanya berdasarkan tindakan atau arahan yang sebenarnya.
 
-Simpan catatan proyek sesuai kontrak. Pada keluaran praproduksi, assets tetap kosong, frames setiap shot null dan prompt null. Pada produksi visual, catat file/metadata aktual dan ikat frame ke shot sesuai alur visual. Pada paket akhir, ikat prompt lengkap ke revision, duration_s dan dua asset_id yang sama; gunakan prompt_package setelah seluruh prompt selesai. Jangan menambahkan field bebas untuk menghindari aturan.
+Simpan satu project.json aktif. Pada perencanaan, gambar belum wajib. image_prompt_package boleh tanpa aset, tetapi tidak disebut siap R2V. image_final dan prompt_package memerlukan file asli, revisi yang cocok dan review. Jalankan validator dengan file proyek; [dependensi](scripts/requirements.txt) menjelaskan kebutuhan runtime.
 
-Jalankan [validator](scripts/validate_project.py) pada project.json dengan lingkungan pemrosesan yang tersedia; [dependensi](scripts/requirements.txt) menjelaskan kebutuhan alat. Jika tidak dapat menjalankannya, nyatakan pemeriksaan otomatis belum dilakukan dan jangan mengarang hasil lulus.
+Ekspor melalui [pembuat paket](scripts/build_production_package.py). Serahkan panduan, catatan, prompt gambar dan—untuk paket R2V—gambar individual serta prompt video per shot. Pakai tautan unduhan host; nama file atau tautan lama belum membuktikan file tersedia.
 
-Serahkan ringkasan rumah, asal DNA, daftar shot, cakupan area, durasi dan total, serta catatan proyek yang bisa diunduh bila alat file tersedia. Untuk keluaran visual, berikan tautan individu frame awal dan akhir setiap shot beserta ukuran dan ringkasan review. Jelaskan keputusan yang masih menunggu pengguna. Keluaran valid secara struktural belum membuktikan mutu geometri atau kepastian sumber.
-
-Pada revisi hasil, periksa hanya media yang dapat dibuka dan audio yang dapat didengar. Perubahan elemen tetap memicu peninjauan shot terdampak; ikuti panduan paket untuk revisi dan kelanjutan sesi. Skill menyiapkan produksi; generate Omni Flash, perangkaian klip dan publikasi Facebook dijalankan pengguna.
+Pada revisi, tinjau area/shot terdampak dan naikkan revisi keputusan bila berubah. Jangan mengganti nomor versi aset lama untuk menyamarkan data usang. Pada sesi baru, minta hanya catatan/aset yang hilang. Tinjau video/audio hanya jika benar-benar dapat dilihat/didengar; jangan menyatakan penerimaan lulus dari JSON.

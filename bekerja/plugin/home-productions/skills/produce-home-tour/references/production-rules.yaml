@@ -1,11 +1,12 @@
-rules_version: 1.0.0
+rules_version: 2.0.0
 knowledge_repository: https://github.com/milyarderpro/homeku
 stages:
 - brief
 - concept
 - shot_plan
-- visual_draft
-- visual_final
+- image_prompt_package
+- image_draft
+- image_final
 - prompt_package
 canonical_areas:
 - exterior
@@ -22,11 +23,16 @@ shot_kinds:
     duration_s: 6
     coverage_sets:
     - - exterior
+    required_primary_areas:
+    - exterior
   exterior_to_living:
     duration_s: 6
     coverage_sets:
     - - exterior
       - living
+    required_primary_areas:
+    - exterior
+    - living
   living_to_kitchen:
     duration_s: 6
     coverage_sets:
@@ -39,37 +45,54 @@ shot_kinds:
       - dining
       - kitchen
       - sleeping_loft
+    required_primary_areas:
+    - living
+    - kitchen
   living:
     duration_s: 4
     coverage_sets:
     - - living
+    required_primary_areas:
+    - living
   kitchen:
     duration_s: 4
     coverage_sets:
     - - kitchen
     - - kitchen
       - dining
+    required_primary_areas:
+    - kitchen
   bedroom:
     duration_s: 4
     coverage_sets:
     - - bedroom
+    required_primary_areas:
+    - bedroom
   bathroom:
     duration_s: 4
     coverage_sets:
     - - bathroom
+    required_primary_areas:
+    - bathroom
   bathroom_laundry:
     duration_s: 4
     coverage_sets:
     - - bathroom
       - laundry
+    required_primary_areas:
+    - bathroom
   laundry:
     duration_s: 4
     coverage_sets:
     - - laundry
+    required_primary_areas:
+    - laundry
   wardrobe:
     duration_s: 4
     coverage_sets:
     - - wardrobe
+    required_primary_areas:
+    - wardrobe
 coverage:
   allow_repeat: false
   opening_area: exterior
@@ -83,15 +106,36 @@ audio:
   narration: false
   dialogue: false
   dramatic_effects: false
-frames:
-  aspect_ratio:
-  - 9
-  - 16
-  format: PNG
-  roles:
-  - start
-  - end
 prompt_constraints:
   continuous: One continuous shot with no cuts.
   audio: Soft natural ambient sound only. No music, narration, dialogue, or dramatic
     sound effects.
+video:
+  method: R2V
+  aspect_ratio: '9:16'
+images:
+  modes:
+  - prompt_to_image
+  - generate_image
+  formats:
+  - PNG
+  - JPEG
+  - WEBP
+  default_request: all_at_once
+camera:
+  minimum_rotation_deg: 12
+  kinds:
+  - translation
+  - pan
+  - orbit
+  - tilt
+prompt_sections:
+- OUTPUT SPECIFICATION
+- REFERENCE IMAGE ROLE
+- ARCHITECTURE AND DESIGN
+- CAMERA START COMPOSITION
+- CAMERA MOVEMENT
+- VISIBLE MOTION EVIDENCE
+- ENDING COMPOSITION
+- VISUAL CONSISTENCY LOCK
+- CONTINUITY AND AUDIO RULES

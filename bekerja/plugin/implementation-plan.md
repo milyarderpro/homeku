@@ -1,475 +1,261 @@
-# Rencana implementasi home-productions
+# Rencana implementasi home-productions V2
 
-Versi rencana: 1.0
+Versi rencana: 2.1
 
 Tanggal: 18 November 2026
 
-Status: tahap 1–5 selesai. Pemeriksaan teknis dan rilis privat 0.1.0 selesai; penerimaan manual serta aktivasi/alur di ChatGPT menunggu pengujian pengguna.
+Status: **tahap 1–6 selesai dan rilis privat 2.0.0 sudah diperbarui; tahap 7 menunggu uji manual pengguna**. Pemeriksaan teknis dan source rilis terverifikasi; kualitas/batch/gerak pada lingkungan ChatGPT dan Omni Flash tidak diklaim lulus dari tes kode.
 
-Acuan perilaku: [alur penggunaan](production-workflow.md). Nama teknis plugin adalah home-productions; identitas ini dipertahankan pada folder paket, manifest dan rilis.
+Acuan perilaku: [alur penggunaan V2](production-workflow.md). [Peta folder dan identitas rilis](README.md). Ini satu rencana aktif pengganti rencana V1; riwayat implementasi lama tetap tersedia di Git.
 
-## 1. Hasil yang akan dibangun
+## 1. Dasar dan sasaran
 
-Plugin mendampingi pengguna dari brief, pemilihan referensi dan konsep rumah, desain serta daftar continuous shot, pembuatan kolase frame awal–akhir, pemotongan gambar, hingga paket prompt Omni Flash.
+Temuan manual pengguna pada 18 November 2026:
 
-Plugin mengikuti DNA desain dan video referensi: tata ruang, bentuk, material, lighting, lingkungan, komposisi, pengungkapan ruang, gerak dan penyajian. Pilihan baru dibedakan dari klaim tentang referensi.
-
-Keluaran proyek meliputi ringkasan desain, daftar shot dan total durasi, gambar awal–akhir individu siap unduh, prompt per shot, petunjuk penggunaan aset dan catatan versi yang dapat dibawa ke sesi berikutnya.
-
-Cakupan awal berakhir pada paket produksi dan bantuan revisi hasil. Generate video di Omni Flash, perangkaian klip dan publikasi Facebook dijalankan pengguna. Tidak ada integrasi berbayar, publikasi otomatis atau database proyek yang ditambahkan sebagai syarat awal.
-
-## 2. Arsitektur pilihan
-
-### Paket berbasis skill
-
-Mulai dengan satu plugin berbasis skill, memakai alat yang tersedia pada lingkungan ChatGPT sasaran. Ini sesuai kesepakatan bahwa workflow berada di skill/plugin dan repo menyediakan pengetahuan.
-
-Satu skill utama, produce-home-tour, mengatur perjalanan proyek. Detail dimuat sesuai tahap dari references/, template berada di assets/, dan pemrosesan deterministik berada di scripts/ pada direktori skill. references/ di dalam skill berisi panduan produksi; references/ di root repo tetap berisi analisis video sumber. Tahap internal bukan kumpulan skill yang harus dipanggil pengguna satu per satu.
-
-Paket menggunakan root plugin.json dalam format Agent Plugins 1.0. Tidak membuat server, UI, hooks atau konfigurasi MCP kosong pada versi awal. Skill dan sumber daya terpaket tetap berada di dalam root paket. Pilihan ini mengikuti jalur skills-only pada Plugin Creator.
-
-### Kemampuan lingkungan yang harus tersedia
-
-| Kemampuan | Peran | Jika belum tersedia |
+| Temuan | Kedudukan bukti | Dampak pada V2 |
 | --- | --- | --- |
-| Membaca web atau konektor GitHub | Membuka sumber yang relevan dan mempertahankan provenance | Tandai akses belum tersedia; jangan mengisi sumber dari dugaan |
-| Generate/edit gambar dan memakai gambar acuan | Membuat kolase berdasarkan desain dan aset yang disetujui | Paket konsep dapat disiapkan, tetapi produksi visual belum selesai |
-| Melihat gambar hasil | Memeriksa konsistensi dan batas panel | Tandai review visual belum dilakukan |
-| Menjalankan pemrosesan gambar/file | Memotong kolase secara deterministik dan memvalidasi hasil | Kemampuan penuh belum siap; jangan menyerahkan kolase sebagai pengganti file individu |
-| Menghasilkan file unduhan yang dapat dibuka pengguna | Menyerahkan kedua frame setiap shot | Jangan melaporkan berkas siap unduh sebelum tautannya bekerja |
-| Membaca media hasil, termasuk audio bila tersedia | Membantu evaluasi hasil generate | Nyatakan cakupan pemeriksaan yang benar-benar dilakukan |
+| Kolase awal–akhir sering tidak konsisten, terutama plafon | Laporan pengujian pengguna | Ganti dengan gambar area individual dan spesifikasi plafon yang sama |
+| Interpolasi first–last masih mengubah susunan meskipun diminta continuous shot | Laporan pengujian pengguna | Ganti metode utama menjadi Reference-to-Video (R2V) |
+| R2V dengan satu gambar memberi hasil lebih baik dan konsisten | Percobaan pengguna; tidak digeneralisasi sebagai jaminan | Jadikan R2V dasar workflow dan uji dua referensi pada shot penghubung |
 
-Skill tidak otomatis memberikan alat tersebut. Tahap pertama harus membuktikan kemampuan pada lingkungan pengguna yang sebenarnya, terutama ChatGPT web, bukan menyimpulkan dari keberhasilan di workspace pengembangan ini.
+Sasaran: dari konsep rumah yang mengikuti keseluruhan DNA referensi, menghasilkan prompt/gambar individual per area, lalu prompt R2V sembilan bagian per shot beserta paket proyek yang dapat dilanjutkan.
 
-Web dan GitHub merupakan dua jalur alternatif menuju pustaka yang sama. Konektor GitHub tidak menjadi dependensi wajib bila web sudah cukup. Deklarasi dependensi hanya memakai ID alat/app atau endpoint yang sudah diverifikasi.
+Repository tetap pustaka pengetahuan. Semua pengembangan berada di bekerja/plugin/; knowledge/, references/ dan video/ root tidak diubah atau disalin ke paket. Analisis tersimpan digunakan secara selektif lewat URL web atau konektor GitHub, tanpa analisis ulang seluruh video.
 
-Jika alat bawaan tidak mendukung pemotongan/unduhan, investigasi kemampuan yang tersedia terlebih dahulu. Catat kebutuhan integrasi tambahan sebagai keputusan arsitektur. Jika akhirnya memerlukan server baru, evaluasi jalur cloud/Sites MCP sesuai Plugin Creator sebelum membangunnya; jangan menyisipkan server atau melemahkan keluaran wajib secara diam-diam.
+Generate video Omni Flash, perangkaian klip dan publikasi Facebook tetap dilakukan pengguna. Tidak menambah server, API berbayar, database, UI khusus, skill kedua atau plugin duplikat.
 
-## 3. Struktur folder target
+## 2. Kontrak perilaku V2
 
-Struktur berikut adalah target implementasi; setiap komponen dibuat ketika tahapnya dikerjakan.
+Detail lengkap berada pada alur penggunaan; butir berikut menjadi dasar implementasi dan pemeriksaan.
 
-~~~text
-bekerja/plugin/
-├── README.md
-├── production-workflow.md
-├── implementation-plan.md
-├── .gitignore
-├── home-productions/                 # hanya berkas yang akan dipasang
-│   ├── plugin.json
-│   ├── assets/
-│   │   └── icon.png
-│   └── skills/
-│       └── produce-home-tour/
-│           ├── SKILL.md
-│           ├── agents/
-│           │   └── openai.yaml        # bila metadata/dependensi dibutuhkan
-│           ├── references/
-│           │   ├── production-rules.yaml
-│           │   ├── project-contract.md
-│           │   ├── repo-access.md
-│           │   ├── preproduction.md
-│           │   ├── image-workflow.md
-│           │   └── omni-flash.md
-│           ├── assets/
-│           │   ├── project-template.json
-│           │   ├── project.schema.json
-│           │   └── prompt-template.md
-│           └── scripts/
-│               ├── validate_project.py
-│               ├── requirements.txt
-│               ├── split_frames.py
-│               └── build_production_package.py
-├── tooling/
-│   ├── probe_stage1.py              # probe workspace tahap 1, sudah dibuat
-│   └── package_plugin.py
-├── tests/
-│   ├── test_project_rules.py
-│   ├── test_preproduction.py
-│   ├── test_split_frames.py
-│   ├── test_production_package.py
-│   └── test_package.py
-├── dist/                             # generated, ignored
-└── runs/                             # local project assets, ignored
-~~~
-
-Hanya home-productions/ yang masuk arsip plugin. Dokumen pengembangan, pengujian, gambar percobaan dan paket ZIP berada di luarnya. ZIP dibuat ke dist/, bukan ke dalam folder paket.
-
-Tidak menyalin pustaka knowledge/, references/ atau video/ ke paket. Akses sumber saat plugin digunakan mengarah ke URL repository; tautan relatif di dokumen perencanaan hanya untuk pembaca repo ini.
-
-## 4. Kontrak proyek dan sumber aturan
-
-### Aturan produksi
-
-Perilaku disepakati pada production-workflow.md. Saat implementasi, production-rules.yaml menjadi representasi aturan yang dipakai skill dan validator. Perubahan perilaku memperbarui keduanya dalam perubahan yang sama.
-
-Aturan yang harus tercakup:
-
-- Satu shot tanpa cut → satu kolase dua panel → dua file frame → satu prompt → satu klip.
-- Hanya exterior, exterior-to-living dan living-to-kitchen yang berdurasi 6 detik. Shot area lainnya 4 detik, termasuk area terpadu seperti bathroom–laundry. Banyaknya fungsi dalam gambar tidak otomatis menentukan durasi 6 detik.
-- Area yang sudah tercakup tidak diberi shot pengungkapan ulang. Living-to-kitchen mencakup living dan kitchen; shot berikutnya menuju area baru.
-- Exterior-to-living mencakup exterior dan living. Jangan otomatis menumpuknya dengan living-to-kitchen yang mengulang living.
-- Jenis, jumlah dan cakupan area harus mempunyai acuan pada referensi yang dipilih. Laundry, wardrobe/closet, loft atau fungsi gabungan digunakan sesuai contoh sumber; jangan menambah variasi ruang secara bebas.
-- Bedroom yang ditampilkan maksimal satu. Jangan meloloskan pengulangan bedroom dengan memberi nama kamar berbeda.
-- Semua prompt, klip dan video akhir: tanpa musik, cukup ambient halus. Tanpa narasi/dialog atau efek dramatis tambahan.
-- Total durasi adalah penjumlahan durasi shot. Jangan mempercepat atau memangkas otomatis untuk memaksakan total referensi.
-- Confidence membatasi klaim sumber, bukan pilihan kreatif baru. Tidak ada human_verified.
-- Cut dan kesinambungan dibaca dari isi anotasi; ID segmen tematik tidak otomatis menjadi shot produksi tersendiri. Setiap shot produksi dan promptnya wajib kontinu tanpa cut.
-- Arahan terbaru pengguna dan aturan produksi proyek menjadi pegangan saat menerapkan DNA referensi. Perubahan arahan dicatat pada versi keputusan; pola sumber tidak diam-diam mengganti durasi, cakupan atau audio proyek.
-
-### Catatan proyek yang dapat dipindahkan
-
-Gunakan satu project.json per versi proyek, disertai ringkasan yang mudah dibaca. Untuk melanjutkan sesi, sertakan berkas aset asli yang masih diperlukan; nama file atau tautan lama saja belum membuktikan gambar tersedia. Kontraknya memuat:
-
-| Bagian | Isi utama |
+| Aspek | Ketentuan |
 | --- | --- |
-| Identitas | ID proyek, versi, tahap, keputusan yang disetujui |
-| Brief dan referensi | Kebutuhan, URL/ref/commit sumber, jalur akses, ID referensi dan shot, apa yang benar-benar dibaca |
-| Desain rumah | Geometri, hubungan ruang, elemen tetap, material, lingkungan dan lighting |
-| Shot | ID, jenis, ID area/fungsi yang dicakup, durasi, framing awal–akhir, lintasan, gerak bersamaan/berurutan |
-| Aset | Kolase, ukuran aktual, batas panel, dua frame hasil potong dan status pemeriksaannya |
-| Prompt | Instruksi video, audio ambient, durasi dan pasangan file yang dipakai |
-| Revisi | Perubahan, dampak pada shot lain, keputusan terbuka dan status review |
+| Mode gambar | Pengguna memilih prompt_to_image atau generate_image setelah rancangan disetujui; satu prompt untuk satu gambar area |
+| Batch generate | Seluruh gambar individual dikerjakan sekaligus sesuai jumlah yang disetujui; tujuh berarti tujuh, tanpa kolase dan tanpa menunggu perintah per area. Satu per satu hanya jika diminta pengguna |
+| Gambar | Pandangan luas/informatif, natural dan sesuai desain; bukan pasangan start/end wajib |
+| Plafon dan struktur | Bentuk/tingkat plafon, sambungan, lampu, bukaan, furnitur tetap, material dan cahaya mengikuti keputusan rumah yang sama |
+| Living-to-kitchen | Satu shot 6 detik, dua gambar individual: living dan kitchen; keduanya referensi R2V |
+| Exterior-to-living | Satu shot 6 detik, dua gambar individual: exterior dan living; keduanya referensi R2V |
+| Area lain | Mengikuti jenis/cakupan sumber dan rancangan; kebutuhan gambar fungsi terpadu dipetakan eksplisit, tidak otomatis menambah area fisik |
+| Durasi | Exterior dan dua shot penghubung di atas 6 detik; shot area lain/fungsi terpadu 4 detik |
+| Cakupan | Tidak mengulang pengungkapan area; maksimal satu bedroom/area tidur, termasuk sleeping loft |
+| Kamera | Gerak gabungan harus terlihat; pan/orbit yang dipilih minimal 12 derajat, simultan/sekuensial jelas, jarak/sudut/ritme sesuai durasi |
+| Video dan audio | Video 9:16, satu continuous shot tanpa cut/morphing; ambient natural halus tanpa musik, narasi, dialog atau efek dramatis |
+| Persetujuan | Konsep, desain/shot dan paket gambar final; delegasi tetap berlaku, tanpa persetujuan per gambar yang dipaksakan |
 
-Cakupan mengikuti jenis/fungsi area dan struktur shot pada referensi terpilih. Bedroom yang ditampilkan maksimal satu; perubahan nama kamar tidak menjadi alasan untuk menambahkan bedroom lain. Area terpadu mencatat semua fungsi yang sudah dicakup, sementara benda yang muncul insidental sebagai background tidak otomatis memerlukan shot tersendiri. Catat referensi pendukung untuk setiap pilihan area dan penggabungannya.
+Full area berarti komposisi yang menunjukkan area dan hubungan ruang secara wajar, bukan tuntutan melihat semua sisi terhalang. Rasio gambar referensi dipilih untuk cakupan dan masukan alat; tidak mewarisi kewajiban crop panel/rasio frame V1. Rasio video tetap 9:16. Dimensi, format dan kelayakan aktual tetap diperiksa.
 
-Validasi mengikuti tahap proyek:
+Batch tujuh gambar dan eksekusi yang benar-benar bersamaan harus dibuktikan pada ChatGPT pengguna. Jangan menyamakan tujuh file yang terkumpul dari perintah satu per satu dengan permintaan tujuh sekaligus. Kegagalan alat pengembang tidak menjadi kesimpulan keterbatasan ChatGPT. Jangan diam-diam mengganti alur, mengurangi jumlah atau memindahkan produksi ke API.
 
-| Tahap data | Yang wajib diperiksa |
+## 3. Arsitektur dan kontrak proyek
+
+Paket home-productions/ dan skill produce-home-tour dipertahankan. Versi paket **2.0.0**, schema proyek 2.0 dan aturan produksi 2.0.0 sudah diimplementasikan.
+
+Gunakan satu project.json per revisi aktif. Rincian field dan tahap yang sudah tersedia dijelaskan pada [kontrak V2](home-productions/skills/produce-home-tour/references/project-contract.md).
+
+| Bagian | Perubahan yang direncanakan |
 | --- | --- |
-| Brief/konsep | Kebutuhan, sumber yang benar-benar diakses dan keputusan; gambar belum diwajibkan |
-| Rancangan shot | Desain rumah, cakupan tanpa pengulangan, jenis shot, durasi dan total |
-| Produksi visual | Kolase serta status review aktual; percobaan yang belum selesai belum boleh diberi status final |
-| Visual final/paket prompt | Dua frame per shot benar-benar tersedia, lolos pemeriksaan dimensi, cocok dengan versi keputusan dan dipasangkan ke prompt yang tepat |
+| Identitas, brief, konsep | Pertahankan ID/revisi dan keputusan yang sudah ada |
+| knowledge | Pertahankan URL/ref/commit, jalur akses, evidence dan pembedaan fakta/adaptasi |
+| design | Spesifikasi rumah bersama, plafon, elemen tetap serta hubungan area; tidak mengarang denah sumber |
+| image_mode | prompt_to_image atau generate_image; pilihan tersimpan agar sesi baru tidak mengulang pertanyaan |
+| image_plan | Daftar gambar individual: ID, area tujuan, shot pemakai, prompt gambar, revisi dan status pemenuhan |
+| assets | File referensi area, peran/cakupan, dimensi/format/hash aktual, revisi dan catatan review; role reference menggantikan start/end/collage |
+| shots | Cakupan/durasi/source tetap; reference_image_ids menunjuk daftar gambar sesuai kebutuhan shot, bukan frames.start/end |
+| camera | Jenis gerak, hubungan simultan/sekuensial, perkiraan jarak, sudut pan/orbit, alokasi waktu dan visible_motion_evidence |
+| prompt video | Metode R2V, sembilan bagian, durasi/revisi dan ID gambar yang sama dengan shot |
+| audio, approvals, revision_notes | Pertahankan aturan, asal keputusan dan revisi; tidak menciptakan persetujuan/review otomatis |
 
-Validator memeriksa struktur serta konsistensi catatan. Ia tidak mengklaim membuktikan geometri visual atau audio benar dari JSON. Temuan review visual dan audio hanya dicatat setelah media benar-benar diperiksa.
+Pisahkan gambar yang direncanakan dari aset yang benar-benar tersedia. image_plan yang lengkap belum berarti file telah dibuat/dilihat. Dukungan gambar terhadap fungsi terpadu dijelaskan dalam rancangan; background tidak otomatis menjadi area/shot tambahan.
 
-## 5. Tahapan implementasi
+Tahap data yang diimplementasikan:
 
-Status pelaksanaan: tahap 1–5 selesai. Bagian teknis tahap 6 dan rilis privat tahap 7 selesai; penerimaan manual serta aktivasi/alur ChatGPT belum diklaim lulus.
-
-### Tahap 1 — Membuktikan kemampuan lingkungan sasaran
-
-Pekerjaan:
-
-- Tentukan aplikasi/versi Omni Flash yang digunakan dan kontrol pasangan awal–akhir yang tersedia.
-- Periksa alat pembaca repo pada kedua jalur, tanpa menjadikan keduanya wajib digunakan bersamaan.
-- Buktikan alur kecil: generate kolase dengan acuan → file hasil asli dapat diakses dan diperiksa → kolase dipotong → dua unduhan dapat dibuka. Preview gambar saja belum membuktikan file asli dapat diproses.
-- Gunakan gambar sintetis untuk pemeriksaan pemotongan yang dapat diulang. Saat tahap implementasi ini dikerjakan, lakukan pilot visual kecil untuk memeriksa dukungan alat, rasio, resolusi dan aliran file. Pilot tersebut belum membuktikan konsistensi seluruh shot atau proyek.
-
-Keluaran: catatan kemampuan aktual pada rencana ini, keputusan runtime dan jalur alat yang akan dipakai.
-
-Kriteria selesai: jalur alat yang dipilih terbukti menyediakan kemampuan wajib. Jika masih memerlukan integrasi tambahan, catat tahap ini sebagai belum selesai beserta kebutuhan konkretnya; jangan menyatakan plugin siap penuh hanya karena kebutuhan tersebut sudah didokumentasikan.
-
-#### Hasil pelaksanaan tahap 1 — 18 November 2026
-
-Status: **selesai**, berdasarkan hasil probe workspace dan laporan uji manual pengguna di ChatGPT web pada 18 November 2026. Tidak ada paket plugin yang dibuat atau dipasang pada tahap ini.
-
-| Pemeriksaan | Hasil aktual |
+| Stage | Syarat dan batas penyerahan |
 | --- | --- |
-| Konektor GitHub | Berhasil membaca pengetahuan inti dan anotasi edh058 pada commit terpublikasi yang sama; hash teks hasilnya cocok dengan file lokal |
-| Web | Halaman GitHub pengetahuan inti berhasil dibaca. URL raw pada pembaca utama mengalami cache miss; pembaca alternatif berhasil membaca inti dan bagian anotasi yang memuat shot pilot. Pembacaan seluruh byte anotasi melalui web tidak diklaim |
-| Generate dengan acuan | Satu kolase exterior edh058 shot-01 berhasil dibuat memakai Imagegen bawaan dan dua gambar sumber awal–akhir |
-| File asli | PNG hasil generator tersedia dan berhasil dibuka; dimensi aktual 1330 × 1182, berbeda dari ukuran 2160 × 1920 yang diminta dalam prompt |
-| Pemotongan workspace | Dua PNG 657 × 1168, tepat 9:16; piksel crop dipertahankan, tanpa resize atau generate ulang |
-| Pemeriksaan sintetis | Lima pemeriksaan lulus: urutan/piksel crop, penolakan lebar ganjil, penolakan rasio salah, inset 9:16 eksplisit dan perlindungan berkas lama |
-| Review visual pilot | Kolase dan kedua potongan benar-benar dilihat. Ciri pintu, gable, lantern dan taman dibandingkan secara terbatas; konsistensi seluruh geometri dan gerak video belum diuji |
-| Percobaan otomasi Chrome | Halaman terbuka; interaksi unggah dan tangkapan layar mengalami timeout. Percobaan otomatis ini tidak menyelesaikan uji; hasil manual pengguna dicatat terpisah di bawah |
-| Uji manual ChatGPT web — laporan pengguna | Generate kolase berhasil; crop langsung tanpa unggah ulang berhasil; kedua frame berhasil diunduh, dibuka dan diverifikasi dengan Python. PNG valid, masing-masing 657 × 1168 piksel (9:16), tanpa resize atau generate ulang, tanpa kendala/error |
-| Omni Flash | Dilewati atas arahan pengguna; dukungan frame awal–akhir dicatat sebagai konfirmasi pengguna, tidak diuji ulang |
-| Video dan audio | Tidak dibuat atau diuji dalam pilot gambar ini |
+| brief / concept / shot_plan | Data perencanaan sesuai tahap; gambar belum wajib |
+| image_prompt_package | Seluruh prompt gambar sesuai rancangan dan mode; sah tanpa file gambar, belum siap sebagai paket R2V final |
+| image_draft | Gambar sedang dibuat/dikumpulkan atau masih perlu revisi; jumlah belum terpenuhi dicatat |
+| image_final | Seluruh gambar yang diperlukan tersedia, sesuai keputusan, direview dan disetujui/didelegasikan |
+| prompt_package | Gambar final serta prompt R2V sembilan bagian lengkap, terikat ke shot/durasi/revisi yang benar |
 
-Sumber remote yang benar-benar dibaca menggunakan commit 26c5e56cb0de66d5c1ab4f93a1285654180382a0:
-[pengetahuan inti](https://github.com/milyarderpro/homeku/blob/26c5e56cb0de66d5c1ab4f93a1285654180382a0/knowledge/ai-knowledge.md) dan [anotasi edh058](https://github.com/milyarderpro/homeku/blob/26c5e56cb0de66d5c1ab4f93a1285654180382a0/references/edh058/analysis.yaml).
-Commit lokal 4e53d11b220f09e6b5112cdb41b64bba2969e3ea semula dicoba, tetapi konektor mengembalikan 404 karena ref itu belum tersedia di remote. Pemeriksaan dialihkan secara eksplisit ke commit main yang terpublikasi; tidak menganggap dokumen lokal sudah diterbitkan.
+Kedua mode bertemu pada review gambar. Pada prompt_to_image, hasil dari generator pilihan pengguna harus benar-benar dapat dibuka sebelum review dan prompt video final. Jangan menambahkan persyaratan generate otomatis ke mode yang hanya meminta prompt.
 
-Pemotongan pilot memakai inset kecil setelah batas dua panel dilihat: kiri (4, 7, 661, 1175), kanan (669, 7, 1326, 1175), dengan koordinat kanan/bawah eksklusif. Sekitar 97,63% piksel setiap panel dipertahankan. Ukuran hasil adalah resolusi pilot, belum merupakan janji resolusi produksi.
+Validator memeriksa struktur, jumlah/pemetaan, nilai sudut yang diminta, durasi, revisi, file dan hash. Validator tidak membuktikan gambar natural, plafon konsisten, batch berjalan serentak, sudut aktual video atau ketiadaan musik pada hasil. Hal-hal tersebut dinilai dari gambar/video/audio dan laporan pengguna.
 
-Alat pelaksanaan: [probe tahap 1](tooling/probe_stage1.py), Python 3.12.3 dan Pillow 10.2.0 di workspace ini. Probe mengasumsikan dua panel sama besar yang sudah diperiksa; ia tidak mendeteksi batas panel atau menilai desain secara otomatis dan belum menjadi script produksi tahap 4.
+## 4. Komponen yang diubah
 
-Aset, prompt, laporan crop dan ringkasan bukti lokal berada di runs/stage1-2026-11-18/ yang diabaikan Git. Berkas tersebut tidak tersedia sebagai isi repository remote dan tidak menambah referensi pustaka.
+Semua path pada tabel relatif terhadap bekerja/plugin/. Gunakan folder dan file yang ada; tambahkan file baru hanya jika langsung mendukung fungsi V2.
 
-Keputusan: lanjutkan arsitektur plugin berbasis skill dengan kemampuan gambar dan pemrosesan file yang tersedia. Hasil uji manual pengguna melengkapi verifikasi ChatGPT web yang tertunda akibat timeout otomasi. Tidak ada kebutuhan server tambahan yang ditemukan pada tahap ini.
-
-Asal bukti dibedakan: akses repo, generate pilot dan pemotongan workspace diamati dalam sesi pengembangan; keberhasilan alur ChatGPT web diterima dari laporan manual pengguna. Laporan manual tersebut tidak diubah menjadi klaim keberhasilan otomasi browser atau pengujian plugin yang sudah terpasang.
-
-Tahap 1 menyelesaikan pemeriksaan kemampuan alat. Konsistensi seluruh shot, kualitas video/audio dan perilaku plugin setelah pemasangan tetap diperiksa pada tahap implementasi berikutnya sesuai cakupannya.
-
-### Tahap 2 — Fondasi paket dan kontrak proyek
-
-Pekerjaan:
-
-- Buat home-productions/ dan manifest yang sesuai Plugin Creator.
-- Buat satu sumber aturan produksi, template catatan proyek dan validator aturan.
-- Tetapkan status tahap serta pengikatan aset/prompt pada versi keputusan yang sama.
-- Pilih metadata publisher yang sebenarnya dan kategori listing yang didukung; tidak mengarang identitas publisher.
-
-Keluaran: paket dasar, kontrak data, aturan dan validasi.
-
-Kriteria selesai: konsep awal sah tanpa aset gambar; rancangan dengan durasi salah atau cakupan berulang ditolak; paket yang diklaim final dengan ID/versi aset tidak cocok atau pasangan frame tidak lengkap ditolak. Pesan menjelaskan masalah sesuai tahap data.
-
-#### Hasil pelaksanaan tahap 2 — 18 November 2026
-
-Status: **selesai untuk fondasi paket dan kontrak proyek**. Paket berada di home-productions/. SKILL.md dikerjakan pada tahap 3; fondasi ini belum dipasang sebagai plugin.
-
-| Komponen | Hasil |
+| Komponen | Pekerjaan |
 | --- | --- |
-| [Manifest](home-productions/plugin.json) | Agent Plugins 1.0, nama home-productions, versi paket 0.1.0, kategori Creativity; lolos skema resmi |
-| Publisher | ongkay, berdasarkan konfigurasi Git user.name yang benar-benar dibaca; tidak ditambahkan email atau identitas lain |
-| [Aturan produksi](home-productions/skills/produce-home-tour/references/production-rules.yaml) | Satu sumber aturan mesin versi 1.0.0: durasi, cakupan, batas satu area tidur, audio, rasio frame dan instruksi wajib |
-| [Kontrak proyek](home-productions/skills/produce-home-tour/references/project-contract.md) | Penjelasan tahap data, sumber, persetujuan, revisi, pengikatan aset dan batas validasi |
-| [Template](home-productions/skills/produce-home-tour/assets/project-template.json) dan [schema](home-productions/skills/produce-home-tour/assets/project.schema.json) | Template awal valid pada tahap brief; konsep dapat disusun tanpa gambar; tipe dan kelengkapan data diperiksa sebelum aturan produksi |
-| [Validator](home-productions/skills/produce-home-tour/scripts/validate_project.py) | Baca-saja, tanpa jaringan; memeriksa cakupan, durasi, metadata sumber, revisi, frame serta file PNG aktual pada tahap final |
-| [Tes regresi](tests/test_project_rules.py) | 28 tes lulus; mencakup contoh durasi, pengulangan area/bedroom, tipe data, aset dan prompt usang, pengikatan frame, file rusak/salah format, path/symlink dan portabilitas |
+| home-productions/plugin.json | Naikkan versi saat implementasi; selaraskan deskripsi R2V. Pertahankan identitas, scope/audience, publisher akun dan defaultPrompt yang masih berlaku |
+| skills/produce-home-tour/SKILL.md | Rute dua mode gambar, batch, review, R2V serta kelanjutan/revisi dalam satu skill |
+| references/production-rules.yaml | Aturan V2 dan versi, kebutuhan referensi, sudut gerak dan batas tahap |
+| references/project-contract.md | Kontrak V2, persetujuan, aset area, pemetaan dan kompatibilitas |
+| references/preproduction.md | Rumah/plafon yang sama, rancangan kamera sesuai durasi dan daftar gambar |
+| references/image-workflow.md | Ganti isi kolase/crop menjadi prompt/gambar individual, batch dan review seluruh area |
+| references/omni-flash.md | R2V satu/dua referensi, sembilan bagian dan revisi hasil |
+| references/repo-access.md | Pertahankan jalur selektif/provenance; ubah hanya jika integrasi data membutuhkan |
+| assets/project-template.json dan project.schema.json | Kontrak proyek V2 tanpa kewajiban pasangan start/end |
+| assets/prompt-template.md | Ganti menjadi template R2V sembilan bagian |
+| assets/image-prompt-template.md | File baru untuk prompt satu gambar area dengan spesifikasi bersama |
+| scripts/validate_project.py | Validasi V2 dan pesan yang jelas untuk data V1 |
+| scripts/build_production_package.py | Paket prompt gambar atau paket R2V sesuai tahap; gambar individual dan peta referensi benar |
+| scripts/split_frames.py | Lepas dari alur V2; hapus dari paket setelah seluruh pemanggil/dokumen diperbarui |
+| agents/openai.yaml | Selaraskan metadata lewat generator yang sesuai, pertahankan kebijakan/dependensi yang masih relevan |
+| tests/ | Perbarui tes kontrak, praproduksi, penyerahan dan arsip; ganti tes crop dengan tes alur gambar V2 yang relevan |
+| tooling/package_plugin.py | Pertahankan pengemas; sesuaikan bila inventaris baru menuntut perubahan nyata |
 
-Validator memastikan metadata dukungan referensi lengkap dan cocok dengan cakupan shot. Ia tidak memverifikasi kebenaran kutipan melalui jaringan, menilai geometri rumah dari JSON, atau mendeteksi musik pada video. Skill tahap 3 dan pemeriksaan visual/audio tetap harus bekerja berdasarkan media serta sumber yang benar-benar diakses.
+Tabel komponen skills/... mengacu ke home-productions/skills/produce-home-tour/. Dokumen pengembangan, tes, dist/ dan runs/ tetap di luar paket plugin. Tidak membuat direktori home-productions-v2/ atau salinan pustaka.
 
-Dependensi dideklarasikan dalam scripts/requirements.txt di dalam skill. Lingkungan yang diuji: Python 3.12.3, PyYAML 6.0.1, jsonschema 4.10.3 dan Pillow 10.2.0. Dependensi ini belum diuji ulang sebagai komponen skill terpasang di ChatGPT web.
+## 5. Tahap implementasi V2
 
-Pustaka pengetahuan tidak disalin ke paket dan tidak diubah. Tidak dibuat server, konfigurasi MCP kosong, icon placeholder, SKILL.md sementara atau paket rilis.
+### Tahap 1 — Menetapkan spesifikasi dan kasus acuan
 
-### Tahap 3 — Skill brief, referensi, konsep dan daftar shot
+Petakan keputusan pengguna ke aturan, mode, cakupan gambar dan data proyek. Tetapkan kasus 18/20/22/24 detik serta tujuh gambar sekaligus. Tandai laporan R2V satu gambar sebagai bukti pengguna; batch tujuh dan R2V dua gambar masih perlu diuji.
 
-Pekerjaan:
+**Keluaran:** spesifikasi field/aturan dan daftar penerimaan yang siap dipakai tahap kontrak. **Selesai bila:** tidak ada kewajiban kolase/start–end yang tersisa pada spesifikasi V2, jumlah gambar dan shot tidak tercampur. Tidak perlu mengulang pengujian R2V satu gambar yang telah dilaporkan pengguna.
 
-- Tulis SKILL.md dengan trigger yang jelas untuk produksi home tour dan kelanjutan/revisi proyek.
-- Tulis panduan akses repo secara selektif, provenance dan penanganan kegagalan baca.
-- Susun brief, opsi konsep, keputusan rumah dan daftar shot menggunakan kontrak yang sama. Pastikan setiap jenis area dan pola penggabungan mempunyai acuan referensi; jangan menambah cakupan di luar pola tersebut.
-- Muat detail tahap hanya ketika diperlukan. Pertanyaan pengguna dibatasi pada informasi yang memengaruhi hasil.
-- Terapkan tiga titik keputusan: arah konsep; desain beserta daftar shot; paket visual final. Ikuti keleluasaan yang sudah diberikan pengguna.
+### Tahap 2 — Kontrak, aturan dan validator V2
 
-Keluaran: konsep dan daftar shot yang dapat diteruskan ke produksi gambar.
+Perbarui rules, schema, template dan validator. Implementasikan tahap prompt gambar tanpa aset, tahap gambar final, serta paket R2V. Periksa dua gambar pada masing-masing shot penghubung; ID/path/peran berbeda dan sesuai area, tanpa menyamarkan satu gambar identik sebagai dua area.
 
-Kriteria selesai: contoh exterior + living-to-kitchen + bedroom + bathroom menghasilkan empat shot, 20 detik, tanpa shot kitchen tambahan; exterior-to-living + kitchen + bedroom + bathroom menghasilkan 18 detik.
+**Keluaran:** proyek V2 yang dapat divalidasi beserta tes bermakna. **Selesai bila:** data perencanaan valid tanpa gambar; pemetaan salah, aset kurang/usang, durasi salah, cakupan berulang, bedroom tambahan dan sudut pan/orbit di bawah 12 ditolak sesuai tahap. Video R2V final tidak ditolak hanya karena tidak memiliki start/end frame.
 
-#### Hasil pelaksanaan tahap 3 — 18 November 2026
+### Tahap 3 — Skill, desain bersama dan pilihan mode
 
-Status: **selesai untuk skill praproduksi sampai rancangan shot**. Paket belum dipasang; gambar dan prompt akhir belum dibuat.
+Perbarui entrypoint/praproduksi dan metadata. Tetapkan plafon serta elemen tetap pada rancangan. Pilihan mode diambil satu kali setelah desain disetujui, atau mengikuti pilihan/delegasi yang sudah ada. Gerak berasal dari DNA sumber lalu disesuaikan dengan durasi baku; jangan menambahkan gerak/area generik tanpa acuan.
 
-| Komponen | Hasil |
+**Keluaran:** alur brief sampai daftar shot dan gambar yang jelas. **Selesai bila:** contoh empat shot/20 detik merencanakan lima gambar, bukan delapan frame; pilihan mode dan persetujuan tidak diminta ulang tanpa alasan.
+
+### Tahap 4 — Prompt gambar dan generate seluruh gambar individual
+
+Perbarui image-workflow dan buat template prompt gambar. Mode prompt_to_image menyerahkan seluruh prompt; generate_image mengerjakan seluruh batch individual. Gunakan spesifikasi rumah yang sama pada setiap area; periksa cakupan luas, plafon dan naturalitas. Sediakan file individual serta catatan kekurangan/revisi tanpa mengklaim jumlah selesai secara palsu.
+
+**Keluaran:** paket prompt gambar atau gambar area sesuai mode, lalu jalur review menuju image_final. **Selesai secara teknis bila:** penghitungan/pemetaan, file aktual, status batch dan pengikatan revisi berfungsi tanpa kolase/crop. Pemenuhan tujuh gambar sekaligus dan kualitas seluruh gambar tetap dibuktikan manual setelah rilis uji.
+
+### Tahap 5 — Prompt R2V, ekspor dan transisi data lama
+
+Terapkan sembilan bagian prompt yang sama dengan alur penggunaan. Tentukan peran masing-masing referensi, komposisi awal–akhir, lintasan, perkiraan sudut/jarak dan bukti gerak. Samakan ID gambar/durasi/revisi antara shot, prompt dan paket.
+
+Perbarui ekspor untuk image_prompt_package dan prompt_package. Paket pertama berisi prompt serta catatan tanpa klaim gambar tersedia. Paket final memuat gambar asli, prompt R2V, peta gambar–shot, petunjuk penggunaan dan catatan proyek.
+
+**Keluaran:** paket yang dapat dilanjutkan pada sesi baru. **Selesai bila:** dua area penghubung tetap satu shot dengan dua referensi; tidak ada instruksi yang memaksa referensi sebagai first/last frame; salinan paket mempertahankan data/file dan tidak menimpa hasil lama.
+
+### Tahap 6 — Pemeriksaan teknis dan update privat untuk uji
+
+Jalankan tes yang relevan, validasi format skill/manifest, pemeriksaan seluruh tautan dan arsip. Inspeksi penghapusan komponen lama beserta pemanggilnya. Kemas hanya source plugin ke dist/; hasil gambar dan proyek percobaan tetap di runs/.
+
+Update plugin yang sama melalui Plugin Creator setelah pemeriksaan teknis. Baca inventory/current_release_id terlebih dahulu, gunakan expected_release_id aktual dan delete_paths untuk file lama yang memang dihapus. Update bersifat overlay; tidak cukup hanya menghilangkan file dari ZIP.
+
+**Keluaran:** rilis privat V2 untuk diuji pengguna. **Selesai bila:** versi dan komponen tersimpan dapat dibaca balik, perubahan/penghapusan terverifikasi, dan tautan rilis dicatat. Keberhasilan upload tidak otomatis berarti penerimaan atau aktivasi ChatGPT sudah lulus.
+
+### Tahap 7 — Uji manual pengguna, perbaikan dan penerimaan
+
+Pengguna menguji plugin rilis di ChatGPT. Prioritas: alur prompt-to-image, generate seluruh batch, review plafon/naturalitas, R2V satu gambar dan dua referensi pada kedua shot penghubung, gerak 12 derajat, serta kelanjutan sesi.
+
+Pengguna sudah menjalankan eksperimen Omni Flash; untuk V2, kasus video baru diuji manual sesuai kesediaan/hasil yang dibawa pengguna. Jangan mengubahnya menjadi kewajiban pengujian otomatis developer atau meminta nama aplikasi/API sebagai syarat memulai. Belum diuji tetap dicatat sebagai belum diuji.
+
+**Keluaran:** laporan pada rencana aktif ini, perbaikan terarah dan update plugin yang sama. **Selesai bila:** keluaran wajib serta kasus utama V2 diterima berdasarkan bukti; kasus yang belum teruji tidak diberi status lulus. Uji ulang difokuskan pada bagian terdampak.
+
+## 6. Matriks penerimaan minimum
+
+| Kasus | Hasil yang diharapkan | Cara pembuktian |
+| --- | --- | --- |
+| Lima area terpisah | Lima gambar, lima shot, 22 detik | Kontrak + manual gambar/prompt |
+| Living-to-kitchen | Dua gambar area, satu shot 6 detik; tidak diikuti kitchen lagi | Kontrak + R2V manual |
+| Exterior-to-living | Dua gambar area, satu shot 6 detik; living tidak diulang | Kontrak + R2V manual |
+| Contoh empat shot | Lima gambar dan empat prompt R2V, total 20 atau 18 detik sesuai pola | Kontrak + paket |
+| Laundry/wardrobe/fungsi terpadu | Sesuai sumber, durasi 4 detik; tidak mengubah pola menjadi ruang baru | Sumber + kontrak + manual |
+| Prompt-to-image tujuh gambar | Tujuh prompt individual, tanpa mengklaim file gambar sudah ada | Kontrak + manual |
+| Generate tujuh sekaligus | Tujuh file individual dalam satu tahap/permintaan; tidak diganti kolase/perintah per gambar | Uji manual ChatGPT; catat eksekusi aktual |
+| Plafon dan hubungan ruang | Sama dengan rancangan dan konsisten antararea yang terhubung | Review gambar nyata |
+| Naturalitas dan cakupan area | Area terbaca luas, perspektif/skala/cahaya wajar; tidak ada crop yang membuang informasi utama | Review gambar nyata |
+| R2V dua referensi | Dua identitas area digunakan dalam satu lintasan, bukan blend dua rumah atau interpolasi wajib | Uji manual video |
+| Gerak gabungan | Komponen perpindahan dan pan/orbit terlihat sesuai simultan/sekuensial | Data/prompt + review video |
+| Pan/orbit di bawah 12 derajat | Rancangan ditolak untuk gerak yang memang mensyaratkannya; gerak translasi tidak dipaksa berputar | Validator + review video hasil |
+| Ritme 4/6 detik | Jarak/sudut dan fase masuk akal; tidak hanya kata slow yang bertentangan dengan lintasan | Review prompt + video |
+| Musik atau perubahan struktur | Temuan dicatat dan hasil direvisi; audio hanya dinilai bila dapat didengar | Review media |
+| Sesi baru dan revisi desain | Mode/keputusan tetap terbaca, file asli tersedia, gambar/prompt terdampak direview ulang | Ekspor + manual |
+| Data V1 dan kegagalan akses | Pesan versi/akses jelas, tidak memalsukan migrasi, gambar, review atau keberhasilan batch | Tes kontrak + manual |
+
+## 7. Migrasi dan kebersihan repo
+
+V2 adalah pengganti alur produksi utama, bukan tambahan pilihan kolase/interpolasi dalam menu. Dua mode hanya mengatur cara memperoleh gambar; metode video utamanya R2V.
+
+Proyek schema 1.0 dikenali dan diberi penjelasan versi. Jangan diam-diam mengubah pasangan frame lama menjadi gambar full area atau membawa persetujuan visual ke V2. Brief, desain, sumber dan keputusan yang masih berlaku boleh dipakai kembali dengan peninjauan. Migrasi nyata dilakukan pada salinan/revisi proyek sesuai permintaan, tanpa menimpa proyek V1.
+
+Hapus file kolase/crop yang tidak lagi dipakai setelah semua tautan, tes dan callers diperiksa. Riwayat Git serta rilis lama menyimpan versi V1; jangan mempertahankan dua entrypoint produksi yang membingungkan AI. Tool probe lama yang berada di luar paket ditinjau kegunaannya sebelum dipertahankan/dihapus.
+
+Jangan menghapus manifest kompatibilitas yang dibuat layanan jika deklarasi yang meregenerasikannya masih berlaku. Tidak menyalin email akun ke repo. Publisher, scope/audience dan pengaturan akun dipertahankan melalui mekanisme update yang benar.
+
+## 8. Identitas rilis dan status
+
+Identitas terakhir yang tercatat, dibaca ulang saat implementasi/update:
+
+- Nama: home-productions; skill: produce-home-tour.
+- Versi tersedia: 2.0.0; versi sebelumnya 0.1.0 tetap tercatat dalam riwayat rilis.
+- Plugin ID: plugins_6afd5aeb32208191a60a8b85426c898f.
+- Release ID terakhir terverifikasi: pluginrel_6afd8f59eab0819199eed6bf3b189717; baca ulang sebelum update berikutnya.
+- [Tautan plugin yang sama](https://chatgpt.com/plugins/plugins_6afd5aeb32208191a60a8b85426c898f).
+- Scope terakhir USER, PRIVATE; tidak diperluas atau dipublikasikan ke direktori umum.
+
+| Tahap V2 | Status |
 | --- | --- |
-| [Skill utama](home-productions/skills/produce-home-tour/SKILL.md) | Memulai, melanjutkan dan merevisi brief, konsep, desain rumah serta shot; menghormati persetujuan/delegasi yang sudah ada |
-| [Akses repo](home-productions/skills/produce-home-tour/references/repo-access.md) | Pembacaan selektif melalui web atau konektor; versi sumber, kutipan/pointer, kegagalan akses dan tingkat bukti kontinuitas dicatat secara jujur |
-| [Panduan praproduksi](home-productions/skills/produce-home-tour/references/preproduction.md) | DNA desain dan video, rumah yang koheren, gerak simultan/sekuensial, cakupan tanpa pengulangan dan catatan proyek untuk sesi berikutnya |
-| [Metadata skill](home-productions/skills/produce-home-tour/agents/openai.yaml) | Dihasilkan dengan generator Skill Creator; tidak mewajibkan konektor GitHub |
-| Kasus living–kitchen | edh022 shot-01 sampai shot-04 → exterior 6 + living-to-kitchen 6 + bedroom 4 + bathroom 4 = **20 detik**. Exterior penutup sumber tidak diulang dalam rancangan |
-| Kasus exterior–living | edh035 shot-01 sampai shot-04 → exterior-to-living 6 + kitchen 4 + bedroom 4 + bathroom 4 = **18 detik** |
-| [Pemeriksaan tahap 3](tests/test_preproduction.py) | Dua replay kontrak dari anotasi asli, pointer/kutipan sumber, kelengkapan metadata serta tautan internal paket; bersama tes tahap 2, **32 tes lulus** |
-| Format skill | quick_validate dari Skill Creator lulus; pemeriksaan format statis, bukan pembuktian perilaku model |
+| 1 — Spesifikasi dan kasus acuan | Selesai; aturan, kontrak dan kasus 18/20/22/24 detik serta tujuh gambar |
+| 2 — Kontrak dan validator | Selesai; schema/rules V2, gambar area, batch, kamera dan kompatibilitas V1 |
+| 3 — Skill dan desain bersama | Selesai; satu skill, plafon/connections dan keputusan mode |
+| 4 — Dua mode gambar individual | Implementasi selesai; pemenuhan batch/naturalitas menunggu uji manual |
+| 5 — Prompt R2V, paket dan transisi | Selesai; sembilan bagian dan dua jenis ekspor tanpa start/end wajib |
+| 6 — Teknis dan update privat untuk uji | Selesai; 53 tes V2 lulus, rilis 2.0.0 dibaca balik |
+| 7 — Penerimaan manual dan perbaikan | Menunggu hasil pengguna; panduan uji sudah tersedia |
 
-Anotasi [edh022](https://github.com/milyarderpro/homeku/blob/26c5e56cb0de66d5c1ab4f93a1285654180382a0/references/edh022/analysis.yaml) dan [edh035](https://github.com/milyarderpro/homeku/blob/26c5e56cb0de66d5c1ab4f93a1285654180382a0/references/edh035/analysis.yaml) benar-benar dibaca melalui konektor pada commit terpublikasi yang sama. Hash seluruh teks cocok dengan anotasi lokal yang dipakai replay tes. Ini memakai analisis yang sudah tersedia, bukan analisis ulang video.
+Urutan tetap: implementasi → pemeriksaan teknis → update privat untuk uji → uji manual pengguna → perbaikan → penerimaan. Tidak menahan seluruh rilis hingga pengguna menguji salinan master prompt.
 
-Kasus tes merupakan data uji kontrak, bukan proyek pilihan atau persetujuan pengguna. Durasi mengikuti aturan produksi 6/4 detik; hubungan waktu gerak gabungan yang tidak dipastikan sumber ditandai sebagai adaptasi uji. Tidak dibuat gambar, file frame atau prompt akhir.
+## 9. Acuan pemeliharaan
 
-Skill memakai kontrak dan aturan tahap 2 yang sama. Tiga titik keputusan tetap: pilihan konsep, desain beserta shot, lalu visual final pada tahap gambar. Belum dilakukan uji perilaku skill terpasang di ChatGPT web; penerimaan menyeluruh tetap tahap 6.
+Perubahan perilaku memperbarui alur penggunaan, aturan mesin dan kontrak pada perubahan implementasi yang sama. Source dan rilis aktif sudah memakai V2; alur V1 tersedia pada riwayat Git/rilis sebelumnya. Setiap tahap mencatat hasil aktual pada dokumen aktif, bukan laporan/salinan plan baru.
 
-### Tahap 4 — Kolase, konsistensi dan pemotongan
+Baseline V1: implementasi kolase/first–last tersedia pada 0.1.0; 65 tes teknis pernah lulus. Temuan manual pengguna mendorong penggantian alur, sehingga angka tersebut tidak menjadi bukti keberhasilan V2.
 
-Pekerjaan:
+Revisi 2.0 — Menyusun migrasi ke gambar area individual dan R2V, dua mode gambar, batch tujuh, plafon/naturalitas, gerak terlihat minimal 12 derajat serta update privat sebelum penerimaan manual.
 
-- Hubungkan instruksi generate gambar dengan spesifikasi rumah dan gambar yang sudah disetujui. Kedua panel adalah ujung lintasan dalam satu rumah; pada shot penghubung, area awal dan akhirnya dapat berbeda.
-- Buat kolase dua panel: kiri awal, kanan akhir, tanpa teks/bingkai dekoratif; setiap frame vertikal ditargetkan 9:16.
-- Periksa hasil aktual. Rasio kanvas dua panel idealnya 9:8; kemampuan keluaran alat perlu dicocokkan sebelum menjanjikan ukuran.
-- Implementasikan split_frames.py untuk memotong batas panel yang sudah diperiksa, menjaga piksel dan memvalidasi kedua file.
-- Periksa konsistensi visual terpisah dari validasi dimensi. Kembalikan ke revisi bila tata ruang, bukaan, furnitur, material atau cahaya menyimpang.
-- Berikan unduhan individual; ZIP proyek opsional. Jangan mengunggah kolase utuh sebagai pengganti dua frame ke generator.
 
-Keluaran: pasangan frame yang valid, penamaan shot-NN-start.png dan shot-NN-end.png, serta catatan review.
+## 10. Hasil implementasi — 18 November 2026
 
-Kriteria selesai: pemotongan tidak menukar urutan, mencampur panel, menyisakan bingkai atau meregangkan proporsi; file hasil benar-benar dapat diunduh. Resolusi rendah ditandai, bukan diklaim bertambah detail setelah crop.
-
-#### Hasil pelaksanaan tahap 4 — 18 November 2026
-
-Status: **selesai untuk implementasi kolase, review dan pemotongan**. Alur visual terhubung ke skill yang sama; plugin belum dipasang.
-
-| Komponen | Hasil |
+| Bagian | Hasil aktual |
 | --- | --- |
-| [Alur visual](home-productions/skills/produce-home-tour/references/image-workflow.md) | Satu kolase kiri-awal/kanan-akhir per shot; memakai acuan proyek, review dalam/antarshot, revisi dan penyerahan dua unduhan individu |
-| [Pemotong produksi](home-productions/skills/produce-home-tour/scripts/split_frames.py) | Memakai aturan frame yang sama; dua PNG 9:16 berukuran sama, tanpa resize, regenerasi, konversi warna atau penimpaan hasil lama |
-| Batas crop | Pembagian tengah hanya untuk dua panel 9:16 tepat. Kanvas lain memerlukan dua kotak eksplisit setelah gambar dilihat; padding keluar kanvas, panel tercampur dan perubahan proporsi ditolak |
-| Laporan crop | Koordinat, hash sumber/hasil, dimensi dan kesamaan piksel; target lebar minimum opsional ditandai bila tidak terpenuhi. Laporan tidak memberikan persetujuan visual |
-| Integrasi proyek | Empat shot → delapan file yang dapat diikat ke shot/revisi dalam kontrak yang sama. visual_final tetap menolak frame tanpa review atau persetujuan; prompt masih null |
-| [Tes crop/integrasi](tests/test_split_frames.py) | 15 tes tambahan; bersama tahap 2–3, **47 tes lulus**. Mencakup urutan/piksel/alpha, kotak salah, hasil lama, kegagalan tulis dan portabilitas |
-| Format skill | quick_validate dari Skill Creator lulus; metadata dan tautan sumber daya diperbarui sesuai kemampuan visual |
+| Kontrak | Schema 2.0/rules 2.0.0; image_plan terpisah dari file assets, mode tersimpan, plafon/connections wajib pada rancangan |
+| Gambar | Prompt-to-image sah tanpa aset; generate_image mencatat permintaan/pelaksanaan batch, gambar parsial/gagal tetap draft; PNG/JPEG/WEBP aktual diperiksa tanpa memaksa crop 9:16 |
+| Pemetaan | Lima gambar untuk empat shot/20 atau 18 detik; dua referensi individual untuk living-to-kitchen dan exterior-to-living |
+| Kamera | Komponen dan fase diperiksa; pan/orbit minimal 12°, translasi tidak dipaksa berputar, perkiraan jarak serta total alokasi durasi konsisten |
+| Prompt | Sembilan sections menjadi satu sumber teks; peran setiap image_id, revisi/durasi/pemetaan dan aturan ambient/continuous diperiksa |
+| Ekspor | image_prompt_package dan prompt_package; gambar asli, prompt, panduan dan project.json dapat dibawa ke folder/sesi baru, tanpa klaim review otomatis |
+| Transisi | Data V1 mendapat pesan migrasi pada salinan; tidak otomatis mengubah frame lama atau membawa persetujuan visual |
+| Pembersihan | split_frames.py dan tes crop V1 dihapus; probe_stage1.py yang tidak lagi dirujuk juga dihapus. Template gambar individual ditambahkan |
+| Teknis | 53 tes V2 lulus; format skill, schema manifest resmi, Python/JSON/YAML, tautan internal dan arsip diperiksa |
+| Rilis | Plugin yang sama di-update ke 2.0.0, USER/PRIVATE. Enam belas berkas upload diverifikasi lewat pembacaan balik; manifest kompatibilitas layanan menjadi berkas ke-17 |
+| Preservasi | Plugin ID, publisher akun, defaultPrompt dan scope/audience tetap. Tidak menyalin email akun ke repo atau mengubah pustaka sumber |
 
-Pilot memakai kembali file kolase asli hasil tahap 1, bukan generate baru. Kolase 1330 × 1182 dan kedua hasil crop benar-benar dilihat. Kotak yang diperiksa adalah kiri (4, 7, 661, 1175) dan kanan (669, 7, 1326, 1175). Script produksi menghasilkan dua PNG **657 × 1168**, tepat 9:16; hash hasil cocok dengan crop pilot sebelumnya dan pemeriksaan piksel lulus.
+Pengujian memakai fixture yang ditandai sintetis. Catatan parallel, review dan persetujuan pada fixture bukan bukti batch nyata atau keputusan pengguna. Dua kasus anotasi edh022/edh035 dipakai ulang untuk pemeriksaan struktur; bukan analisis ulang video. Tes ekspor membuktikan file/data tetap dapat divalidasi setelah folder kerja asal dihapus.
 
-Pada review terbatas, urutan awal lebar menuju akhir dekat pintu sesuai pasangan; potongan tidak menampilkan garis pemisah, teks atau border. Identitas pintu kayu berkaca, wreath, lantern, shutter gelap dan taman bunga dapat dibandingkan pada bagian yang terlihat. Ini bukan pembuktian seluruh geometri rumah, konsistensi seluruh shot atau gerak video.
+Rilis: [home-productions 2.0.0](https://chatgpt.com/plugins/plugins_6afd5aeb32208191a60a8b85426c898f).
+Release ID: pluginrel_6afd8f59eab0819199eed6bf3b189717.
+Arsip: dist/home-productions-2.0.0.zip, diabaikan Git.
+SHA-256 upload: 1f0a90d3f156055f04ae4f52a2bc9fa123b3a230c636c4c36b3ff7a1f1d10677.
 
-Dua file pilot dibuka melalui alat tampilan file lokal dan tersedia untuk tautan individual. Pengunduhan baru oleh pengguna tidak diuji pada tahap ini. Laporan uji manual ChatGPT web tahap 1 tetap menjadi bukti terpisah untuk kemampuan generate, crop langsung dan unduhan host; belum merupakan uji plugin terpasang.
+Update memakai expected_release_id aktual dan delete_paths untuk script crop lama. Pembacaan inventaris lengkap memverifikasi script tersebut hilang, template gambar baru tersedia, versi kompatibilitas sinkron serta publisher/defaultPrompt dipertahankan. Tidak dibuat plugin baru atau mengubah sharing.
 
-Hasil pilot dan laporan berada di runs/stage4-2026-11-18/ yang diabaikan Git. Pustaka sumber, aturan produksi dan schema proyek tidak diubah. Tidak dibuat project.json dengan persetujuan pengguna yang direkayasa; persetujuan pada tes hanya fixture sintetis.
+### Tahap 7 — Serah-terima uji manual
 
-Paket prompt belum diimplementasikan. Uji perilaku menyeluruh, konsistensi satu proyek lengkap, hasil video/audio dan pemasangan tetap mengikuti tahap berikutnya.
+Gunakan [panduan uji di README](README.md#uji-manual-v2). Uji terpisah:
+1. Prompt-to-image: seluruh prompt area, tanpa generate otomatis atau klaim file tersedia.
+2. Generate image: seluruh jumlah gambar individual sekaligus; khusus tujuh gambar, catat jumlah file dan pelaksanaan aktual.
+3. Review plafon, geometri, hubungan ruang, naturalitas dan kesesuaian desain dari hasil nyata.
+4. R2V satu gambar dan dua referensi pada living-to-kitchen serta exterior-to-living; satu shot, bukan dua klip.
+5. Gerak gabungan, minimum rotasi yang diminta, ritme 4/6 detik, continuous shot dan ambient tanpa musik.
+6. Ekspor serta kelanjutan sesi dengan file asli, lalu revisi satu keputusan dan tinjau dampaknya.
 
-### Tahap 5 — Prompt Omni Flash dan paket proyek
+Belum ada hasil manual V2 yang diterima pada saat rilis ini. Aktivasi/pemilihan skill di ChatGPT, tujuh gambar serentak, naturalitas/plafon dan video/audio tidak dinyatakan lulus dari source atau 53 tes. Perbaikan berikutnya mengikuti temuan pengguna dan menggunakan plugin ID yang sama.
 
-Pekerjaan:
-
-- Tulis panduan generator sesuai aplikasi yang dikonfirmasi; jangan menyalin parameter API ke UI yang tidak mendukungnya.
-- Susun prompt per shot dari gambar final: gerak, framing, lintasan, durasi 6/4 detik, kontinuitas dan ambient tanpa musik.
-- Periksa bahwa maju sambil pan dan maju lalu pan diterjemahkan berbeda.
-- Buat ringkasan desain, shot list, total durasi, peta file–prompt, petunjuk penggunaan dan catatan versi.
-- Dukung revisi hasil yang benar-benar dapat diakses. Perubahan elemen tetap memicu peninjauan shot yang terdampak.
-
-Keluaran: paket produksi lengkap dan dapat dilanjutkan pada sesi berikutnya.
-
-Kriteria selesai: setiap prompt memakai pasangan frame yang benar dan aturan audio eksplisit; ringkasan proyek cukup untuk melanjutkan tanpa mengandalkan ingatan sesi lama.
-
-#### Hasil pelaksanaan tahap 5 — 18 November 2026
-
-Status: **selesai untuk implementasi prompt dan paket proyek**. Skill yang sama mendukung alur sampai prompt_package; belum dipasang atau diuji sebagai plugin terpasang.
-
-| Komponen | Hasil |
-| --- | --- |
-| [Panduan Omni Flash/paket](home-productions/skills/produce-home-tour/references/omni-flash.md) | Penulisan dari dua frame final, pemetaan aset, petunjuk kontrol berdasarkan fungsi, revisi hasil dan kelanjutan sesi |
-| [Template prompt](home-productions/skills/produce-home-tour/assets/prompt-template.md) | Subjek/cahaya, awal–akhir, lintasan, reveal dan elemen tetap; gerak simultan dan sekuensial dijelaskan berbeda; instruksi continuous/ambient disalin dari aturan |
-| [Ekspor proyek](home-productions/skills/produce-home-tour/scripts/build_production_package.py) | Helper deterministik untuk project.json, production-guide.md, prompt per shot dan salinan aset asli. Keputusan, teks prompt, ID/revisi dan path relatif dipertahankan |
-| Integritas paket | Ekspor memerlukan prompt_package valid, dua frame yang cocok dan persetujuan/review tercatat. Salinan diperiksa ulang; tujuan lama tidak ditimpa dan ekspor yang gagal dibersihkan |
-| Validasi prompt | Validator menolak penanda template yang belum diisi, selain pengikatan pasangan/durasi/revisi dan instruksi wajib yang sudah ada |
-| [Tes ekspor](tests/test_production_package.py) | 12 tes tambahan; bersama tahap sebelumnya, **59 tes lulus**. Meliputi 18/20/22/24 detik, pemindahan sesi, tautan gambar, kegagalan salin dan CLI dari salinan paket terisolasi |
-| Format skill | quick_validate dari Skill Creator lulus; panduan gambar, kontrak, metadata dan skill utama sudah menunjuk tahap prompt yang tersedia |
-
-Helper ekspor ditambahkan di scripts/ untuk keluaran paket proyek yang sudah direncanakan. Ia tidak menulis keputusan/prompt kreatif baru atau memberi persetujuan. Ini berbeda dari pengemas ZIP plugin pada tahap 7; tidak ditambahkan server, dependensi baru atau format proyek kedua.
-
-Pengujian memakai gambar dan persetujuan sintetis yang ditandai sebagai fixture. Satu paket uji empat shot/20 detik tetap valid setelah folder kerja asal dihapus; delapan gambar dan empat prompt tersedia dalam salinan paket. Teks prompt mempertahankan perbedaan gerak bersamaan/berurutan yang ditulis dalam fixture. Pemeriksaan ini membuktikan pengangkutan data, bukan kemampuan model menerjemahkan gerak atau kualitas rumah.
-
-Template menjelaskan “Move forward while panning…” dan “First move forward, then pan…” sebagai contoh hubungan waktu, bukan arah wajib seluruh shot atau klaim timing sumber. Rincian prompt proyek tetap ditulis setelah melihat frame final serta rancangan sebenarnya.
-
-Petunjuk generator memakai dukungan awal–akhir dan 4–10 detik dari konfirmasi pengguna; uji Omni Flash tetap dilewati sesuai arahan. Aplikasi/versi, tombol dan parameter API yang belum diketahui tidak direkayasa. Klip menggunakan durasi baku 6/4 detik serta ambient tanpa musik; cut antarklip dijelaskan terpisah dari prompt satu continuous shot.
-
-Tidak dibuat proyek kreatif dengan persetujuan pengguna yang direkayasa. Tidak ada generate video, pemeriksaan audio baru, perangkaian atau publikasi. Pustaka sumber, aturan produksi dan schema proyek tetap sama; penerimaan perilaku serta pemasangan menjadi tahap 6–7.
-
-### Tahap 6 — Pemeriksaan perilaku dan penerimaan
-
-Urutan pelaksanaan tahap 6–7 diperbarui atas arahan pengguna: **pemeriksaan teknis → rilis privat untuk uji → pengujian manual di ChatGPT → perbaikan → penerimaan selesai**. Pengemasan dan penyimpanan privat dilakukan sebelum penerimaan manual agar pengguna menguji plugin sebenarnya. Nomor tahap tetap dipertahankan sebagai kelompok pekerjaan.
-
-Pengujian penerimaan dilakukan pengguna secara manual. Kendala alat otomasi pengembang tidak menjadi bukti bahwa ChatGPT tidak mampu generate, crop atau menyediakan unduhan. Hasil manual, pemeriksaan kode dan kemampuan yang belum diuji dicatat terpisah.
-
-Pemeriksaan kode difokuskan pada kontrak, pemotongan dan isi paket. Pemeriksaan visual memerlukan melihat gambar; pemeriksaan audio memerlukan mendengarkan hasil yang tersedia.
-
-Skenario penerimaan minimum:
-
-| Skenario | Hasil yang harus terjadi |
-| --- | --- |
-| Lima area terpisah | Exterior 6 + empat area 4 = 22 detik; lima kolase dan sepuluh frame |
-| Living-to-kitchen gabungan | Kedua area selesai dalam satu shot 6 detik; kitchen tidak diulang |
-| Exterior-to-living gabungan | Living tidak diulang; lanjut kitchen atau area baru |
-| Bathroom–laundry terpadu | Satu shot 4 detik mencakup kedua fungsi; keduanya tidak diulang |
-| Pengulangan bedroom | Ditolak; bedroom yang ditampilkan maksimal satu, termasuk ketika nama kamarnya diubah |
-| Konsep tanpa gambar | Sah pada tahap konsep; pasangan gambar baru wajib untuk visual final dan paket prompt |
-| Laundry atau wardrobe | Pilih sesuai contoh referensi; masing-masing 4 detik bila menjadi shot tersendiri, satu kali cakupan |
-| Anotasi berupa segmen tematik kontinu | Periksa continuity/transition; jangan otomatis menambah cut |
-| Akses sumber/gambar gagal | Nyatakan belum terbaca/terlihat; jangan mengarang review |
-| Citra tidak konsisten atau panel keliru | Revisi sebelum menyerahkan pasangan final |
-| Alat crop atau unduhan tidak tersedia | Laporkan kemampuan belum lengkap; jangan mengklaim selesai |
-| Prompt atau hasil memiliki musik | Prompt diperbaiki; hasil audio ditinjau bila dapat didengar |
-| Revisi jendela/material rumah | Tinjau aset dan prompt terkait; versi lama tidak tercampur |
-| Sesi baru | Catatan dan aset asli digunakan untuk melanjutkan; aset yang belum tersedia diminta tanpa mengarang isinya |
-| Permintaan analisis sumber saja | Hindari memulai produksi lengkap tanpa diminta |
-
-Gunakan pilot kecil dan skenario penerimaan di atas untuk memeriksa alur. Bedakan hasil pemeriksaan kode, review visual, audio dan pengujian generator; keberhasilan salah satunya tidak menggantikan yang lain. Generate video, publikasi dan evaluasi performa Facebook tetap mengikuti cakupan yang disepakati.
-
-Keluaran: hasil penerimaan ringkas pada rencana ini, masalah yang tersisa dan batas kemampuan.
-
-Kriteria selesai: setiap keluaran wajib berhasil pada lingkungan sasaran; keterbatasan pemeriksaan dinyatakan sesuai bukti.
-
-#### Hasil pemeriksaan teknis — 18 November 2026
-
-Status: **teknis lulus; penerimaan manual menunggu pengguna**.
-
-| Pemeriksaan | Hasil |
-| --- | --- |
-| Aturan dan kontrak | Sesuai keputusan: jenis/cakupan berbasis sumber, tanpa pengulangan area, maksimal satu bedroom/area tidur, durasi 6/4 detik dan ambient tanpa musik |
-| Tes otomatis | **65 tes lulus**: 59 tes fondasi/alur proyek serta enam tes arsip rilis |
-| Manifest | Lulus schema resmi Agent Plugins 1.0 yang diambil pada tanggal pemeriksaan; listing menggunakan kategori Creativity dan subtitle sesuai batas |
-| Skill | quick_validate lulus; frontmatter, metadata serta tautan internal dapat dibaca |
-| [Pengemas](tooling/package_plugin.py) | ZIP deterministik hanya dari home-productions/, di luar source; CRC, inventaris dan seluruh byte dibandingkan kembali dengan source |
-| [Tes arsip](tests/test_package.py) | Kelengkapan, reproduksibilitas, referensi, identitas, penolakan symlink/file kerja dan perlindungan arsip lama lulus |
-| Isi upload | 16 berkas, satu skill produce-home-tour; tanpa pustaka sumber, dokumen kerja, hasil runs/, cache, server atau konfigurasi MCP kosong |
-
-Belum dilakukan uji perilaku plugin di ChatGPT, konsistensi satu proyek kreatif lengkap atau pengujian video/audio Omni Flash. Pemeriksaan teknis bukan pengganti hasil manual. Tidak dilakukan analisis ulang video atau penambahan referensi.
-
-### Tahap 7 — Paket rilis dan pemasangan privat
-
-Pekerjaan:
-
-- Jalankan pemeriksaan paket dan buat ZIP hanya dari home-productions/, ke dist/.
-- Inspeksi arsip akhir: manifest, skill, referensi, script dan aset yang benar; semua path internal valid.
-- Gunakan Plugin Creator untuk menyimpan paket lengkap secara privat setelah pemeriksaan teknis, agar pengguna dapat menguji plugin yang sebenarnya di ChatGPT. Jangan membuat plugin placeholder untuk mengecek koneksi.
-- Untuk pembaruan, identifikasi plugin yang sama dan gunakan update; simpan plugin ID, release ID, versi dan plugin_url setelah respons berhasil.
-- Periksa komponen dan aktivasi setelah pemasangan. Pembuatan entri plugin saja belum membuktikan workflow berhasil.
-- Catat informasi rilis singkat pada README ruang kerja ini. Pembuatan rencana saat ini tidak memasang, membagikan atau memublikasikan plugin.
-
-Keluaran: paket versi awal 0.1.0, plugin privat terpasang bila termasuk cakupan implementasi, serta tautan dan identitas rilis yang terverifikasi.
-
-Kriteria selesai: arsip dapat diperiksa, skill yang diharapkan dikenali, dan alur yang diminta berjalan pada lingkungan pengguna. Publikasi direktori publik merupakan pekerjaan terpisah.
-
-#### Hasil rilis privat — 18 November 2026
-
-Rilis **0.1.0** berhasil dibuat melalui Plugin Creator pada scope USER dengan discoverability PRIVATE.
-
-- [Buka home-productions](https://chatgpt.com/plugins/plugins_6afd5aeb32208191a60a8b85426c898f)
-- Plugin ID: plugins_6afd5aeb32208191a60a8b85426c898f
-- Release ID: pluginrel_6afd5aede8fc81918c13057632e8250f
-- ZIP lokal: dist/home-productions-0.1.0.zip, diabaikan Git.
-- SHA-256 upload: 35fb8f999a92a0f6fbf309b77c939cc75ef07a876a86f816bcdb88f80444d8f7
-
-Seluruh inventaris rilis dan 16 berkas upload dibaca balik, tanpa halaman tersisa atau berkas yang tidak terbaca. Lima belas berkas skill/pendukung cocok persis dengan source. Manifest root mempertahankan identitas, versi dan konfigurasi; publisher ditetapkan layanan sesuai akun, menggantikan nama berbasis Git pada upload. Tidak menyalin email akun ke repo. Manifest kompatibilitas .codex-plugin/plugin.json dibuat oleh layanan sehingga inventaris tersimpan berjumlah 17 berkas; tidak dibuat overlay lokal atau rilis kedua.
-
-Keberhasilan ini membuktikan penyimpanan rilis privat dan kelengkapan source. Aktivasi/pemilihan skill serta keberhasilan alur di ChatGPT belum diamati. Pengguna melanjutkan uji manual memakai tautan rilis; tahap penerimaan tetap terbuka. Hasil dan revisi dicatat pada rencana aktif ini, bukan dokumen historis tambahan.
-
-## 6. Pemeriksaan format Plugin Creator
-
-Acuan diperiksa pada 18 November 2026: skill create-plugin dari Plugin Creator beserta panduan plugin-packages dan zip-requirements, serta dokumentasi resmi OpenAI.
-
-- Root plugin.json memakai schema https://agent-plugins.org/schemas/1.0.0/plugin.schema.json.
-- Nama home-productions sesuai folder paket; versi paket menggunakan SemVer mulai 0.1.0.
-- Skills berada langsung di `skills/<skill-name>/SKILL.md`, dengan frontmatter name dan description.
-- Metadata OpenAI berada di extensions.com.openai. Listing direncanakan memakai kategori Creativity; subtitle maksimal 30 karakter.
-- agents/openai.yaml hanya ditambahkan jika diperlukan dan mengikuti field yang didukung.
-- mcp.json dan deklarasi app hanya dibuat untuk integrasi nyata dengan identitas/endpoint terverifikasi.
-- Arsip memuat satu plugin, tanpa dokumen kerja, file proyek pengguna, cache, dependensi terinstal, symlink atau rahasia.
-
-Aturan format diperiksa ulang saat mengemas. Tidak membuat compatibility manifest kedua kecuali lingkungan pemasangan benar-benar memerlukannya.
-
-## 7. Pemeliharaan dan perluasan
-
-Perbarui versi paket dan catatan rilis setelah perubahan. Pertahankan satu alur penggunaan dan satu rencana aktif; riwayat Git menyimpan versi terdahulu.
-
-Penambahan referensi di pustaka tidak memerlukan menyalin semua analisis ke plugin. Plugin mengakses snapshot sumber yang tersedia dan mencatat versi yang digunakan per proyek.
-
-Skill tambahan, UI, server, penyimpanan terkelola atau integrasi generator otomatis dipertimbangkan setelah kebutuhan nyata muncul. Buat keputusan arsitektur terlebih dahulu agar perubahan tidak mengubah diam-diam aturan produksi yang telah disepakati.
-
-Berkas sementara ditempatkan di runs/ atau dist/ dan diabaikan Git. Berkas proyek untuk pengguna diserahkan melalui unduhan, tanpa otomatis dimasukkan ke pustaka pengetahuan.
-
-## 8. Referensi teknis
-
-- [Plugin Creator: paket plugin](https://developers.openai.com/plugins/build/plugins)
-- [OpenAI: membangun skill](https://developers.openai.com/plugins/build/skills)
-- [OpenAI: skill sebagai lapisan workflow](https://developers.openai.com/plugins/concepts/skills)
-- [Alur penggunaan home-productions](production-workflow.md)
-
-## 9. Status dan revisi
-
-| Bagian | Status |
-| --- | --- |
-| Rencana implementasi dan struktur target | Selesai disusun |
-| Tahap 1 — Kemampuan lingkungan | Selesai; probe workspace dan uji manual pengguna di ChatGPT web |
-| Tahap 2 — Fondasi paket | Selesai; manifest, aturan, kontrak, validator dan 28 tes regresi |
-| Tahap 3 — Skill konsep dan shot | Selesai; skill praproduksi, panduan akses dan dua kasus sumber tervalidasi |
-| Tahap 4 — Kolase dan pemotongan | Selesai; alur visual, script crop, pilot dua PNG dan integrasi kontrak |
-| Tahap 5 — Prompt dan paket proyek | Selesai; template/panduan prompt, ekspor mandiri, revisi dan kelanjutan sesi |
-| Tahap 6 — Penerimaan | Teknis lulus; uji manual pengguna pada rilis privat menunggu hasil |
-| Tahap 7 — Paket dan pemasangan | Rilis privat 0.1.0 tersimpan dan source terverifikasi; aktivasi/alur ChatGPT menunggu uji manual |
-
-- 1.0 — Mengikuti keputusan pengguna: pemeriksaan teknis → rilis privat melalui Plugin Creator → uji manual → perbaikan → penerimaan. Menambahkan pengemas/tes arsip yang direncanakan; 65 tes lulus dan rilis 0.1.0 berhasil dibaca balik. Penerimaan manual belum dinyatakan selesai.
-- 0.9 — Menyelesaikan tahap 5: prompt per shot dari frame final, panduan Omni Flash berdasarkan konfirmasi pengguna, ekspor proyek/gambar/prompt dan revisi; 59 tes lulus. Penerimaan menyeluruh dan pemasangan tetap tahap 6–7.
-- 0.8 — Menyelesaikan tahap 4: panduan kolase/konsistensi, crop piksel tanpa resize, dua file individu dan pengikatan ke kontrak; 47 tes lulus serta pilot asli dipotong dan dilihat. Paket prompt, penerimaan menyeluruh dan pemasangan tetap tahap berikutnya.
-- 0.7 — Menyelesaikan skill praproduksi tahap 3: brief, akses sumber selektif, konsep, desain dan daftar shot; dua kasus anotasi asli serta 32 tes kontrak/sumber daya lulus. Produksi gambar, prompt, penerimaan dan pemasangan tetap tahap berikutnya.
-- 0.6 — Menyelesaikan fondasi paket tahap 2: manifest, aturan produksi, kontrak/schema dan template proyek, validator bertahap serta 28 tes regresi.
-- 0.5 — Mencatat keberhasilan generate, crop langsung dan dua unduhan PNG pada uji manual pengguna di ChatGPT web; menandai tahap 1 selesai tanpa mengubah status tahap 2–7.
-- 0.4 — Menjalankan probe tahap 1, mencatat pembacaan repo dan hasil pilot gambar/crop; menandai verifikasi ChatGPT web belum lengkap dan pengujian Omni Flash dilewati sesuai arahan pengguna.
-- 0.3 — Menghapus contoh perluasan beberapa bedroom dan skenario penerimaannya; membatasi cakupan pada pola referensi dengan maksimal satu bedroom yang ditampilkan.
-- 0.2 — Memperjelas validasi per tahap, identitas area, durasi area terpadu, panel lintasan antararea, pembuktian kemampuan runtime dan kelanjutan proyek dengan berkas aset asli.
-- 0.1 — Menyusun rencana pembangunan, struktur paket, kontrak proyek, jalur akses alternatif, pemeriksaan runtime dan kriteria penerimaan.
+Revisi 2.1 — Mencatat implementasi tahap 1–6, pemeriksaan teknis, pembersihan alur lama, rilis privat 2.0.0 yang terverifikasi dan tahap 7 yang menunggu hasil manual.

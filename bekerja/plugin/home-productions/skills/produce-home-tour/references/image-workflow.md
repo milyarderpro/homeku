@@ -1,78 +1,53 @@
-# Kolase, konsistensi dan dua frame individu
+# Gambar area individual: prompt atau batch
 
-Gunakan setelah konsep serta desain/daftar shot disetujui atau didelegasikan. Baca [kontrak proyek](project-contract.md) dan pertahankan [aturan produksi](production-rules.yaml). Produksi visual tidak mengubah cakupan, jumlah bedroom, durasi atau audio proyek.
+Gunakan setelah desain/shot disetujui atau didelegasikan. Baca [kontrak](project-contract.md), [aturan](production-rules.yaml) dan [template prompt gambar](../assets/image-prompt-template.md).
 
-## Menyiapkan acuan dan generate
+## Pilihan mode
 
-Baca keputusan rumah, framing, lintasan dan elemen tetap dari catatan aktif. Pastikan gambar acuan benar-benar dapat dibuka. Ketika sumber gambar perlu diambil dari HOMEKU, ikuti [akses repo](repo-access.md); jangan mengklaim gambar telah dilihat hanya karena URL atau namanya diketahui.
+prompt_to_image menyerahkan seluruh prompt gambar individual. Satu image_id mempunyai satu prompt lengkap. Jangan otomatis menjalankan generator. Gunakan stage image_prompt_package untuk penyerahan ini; aset belum wajib. Hasil dari alat pilihan pengguna kemudian dibuka melalui akses nyata, tanpa meminta unggah ulang bila file sudah tersedia.
 
-Gunakan alat generate/edit gambar yang tersedia pada host. Sertakan gambar acuan melalui mekanisme lampiran/acuan alat yang sebenarnya; nama file dalam prompt saja tidak memasukkan piksel. Untuk kolase berikutnya, sertakan gambar proyek yang sudah diperiksa dan disetujui atau dipilih dalam delegasi pengguna, bersama spesifikasi rumah yang sama. Jangan mengandalkan ingatan model atas gambar sebelumnya atau mewajibkan paket gambar seluruh area di awal.
+generate_image membuat seluruh gambar individual sesuai image_plan dalam satu tahap. Jika tujuh, kerjakan tujuh sekaligus. Jangan membuat kolase/contact sheet atau berhenti menunggu perintah setelah setiap gambar. Generate satu per satu hanya untuk permintaan eksplisit pengguna, dicatat pada image_batch.user_instruction.
 
-Satu shot menghasilkan satu kolase dua panel berdampingan:
+Gunakan kemampuan generate/edit bawaan yang benar-benar tersedia. Sertakan gambar acuan melalui mekanisme alat yang sebenarnya; menyebut nama file tidak melampirkan piksel. Jangan beralih ke API atau layanan berbayar tanpa permintaan. Ketersediaan batch simultan dibuktikan pada host pengguna, bukan disimpulkan dari alat pengembang.
 
-- Kiri frame awal; kanan frame akhir. Dua panel sama besar, masing-masing vertikal 9:16; kanvas gabungan ideal 9:8.
-- Batas lurus tanpa celah, garis pemisah, teks, label, border, letterbox atau hiasan.
-- Spesifikasi rumah, material, bukaan, furnitur, cahaya dan lingkungan tetap sama pada kedua panel.
-- Kedua pandangan sesuai framing serta lintasan shot. Pada exterior-to-living atau living-to-kitchen, awal dan akhir boleh berada pada fungsi berbeda yang terhubung sesuai rancangan.
-- Ukuran diminta mengikuti kemampuan alat dan kebutuhan keluaran. Ukuran aktual harus dibaca dari file, bukan disalin dari prompt.
+## Satu rumah pada seluruh gambar
 
-Susun instruksi gambar dari identitas rumah, acuan yang terlampir, kondisi cahaya/lingkungan, uraian panel awal dan akhir, serta elemen tetap. Jelaskan pergeseran sudut pandang karena kamera; jangan meminta transformasi rumah sebagai pengganti gerak.
+Semua prompt memakai keputusan design yang sama dan mencatat area tujuan, plafon, bukaan, furnitur, material, cahaya, lingkungan serta hubungan ruang. Gambar yang sudah tersedia/diperiksa boleh menjadi acuan bersama sesuai arahan proyek; jangan mewajibkan generate gambar tambahan sebelum batch.
 
-Gunakan file kolase asli dari hasil alat. Jika file dapat diproses langsung, lanjutkan tanpa meminta pengguna mengunggah ulang. Preview saja belum membuktikan file tersedia. Jika akses file atau alat pemrosesan belum ada, laporkan bagian yang belum selesai; jangan mengganti dua frame dengan kolase utuh.
+Komposisi memperlihatkan area secara luas/informatif: lantai, plafon, bukaan dan susunan furnitur yang dibutuhkan kamera. Jangan memaksa seluruh dinding terhalang terlihat melalui fisheye, transparansi atau dollhouse. Hindari close-up yang membuang informasi utama.
 
-## Review visual dan revisi
+Video tetap 9:16. Gambar area bukan endpoint video wajib, sehingga rasio acuan dipilih sesuai cakupan dan alat; tidak dipotong/diregangkan demi memenuhi rasio frame V1. Simpan dimensi dan format aktual. PNG menjadi pilihan penyerahan bila tersedia; PNG/JPEG/WEBP statis dapat dicatat sesuai file sebenarnya. Jangan mengasumsikan format/input tambahan didukung aplikasi yang belum diperiksa.
 
-Lihat kolase sebelum menentukan crop. Periksa pula hasil crop individu, dengan dua tingkat konsistensi:
+Naturalitas dinilai dari gambar: perspektif, skala, tekstur, garis bangunan, pencahayaan, pantulan dan bayangan masuk akal; tidak tampak seperti CGI/plastik/HDR berlebihan. Kata photorealistic bukan hasil review.
 
-| Pemeriksaan | Yang dibandingkan |
-| --- | --- |
-| Dalam shot | Geometri, posisi relatif pintu/jendela, furnitur, material, cahaya dan pandangan luar yang sama ketika kamera bergerak |
-| Antarshot | Identitas satu rumah, keluarga bukaan, palet/material, hubungan ruang yang dirancang serta lingkungan luar jendela |
-| Gerak | Frame awal–akhir memungkinkan lintasan dalam durasi shot; maju sambil pan berbeda dari maju lalu pan |
-| Panel dan mutu | Urutan kiri/kanan, batas panel, garis/teks tersisa, ketajaman dan detail yang tersedia |
+Living-to-kitchen tetap dua gambar individual; exterior-to-living juga dua. Kedua area harus memperlihatkan hubungan ruang yang sama sesuai rancangan. Fungsi lain yang terpadu mengikuti pemetaan image_plan; tidak otomatis membuat area fisik baru.
 
-Jangan menolak perpindahan exterior–living hanya karena dua frame memperlihatkan area berbeda. Nilai apakah sambungan dan elemen tetap sesuai rancangan. Dua gambar tidak membuktikan semua geometri yang tidak terlihat atau menjamin gerak video nantinya.
+## Status batch yang jujur
 
-Jika elemen berubah tanpa alasan, revisi kolase memakai acuan dan keputusan yang masih berlaku. Pertahankan bagian yang sudah benar. Perubahan keputusan rumah mengikuti revisi proyek dan peninjauan shot terdampak; jangan menimpa aset lama lalu menyebutnya versi baru. Jika percobaan masih bermasalah, laporkan temuan spesifik dan keputusan yang diperlukan sebelum mencoba lagi.
+image_batch.request_mode default all_at_once. execution mencatat not_started, parallel, sequential, external atau unknown. note menjelaskan dasar pengamatan/laporan; jangan menyimpulkan parallel hanya dari jumlah file.
 
-Review dilakukan AI dari gambar yang benar-benar dilihat, atau dicatat sebagai laporan pengguna. Ini bukan kewajiban review manual setiap referensi dan tidak menambahkan human_verified.
+Jika tujuh diminta tetapi lima berhasil, catat dua gambar gagal/tertunda dan pertahankan image_draft. Jika eksekusi serentak tidak teramati, gunakan unknown dan laporkan batas pengamatan. Jika alat terbukti memproses satu per satu, catat sequential; jangan mengklaim permintaan simultan sudah dipenuhi atau mengubah permintaan tanpa arahan.
 
-## Memotong tanpa resize
+all_at_once pada mode generate_image baru dapat dinyatakan final bila pelaksanaan parallel dicatat berdasarkan bukti aktual atau laporan pengguna. one_by_one memerlukan instruksi pengguna dan pelaksanaan sequential yang sesuai. Ini pemeriksaan konsistensi catatan, bukan pengukuran concurrency otomatis.
 
-Jalankan [split_frames.py](../scripts/split_frames.py) pada lingkungan pemrosesan file yang tersedia. Dependensi memakai [requirements.txt](../scripts/requirements.txt). Script tidak mengakses jaringan, generate gambar, mendeteksi batas secara otomatis atau memberi persetujuan visual.
+Pada mode prompt_to_image, gambar yang dibawa dari luar dicatat sebagai external, dengan dasar perolehannya pada note. Tidak ada klaim batch internal ChatGPT pada mode ini.
 
-Dari root paket, contoh untuk kolase dengan dua panel 9:16 tepat yang sudah dilihat:
+## Review dan aset
 
-~~~sh
-python skills/produce-home-tour/scripts/split_frames.py /path/to/project/collage.png --output /path/to/project/frames/r1 --shot-id shot-01
-~~~
+Periksa setiap gambar dan seluruh set sebagai satu rumah. Bandingkan plafon/tingkat/sambungan/lampu, bukaan, lantai, furnitur tetap, material, cahaya dan lingkungan. Perbedaan antararea yang memang dirancang boleh ada; perubahan tak direncanakan direvisi.
 
-Mode standar membagi di tengah hanya jika lebar genap dan kedua bagian tepat 9:16. Jika tidak, script berhenti. Setelah memeriksa gambar, berikan kedua kotak crop secara eksplisit dengan koordinat LEFT TOP RIGHT BOTTOM; kanan/bawah eksklusif. Kotak wajib sama ukuran, 9:16, tetap di dalam kanvas dan di sisi panel yang sesuai.
+Simpan satu aset role reference per image_id, dengan asset_id unik, revision, path relatif dari folder project.json, SHA-256, width, height dan format aktual. File asli diperlukan. Pastikan dimensi/keterbacaan cukup untuk kebutuhan; tanpa target resolusi tertentu, jangan mengarang standar minimum atau mengklaim upscaling menambah detail.
 
-Contoh khusus kolase pilot 1330 × 1182 yang batasnya sudah diperiksa; jangan memakai angka ini untuk gambar lain:
+image_plan.status: planned selama perencanaan, prompt_ready ketika prompt siap, available setelah file ada, reviewed setelah review, atau failed dengan error aktual tanpa mengklaim aset. image_plan.asset_id mengikat file; jangan menyamarkan file sama sebagai dua area melalui nama berbeda.
 
-~~~sh
-python skills/produce-home-tour/scripts/split_frames.py /path/to/project/collage.png --output /path/to/project/frames/r1 --shot-id shot-01 --start-box 4 7 661 1175 --end-box 669 7 1326 1175
-~~~
+reviewed hanya true setelah piksel dilihat atau laporan pengguna diterima; review_origin ai_visual/user_report dan review_note memuat temuan serta cakupan. image_final memerlukan seluruh gambar, persetujuan visual aktual/delegasi, dan revisi yang sama. Tidak meminta persetujuan setiap gambar satu per satu.
 
-Hasil contoh itu 657 × 1168 per frame. Kotak eksplisit boleh membuang inset kecil setelah diperiksa, tetapi jangan memotong elemen penting, mencampur panel, mempertahankan garis pemisah atau mengubah framing yang disetujui. Jika perlu membuang bagian penting, revisi sumber. Tidak ada inset otomatis, resize, peregangan atau generasi ulang dalam script.
+Bila desain berubah, tinjau area dan shot terdampak. File/review lama tidak otomatis cocok hanya dengan mengganti nomor revisi. Tidak ada human_verified atau review manual setiap referensi pustaka.
 
-Keluaran: shot-01-start.png, shot-01-end.png dan shot-01-split.json. Laporan berisi ukuran aktual, kotak crop, hash sumber/hasil dan pemeriksaan kesamaan piksel. File yang sudah ada tidak ditimpa; gunakan folder revisi baru untuk penggantian. Beberapa shot dapat ditulis ke folder yang sama.
+## Penyerahan
 
-Jika proyek memiliki target lebar minimum, gunakan --min-frame-width sesuai keputusan tersebut. Hasil di bawah target ditandai dalam warnings dan resolution_target_met: false; tidak di-upscale atau otomatis menjadi final. Tanpa target, nilainya null, bukan bukti resolusi produksi sudah layak. Periksa ketajaman/detail aktual; jika belum cukup, nyatakan keterbatasan dan revisi sumber. Crop tidak menambah detail.
+Jalankan [validator](../scripts/validate_project.py) dengan file proyek dan [dependensi](../scripts/requirements.txt) yang tersedia. Ia memeriksa file/metadata, bukan naturalitas atau plafon.
 
-## Catatan proyek dan penyerahan
+Serahkan tautan individu setiap gambar, ukuran aktual, ringkasan review dan project.json. File harus dapat dibuka sebelum disebut tersedia; keberhasilan pengguna mengunduh hanya disebut jika diamati/dilaporkan. ZIP opsional tidak menggantikan file individual.
 
-Pertahankan stage: visual_draft selama gambar atau keputusan visual masih dikerjakan. Simpan file proyek/aset pada folder proyek host; saat mengembangkan di repository, gunakan runs/ yang diabaikan Git.
-
-Untuk setiap frame, catat asset_id unik, shot_id, revision aktif, role, path relatif dari folder project.json, SHA-256, width dan height hasil aktual. Pasangkan ID tersebut ke shots[].frames.start/end. Path file pada laporan crop relatif terhadap folder keluaran crop; sesuaikan menjadi path relatif proyek ketika memasukkannya ke assets.
-
-Laporan crop tidak memberi status reviewed. Setelah kedua potongan benar-benar dilihat, isi reviewed, review_origin: ai_visual atau user_report, serta review_note yang menyebut temuan dan cakupan pemeriksaan. Jika kolase dicatat sebagai aset, salin aslinya ke dalam folder proyek dan gunakan role: collage. Kotak crop/asal piksel tetap tersimpan pada laporan pendamping; kontrak proyek tidak perlu field bebas baru.
-
-Saat seluruh pasangan lengkap, hasil review sesuai dan pengguna menyetujui paket visual atau telah mendelegasikannya, catat approvals.visual pada revisi aktif dan gunakan stage: visual_final. Persetujuan paket akhir adalah titik keputusan ketiga; tidak harus meminta persetujuan setiap kolase satu per satu. Persetujuan tidak diciptakan oleh script.
-
-Jalankan [validator proyek](../scripts/validate_project.py) dengan project.json dan file asli di folder proyek. Periksa juga semua gambar sebagai satu rumah; validasi hash/dimensi tidak menggantikan review ini. Bila alat tidak tersedia, nyatakan pemeriksaan yang belum dilakukan.
-
-Serahkan tautan individual frame awal dan akhir untuk setiap shot, ukuran aktual, ringkasan review serta catatan proyek. Gunakan mekanisme file unduhan host; jangan hanya menampilkan kolase atau nama file. Pastikan file dapat dibuka sebelum menyebutnya siap diunduh. Keberhasilan pengguna mengunduh baru boleh disebut jika benar-benar diamati atau dilaporkan. ZIP boleh ditambahkan, tetapi tidak menggantikan dua tautan individu.
-
-Keluaran tahap visual adalah pasangan gambar dan catatan review. Setelah visual final, lanjutkan ke [prompt dan paket proyek](omni-flash.md) bila termasuk permintaan pengguna. Generate Omni Flash, perangkaian dan publikasi tetap dijalankan pengguna.
+Sesudah gambar final, lanjutkan [prompt R2V](omni-flash.md) bila diminta. Kolase, pemotongan panel dan pasangan first/last frame tidak menjadi alur produksi V2.

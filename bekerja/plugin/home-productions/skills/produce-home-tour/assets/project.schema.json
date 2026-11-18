@@ -1,15 +1,14 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:home-productions:project:1.0",
-  "title": "home-productions project contract",
+  "$id": "urn:home-productions:project:2.0",
+  "title": "home-productions R2V project",
   "type": "object",
   "properties": {
     "schema_version": {
-      "const": "1.0"
+      "const": "2.0"
     },
     "rules_version": {
-      "type": "string",
-      "pattern": "\\S"
+      "const": "2.0.0"
     },
     "project_id": {
       "type": "string",
@@ -20,8 +19,15 @@
       "minimum": 1
     },
     "stage": {
-      "type": "string",
-      "pattern": "\\S"
+      "enum": [
+        "brief",
+        "concept",
+        "shot_plan",
+        "image_prompt_package",
+        "image_draft",
+        "image_final",
+        "prompt_package"
+      ]
     },
     "brief": {
       "type": "string"
@@ -100,6 +106,9 @@
         "layout": {
           "type": "string"
         },
+        "ceiling": {
+          "type": "string"
+        },
         "materials": {
           "type": "string"
         },
@@ -109,22 +118,93 @@
         "environment": {
           "type": "string"
         },
+        "connections": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
         "anchors": {
           "type": "array",
           "items": {
             "type": "string",
             "pattern": "\\S"
           },
+          "minItems": 0,
           "uniqueItems": true
         }
       },
       "required": [
         "architecture",
         "layout",
+        "ceiling",
         "materials",
         "lighting",
         "environment",
+        "connections",
         "anchors"
+      ],
+      "additionalProperties": false
+    },
+    "image_mode": {
+      "enum": [
+        null,
+        "prompt_to_image",
+        "generate_image"
+      ]
+    },
+    "image_batch": {
+      "type": "object",
+      "properties": {
+        "request_mode": {
+          "enum": [
+            "all_at_once",
+            "one_by_one"
+          ]
+        },
+        "execution": {
+          "enum": [
+            "not_started",
+            "parallel",
+            "sequential",
+            "external",
+            "unknown"
+          ]
+        },
+        "user_instruction": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "request_mode",
+        "execution",
+        "user_instruction",
+        "note"
+      ],
+      "additionalProperties": false
+    },
+    "video": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "const": "R2V"
+        },
+        "aspect_ratio": {
+          "const": "9:16"
+        }
+      },
+      "required": [
+        "method",
+        "aspect_ratio"
       ],
       "additionalProperties": false
     },
@@ -161,6 +241,13 @@
       "type": "array",
       "items": {
         "$ref": "#/$defs/shot"
+      },
+      "minItems": 0
+    },
+    "image_plan": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/image"
       },
       "minItems": 0
     },
@@ -235,8 +322,12 @@
     "concept",
     "knowledge",
     "design",
+    "image_mode",
+    "image_batch",
+    "video",
     "audio",
     "shots",
+    "image_plan",
     "assets",
     "approvals",
     "total_duration_s",
@@ -244,31 +335,6 @@
   ],
   "additionalProperties": false,
   "$defs": {
-    "approval": {
-      "type": "object",
-      "properties": {
-        "revision": {
-          "type": "integer",
-          "minimum": 1
-        },
-        "by": {
-          "enum": [
-            "user",
-            "delegated"
-          ]
-        },
-        "note": {
-          "type": "string",
-          "pattern": "\\S"
-        }
-      },
-      "required": [
-        "revision",
-        "by",
-        "note"
-      ],
-      "additionalProperties": false
-    },
     "evidence": {
       "type": "object",
       "properties": {
@@ -412,36 +478,123 @@
         }
       ]
     },
-    "prompt": {
+    "approval": {
       "type": "object",
       "properties": {
         "revision": {
           "type": "integer",
           "minimum": 1
         },
-        "duration_s": {
-          "type": "integer",
-          "minimum": 1
+        "by": {
+          "enum": [
+            "user",
+            "delegated"
+          ]
         },
-        "start_asset_id": {
-          "type": "string",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
-        },
-        "end_asset_id": {
-          "type": "string",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
-        },
-        "text": {
+        "note": {
           "type": "string",
           "pattern": "\\S"
         }
       },
       "required": [
         "revision",
+        "by",
+        "note"
+      ],
+      "additionalProperties": false
+    },
+    "component": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "translation",
+            "pan",
+            "orbit",
+            "tilt"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "start_s": {
+          "type": "number",
+          "minimum": 0
+        },
+        "duration_s": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "distance_m": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "angle_deg": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "description",
+        "start_s",
         "duration_s",
-        "start_asset_id",
-        "end_asset_id",
-        "text"
+        "distance_m",
+        "angle_deg"
+      ],
+      "additionalProperties": false
+    },
+    "camera": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "motion_relationship": {
+          "enum": [
+            "single",
+            "simultaneous",
+            "sequential"
+          ]
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/component"
+          },
+          "minItems": 1
+        },
+        "visible_motion_evidence": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "timing_note": {
+          "type": "string",
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "description",
+        "motion_relationship",
+        "components",
+        "visible_motion_evidence",
+        "timing_note"
       ],
       "additionalProperties": false
     },
@@ -453,14 +606,33 @@
           "pattern": "^shot-[0-9]{2,}$"
         },
         "kind": {
-          "type": "string",
-          "pattern": "\\S"
+          "enum": [
+            "exterior",
+            "exterior_to_living",
+            "living_to_kitchen",
+            "living",
+            "kitchen",
+            "bedroom",
+            "bathroom",
+            "bathroom_laundry",
+            "laundry",
+            "wardrobe"
+          ]
         },
         "covered_areas": {
           "type": "array",
           "items": {
-            "type": "string",
-            "pattern": "\\S"
+            "enum": [
+              "exterior",
+              "living",
+              "kitchen",
+              "bedroom",
+              "bathroom",
+              "laundry",
+              "wardrobe",
+              "dining",
+              "sleeping_loft"
+            ]
           },
           "minItems": 1,
           "uniqueItems": true
@@ -500,57 +672,16 @@
           "additionalProperties": false
         },
         "camera": {
-          "type": "object",
-          "properties": {
-            "description": {
-              "type": "string",
-              "pattern": "\\S"
-            },
-            "motion_relationship": {
-              "enum": [
-                "single",
-                "simultaneous",
-                "sequential"
-              ]
-            }
-          },
-          "required": [
-            "description",
-            "motion_relationship"
-          ],
-          "additionalProperties": false
+          "$ref": "#/$defs/camera"
         },
-        "frames": {
-          "type": "object",
-          "properties": {
-            "start": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            },
-            "end": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            }
+        "reference_image_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
           },
-          "required": [
-            "start",
-            "end"
-          ],
-          "additionalProperties": false
+          "minItems": 1,
+          "uniqueItems": true
         },
         "prompt": {
           "anyOf": [
@@ -572,8 +703,188 @@
         "evidence_ids",
         "framing",
         "camera",
-        "frames",
+        "reference_image_ids",
         "prompt"
+      ],
+      "additionalProperties": false
+    },
+    "prompt": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "const": "R2V"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "duration_s": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "reference_image_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "sections": {
+          "type": "object",
+          "properties": {
+            "OUTPUT SPECIFICATION": {
+              "type": "string",
+              "pattern": "\\S"
+            },
+            "REFERENCE IMAGE ROLE": {
+              "type": "string",
+              "pattern": "\\S"
+            },
+            "ARCHITECTURE AND DESIGN": {
+              "type": "string",
+              "pattern": "\\S"
+            },
+            "CAMERA START COMPOSITION": {
+              "type": "string",
+              "pattern": "\\S"
+            },
+            "CAMERA MOVEMENT": {
+              "type": "string",
+              "pattern": "\\S"
+            },
+            "VISIBLE MOTION EVIDENCE": {
+              "type": "string",
+              "pattern": "\\S"
+            },
+            "ENDING COMPOSITION": {
+              "type": "string",
+              "pattern": "\\S"
+            },
+            "VISUAL CONSISTENCY LOCK": {
+              "type": "string",
+              "pattern": "\\S"
+            },
+            "CONTINUITY AND AUDIO RULES": {
+              "type": "string",
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "OUTPUT SPECIFICATION",
+            "REFERENCE IMAGE ROLE",
+            "ARCHITECTURE AND DESIGN",
+            "CAMERA START COMPOSITION",
+            "CAMERA MOVEMENT",
+            "VISIBLE MOTION EVIDENCE",
+            "ENDING COMPOSITION",
+            "VISUAL CONSISTENCY LOCK",
+            "CONTINUITY AND AUDIO RULES"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "method",
+        "revision",
+        "duration_s",
+        "reference_image_ids",
+        "sections"
+      ],
+      "additionalProperties": false
+    },
+    "image": {
+      "type": "object",
+      "properties": {
+        "image_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+        },
+        "primary_area": {
+          "enum": [
+            "exterior",
+            "living",
+            "kitchen",
+            "bedroom",
+            "bathroom",
+            "laundry",
+            "wardrobe",
+            "dining",
+            "sleeping_loft"
+          ]
+        },
+        "area_ids": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "exterior",
+              "living",
+              "kitchen",
+              "bedroom",
+              "bathroom",
+              "laundry",
+              "wardrobe",
+              "dining",
+              "sleeping_loft"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "shot_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^shot-[0-9]{2,}$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "planned",
+            "prompt_ready",
+            "available",
+            "reviewed",
+            "failed"
+          ]
+        },
+        "asset_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "image_id",
+        "primary_area",
+        "area_ids",
+        "shot_ids",
+        "revision",
+        "prompt",
+        "status",
+        "asset_id",
+        "error"
       ],
       "additionalProperties": false
     },
@@ -584,20 +895,16 @@
           "type": "string",
           "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
         },
-        "shot_id": {
+        "image_id": {
           "type": "string",
-          "pattern": "^shot-[0-9]{2,}$"
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
         },
         "revision": {
           "type": "integer",
           "minimum": 1
         },
         "role": {
-          "enum": [
-            "collage",
-            "start",
-            "end"
-          ]
+          "const": "reference"
         },
         "path": {
           "type": "string",
@@ -615,6 +922,13 @@
           "type": "integer",
           "minimum": 1
         },
+        "format": {
+          "enum": [
+            "PNG",
+            "JPEG",
+            "WEBP"
+          ]
+        },
         "reviewed": {
           "type": "boolean"
         },
@@ -631,13 +945,14 @@
       },
       "required": [
         "asset_id",
-        "shot_id",
+        "image_id",
         "revision",
         "role",
         "path",
         "sha256",
         "width",
         "height",
+        "format",
         "reviewed",
         "review_origin",
         "review_note"

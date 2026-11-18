@@ -1,30 +1,40 @@
-# Template prompt video per shot
+# Template R2V per shot
 
-Gunakan setelah melihat dua frame final dan membaca [panduan Omni Flash](../references/omni-flash.md). Ini kerangka penulisan, bukan prompt siap pakai. Isi berdasarkan gambar dan rancangan aktif; jangan menambahkan ruang atau gerak baru.
-
-Salin instruksi wajib dari prompt_constraints pada [aturan produksi](../references/production-rules.yaml) ke CONTINUOUS_INSTRUCTION dan AUDIO_INSTRUCTION. Isi DURATION_S dari shot yang sama. START_FILE dan END_FILE harus cocok dengan aset yang ditunjuk prompt.start_asset_id/end_asset_id. Ganti semua penanda kurung kurawal sebelum menyimpan text.
+Isi sembilan sections pada kontrak proyek berdasarkan gambar final dan rancangan. Baca [panduan R2V](../references/omni-flash.md). Ini kerangka penulisan, bukan prompt final.
 
 ~~~text
-Use the supplied {{START_FILE}} as the first frame and {{END_FILE}} as the last frame of the same house.
-Duration: {{DURATION_S}} seconds.
-{{SUBJECT_LIGHT_AND_ENVIRONMENT}}
-Begin at {{START_FRAMING}}.
-{{CAMERA_PATH_SPEED_AND_REVEAL}}
-Finish at {{END_FRAMING}}, matching the supplied end frame.
-Preserve {{FIXED_ELEMENTS_AND_SPATIAL_RELATIONSHIPS}} throughout the movement.
-{{CONTINUOUS_INSTRUCTION}}
-No jump cuts, sudden viewpoint changes, teleportation, or morphing of the house, openings, furniture, or surroundings.
-{{AUDIO_INSTRUCTION}}
+OUTPUT SPECIFICATION
+{{SHOT_ID_AND_HOME_TOUR}}. Duration {{DURATION_S}} seconds. Vertical 9:16.
+
+REFERENCE IMAGE ROLE
+{{EACH_IMAGE_ID_AND_ITS_AREA_ROLE}}. Use these as visual identity references for connected areas of the same approved house, not mandatory endpoint frames or alternative designs.
+
+ARCHITECTURE AND DESIGN
+{{APPROVED_ARCHITECTURE_CEILING_MATERIALS_FURNITURE_OPENINGS_AND_CONNECTIONS}}
+
+CAMERA START COMPOSITION
+{{START_POSITION_VIEW_DIRECTION_SUBJECT_FOREGROUND_BACKGROUND}}
+
+CAMERA MOVEMENT
+{{PLANNED_COMPONENTS_DISTANCE_ANGLE_TIMING_AND_RELATIONSHIP}}
+
+VISIBLE MOTION EVIDENCE
+{{VISIBLE_CHANGES_CAUSED_BY_THE_PLANNED_CAMERA_MOVEMENT}}
+
+ENDING COMPOSITION
+{{GEOMETRICALLY_PLAUSIBLE_ENDING_VIEW}}
+
+VISUAL CONSISTENCY LOCK
+{{FIXED_STRUCTURE_CEILING_OBJECTS_LIGHT_AND_ENVIRONMENT_TO_PRESERVE}}
+
+CONTINUITY AND AUDIO RULES
+{{CONTINUOUS_INSTRUCTION_FROM_RULES}}
+No jump cuts, sudden viewpoint changes, teleportation or morphing of the house and objects.
+{{AUDIO_INSTRUCTION_FROM_RULES}}
 ~~~
 
-Untuk CAMERA_PATH_SPEED_AND_REVEAL:
+reference_image_ids pada prompt harus sama dengan shot. Sebut setiap ID di bagian peran referensi, dengan identitas areanya. Pada penghubung, dua gambar tetap dua file area untuk satu continuous shot. Komposisi akhir berasal dari lintasan, bukan kewajiban merekonstruksi piksel gambar kedua.
 
-| Rancangan | Bentuk instruksi |
-| --- | --- |
-| single | Uraikan satu gerak, lintasan dan pengungkapan yang dirancang |
-| simultaneous | Tegaskan gerak berjalan bersamaan: “Move forward while panning right throughout the movement.” |
-| sequential | Tegaskan pergantian fase: “First move forward, then pan right after reaching the planned turning point.” |
+Salin instruksi continuous/audio dari [aturan](../references/production-rules.yaml) ke bagian terakhir. Ganti seluruh penanda sebelum menyimpan. Jarak/sudut adalah perkiraan rancangan; pan/orbit minimal 12° hanya ketika dipilih. Isi CAMERA MOVEMENT dan VISIBLE MOTION EVIDENCE harus cocok dengan camera.components, hubungan waktu serta durasi 6/4 detik.
 
-Dua contoh gerak terakhir hanya memperlihatkan perbedaan waktu. Gunakan arah, fase dan lintasan proyek yang sebenarnya; jangan menerapkannya ke semua shot atau menganggapnya kutipan sumber. Bila pembagian waktu sumber belum pasti, nyatakan pilihan tersebut sebagai adaptasi proyek pada catatan desain/gerak.
-
-Jelaskan lintasan yang memungkinkan dua frame tersambung dalam 6/4 detik. Jangan memakai transformasi ruang, cut internal, perpindahan menembus dinding atau pergantian sudut sebagai pengganti gerak kamera. Cut ke shot berikutnya dicatat di panduan perangkaian, bukan di dalam prompt klip ini.
+Jangan menambahkan kalimat cut ke shot berikutnya, musik, slow yang bertentangan dengan lintasan, atau transformasi plafon/ruang. Catatan perangkaian berada di panduan proyek.

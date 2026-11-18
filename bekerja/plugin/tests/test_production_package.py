@@ -1,8 +1,7 @@
-"""Project-delivery checks; fixtures do not certify creative or generator quality."""
+"""V2 delivery and portability checks; no live image/video generation."""
 from __future__ import annotations
 
 from copy import deepcopy
-import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -15,55 +14,12 @@ import unittest
 from unittest.mock import patch
 from urllib.parse import unquote, urlsplit
 
-from PIL import Image
+from test_project_rules import PLUGIN, SKILL, VALIDATOR, WORKSPACE, final_project, image_prompts, planning
 
-from test_project_rules import PLUGIN, SKILL, VALIDATOR, WORKSPACE, approved, planning
-
-SPEC = importlib.util.spec_from_file_location(
-    "home_productions_delivery", SKILL / "scripts/build_production_package.py",
-)
+SPEC = importlib.util.spec_from_file_location("home_productions_delivery", SKILL / "scripts/build_production_package.py")
 BUILDER = importlib.util.module_from_spec(SPEC)
 with patch.object(sys, "path", [str(SKILL / "scripts"), *sys.path]):
     SPEC.loader.exec_module(BUILDER)
-
-
-def final_fixture(root, kinds=("exterior", "living_to_kitchen", "bedroom", "bathroom")):
-    """Synthetic decisions, images and review metadata for file/contract checks."""
-    project = planning(kinds)
-    project["stage"] = "prompt_package"
-    project["revision_notes"] = ["Synthetic package test; not user approval or house-quality evidence."]
-    for kind in project["approvals"]:
-        approved(project, kind)
-    for number, shot in enumerate(project["shots"], 1):
-        for role, offset in (("start", 20), ("end", 100)):
-            asset_id = shot["shot_id"] + "-" + role
-            relative = "frames/" + asset_id + ".png"
-            path = root / relative
-            path.parent.mkdir(parents=True, exist_ok=True)
-            Image.new("RGB", (18, 32), (number * 20, offset, 40)).save(path)
-            project["assets"].append({
-                "asset_id": asset_id, "shot_id": shot["shot_id"], "revision": 1,
-                "role": role, "path": relative,
-                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
-                "width": 18, "height": 32, "reviewed": True,
-                "review_origin": "user_report",
-                "review_note": "Synthetic pixels and review metadata; not an actual house review.",
-            })
-            shot["frames"][role] = asset_id
-        # Deliberately different authored timing; the exporter must not rewrite it.
-        motion = ("Move forward while panning right throughout the movement." if number % 2
-                  else "First move forward, then pan right after reaching the planned turning point.")
-        shot["camera"] = {
-            "description": "Test adaptation: " + motion,
-            "motion_relationship": "simultaneous" if number % 2 else "sequential",
-        }
-        shot["prompt"] = {
-            "revision": 1, "duration_s": shot["duration_s"],
-            "start_asset_id": shot["frames"]["start"], "end_asset_id": shot["frames"]["end"],
-            "text": f"Synthetic test {shot['shot_id']}. Duration: {shot['duration_s']} seconds. "
-                    + motion + " " + " ".join(VALIDATOR.RULES["prompt_constraints"].values()),
-        }
-    return project
 
 
 class ProductionPackageTests(unittest.TestCase):
@@ -80,195 +36,167 @@ class ProductionPackageTests(unittest.TestCase):
     def save(self, project):
         self.project_file.write_text(json.dumps(project, ensure_ascii=False), encoding="utf-8")
 
-    def fixture(self, kinds=("exterior", "living_to_kitchen", "bedroom", "bathroom")):
-        project = final_fixture(self.source, kinds)
+    def fixture(self, **kwargs):
+        project = final_project(self.source, **kwargs)
         self.save(project)
         return project
 
-    def test_twenty_second_package_survives_loss_of_original_working_directory(self):
+    def test_seven_prompt_package_does_not_claim_generated_or_r2v_ready_images(self):
+        project = image_prompts(planning(("exterior", "living", "kitchen", "bedroom", "bathroom", "laundry", "wardrobe")))
+        self.save(project)
+        result = BUILDER.build_package(self.project_file, self.output)
+        self.assertEqual(len(result["image_prompts"]), 7)
+        self.assertEqual(result["reference_images"], [])
+        self.assertEqual(result["video_prompts"], [])
+        self.assertFalse((self.output / "video-prompts").exists())
+        restored = json.loads((self.output / "project.json").read_text())
+        self.assertEqual(restored["assets"], [])
+        self.assertEqual(restored["image_batch"]["execution"], "not_started")
+        for image in project["image_plan"]:
+            self.assertEqual((self.output / "image-prompts" / (image["image_id"] + ".txt")).read_text(), image["prompt"])
+
+    def test_r2v_package_keeps_five_originals_four_nine_section_prompts_and_source_independence(self):
         project = self.fixture()
         result = BUILDER.build_package(self.project_file, self.output)
-        self.assertEqual(result["total_duration_s"], 20)
-        self.assertEqual(len(result["frames"]), 8)
-        self.assertEqual(len(result["prompts"]), 4)
+        self.assertEqual((result["shot_count"], result["image_count"], result["total_duration_s"]), (4, 5, 20))
+        self.assertEqual(len(result["reference_images"]), 5)
+        self.assertEqual(len(result["video_prompts"]), 4)
         for shot in project["shots"]:
-            self.assertEqual(
-                (self.output / "prompts" / (shot["shot_id"] + ".txt")).read_text(),
-                shot["prompt"]["text"],
-            )
+            content = (self.output / "video-prompts" / (shot["shot_id"] + ".txt")).read_text()
+            self.assertEqual(content, BUILDER.render_video_prompt(shot["prompt"]))
+            for section, body in shot["prompt"]["sections"].items():
+                self.assertIn(section + "\n" + body, content)
         for asset in project["assets"]:
-            copied = self.output / asset["path"]
-            self.assertEqual(copied.read_bytes(), (self.source / asset["path"]).read_bytes())
+            self.assertEqual((self.output / asset["path"]).read_bytes(), (self.source / asset["path"]).read_bytes())
         rmtree(self.source)
         restored = json.loads((self.output / "project.json").read_text())
         self.assertEqual(restored, project)
         self.assertTrue(VALIDATOR.validate_project(restored, self.output)["valid"])
         guide = (self.output / "production-guide.md").read_text()
-        self.assertIn(project["knowledge"]["commit"], guide)
-        self.assertIn(project["revision_notes"][0], guide)
         for shot in project["shots"]:
-            self.assertIn(shot["camera"]["description"], guide)
-            for role in ("start", "end"):
-                self.assertIn(shot["frames"][role] + ".png", guide)
+            self.assertIn(shot["camera"]["visible_motion_evidence"], guide)
+        self.assertIn(project["knowledge"]["commit"], guide)
 
-    def test_other_shot_counts_keep_exact_durations_pairs_and_prompt_text(self):
-        for kinds, expected in (
-            (("exterior_to_living", "kitchen", "bedroom", "bathroom"), 18),
-            (("exterior", "living", "kitchen", "bedroom", "bathroom"), 22),
-            (("exterior", "living_to_kitchen", "bedroom", "laundry", "bathroom"), 24),
+    def test_other_durations_and_reference_counts_are_preserved(self):
+        for kinds, count, seconds in (
+            (("exterior_to_living", "kitchen", "bedroom", "bathroom"), 5, 18),
+            (("exterior", "living", "kitchen", "bedroom", "bathroom"), 5, 22),
+            (("exterior", "living_to_kitchen", "bedroom", "laundry", "bathroom"), 6, 24),
         ):
             with self.subTest(kinds=kinds):
-                project = self.fixture(kinds)
-                output = self.root / ("delivery-" + str(expected))
+                project = self.fixture(kinds=kinds)
+                output = self.root / str(seconds)
                 result = BUILDER.build_package(self.project_file, output)
-                self.assertEqual(result["total_duration_s"], expected)
-                self.assertEqual(len(result["frames"]), 2 * len(kinds))
-                self.assertEqual(len(result["prompts"]), len(kinds))
+                self.assertEqual((result["image_count"], result["total_duration_s"]), (count, seconds))
                 restored = json.loads((output / "project.json").read_text())
                 self.assertEqual(restored["shots"], project["shots"])
 
-    def test_input_and_unlisted_files_are_not_changed_or_copied(self):
+    def test_sources_are_unchanged_and_unlisted_attempts_are_not_copied(self):
         project = self.fixture()
-        unrelated = self.source / "old-attempt.txt"
-        unrelated.write_text("unlisted fixture")
+        extra = self.source / "old-attempt.txt"
+        extra.write_text("unlisted")
         original = self.project_file.read_bytes()
         BUILDER.build_package(self.project_file, self.output)
         self.assertEqual(self.project_file.read_bytes(), original)
-        self.assertEqual(unrelated.read_text(), "unlisted fixture")
+        self.assertFalse((self.output / extra.name).exists())
         expected = {"project.json", "production-guide.md"}
         expected.update(asset["path"] for asset in project["assets"])
-        expected.update("prompts/" + shot["shot_id"] + ".txt" for shot in project["shots"])
-        actual = {str(path.relative_to(self.output)) for path in self.output.rglob("*") if path.is_file()}
-        self.assertEqual(actual, expected)
+        expected.update("image-prompts/" + image["image_id"] + ".txt" for image in project["image_plan"])
+        expected.update("video-prompts/" + shot["shot_id"] + ".txt" for shot in project["shots"])
+        self.assertEqual({str(path.relative_to(self.output)) for path in self.output.rglob("*") if path.is_file()}, expected)
 
     def test_existing_delivery_is_not_overwritten(self):
         self.fixture()
         self.output.mkdir()
         marker = self.output / "keep.txt"
-        marker.write_text("old delivery")
+        marker.write_text("old release")
         with self.assertRaises(FileExistsError):
             BUILDER.build_package(self.project_file, self.output)
         self.assertEqual(list(self.output.iterdir()), [marker])
-        self.assertEqual(marker.read_text(), "old delivery")
 
-    def test_incomplete_stale_or_mismatched_projects_never_create_a_delivery(self):
+    def test_invalid_stale_and_incomplete_packages_never_export(self):
         base = self.fixture()
         variants = []
-        changed = deepcopy(base)
-        changed["stage"] = "visual_final"
-        variants.append(changed)
-        changed = deepcopy(base)
-        changed["shots"][0]["prompt"]["end_asset_id"] = base["shots"][1]["frames"]["end"]
-        variants.append(changed)
-        changed = deepcopy(base)
-        changed["shots"][0]["prompt"]["revision"] = 2
-        variants.append(changed)
-        changed = deepcopy(base)
-        changed["shots"][0]["prompt"]["text"] = "No explicit continuous or ambient instructions."
-        variants.append(changed)
-        changed = deepcopy(base)
-        changed["approvals"]["visual"] = None
-        variants.append(changed)
-        for index, project in enumerate(variants):
-            with self.subTest(index=index):
-                self.save(project)
-                with self.assertRaises(ValueError):
-                    BUILDER.build_package(self.project_file, self.output)
-                self.assertFalse(self.output.exists())
+        for stage in ("shot_plan", "image_final"):
+            project = deepcopy(base)
+            project["stage"] = stage
+            variants.append(project)
+        project = deepcopy(base)
+        project["shots"][0]["prompt"]["reference_image_ids"] = base["shots"][1]["reference_image_ids"]
+        variants.append(project)
+        project = deepcopy(base)
+        project["assets"][0]["revision"] = 2
+        variants.append(project)
+        project = deepcopy(base)
+        project["approvals"]["visual"] = None
+        variants.append(project)
+        for project in variants:
+            self.save(project)
+            with self.assertRaises(ValueError):
+                BUILDER.build_package(self.project_file, self.output)
+            self.assertFalse(self.output.exists())
 
-    def test_unresolved_prompt_template_markers_are_rejected(self):
-        project = self.fixture()
-        project["shots"][0]["prompt"]["text"] += " {{CAMERA_PATH_SPEED_AND_REVEAL}}"
-        self.save(project)
-        result = VALIDATOR.validate_project(project, self.source)
-        self.assertFalse(result["valid"])
-        self.assertTrue(any("penanda template" in message for message in result["errors"]))
-        with self.assertRaises(ValueError):
-            BUILDER.build_package(self.project_file, self.output)
-        self.assertFalse(self.output.exists())
-
-    def test_missing_frame_prevents_export(self):
+    def test_missing_reference_prevents_export(self):
         project = self.fixture()
         (self.source / project["assets"][0]["path"]).unlink()
         with self.assertRaises(ValueError):
             BUILDER.build_package(self.project_file, self.output)
         self.assertFalse(self.output.exists())
 
-    def test_assets_cannot_collide_with_generated_guide_or_prompt_files(self):
-        for reserved in ("project.json", "production-guide.md", "prompts"):
-            with self.subTest(reserved=reserved):
-                project = self.fixture()
-                asset = project["assets"][0]
-                original = self.source / asset["path"]
-                asset["path"] = reserved + "/image.png"
-                target = self.source / asset["path"]
-                # project.json is already a file at the source; use another input filename.
-                if reserved == "project.json":
-                    self.project_file.rename(self.source / "active.json")
-                    self.project_file = self.source / "active.json"
-                target.parent.mkdir(exist_ok=True)
-                copyfile(original, target)
-                self.save(project)
-                self.assertTrue(VALIDATOR.validate_project(project, self.source)["valid"])
-                with self.assertRaisesRegex(ValueError, "reserved delivery path"):
-                    BUILDER.build_package(self.project_file, self.output)
-                self.assertFalse(self.output.exists())
-                # Reset this test's workspace for the next reserved path.
-                rmtree(self.source)
-                self.source.mkdir()
-                self.project_file = self.source / "project.json"
-
-    def test_copy_corruption_rolls_back_new_delivery(self):
+    def test_reserved_asset_paths_do_not_overwrite_exported_prompts(self):
         project = self.fixture()
-        original_copy = BUILDER.copyfile
-        before = (self.source / project["assets"][0]["path"]).read_bytes()
+        asset = project["assets"][0]
+        original = self.source / asset["path"]
+        asset["path"] = "video-prompts/area.png"
+        target = self.source / asset["path"]
+        target.parent.mkdir()
+        copyfile(original, target)
+        self.save(project)
+        self.assertTrue(VALIDATOR.validate_project(project, self.source)["valid"])
+        with self.assertRaisesRegex(ValueError, "reserved"):
+            BUILDER.build_package(self.project_file, self.output)
+        self.assertFalse(self.output.exists())
 
-        def corrupt(source, target):
-            original_copy(source, target)
-            Path(target).write_bytes(b"corrupted copy")
-
-        with patch.object(BUILDER, "copyfile", side_effect=corrupt):
-            with self.assertRaisesRegex(ValueError, "Copied package failed"):
+    def test_copy_failure_and_corruption_roll_back_only_new_delivery(self):
+        self.fixture()
+        with patch.object(BUILDER, "copyfile", side_effect=OSError("test failure")):
+            with self.assertRaises(OSError):
                 BUILDER.build_package(self.project_file, self.output)
         self.assertFalse(self.output.exists())
-        self.assertEqual((self.source / project["assets"][0]["path"]).read_bytes(), before)
-
-    def test_copy_failure_rolls_back_new_delivery(self):
-        self.fixture()
-        with patch.object(BUILDER, "copyfile", side_effect=OSError("Test write failure")):
-            with self.assertRaises(OSError):
+        original_copy = BUILDER.copyfile
+        def corrupt(source, target):
+            original_copy(source, target)
+            Path(target).write_bytes(b"broken copy")
+        with patch.object(BUILDER, "copyfile", side_effect=corrupt):
+            with self.assertRaisesRegex(ValueError, "Copied package"):
                 BUILDER.build_package(self.project_file, self.output)
         self.assertFalse(self.output.exists())
         self.assertTrue(self.project_file.is_file())
 
-    def test_guide_links_resolve_with_spaces_in_asset_paths(self):
+    def test_guide_links_with_spaces_resolve(self):
         project = self.fixture()
         asset = project["assets"][0]
         original = self.source / asset["path"]
-        asset["path"] = "frames/frame awal.png"
+        asset["path"] = "images/area exterior.png"
         copyfile(original, self.source / asset["path"])
         self.save(project)
         BUILDER.build_package(self.project_file, self.output)
         guide = (self.output / "production-guide.md").read_text()
-        self.assertIn("frames/frame%20awal.png", guide)
+        self.assertIn("area%20exterior.png", guide)
         for href in re.findall(r"\[[^\]]*\]\(([^)]+)\)", guide):
-            url = urlsplit(href)
-            if not url.scheme:
-                self.assertTrue((self.output / unquote(url.path)).is_file(), href)
+            uri = urlsplit(href)
+            if not uri.scheme:
+                self.assertTrue((self.output / unquote(uri.path)).is_file(), href)
 
-    def test_cli_runs_from_isolated_plugin_copy(self):
+    def test_export_cli_works_from_isolated_plugin_copy(self):
         self.fixture()
-        installed = self.root / "installed-plugin"
-        copytree(PLUGIN, installed)
-        script = installed / "skills/produce-home-tour/scripts/build_production_package.py"
-        run = subprocess.run(
-            [sys.executable, "-B", str(script), str(self.project_file), "--output", str(self.output)],
-            cwd=self.root, capture_output=True, text=True,
-        )
+        copied = self.root / "plugin-copy"
+        copytree(PLUGIN, copied)
+        run = subprocess.run([sys.executable, "-B", str(copied / "skills/produce-home-tour/scripts/build_production_package.py"),
+                              str(self.project_file), "--output", str(self.output)],
+                             cwd=self.root, capture_output=True, text=True)
         self.assertEqual(run.returncode, 0, run.stderr)
-        result = json.loads(run.stdout)
-        self.assertEqual(result["shot_count"], 4)
-        self.assertTrue(Path(result["guide"]).is_file())
+        self.assertEqual(json.loads(run.stdout)["image_count"], 5)
 
 
 if __name__ == "__main__":
