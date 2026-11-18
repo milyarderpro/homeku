@@ -1,6 +1,6 @@
 # home-productions — ruang pengembangan plugin
 
-Nama paket: **home-productions**. Status: tahap 1 selesai berdasarkan probe workspace dan uji manual pengguna di ChatGPT web. Tahap 2–7 belum dimulai; paket plugin belum dibangun atau dipasang.
+Nama paket: **home-productions**. Status: tahap 1 dan 2 selesai. Fondasi paket tersedia; skill produksi lengkap dikerjakan pada tahap 3 dan plugin belum dipasang.
 
 Folder ini mengumpulkan seluruh pekerjaan pengembangan plugin. Pustaka sumber tetap berada di knowledge/, references/ dan video/ pada root repository.
 
@@ -18,13 +18,24 @@ Revisi aturan produksi pada alur penggunaan terlebih dahulu, lalu sesuaikan renc
 | README.md | Peta ruang kerja ini |
 | production-workflow.md | Kesepakatan pengalaman pengguna |
 | implementation-plan.md | Rencana pembangunan dan status tahap |
-| home-productions/ | Akan dibuat saat implementasi: paket plugin yang dapat didistribusikan |
+| home-productions/ | Fondasi paket: manifest, aturan, kontrak/template proyek dan validator; SKILL.md menyusul pada tahap 3 |
 | tooling/ | Probe tahap 1 sudah tersedia; alat pembungkus paket ditambahkan saat diperlukan |
-| tests/ | Akan dibuat saat diperlukan untuk pemeriksaan komponen produksi |
+| tests/ | Tes aturan, kontrak, berkas dan portabilitas; 28 tes tahap 2 lulus |
 | dist/ | Hasil paket rilis; tidak masuk Git |
 | runs/ | Berkas proyek/gambar percobaan lokal; tidak masuk Git |
 
-Saat ini tersedia dokumen perencanaan dan [probe tahap 1](tooling/probe_stage1.py). Aset serta laporan pilot berada di runs/ yang diabaikan Git. Hasil dan batas verifikasi dicatat dalam rencana implementasi; struktur paket lainnya dibuat saat tahapnya dikerjakan.
+Fondasi dapat dibaca melalui [kontrak proyek](home-productions/skills/produce-home-tour/references/project-contract.md), [aturan produksi](home-productions/skills/produce-home-tour/references/production-rules.yaml) dan [template proyek](home-productions/skills/produce-home-tour/assets/project-template.json). [Probe tahap 1](tooling/probe_stage1.py) tetap tersedia. Aset pilot berada di runs/ yang diabaikan Git; hasil dan batas pemeriksaan dicatat dalam rencana implementasi.
+
+## Pemeriksaan lokal
+
+Dari root repository, jalankan:
+
+~~~sh
+python -m unittest discover -s bekerja/plugin/tests -v
+python bekerja/plugin/home-productions/skills/produce-home-tour/scripts/validate_project.py bekerja/plugin/home-productions/skills/produce-home-tour/assets/project-template.json
+~~~
+
+Paket belum memiliki skill yang dapat dipanggil dan belum dipasang; pemasangan termasuk tahap 7 setelah komponennya lengkap.
 
 ## Batas pengembangan
 
@@ -37,4 +48,4 @@ Saat ini tersedia dokumen perencanaan dan [probe tahap 1](tooling/probe_stage1.p
 - Generate video dan publikasi Facebook tetap dilakukan pengguna dalam cakupan awal.
 - Dokumen dan kode pengembangan tidak menjadi bacaan kreatif wajib AI.
 
-Manifest paket direncanakan memakai Agent Plugins 1.0 dan dipasang secara privat melalui [Plugin Creator](https://developers.openai.com/plugins/build/plugins). Dukungan alat generate gambar, pemrosesan file dan unduhan harus dibuktikan di lingkungan sasaran sebelum kemampuan penuh dinyatakan siap.
+Manifest fondasi memakai Agent Plugins 1.0. Paket lengkap direncanakan dipasang secara privat melalui [Plugin Creator](https://developers.openai.com/plugins/build/plugins). Dukungan alat generate gambar, pemrosesan file dan unduhan harus dibuktikan di lingkungan sasaran sebelum kemampuan penuh dinyatakan siap.

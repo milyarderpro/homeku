@@ -1,10 +1,10 @@
 # Rencana implementasi home-productions
 
-Versi rencana: 0.5
+Versi rencana: 0.6
 
 Tanggal: 18 November 2026
 
-Status: tahap 1 selesai berdasarkan probe workspace dan hasil uji manual pengguna di ChatGPT web. Tahap 2–7 dan pemasangan plugin belum dimulai.
+Status: tahap 1 dan 2 selesai. Fondasi paket tersedia; tahap 3–7 dan pemasangan plugin belum dimulai.
 
 Acuan perilaku: [alur penggunaan](production-workflow.md). Nama teknis plugin adalah home-productions; identitas ini dipertahankan pada folder paket, manifest dan rilis.
 
@@ -66,14 +66,17 @@ bekerja/plugin/
 │           │   └── openai.yaml        # bila metadata/dependensi dibutuhkan
 │           ├── references/
 │           │   ├── production-rules.yaml
+│           │   ├── project-contract.md
 │           │   ├── repo-access.md
 │           │   ├── image-workflow.md
 │           │   └── omni-flash.md
 │           ├── assets/
 │           │   ├── project-template.json
+│           │   ├── project.schema.json
 │           │   └── prompt-template.md
 │           └── scripts/
 │               ├── validate_project.py
+│               ├── requirements.txt
 │               └── split_frames.py
 ├── tooling/
 │   ├── probe_stage1.py              # probe workspace tahap 1, sudah dibuat
@@ -139,7 +142,7 @@ Validator memeriksa struktur serta konsistensi catatan. Ia tidak mengklaim membu
 
 ## 5. Tahapan implementasi
 
-Status pelaksanaan: tahap 1 selesai. Bukti workspace, akses remote dan hasil uji manual pengguna di ChatGPT web dicatat di bawah; tahap 2–7 belum dimulai.
+Status pelaksanaan: tahap 1 dan 2 selesai. Bukti dan hasil pemeriksaan dicatat pada bagian masing-masing; tahap 3–7 belum dimulai.
 
 ### Tahap 1 — Membuktikan kemampuan lingkungan sasaran
 
@@ -200,6 +203,26 @@ Pekerjaan:
 Keluaran: paket dasar, kontrak data, aturan dan validasi.
 
 Kriteria selesai: konsep awal sah tanpa aset gambar; rancangan dengan durasi salah atau cakupan berulang ditolak; paket yang diklaim final dengan ID/versi aset tidak cocok atau pasangan frame tidak lengkap ditolak. Pesan menjelaskan masalah sesuai tahap data.
+
+#### Hasil pelaksanaan tahap 2 — 18 November 2026
+
+Status: **selesai untuk fondasi paket dan kontrak proyek**. Paket berada di home-productions/. SKILL.md dikerjakan pada tahap 3; fondasi ini belum dipasang sebagai plugin.
+
+| Komponen | Hasil |
+| --- | --- |
+| [Manifest](home-productions/plugin.json) | Agent Plugins 1.0, nama home-productions, versi paket 0.1.0, kategori Creativity; lolos skema resmi |
+| Publisher | ongkay, berdasarkan konfigurasi Git user.name yang benar-benar dibaca; tidak ditambahkan email atau identitas lain |
+| [Aturan produksi](home-productions/skills/produce-home-tour/references/production-rules.yaml) | Satu sumber aturan mesin versi 1.0.0: durasi, cakupan, batas satu area tidur, audio, rasio frame dan instruksi wajib |
+| [Kontrak proyek](home-productions/skills/produce-home-tour/references/project-contract.md) | Penjelasan tahap data, sumber, persetujuan, revisi, pengikatan aset dan batas validasi |
+| [Template](home-productions/skills/produce-home-tour/assets/project-template.json) dan [schema](home-productions/skills/produce-home-tour/assets/project.schema.json) | Template awal valid pada tahap brief; konsep dapat disusun tanpa gambar; tipe dan kelengkapan data diperiksa sebelum aturan produksi |
+| [Validator](home-productions/skills/produce-home-tour/scripts/validate_project.py) | Baca-saja, tanpa jaringan; memeriksa cakupan, durasi, metadata sumber, revisi, frame serta file PNG aktual pada tahap final |
+| [Tes regresi](tests/test_project_rules.py) | 28 tes lulus; mencakup contoh durasi, pengulangan area/bedroom, tipe data, aset dan prompt usang, pengikatan frame, file rusak/salah format, path/symlink dan portabilitas |
+
+Validator memastikan metadata dukungan referensi lengkap dan cocok dengan cakupan shot. Ia tidak memverifikasi kebenaran kutipan melalui jaringan, menilai geometri rumah dari JSON, atau mendeteksi musik pada video. Skill tahap 3 dan pemeriksaan visual/audio tetap harus bekerja berdasarkan media serta sumber yang benar-benar diakses.
+
+Dependensi dideklarasikan dalam scripts/requirements.txt di dalam skill. Lingkungan yang diuji: Python 3.12.3, PyYAML 6.0.1, jsonschema 4.10.3 dan Pillow 10.2.0. Dependensi ini belum diuji ulang sebagai komponen skill terpasang di ChatGPT web.
+
+Pustaka pengetahuan tidak disalin ke paket dan tidak diubah. Tidak dibuat server, konfigurasi MCP kosong, icon placeholder, SKILL.md sementara atau paket rilis.
 
 ### Tahap 3 — Skill brief, referensi, konsep dan daftar shot
 
@@ -326,13 +349,14 @@ Berkas sementara ditempatkan di runs/ atau dist/ dan diabaikan Git. Berkas proye
 | --- | --- |
 | Rencana implementasi dan struktur target | Selesai disusun |
 | Tahap 1 — Kemampuan lingkungan | Selesai; probe workspace dan uji manual pengguna di ChatGPT web |
-| Tahap 2 — Fondasi paket | Belum dimulai |
+| Tahap 2 — Fondasi paket | Selesai; manifest, aturan, kontrak, validator dan 28 tes regresi |
 | Tahap 3 — Skill konsep dan shot | Belum dimulai |
 | Tahap 4 — Kolase dan pemotongan | Belum dimulai |
 | Tahap 5 — Prompt dan paket proyek | Belum dimulai |
 | Tahap 6 — Penerimaan | Belum dimulai |
 | Tahap 7 — Paket dan pemasangan | Belum dimulai |
 
+- 0.6 — Menyelesaikan fondasi paket tahap 2: manifest, aturan produksi, kontrak/schema dan template proyek, validator bertahap serta 28 tes regresi.
 - 0.5 — Mencatat keberhasilan generate, crop langsung dan dua unduhan PNG pada uji manual pengguna di ChatGPT web; menandai tahap 1 selesai tanpa mengubah status tahap 2–7.
 - 0.4 — Menjalankan probe tahap 1, mencatat pembacaan repo dan hasil pilot gambar/crop; menandai verifikasi ChatGPT web belum lengkap dan pengujian Omni Flash dilewati sesuai arahan pengguna.
 - 0.3 — Menghapus contoh perluasan beberapa bedroom dan skenario penerimaannya; membatasi cakupan pada pola referensi dengan maksimal satu bedroom yang ditampilkan.

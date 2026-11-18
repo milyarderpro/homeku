@@ -1,0 +1,97 @@
+rules_version: 1.0.0
+knowledge_repository: https://github.com/milyarderpro/homeku
+stages:
+- brief
+- concept
+- shot_plan
+- visual_draft
+- visual_final
+- prompt_package
+canonical_areas:
+- exterior
+- living
+- kitchen
+- bedroom
+- bathroom
+- laundry
+- wardrobe
+- dining
+- sleeping_loft
+shot_kinds:
+  exterior:
+    duration_s: 6
+    coverage_sets:
+    - - exterior
+  exterior_to_living:
+    duration_s: 6
+    coverage_sets:
+    - - exterior
+      - living
+  living_to_kitchen:
+    duration_s: 6
+    coverage_sets:
+    - - living
+      - kitchen
+    - - living
+      - kitchen
+      - sleeping_loft
+    - - living
+      - dining
+      - kitchen
+      - sleeping_loft
+  living:
+    duration_s: 4
+    coverage_sets:
+    - - living
+  kitchen:
+    duration_s: 4
+    coverage_sets:
+    - - kitchen
+    - - kitchen
+      - dining
+  bedroom:
+    duration_s: 4
+    coverage_sets:
+    - - bedroom
+  bathroom:
+    duration_s: 4
+    coverage_sets:
+    - - bathroom
+  bathroom_laundry:
+    duration_s: 4
+    coverage_sets:
+    - - bathroom
+      - laundry
+  laundry:
+    duration_s: 4
+    coverage_sets:
+    - - laundry
+  wardrobe:
+    duration_s: 4
+    coverage_sets:
+    - - wardrobe
+coverage:
+  allow_repeat: false
+  opening_area: exterior
+  sleeping_areas:
+  - bedroom
+  - sleeping_loft
+  max_sleeping_area_count: 1
+audio:
+  mode: soft_ambient_only
+  music: false
+  narration: false
+  dialogue: false
+  dramatic_effects: false
+frames:
+  aspect_ratio:
+  - 9
+  - 16
+  format: PNG
+  roles:
+  - start
+  - end
+prompt_constraints:
+  continuous: One continuous shot with no cuts.
+  audio: Soft natural ambient sound only. No music, narration, dialogue, or dramatic
+    sound effects.
