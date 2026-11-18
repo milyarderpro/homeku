@@ -20,6 +20,8 @@ Semua referensi boleh menginspirasi desain baru. Confidence menjelaskan kepastia
 
 [Web atau konektor GitHub](knowledge/access-contract.md) · [Snapshot sumber](knowledge/release.json) · [Metodologi bukti](knowledge/methodology.md) · [Pemeliharaan](docs/knowledge-maintenance.md)
 
+Pengembangan home-productions: [Rencana dan alur penggunaan](bekerja/plugin/README.md).
+
 AI pembaca menggunakan berkas statis yang sama melalui web atau konektor. Clone, skrip, database dan API buatan khusus tidak diperlukan. Arsip baru masuk melalui proses penyimpanan; publikasi pengetahuan memilih snapshot secara eksplisit.
 
 </details>
