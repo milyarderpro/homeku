@@ -1,10 +1,10 @@
 # Rencana implementasi home-productions
 
-Versi rencana: 0.7
+Versi rencana: 0.9
 
 Tanggal: 18 November 2026
 
-Status: tahap 1–3 selesai. Skill praproduksi sampai rancangan shot tersedia; tahap 4–7 dan pemasangan plugin belum dimulai.
+Status: tahap 1–5 selesai. Skill tersedia sampai prompt per shot dan paket proyek; tahap 6–7 dan pemasangan plugin belum dimulai.
 
 Acuan perilaku: [alur penggunaan](production-workflow.md). Nama teknis plugin adalah home-productions; identitas ini dipertahankan pada folder paket, manifest dan rilis.
 
@@ -78,7 +78,8 @@ bekerja/plugin/
 │           └── scripts/
 │               ├── validate_project.py
 │               ├── requirements.txt
-│               └── split_frames.py
+│               ├── split_frames.py
+│               └── build_production_package.py
 ├── tooling/
 │   ├── probe_stage1.py              # probe workspace tahap 1, sudah dibuat
 │   └── package_plugin.py
@@ -86,6 +87,7 @@ bekerja/plugin/
 │   ├── test_project_rules.py
 │   ├── test_preproduction.py
 │   ├── test_split_frames.py
+│   ├── test_production_package.py
 │   └── test_package.py
 ├── dist/                             # generated, ignored
 └── runs/                             # local project assets, ignored
@@ -144,7 +146,7 @@ Validator memeriksa struktur serta konsistensi catatan. Ia tidak mengklaim membu
 
 ## 5. Tahapan implementasi
 
-Status pelaksanaan: tahap 1–3 selesai. Bukti dan hasil pemeriksaan dicatat pada bagian masing-masing; tahap 4–7 belum dimulai.
+Status pelaksanaan: tahap 1–5 selesai. Bukti dan hasil pemeriksaan dicatat pada bagian masing-masing; tahap 6–7 belum dimulai.
 
 ### Tahap 1 — Membuktikan kemampuan lingkungan sasaran
 
@@ -276,6 +278,30 @@ Keluaran: pasangan frame yang valid, penamaan shot-NN-start.png dan shot-NN-end.
 
 Kriteria selesai: pemotongan tidak menukar urutan, mencampur panel, menyisakan bingkai atau meregangkan proporsi; file hasil benar-benar dapat diunduh. Resolusi rendah ditandai, bukan diklaim bertambah detail setelah crop.
 
+#### Hasil pelaksanaan tahap 4 — 18 November 2026
+
+Status: **selesai untuk implementasi kolase, review dan pemotongan**. Alur visual terhubung ke skill yang sama; plugin belum dipasang.
+
+| Komponen | Hasil |
+| --- | --- |
+| [Alur visual](home-productions/skills/produce-home-tour/references/image-workflow.md) | Satu kolase kiri-awal/kanan-akhir per shot; memakai acuan proyek, review dalam/antarshot, revisi dan penyerahan dua unduhan individu |
+| [Pemotong produksi](home-productions/skills/produce-home-tour/scripts/split_frames.py) | Memakai aturan frame yang sama; dua PNG 9:16 berukuran sama, tanpa resize, regenerasi, konversi warna atau penimpaan hasil lama |
+| Batas crop | Pembagian tengah hanya untuk dua panel 9:16 tepat. Kanvas lain memerlukan dua kotak eksplisit setelah gambar dilihat; padding keluar kanvas, panel tercampur dan perubahan proporsi ditolak |
+| Laporan crop | Koordinat, hash sumber/hasil, dimensi dan kesamaan piksel; target lebar minimum opsional ditandai bila tidak terpenuhi. Laporan tidak memberikan persetujuan visual |
+| Integrasi proyek | Empat shot → delapan file yang dapat diikat ke shot/revisi dalam kontrak yang sama. visual_final tetap menolak frame tanpa review atau persetujuan; prompt masih null |
+| [Tes crop/integrasi](tests/test_split_frames.py) | 15 tes tambahan; bersama tahap 2–3, **47 tes lulus**. Mencakup urutan/piksel/alpha, kotak salah, hasil lama, kegagalan tulis dan portabilitas |
+| Format skill | quick_validate dari Skill Creator lulus; metadata dan tautan sumber daya diperbarui sesuai kemampuan visual |
+
+Pilot memakai kembali file kolase asli hasil tahap 1, bukan generate baru. Kolase 1330 × 1182 dan kedua hasil crop benar-benar dilihat. Kotak yang diperiksa adalah kiri (4, 7, 661, 1175) dan kanan (669, 7, 1326, 1175). Script produksi menghasilkan dua PNG **657 × 1168**, tepat 9:16; hash hasil cocok dengan crop pilot sebelumnya dan pemeriksaan piksel lulus.
+
+Pada review terbatas, urutan awal lebar menuju akhir dekat pintu sesuai pasangan; potongan tidak menampilkan garis pemisah, teks atau border. Identitas pintu kayu berkaca, wreath, lantern, shutter gelap dan taman bunga dapat dibandingkan pada bagian yang terlihat. Ini bukan pembuktian seluruh geometri rumah, konsistensi seluruh shot atau gerak video.
+
+Dua file pilot dibuka melalui alat tampilan file lokal dan tersedia untuk tautan individual. Pengunduhan baru oleh pengguna tidak diuji pada tahap ini. Laporan uji manual ChatGPT web tahap 1 tetap menjadi bukti terpisah untuk kemampuan generate, crop langsung dan unduhan host; belum merupakan uji plugin terpasang.
+
+Hasil pilot dan laporan berada di runs/stage4-2026-11-18/ yang diabaikan Git. Pustaka sumber, aturan produksi dan schema proyek tidak diubah. Tidak dibuat project.json dengan persetujuan pengguna yang direkayasa; persetujuan pada tes hanya fixture sintetis.
+
+Paket prompt belum diimplementasikan. Uji perilaku menyeluruh, konsistensi satu proyek lengkap, hasil video/audio dan pemasangan tetap mengikuti tahap berikutnya.
+
 ### Tahap 5 — Prompt Omni Flash dan paket proyek
 
 Pekerjaan:
@@ -289,6 +315,30 @@ Pekerjaan:
 Keluaran: paket produksi lengkap dan dapat dilanjutkan pada sesi berikutnya.
 
 Kriteria selesai: setiap prompt memakai pasangan frame yang benar dan aturan audio eksplisit; ringkasan proyek cukup untuk melanjutkan tanpa mengandalkan ingatan sesi lama.
+
+#### Hasil pelaksanaan tahap 5 — 18 November 2026
+
+Status: **selesai untuk implementasi prompt dan paket proyek**. Skill yang sama mendukung alur sampai prompt_package; belum dipasang atau diuji sebagai plugin terpasang.
+
+| Komponen | Hasil |
+| --- | --- |
+| [Panduan Omni Flash/paket](home-productions/skills/produce-home-tour/references/omni-flash.md) | Penulisan dari dua frame final, pemetaan aset, petunjuk kontrol berdasarkan fungsi, revisi hasil dan kelanjutan sesi |
+| [Template prompt](home-productions/skills/produce-home-tour/assets/prompt-template.md) | Subjek/cahaya, awal–akhir, lintasan, reveal dan elemen tetap; gerak simultan dan sekuensial dijelaskan berbeda; instruksi continuous/ambient disalin dari aturan |
+| [Ekspor proyek](home-productions/skills/produce-home-tour/scripts/build_production_package.py) | Helper deterministik untuk project.json, production-guide.md, prompt per shot dan salinan aset asli. Keputusan, teks prompt, ID/revisi dan path relatif dipertahankan |
+| Integritas paket | Ekspor memerlukan prompt_package valid, dua frame yang cocok dan persetujuan/review tercatat. Salinan diperiksa ulang; tujuan lama tidak ditimpa dan ekspor yang gagal dibersihkan |
+| Validasi prompt | Validator menolak penanda template yang belum diisi, selain pengikatan pasangan/durasi/revisi dan instruksi wajib yang sudah ada |
+| [Tes ekspor](tests/test_production_package.py) | 12 tes tambahan; bersama tahap sebelumnya, **59 tes lulus**. Meliputi 18/20/22/24 detik, pemindahan sesi, tautan gambar, kegagalan salin dan CLI dari salinan paket terisolasi |
+| Format skill | quick_validate dari Skill Creator lulus; panduan gambar, kontrak, metadata dan skill utama sudah menunjuk tahap prompt yang tersedia |
+
+Helper ekspor ditambahkan di scripts/ untuk keluaran paket proyek yang sudah direncanakan. Ia tidak menulis keputusan/prompt kreatif baru atau memberi persetujuan. Ini berbeda dari pengemas ZIP plugin pada tahap 7; tidak ditambahkan server, dependensi baru atau format proyek kedua.
+
+Pengujian memakai gambar dan persetujuan sintetis yang ditandai sebagai fixture. Satu paket uji empat shot/20 detik tetap valid setelah folder kerja asal dihapus; delapan gambar dan empat prompt tersedia dalam salinan paket. Teks prompt mempertahankan perbedaan gerak bersamaan/berurutan yang ditulis dalam fixture. Pemeriksaan ini membuktikan pengangkutan data, bukan kemampuan model menerjemahkan gerak atau kualitas rumah.
+
+Template menjelaskan “Move forward while panning…” dan “First move forward, then pan…” sebagai contoh hubungan waktu, bukan arah wajib seluruh shot atau klaim timing sumber. Rincian prompt proyek tetap ditulis setelah melihat frame final serta rancangan sebenarnya.
+
+Petunjuk generator memakai dukungan awal–akhir dan 4–10 detik dari konfirmasi pengguna; uji Omni Flash tetap dilewati sesuai arahan. Aplikasi/versi, tombol dan parameter API yang belum diketahui tidak direkayasa. Klip menggunakan durasi baku 6/4 detik serta ambient tanpa musik; cut antarklip dijelaskan terpisah dari prompt satu continuous shot.
+
+Tidak dibuat proyek kreatif dengan persetujuan pengguna yang direkayasa. Tidak ada generate video, pemeriksaan audio baru, perangkaian atau publikasi. Pustaka sumber, aturan produksi dan schema proyek tetap sama; penerimaan perilaku serta pemasangan menjadi tahap 6–7.
 
 ### Tahap 6 — Pemeriksaan perilaku dan penerimaan
 
@@ -374,11 +424,13 @@ Berkas sementara ditempatkan di runs/ atau dist/ dan diabaikan Git. Berkas proye
 | Tahap 1 — Kemampuan lingkungan | Selesai; probe workspace dan uji manual pengguna di ChatGPT web |
 | Tahap 2 — Fondasi paket | Selesai; manifest, aturan, kontrak, validator dan 28 tes regresi |
 | Tahap 3 — Skill konsep dan shot | Selesai; skill praproduksi, panduan akses dan dua kasus sumber tervalidasi |
-| Tahap 4 — Kolase dan pemotongan | Belum dimulai |
-| Tahap 5 — Prompt dan paket proyek | Belum dimulai |
+| Tahap 4 — Kolase dan pemotongan | Selesai; alur visual, script crop, pilot dua PNG dan integrasi kontrak |
+| Tahap 5 — Prompt dan paket proyek | Selesai; template/panduan prompt, ekspor mandiri, revisi dan kelanjutan sesi |
 | Tahap 6 — Penerimaan | Belum dimulai |
 | Tahap 7 — Paket dan pemasangan | Belum dimulai |
 
+- 0.9 — Menyelesaikan tahap 5: prompt per shot dari frame final, panduan Omni Flash berdasarkan konfirmasi pengguna, ekspor proyek/gambar/prompt dan revisi; 59 tes lulus. Penerimaan menyeluruh dan pemasangan tetap tahap 6–7.
+- 0.8 — Menyelesaikan tahap 4: panduan kolase/konsistensi, crop piksel tanpa resize, dua file individu dan pengikatan ke kontrak; 47 tes lulus serta pilot asli dipotong dan dilihat. Paket prompt, penerimaan menyeluruh dan pemasangan tetap tahap berikutnya.
 - 0.7 — Menyelesaikan skill praproduksi tahap 3: brief, akses sumber selektif, konsep, desain dan daftar shot; dua kasus anotasi asli serta 32 tes kontrak/sumber daya lulus. Produksi gambar, prompt, penerimaan dan pemasangan tetap tahap berikutnya.
 - 0.6 — Menyelesaikan fondasi paket tahap 2: manifest, aturan produksi, kontrak/schema dan template proyek, validator bertahap serta 28 tes regresi.
 - 0.5 — Mencatat keberhasilan generate, crop langsung dan dua unduhan PNG pada uji manual pengguna di ChatGPT web; menandai tahap 1 selesai tanpa mengubah status tahap 2–7.

@@ -11,6 +11,7 @@ import hashlib
 from io import BytesIO
 import json
 from pathlib import Path, PurePosixPath
+import re
 from urllib.parse import quote
 
 from jsonschema import Draft202012Validator
@@ -220,6 +221,8 @@ def validate_project(project, project_root=None):
         if rank >= 5 and prompt is None:
             errors.append(ident + ": prompt final belum tersedia.")
         if prompt is not None:
+            if re.search(r"\{\{[^{}]+\}\}", prompt["text"]):
+                errors.append(ident + ": prompt masih berisi penanda template yang belum diisi.")
             if prompt["revision"] != revision:
                 errors.append(ident + ": versi prompt tidak cocok.")
             if prompt["duration_s"] != shot["duration_s"]:

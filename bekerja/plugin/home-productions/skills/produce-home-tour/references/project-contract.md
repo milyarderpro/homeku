@@ -43,6 +43,8 @@ Path aset dihitung dari folder project.json. Path absolut, keluar folder, dan sy
 
 Setiap prompt final terikat pada revisi, durasi dan dua ID frame shot yang sama. Teksnya wajib memuat instruksi continuous shot dan ambient tanpa musik dari production-rules.yaml. Pemeriksaan ini memastikan instruksi tercantum, bukan penilaian semantik seluruh prompt atau deteksi musik pada video.
 
+Prompt yang masih memuat penanda template {{...}} ditolak. Ini pemeriksaan kelengkapan teks, bukan penilaian apakah gerak atau seluruh isi prompt sudah tepat.
+
 Aturan yang dibundel merupakan aturan baku saat ini. Perubahan kebijakan memerlukan pembaruan aturan dan rules_version yang jelas; tidak disediakan kolom override bebas untuk menghindari validasi.
 
 ## Menjalankan pemeriksaan
@@ -55,4 +57,4 @@ python skills/produce-home-tour/scripts/validate_project.py /path/to/project.jso
 
 Dependensi dideklarasikan di scripts/requirements.txt. Hasil JSON berisi valid, errors dan batas pemeriksaan. Exit code 0 berarti valid secara struktural sesuai tahap; 1 berarti data melanggar kontrak; 2 berarti file/JSON tidak dapat dibaca.
 
-Skill praproduksi tersedia sampai rancangan shot. Produksi gambar dan paket prompt belum diimplementasikan; paket belum dipasang. Lihat [SKILL.md](../SKILL.md) untuk alur dan batas kemampuan saat ini.
+Skill tersedia sampai prompt_package. Ikuti [alur visual](image-workflow.md) untuk frame dan [panduan prompt/paket](omni-flash.md) untuk penulisan, penyerahan serta revisi hasil. Plugin belum dipasang; lihat [SKILL.md](../SKILL.md) untuk alur aktif.
