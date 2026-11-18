@@ -1,10 +1,10 @@
 # Rencana implementasi home-productions
 
-Versi rencana: 0.9
+Versi rencana: 1.0
 
 Tanggal: 18 November 2026
 
-Status: tahap 1–5 selesai. Skill tersedia sampai prompt per shot dan paket proyek; tahap 6–7 dan pemasangan plugin belum dimulai.
+Status: tahap 1–5 selesai. Pemeriksaan teknis dan rilis privat 0.1.0 selesai; penerimaan manual serta aktivasi/alur di ChatGPT menunggu pengujian pengguna.
 
 Acuan perilaku: [alur penggunaan](production-workflow.md). Nama teknis plugin adalah home-productions; identitas ini dipertahankan pada folder paket, manifest dan rilis.
 
@@ -146,7 +146,7 @@ Validator memeriksa struktur serta konsistensi catatan. Ia tidak mengklaim membu
 
 ## 5. Tahapan implementasi
 
-Status pelaksanaan: tahap 1–5 selesai. Bukti dan hasil pemeriksaan dicatat pada bagian masing-masing; tahap 6–7 belum dimulai.
+Status pelaksanaan: tahap 1–5 selesai. Bagian teknis tahap 6 dan rilis privat tahap 7 selesai; penerimaan manual serta aktivasi/alur ChatGPT belum diklaim lulus.
 
 ### Tahap 1 — Membuktikan kemampuan lingkungan sasaran
 
@@ -342,6 +342,10 @@ Tidak dibuat proyek kreatif dengan persetujuan pengguna yang direkayasa. Tidak a
 
 ### Tahap 6 — Pemeriksaan perilaku dan penerimaan
 
+Urutan pelaksanaan tahap 6–7 diperbarui atas arahan pengguna: **pemeriksaan teknis → rilis privat untuk uji → pengujian manual di ChatGPT → perbaikan → penerimaan selesai**. Pengemasan dan penyimpanan privat dilakukan sebelum penerimaan manual agar pengguna menguji plugin sebenarnya. Nomor tahap tetap dipertahankan sebagai kelompok pekerjaan.
+
+Pengujian penerimaan dilakukan pengguna secara manual. Kendala alat otomasi pengembang tidak menjadi bukti bahwa ChatGPT tidak mampu generate, crop atau menyediakan unduhan. Hasil manual, pemeriksaan kode dan kemampuan yang belum diuji dicatat terpisah.
+
 Pemeriksaan kode difokuskan pada kontrak, pemotongan dan isi paket. Pemeriksaan visual memerlukan melihat gambar; pemeriksaan audio memerlukan mendengarkan hasil yang tersedia.
 
 Skenario penerimaan minimum:
@@ -370,13 +374,29 @@ Keluaran: hasil penerimaan ringkas pada rencana ini, masalah yang tersisa dan ba
 
 Kriteria selesai: setiap keluaran wajib berhasil pada lingkungan sasaran; keterbatasan pemeriksaan dinyatakan sesuai bukti.
 
+#### Hasil pemeriksaan teknis — 18 November 2026
+
+Status: **teknis lulus; penerimaan manual menunggu pengguna**.
+
+| Pemeriksaan | Hasil |
+| --- | --- |
+| Aturan dan kontrak | Sesuai keputusan: jenis/cakupan berbasis sumber, tanpa pengulangan area, maksimal satu bedroom/area tidur, durasi 6/4 detik dan ambient tanpa musik |
+| Tes otomatis | **65 tes lulus**: 59 tes fondasi/alur proyek serta enam tes arsip rilis |
+| Manifest | Lulus schema resmi Agent Plugins 1.0 yang diambil pada tanggal pemeriksaan; listing menggunakan kategori Creativity dan subtitle sesuai batas |
+| Skill | quick_validate lulus; frontmatter, metadata serta tautan internal dapat dibaca |
+| [Pengemas](tooling/package_plugin.py) | ZIP deterministik hanya dari home-productions/, di luar source; CRC, inventaris dan seluruh byte dibandingkan kembali dengan source |
+| [Tes arsip](tests/test_package.py) | Kelengkapan, reproduksibilitas, referensi, identitas, penolakan symlink/file kerja dan perlindungan arsip lama lulus |
+| Isi upload | 16 berkas, satu skill produce-home-tour; tanpa pustaka sumber, dokumen kerja, hasil runs/, cache, server atau konfigurasi MCP kosong |
+
+Belum dilakukan uji perilaku plugin di ChatGPT, konsistensi satu proyek kreatif lengkap atau pengujian video/audio Omni Flash. Pemeriksaan teknis bukan pengganti hasil manual. Tidak dilakukan analisis ulang video atau penambahan referensi.
+
 ### Tahap 7 — Paket rilis dan pemasangan privat
 
 Pekerjaan:
 
 - Jalankan pemeriksaan paket dan buat ZIP hanya dari home-productions/, ke dist/.
 - Inspeksi arsip akhir: manifest, skill, referensi, script dan aset yang benar; semua path internal valid.
-- Gunakan Plugin Creator untuk menyimpan paket lengkap secara privat ketika pekerjaan dilanjutkan sampai pemasangan. Jangan membuat plugin placeholder untuk mengecek koneksi.
+- Gunakan Plugin Creator untuk menyimpan paket lengkap secara privat setelah pemeriksaan teknis, agar pengguna dapat menguji plugin yang sebenarnya di ChatGPT. Jangan membuat plugin placeholder untuk mengecek koneksi.
 - Untuk pembaruan, identifikasi plugin yang sama dan gunakan update; simpan plugin ID, release ID, versi dan plugin_url setelah respons berhasil.
 - Periksa komponen dan aktivasi setelah pemasangan. Pembuatan entri plugin saja belum membuktikan workflow berhasil.
 - Catat informasi rilis singkat pada README ruang kerja ini. Pembuatan rencana saat ini tidak memasang, membagikan atau memublikasikan plugin.
@@ -384,6 +404,20 @@ Pekerjaan:
 Keluaran: paket versi awal 0.1.0, plugin privat terpasang bila termasuk cakupan implementasi, serta tautan dan identitas rilis yang terverifikasi.
 
 Kriteria selesai: arsip dapat diperiksa, skill yang diharapkan dikenali, dan alur yang diminta berjalan pada lingkungan pengguna. Publikasi direktori publik merupakan pekerjaan terpisah.
+
+#### Hasil rilis privat — 18 November 2026
+
+Rilis **0.1.0** berhasil dibuat melalui Plugin Creator pada scope USER dengan discoverability PRIVATE.
+
+- [Buka home-productions](https://chatgpt.com/plugins/plugins_6afd5aeb32208191a60a8b85426c898f)
+- Plugin ID: plugins_6afd5aeb32208191a60a8b85426c898f
+- Release ID: pluginrel_6afd5aede8fc81918c13057632e8250f
+- ZIP lokal: dist/home-productions-0.1.0.zip, diabaikan Git.
+- SHA-256 upload: 35fb8f999a92a0f6fbf309b77c939cc75ef07a876a86f816bcdb88f80444d8f7
+
+Seluruh inventaris rilis dan 16 berkas upload dibaca balik, tanpa halaman tersisa atau berkas yang tidak terbaca. Lima belas berkas skill/pendukung cocok persis dengan source. Manifest root mempertahankan identitas, versi dan konfigurasi; publisher ditetapkan layanan sesuai akun, menggantikan nama berbasis Git pada upload. Tidak menyalin email akun ke repo. Manifest kompatibilitas .codex-plugin/plugin.json dibuat oleh layanan sehingga inventaris tersimpan berjumlah 17 berkas; tidak dibuat overlay lokal atau rilis kedua.
+
+Keberhasilan ini membuktikan penyimpanan rilis privat dan kelengkapan source. Aktivasi/pemilihan skill serta keberhasilan alur di ChatGPT belum diamati. Pengguna melanjutkan uji manual memakai tautan rilis; tahap penerimaan tetap terbuka. Hasil dan revisi dicatat pada rencana aktif ini, bukan dokumen historis tambahan.
 
 ## 6. Pemeriksaan format Plugin Creator
 
@@ -426,9 +460,10 @@ Berkas sementara ditempatkan di runs/ atau dist/ dan diabaikan Git. Berkas proye
 | Tahap 3 — Skill konsep dan shot | Selesai; skill praproduksi, panduan akses dan dua kasus sumber tervalidasi |
 | Tahap 4 — Kolase dan pemotongan | Selesai; alur visual, script crop, pilot dua PNG dan integrasi kontrak |
 | Tahap 5 — Prompt dan paket proyek | Selesai; template/panduan prompt, ekspor mandiri, revisi dan kelanjutan sesi |
-| Tahap 6 — Penerimaan | Belum dimulai |
-| Tahap 7 — Paket dan pemasangan | Belum dimulai |
+| Tahap 6 — Penerimaan | Teknis lulus; uji manual pengguna pada rilis privat menunggu hasil |
+| Tahap 7 — Paket dan pemasangan | Rilis privat 0.1.0 tersimpan dan source terverifikasi; aktivasi/alur ChatGPT menunggu uji manual |
 
+- 1.0 — Mengikuti keputusan pengguna: pemeriksaan teknis → rilis privat melalui Plugin Creator → uji manual → perbaikan → penerimaan. Menambahkan pengemas/tes arsip yang direncanakan; 65 tes lulus dan rilis 0.1.0 berhasil dibaca balik. Penerimaan manual belum dinyatakan selesai.
 - 0.9 — Menyelesaikan tahap 5: prompt per shot dari frame final, panduan Omni Flash berdasarkan konfirmasi pengguna, ekspor proyek/gambar/prompt dan revisi; 59 tes lulus. Penerimaan menyeluruh dan pemasangan tetap tahap 6–7.
 - 0.8 — Menyelesaikan tahap 4: panduan kolase/konsistensi, crop piksel tanpa resize, dua file individu dan pengikatan ke kontrak; 47 tes lulus serta pilot asli dipotong dan dilihat. Paket prompt, penerimaan menyeluruh dan pemasangan tetap tahap berikutnya.
 - 0.7 — Menyelesaikan skill praproduksi tahap 3: brief, akses sumber selektif, konsep, desain dan daftar shot; dua kasus anotasi asli serta 32 tes kontrak/sumber daya lulus. Produksi gambar, prompt, penerimaan dan pemasangan tetap tahap berikutnya.
