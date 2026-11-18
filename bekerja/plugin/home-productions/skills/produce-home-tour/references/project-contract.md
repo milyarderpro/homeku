@@ -55,4 +55,4 @@ python skills/produce-home-tour/scripts/validate_project.py /path/to/project.jso
 
 Dependensi dideklarasikan di scripts/requirements.txt. Hasil JSON berisi valid, errors dan batas pemeriksaan. Exit code 0 berarti valid secara struktural sesuai tahap; 1 berarti data melanggar kontrak; 2 berarti file/JSON tidak dapat dibaca.
 
-Paket tahap 2 belum memiliki SKILL.md dan belum dipasang. Kontrak ini menjadi fondasi skill pada tahap 3.
+Skill praproduksi tersedia sampai rancangan shot. Produksi gambar dan paket prompt belum diimplementasikan; paket belum dipasang. Lihat [SKILL.md](../SKILL.md) untuk alur dan batas kemampuan saat ini.

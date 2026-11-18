@@ -1,10 +1,10 @@
 # Rencana implementasi home-productions
 
-Versi rencana: 0.6
+Versi rencana: 0.7
 
 Tanggal: 18 November 2026
 
-Status: tahap 1 dan 2 selesai. Fondasi paket tersedia; tahap 3–7 dan pemasangan plugin belum dimulai.
+Status: tahap 1–3 selesai. Skill praproduksi sampai rancangan shot tersedia; tahap 4–7 dan pemasangan plugin belum dimulai.
 
 Acuan perilaku: [alur penggunaan](production-workflow.md). Nama teknis plugin adalah home-productions; identitas ini dipertahankan pada folder paket, manifest dan rilis.
 
@@ -68,6 +68,7 @@ bekerja/plugin/
 │           │   ├── production-rules.yaml
 │           │   ├── project-contract.md
 │           │   ├── repo-access.md
+│           │   ├── preproduction.md
 │           │   ├── image-workflow.md
 │           │   └── omni-flash.md
 │           ├── assets/
@@ -83,6 +84,7 @@ bekerja/plugin/
 │   └── package_plugin.py
 ├── tests/
 │   ├── test_project_rules.py
+│   ├── test_preproduction.py
 │   ├── test_split_frames.py
 │   └── test_package.py
 ├── dist/                             # generated, ignored
@@ -142,7 +144,7 @@ Validator memeriksa struktur serta konsistensi catatan. Ia tidak mengklaim membu
 
 ## 5. Tahapan implementasi
 
-Status pelaksanaan: tahap 1 dan 2 selesai. Bukti dan hasil pemeriksaan dicatat pada bagian masing-masing; tahap 3–7 belum dimulai.
+Status pelaksanaan: tahap 1–3 selesai. Bukti dan hasil pemeriksaan dicatat pada bagian masing-masing; tahap 4–7 belum dimulai.
 
 ### Tahap 1 — Membuktikan kemampuan lingkungan sasaran
 
@@ -237,6 +239,27 @@ Pekerjaan:
 Keluaran: konsep dan daftar shot yang dapat diteruskan ke produksi gambar.
 
 Kriteria selesai: contoh exterior + living-to-kitchen + bedroom + bathroom menghasilkan empat shot, 20 detik, tanpa shot kitchen tambahan; exterior-to-living + kitchen + bedroom + bathroom menghasilkan 18 detik.
+
+#### Hasil pelaksanaan tahap 3 — 18 November 2026
+
+Status: **selesai untuk skill praproduksi sampai rancangan shot**. Paket belum dipasang; gambar dan prompt akhir belum dibuat.
+
+| Komponen | Hasil |
+| --- | --- |
+| [Skill utama](home-productions/skills/produce-home-tour/SKILL.md) | Memulai, melanjutkan dan merevisi brief, konsep, desain rumah serta shot; menghormati persetujuan/delegasi yang sudah ada |
+| [Akses repo](home-productions/skills/produce-home-tour/references/repo-access.md) | Pembacaan selektif melalui web atau konektor; versi sumber, kutipan/pointer, kegagalan akses dan tingkat bukti kontinuitas dicatat secara jujur |
+| [Panduan praproduksi](home-productions/skills/produce-home-tour/references/preproduction.md) | DNA desain dan video, rumah yang koheren, gerak simultan/sekuensial, cakupan tanpa pengulangan dan catatan proyek untuk sesi berikutnya |
+| [Metadata skill](home-productions/skills/produce-home-tour/agents/openai.yaml) | Dihasilkan dengan generator Skill Creator; tidak mewajibkan konektor GitHub |
+| Kasus living–kitchen | edh022 shot-01 sampai shot-04 → exterior 6 + living-to-kitchen 6 + bedroom 4 + bathroom 4 = **20 detik**. Exterior penutup sumber tidak diulang dalam rancangan |
+| Kasus exterior–living | edh035 shot-01 sampai shot-04 → exterior-to-living 6 + kitchen 4 + bedroom 4 + bathroom 4 = **18 detik** |
+| [Pemeriksaan tahap 3](tests/test_preproduction.py) | Dua replay kontrak dari anotasi asli, pointer/kutipan sumber, kelengkapan metadata serta tautan internal paket; bersama tes tahap 2, **32 tes lulus** |
+| Format skill | quick_validate dari Skill Creator lulus; pemeriksaan format statis, bukan pembuktian perilaku model |
+
+Anotasi [edh022](https://github.com/milyarderpro/homeku/blob/26c5e56cb0de66d5c1ab4f93a1285654180382a0/references/edh022/analysis.yaml) dan [edh035](https://github.com/milyarderpro/homeku/blob/26c5e56cb0de66d5c1ab4f93a1285654180382a0/references/edh035/analysis.yaml) benar-benar dibaca melalui konektor pada commit terpublikasi yang sama. Hash seluruh teks cocok dengan anotasi lokal yang dipakai replay tes. Ini memakai analisis yang sudah tersedia, bukan analisis ulang video.
+
+Kasus tes merupakan data uji kontrak, bukan proyek pilihan atau persetujuan pengguna. Durasi mengikuti aturan produksi 6/4 detik; hubungan waktu gerak gabungan yang tidak dipastikan sumber ditandai sebagai adaptasi uji. Tidak dibuat gambar, file frame atau prompt akhir.
+
+Skill memakai kontrak dan aturan tahap 2 yang sama. Tiga titik keputusan tetap: pilihan konsep, desain beserta shot, lalu visual final pada tahap gambar. Belum dilakukan uji perilaku skill terpasang di ChatGPT web; penerimaan menyeluruh tetap tahap 6.
 
 ### Tahap 4 — Kolase, konsistensi dan pemotongan
 
@@ -350,12 +373,13 @@ Berkas sementara ditempatkan di runs/ atau dist/ dan diabaikan Git. Berkas proye
 | Rencana implementasi dan struktur target | Selesai disusun |
 | Tahap 1 — Kemampuan lingkungan | Selesai; probe workspace dan uji manual pengguna di ChatGPT web |
 | Tahap 2 — Fondasi paket | Selesai; manifest, aturan, kontrak, validator dan 28 tes regresi |
-| Tahap 3 — Skill konsep dan shot | Belum dimulai |
+| Tahap 3 — Skill konsep dan shot | Selesai; skill praproduksi, panduan akses dan dua kasus sumber tervalidasi |
 | Tahap 4 — Kolase dan pemotongan | Belum dimulai |
 | Tahap 5 — Prompt dan paket proyek | Belum dimulai |
 | Tahap 6 — Penerimaan | Belum dimulai |
 | Tahap 7 — Paket dan pemasangan | Belum dimulai |
 
+- 0.7 — Menyelesaikan skill praproduksi tahap 3: brief, akses sumber selektif, konsep, desain dan daftar shot; dua kasus anotasi asli serta 32 tes kontrak/sumber daya lulus. Produksi gambar, prompt, penerimaan dan pemasangan tetap tahap berikutnya.
 - 0.6 — Menyelesaikan fondasi paket tahap 2: manifest, aturan produksi, kontrak/schema dan template proyek, validator bertahap serta 28 tes regresi.
 - 0.5 — Mencatat keberhasilan generate, crop langsung dan dua unduhan PNG pada uji manual pengguna di ChatGPT web; menandai tahap 1 selesai tanpa mengubah status tahap 2–7.
 - 0.4 — Menjalankan probe tahap 1, mencatat pembacaan repo dan hasil pilot gambar/crop; menandai verifikasi ChatGPT web belum lengkap dan pengujian Omni Flash dilewati sesuai arahan pengguna.
