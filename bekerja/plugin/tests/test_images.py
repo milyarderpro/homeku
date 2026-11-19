@@ -37,7 +37,7 @@ class ImageModeTests(unittest.TestCase):
         missing.update(asset_id=None, status="failed", error="Synthetic generation interruption.")
         result = VALIDATOR.validate_project(project, self.root)
         self.assertTrue(result["valid"], result)
-        self.assertEqual(result["available_image_count"], 4)
+        self.assertEqual(result["available_image_count"], 3)
         project["stage"] = "image_final"
         self.assertFalse(VALIDATOR.validate_project(project, self.root)["valid"])
 
@@ -81,6 +81,7 @@ class ImageModeTests(unittest.TestCase):
         additional.update(image_id="img-laundry", primary_area="laundry", area_ids=["laundry"])
         project["image_plan"].append(additional)
         shot["reference_image_ids"].append(additional["image_id"])
+        shot["reference_choice"]["count"] = 2
         result = VALIDATOR.validate_project(project, self.root)
         self.assertTrue(result["valid"], result)
         self.assertEqual(shot["duration_s"], 4)

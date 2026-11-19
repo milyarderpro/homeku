@@ -55,11 +55,11 @@ class ProductionPackageTests(unittest.TestCase):
         for image in project["image_plan"]:
             self.assertEqual((self.output / "image-prompts" / (image["image_id"] + ".txt")).read_text(), image["prompt"])
 
-    def test_r2v_package_keeps_five_originals_four_nine_section_prompts_and_source_independence(self):
+    def test_r2v_package_keeps_four_originals_four_nine_section_prompts_and_source_independence(self):
         project = self.fixture()
         result = BUILDER.build_package(self.project_file, self.output)
-        self.assertEqual((result["shot_count"], result["image_count"], result["total_duration_s"]), (4, 5, 20))
-        self.assertEqual(len(result["reference_images"]), 5)
+        self.assertEqual((result["shot_count"], result["image_count"], result["total_duration_s"]), (4, 4, 20))
+        self.assertEqual(len(result["reference_images"]), 4)
         self.assertEqual(len(result["video_prompts"]), 4)
         for shot in project["shots"]:
             content = (self.output / "video-prompts" / (shot["shot_id"] + ".txt")).read_text()
@@ -79,9 +79,9 @@ class ProductionPackageTests(unittest.TestCase):
 
     def test_other_durations_and_reference_counts_are_preserved(self):
         for kinds, count, seconds in (
-            (("exterior_to_living", "kitchen", "bedroom", "bathroom"), 5, 18),
+            (("exterior_to_living", "kitchen", "bedroom", "bathroom"), 4, 18),
             (("exterior", "living", "kitchen", "bedroom", "bathroom"), 5, 22),
-            (("exterior", "living_to_kitchen", "bedroom", "laundry", "bathroom"), 6, 24),
+            (("exterior", "living_to_kitchen", "bedroom", "laundry", "bathroom"), 5, 24),
         ):
             with self.subTest(kinds=kinds):
                 project = self.fixture(kinds=kinds)
@@ -196,7 +196,42 @@ class ProductionPackageTests(unittest.TestCase):
                               str(self.project_file), "--output", str(self.output)],
                              cwd=self.root, capture_output=True, text=True)
         self.assertEqual(run.returncode, 0, run.stderr)
-        self.assertEqual(json.loads(run.stdout)["image_count"], 5)
+        self.assertEqual(json.loads(run.stdout)["image_count"], 4)
+
+
+    def test_chat_copy_blocks_match_raw_export_and_keep_mapping_outside(self):
+        project = self.fixture()
+        BUILDER.build_package(self.project_file, self.output)
+        text = BUILDER.render_chat_prompts(project)
+        blocks = re.findall(r"```\n(.*?)```", text, re.S)
+        self.assertEqual(len(blocks), len(project["shots"]))
+        for shot, content in zip(project["shots"], blocks):
+            self.assertEqual(content, (self.output / "video-prompts" / (shot["shot_id"] + ".txt")).read_text())
+            for ident in shot["reference_image_ids"]:
+                self.assertNotIn(ident, content)
+            self.assertNotIn(shot["shot_id"], content)
+            self.assertNotIn("```", content)
+        for asset in project["assets"]:
+            self.assertIn(Path(asset["path"]).name, (self.output / "production-guide.md").read_text())
+        project["shots"][0]["prompt"]["sections"]["CAMERA MOVEMENT"] += " ```"
+        self.assertFalse(VALIDATOR.validate_project(project, self.source)["valid"])
+        with self.assertRaises(ValueError):
+            BUILDER.render_chat_prompts(project)
+
+    def test_exterior_connector_two_reference_choice_exports_five_images(self):
+        from test_project_rules import planning, approved, write_images, add_video_prompts
+        project = planning(("exterior_to_living", "kitchen", "bedroom", "bathroom"), exterior_references=2)
+        project.update(stage="image_final", image_mode="generate_image")
+        project["image_batch"].update(execution="parallel", note="Synthetic fixture, no actual generation.")
+        for kind in project["approvals"]:
+            approved(project, kind)
+        write_images(project, self.source)
+        add_video_prompts(project)
+        self.save(project)
+        result = BUILDER.build_package(self.project_file, self.output)
+        self.assertEqual((result["image_count"], result["shot_count"], result["total_duration_s"]), (5, 4, 18))
+        restored = json.loads((self.output / "project.json").read_text())
+        self.assertEqual(restored["shots"][0]["reference_choice"]["count"], 2)
 
 
 if __name__ == "__main__":

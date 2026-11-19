@@ -1,38 +1,48 @@
 # home-productions — ruang pengembangan plugin
 
-Status pada 18 November 2026: **V2 sudah diimplementasikan dan rilis privat 2.0.0 berhasil diperbarui**. Tahap 1–6 selesai; tahap 7 menunggu uji manual pengguna di ChatGPT/Omni Flash. Kelulusan teknis tidak membuktikan kualitas gambar/video atau batch simultan.
+Diperbarui: 19 November 2026
+
+**Source dan rilis privat aktif: 2.1.0; schema 2.1/rules 2.1.0.** Tahap 1–6 sudah diimplementasikan dan diperiksa: 70 tes lulus, seluruh source rilis cocok dengan pembacaan balik. Tahap 7: panduan uji manual siap, penerimaan gambar/batch/video pengguna belum selesai.
 
 ## Mulai membaca
 
-1. [Alur penggunaan V2](production-workflow.md) — dua mode gambar individual, R2V dan aturan produksi.
-2. [Rencana dan hasil implementasi](implementation-plan.md) — tujuh tahap, penerimaan, hasil teknis dan identitas rilis.
-3. [Skill aktif](home-productions/skills/produce-home-tour/SKILL.md) — instruksi yang sudah tersimpan pada rilis V2.
-4. [Kontrak proyek V2](home-productions/skills/produce-home-tour/references/project-contract.md) — schema 2.0, aset area, status batch dan revisi.
+1. [Rencana dan hasil implementasi](implementation-plan.md) — keputusan, tujuh tahap, bukti teknis/rilis dan matriks penerimaan.
+2. [Alur penggunaan](production-workflow.md) — produksi 2.1.0 dari konsep hingga prompt/paket R2V.
+3. [Skill source 2.1.0](home-productions/skills/produce-home-tour/SKILL.md) — instruksi yang sudah diperbarui pada plugin yang sama.
+4. [Kontrak proyek 2.1](home-productions/skills/produce-home-tour/references/project-contract.md) — komposisi, tata ruang, pilihan referensi, checkpoint dan migrasi.
 
-Satu alur, satu rencana dan satu plugin dipertahankan. Rilis/Git menyimpan versi lama; tidak ada menu kolase/interpolasi sebagai alur produksi V2.
+Satu alur, satu rencana aktif dan satu plugin dipertahankan. Git/rilis menyimpan versi lama; tidak ada folder versi terpisah atau menu kolase/interpolasi.
+
+## Perbaikan yang diterapkan
+
+- Living-to-kitchen memakai satu foto utuh kedua area sebagai default. Exterior-to-living fleksibel **1 atau 2 referensi sesuai pilihan pengguna**. Masing-masing tetap satu shot 6 detik; kamera dan gambar mengikuti tata ruang yang sama.
+- Bedroom front three-quarter 35–45° terhadap sumbu panjang bed; bed tampak memanjang diagonal.
+- Gambar exterior memuat seluruh rumah; setiap interior mempunyai plafon dan armatur lampu yang masuk akal.
+- Gerak mengikuti DNA per area dan ritme 4/6 detik; tidak selalu dolly + pan.
+- R2V memakai gambar sebagai identitas visual/spasial, bukan frame awal/akhir wajib. Prompt tidak menyebut nama file atau ID internal.
+- Satu prompt lengkap sembilan bagian per code block, siap disalin.
+- Gagal menyimpan proyek tidak menghentikan diskusi konsep atau menghilangkan keputusan sesi.
+
+Tidak ada kewajiban dua referensi pada kedua shot penghubung. Exterior-to-living juga tidak dikunci menjadi satu: pengguna dapat memilih 1 atau 2 saat produksi. Jika satu, foto tidak dipaksa memperlihatkan seluruh exterior dan interior sekaligus; bagian yang baru terungkap mengikuti rancangan dan dinilai pada video.
 
 ## Pembagian folder
 
 | Lokasi | Isi |
 | --- | --- |
-| README.md | Peta pengembangan, rilis dan panduan uji manual |
-| production-workflow.md | Alur V2 |
-| implementation-plan.md | Tahap, hasil dan matriks penerimaan |
-| home-productions/ | Paket skill V2, aturan, template, validator dan ekspor |
-| tooling/ | Pengemas arsip plugin |
-| tests/ | 53 tes V2: kontrak, sumber, gambar, ekspor dan arsip |
+| README.md | Peta pengembangan, source/rilis dan panduan uji |
+| production-workflow.md | Alur produksi 2.1.0 |
+| implementation-plan.md | Tahap baru, status dan penerimaan |
+| home-productions/ | Source plugin 2.1.0, satu skill beserta referensi/template/script |
+| tooling/ | Pengemas arsip |
+| tests/ | Tes kontrak, praproduksi, gambar, ekspor dan arsip |
 | dist/ | Arsip rilis, diabaikan Git |
 | runs/ | Proyek/gambar percobaan dan laporan lokal, diabaikan Git |
 
-Pustaka knowledge/, references/ dan video/ root tidak diubah atau disalin. Plugin mengakses sumber melalui URL web atau konektor GitHub.
+Pustaka knowledge/, references/, video/ dan requests/ root tidak diubah atau disalin ke plugin. Plugin membaca sumber lewat URL GitHub atau konektor; file produksi berada di ruang kerja/paket proyek.
 
-## Implementasi tersedia
+## Pemeriksaan teknis
 
-[Aturan](home-productions/skills/produce-home-tour/references/production-rules.yaml), [template proyek](home-productions/skills/produce-home-tour/assets/project-template.json) dan [schema](home-productions/skills/produce-home-tour/assets/project.schema.json) sudah memakai V2.
-
-[Alur gambar](home-productions/skills/produce-home-tour/references/image-workflow.md) mengatur prompt-to-image atau generate seluruh gambar individual. [Template gambar](home-productions/skills/produce-home-tour/assets/image-prompt-template.md) mempertahankan desain rumah/plafon pada setiap area.
-
-[Panduan Omni Flash](home-productions/skills/produce-home-tour/references/omni-flash.md) dan [template R2V](home-productions/skills/produce-home-tour/assets/prompt-template.md) memakai sembilan bagian. [Ekspor](home-productions/skills/produce-home-tour/scripts/build_production_package.py) menyerahkan paket prompt gambar atau paket R2V lengkap dengan file asli.
+Sebanyak 70 tes lulus: kontrak 31, checkpoint 9, gambar 7, praproduksi/sumber daya 4, ekspor 13 dan arsip 6. Format skill, template brief, tautan dan schema manifest resmi juga diperiksa. Fixture review/approval/batch serta kegagalan izin bersifat sintetis/terkontrol; bukan bukti naturalitas, konsistensi video, batch paralel atau izin filesystem ChatGPT yang sesungguhnya.
 
 Dari root repository:
 
@@ -41,58 +51,42 @@ python -m unittest discover -s bekerja/plugin/tests -v
 python bekerja/plugin/home-productions/skills/produce-home-tour/scripts/validate_project.py bekerja/plugin/home-productions/skills/produce-home-tour/assets/project-template.json
 ~~~
 
-53 tes lulus pada implementasi V2. Fixture batch/review/approval merupakan data sintetis, bukan bukti tujuh gambar dibuat serentak atau hasil video sudah konsisten. Tes crop V1 dan komponen crop yang tidak digunakan sudah dihapus.
+[Helper checkpoint](home-productions/skills/produce-home-tour/scripts/save_project.py) menjaga file lama, memulihkan nama/folder dan mengembalikan path aktif setelah baca balik. Kegagalan tidak menghentikan diskusi konsep dari data sesi.
 
-## Rilis privat 2.0.0
+Proyek schema 2.0 dikonversi pada salinan lewat validator --migrate-to. Konsep/sumber/mode dan keputusan yang masih berlaku dipertahankan; komposisi serta review baru tidak dibuat otomatis. Skrip crop V1 tidak dikembalikan. Baseline 2.0.0/53 tes tersimpan dalam riwayat Git/rilis.
 
-- [Buka home-productions 2.0.0](https://chatgpt.com/plugins/plugins_6afd5aeb32208191a60a8b85426c898f)
-- Plugin ID tetap: plugins_6afd5aeb32208191a60a8b85426c898f
-- Release ID: pluginrel_6afd8f59eab0819199eed6bf3b189717
-- Diperbarui 18 November 2026; USER, PRIVATE.
-- Arsip: dist/home-productions-2.0.0.zip.
-- SHA-256 upload: 1f0a90d3f156055f04ae4f52a2bc9fa123b3a230c636c4c36b3ff7a1f1d10677.
-- Enam belas berkas upload dibaca balik; layanan menyimpan manifest kompatibilitas sebagai berkas ke-17. Script crop lama terverifikasi terhapus.
-- Publisher akun, defaultPrompt dan scope/audience dipertahankan. Tidak menyalin email akun ke repo.
+## Rilis privat 2.1.0
 
-Untuk update berikutnya, gunakan plugin ID yang sama dan baca inventory/current_release_id terbaru. delete_paths diperlukan untuk file lama yang benar-benar dihapus; menghilangkan file dari ZIP saja tidak menghapusnya dari rilis.
+- [Buka home-productions](https://chatgpt.com/plugins/plugins_6afd5aeb32208191a60a8b85426c898f) — versi 2.1.0, tersimpan dan source dibaca balik.
+- Plugin ID: plugins_6afd5aeb32208191a60a8b85426c898f.
+- Release ID terakhir tercatat: pluginrel_6afe70c8ec04819189e0f70757fec57a.
+- Diperbarui 19 November 2026; USER / PRIVATE.
+- Arsip: dist/home-productions-2.1.0.zip.
+- SHA-256 upload: 3b5d62b56db89963320e140dfd4f16f57b766638fcbc9491fd205213dcb4718d.
+- Tujuh belas berkas source cocok dengan pembacaan balik; layanan menyimpan manifest kompatibilitas berkas ke-18, versi sinkron 2.1.0.
+
+Saat update berikutnya, update plugin yang sama melalui Plugin Creator. Baca inventory/source dan current_release_id terbaru; pertahankan publisher akun, defaultPrompt, scope dan audience. Penghapusan file memerlukan delete_paths eksplisit. Jangan menghapus manifest kompatibilitas yang dibuat layanan atau menyimpan email akun di repo.
 
 ~~~sh
 python bekerja/plugin/tooling/package_plugin.py --output bekerja/plugin/dist/home-productions-VERSION.zip
 ~~~
 
-## Uji manual V2
+## Panduan uji manual 2.1.0
 
-Buka percakapan baru di ChatGPT dan pilih plugin dari tautan rilis. Pastikan instruksi yang digunakan adalah V2/gambar individual/R2V, bukan konteks lama yang masih meminta kolase. Pemilihan/aktivasi pada host pengguna belum diverifikasi oleh tes kode.
+Buka chat baru di ChatGPT dan pilih [home-productions](https://chatgpt.com/plugins/plugins_6afd5aeb32208191a60a8b85426c898f). Mulai pengujian pada rilis 2.1.0 dengan gambar individual/R2V. Pengguna menguji produksi di ChatGPT dan Omni Flash; tes kode tidak membuktikan aktivasi/perilaku host.
 
-### 1. Prompt-to-image
+Contoh permintaan:
 
-Contoh permintaan awal:
+> Mulai uji home tour vertikal berbasis HOMEKU. Gunakan exterior, living-to-kitchen, satu bedroom dan bathroom: empat shot, total 20 detik. Living-to-kitchen memakai satu foto gabungan; bedroom front three-quarter dan bed memanjang diagonal. Mode gambar prompt-to-image. Mulai dari konsep dan rancangan terlebih dahulu.
 
-> Mulai proyek uji home tour vertikal berdasarkan pustaka HOMEKU. Gunakan pola exterior, living-to-kitchen, satu bedroom dan bathroom: empat shot, total 20 detik. Mode gambar saya prompt-to-image. Mulai dengan pilihan konsep dan rancangan terlebih dahulu.
+Setelah konsep dan rancangan disetujui, periksa tahap berikut.
 
-Setelah memilih konsep serta menyetujui desain/shot, minta seluruh prompt gambar. Harapan: lima prompt area individual, tanpa otomatis generate, tanpa kolase dan tanpa klaim gambar sudah tersedia.
+1. **Konsep dan checkpoint.** Pilih/revisi konsep, lalu lanjutkan persetujuan rancangan. Bila penyimpanan gagal, periksa data keputusan tetap dipakai dan tidak ada klaim file tersimpan yang palsu.
+2. **Prompt-to-image.** Gunakan exterior + living-to-kitchen + bedroom + bathroom: empat shot, total 20 detik. Sesudah desain disetujui, harapkan **empat prompt gambar**, termasuk satu foto living–kitchen.
+3. **Generate image.** Pada mode ini, minta seluruh gambar sesuai rencana sekaligus. Jika rencana sah berisi tujuh, uji tujuh file individual dari satu permintaan tanpa kolase atau perintah per gambar. Catat pelaksanaan sebenarnya; jumlah file bukan bukti paralel.
+4. **Review visual.** Periksa exterior utuh dengan margin, bedroom three-quarter/bed diagonal, plafon/lampu tiap interior, naturalitas dan kitchen tunggal yang cocok dengan lintasan.
+5. **Prompt siap salin.** Satu code block per shot, sembilan bagian lengkap, tanpa nama file/ID di badan prompt. Peran referensi jelas bukan first/last wajib; petunjuk lampiran di luar block.
+6. **Video R2V.** Uji living-to-kitchen dengan satu foto gabungan. Periksa kitchen tidak berganda, gerak mengikuti gambar/DNA dan terbaca dalam 6 detik. Untuk area 4 detik, periksa ritme; pan/orbit terpilih menargetkan ≥12°, tanpa memaksa rotasi pada semua shot. Dengarkan ambient bila audio tersedia.
+7. **Kasus terpisah dan kelanjutan.** Uji exterior-to-living dengan 1 atau 2 referensi sesuai pilihan pengguna, pada rancangan tanpa mengulang living. Jumlah gambar/prompt gambar harus mengikuti pilihan, tanpa mengubah jumlah shot atau durasi. Bawa paket/gambar asli ke sesi baru; periksa keputusan, mode dan delegasi tetap terbaca. Catat kasus yang belum diuji.
 
-### 2. Generate seluruh gambar individual
-
-Gunakan mode generate image pada rancangan yang disetujui. Jumlah file mengikuti image_plan: contoh di atas lima gambar; jika rancangan lain yang didukung sumber berisi tujuh, minta tujuh sekaligus.
-
-> Gunakan mode generate image. Buat seluruh gambar area individual sekaligus sesuai rancangan yang sudah disetujui. Jangan membuat kolase atau berhenti meminta perintah setelah setiap gambar. Catat pelaksanaan sebenarnya.
-
-Catat jumlah file, apakah seluruh tahap selesai dari satu permintaan, proses simultan yang benar-benar diamati, kendala serta kebutuhan revisi. Jangan menyimpulkan parallel hanya dari jumlah file. Uji satu per satu hanya jika memang itu yang diminta pengguna.
-
-Periksa cakupan luas, naturalitas, plafon, bukaan, material, furnitur dan hubungan area. Beri persetujuan visual setelah meninjau hasil; delegasi yang sudah diberikan tetap berlaku.
-
-### 3. R2V satu dan dua referensi
-
-Setelah paket gambar disetujui, minta prompt sembilan bagian dan paket proyek. Periksa peta referensi:
-- Area tersendiri: satu gambar area untuk satu shot.
-- Living-to-kitchen: gambar living dan kitchen untuk satu shot 6 detik.
-- Exterior-to-living: gambar exterior dan living untuk satu shot 6 detik, pada rancangan terpisah yang tidak mengulang living.
-
-Generate video secara manual di Omni Flash dengan R2V, bukan kontrol interpolasi first/last. Periksa plafon/struktur tetap, seluruh komponen gerak terlihat, pan/orbit yang dipilih mempunyai target minimal 12°, ritme sesuai 4/6 detik, tanpa cut/morphing dan tanpa musik. Audio hanya dinilai bila dapat didengar.
-
-### 4. Kelanjutan dan laporan hasil
-
-Bawa project.json, panduan dan gambar asli ke sesi baru; periksa mode/keputusan/peta referensi tetap dapat dilanjutkan. Uji perubahan satu elemen desain dan tinjau area/shot terdampak.
-
-Laporkan bagian yang berhasil, temuan spesifik dan tahap yang terhenti. Perbaikan dilakukan pada plugin yang sama, kemudian bagian terdampak diuji ulang. Penerimaan V2 belum ditandai selesai sampai hasil manual kasus wajib tersedia.
+Laporan cukup menyebut tahap, hasil yang diamati, gambar/video terkait dan kendala spesifik. Temuan digunakan untuk perbaikan terarah pada plugin yang sama; belum diuji tetap dicatat belum diuji.

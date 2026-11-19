@@ -1,59 +1,77 @@
-# Kontrak proyek home-productions V2
+# Kontrak proyek 2.1
 
-Schema proyek 2.0; rules 2.0.0. Gunakan [template](../assets/project-template.json), [schema](../assets/project.schema.json) dan [aturan](production-rules.yaml). File proyek/hasil berada di folder proyek host, terpisah dari paket plugin dan pustaka.
+Paket/rules 2.1.0, schema 2.1. Gunakan [template](../assets/project-template.json), [schema](../assets/project.schema.json), [aturan](production-rules.yaml) dan [validator](../scripts/validate_project.py). Data rencana tidak membuktikan kualitas gambar/video.
 
-## Tahap dan mode
+## Keputusan, sumber dan tahap
 
-| Stage | Syarat |
+project_id/revision mengikat keputusan, prompt dan aset. knowledge menyimpan repo HOMEKU, ref/commit, route web/github_connector dan evidence yang benar-benar dibaca. URL anotasi harus cocok dengan versi dan ID. Bukti continuous shot harus mendukung cakupan; label tematik tanpa cut tidak otomatis menjadi shot lain.
+
+approvals memuat concept, shot_plan dan visual: revision, by user/delegated serta note berdasarkan tindakan nyata. Mode/delegasi tidak diminta ulang tanpa alasan. Revisi material meninjau keputusan dan keluaran terdampak; jangan mengganti angka revisi aset lama untuk menutupi isi usang.
+
+| Stage | Kebutuhan |
 | --- | --- |
-| brief | Struktur awal; gambar/shot belum wajib |
-| concept | Brief, konsep pilihan, jalur/versi dan sumber yang benar-benar dibaca |
-| shot_plan | Desain termasuk ceiling/connections, cakupan sumber, kamera teralokasi, daftar gambar dan total |
-| image_prompt_package | Mode prompt_to_image, keputusan konsep/shot, seluruh prompt gambar; aset belum wajib |
-| image_draft | Mode dipilih, keputusan dan prompt gambar siap; gambar sedang dikerjakan atau perlu revisi |
-| image_final | Seluruh file asli dan review, persetujuan visual, revisi dan pelaksanaan gambar sesuai mode |
-| prompt_package | Gambar final serta prompt R2V sembilan bagian yang cocok |
+| brief | Template kosong sah; sumber/gambar belum wajib |
+| concept | Brief, konsep pilihan, versi/jalur dan bukti sumber yang dibaca |
+| shot_plan | Desain bersama, area_specs, shot, pilihan referensi, komposisi dan spatial_plan; file gambar belum wajib |
+| image_prompt_package | Mode prompt_to_image, persetujuan konsep/shot, seluruh prompt lengkap; sah tanpa file, belum siap R2V final |
+| image_draft | Gambar sedang diperoleh/direvisi; kegagalan/parsial dicatat sesuai fakta |
+| image_final | File asli, revisi cocok, review nyata dan persetujuan/delegasi visual |
+| prompt_package | Gambar final dan sembilan bagian prompt R2V per shot lengkap |
 
-Validator baca-saja dan tidak memakai jaringan. Proyek schema 1.0 ditolak dengan pesan peninjauan/migrasi V2; tidak diam-diam mengubah frame atau persetujuan lama. Migrasi pada salinan hanya ketika diminta.
+## Satu tata ruang dan komposisi
 
-## Sumber, rumah dan cakupan
+design mempertahankan architecture/layout/ceiling/materials/lighting/environment, connections dan anchors. Tambahkan area_specs: satu entri per area yang dicakup rancangan, berisi area, position, ceiling dan fixtures.
 
-knowledge mempertahankan repo, ref/commit, route web/github_connector serta evidence berisi referensi/shot, pointer, kutipan, cakupan dan kontinuitas. read hanya untuk isi yang benar-benar diperoleh; failed memuat error aktual tanpa klaim isi. Setiap shot merujuk bukti kontinu dengan cakupan sama. Metadata tidak membuktikan kutipannya benar; ikuti [akses repo](repo-access.md).
+position menetapkan lokasi tetap fungsi/objek utama relatif terhadap rumah. Kitchen hanya mempunyai satu lokasi. ceiling menggambarkan plafon area tersebut; fixtures berisi jenis/posisi armatur dan kondisi cahaya yang dirancang. Setiap interior harus memiliki lampu; tidak semua lampu wajib menyala. Area yang belum terlihat pada foto tetap mempunyai spesifikasi desain jika akan diungkap video.
 
-Jenis/cakupan mengikuti aturan sumber, tanpa pengulangan area dan maksimal satu fungsi tidur bedroom/sleeping_loft. Confidence tidak melarang desain baru. design menjelaskan architecture, layout, ceiling, materials, lighting, environment, connections dan anchors. Bedakan adaptasi rumah baru dari denah sumber.
+image_plan merupakan daftar **pandangan**, bukan kewajiban satu file per label fungsi. Setiap entri memuat image_id, primary_area, area_ids, shot_ids, revision, prompt, status, asset_id, error dan composition. area_ids hanya mencatat area yang benar-benar terlihat, termasuk kedua area living–kitchen pada foto gabungannya. primary_area adalah label pengorganisasian, bukan alasan menggandakan file.
 
-## Gambar dan aset
+composition memuat:
+- camera_position, view_direction, height_m dan subject_view.
+- view_angle_deg (boleh null di luar bedroom), subject_placement, foreground/background.
+- visible_bounds, layout_note dan shot_alignment terhadap lintasan.
+- full_exterior dan bed_diagonal sebagai **target komposisi**, bukan klaim hasil piksel.
 
-image_mode null selama belum dipilih, lalu prompt_to_image/generate_image. image_batch mencatat request_mode all_at_once atau one_by_one, execution, user_instruction dan note. Satu per satu memerlukan instruksi eksplisit; parallel/external/sequential/unknown memerlukan dasar pada note.
+Gambar yang mencakup exterior memakai full_exterior true: seluruh massa rumah terlihat beserta tepi aman. Bedroom memakai subject_view front_three_quarter, view_angle_deg 35–45 terhadap sumbu panjang bed di bidang horizontal dan bed_diagonal true. Itu preferensi pengguna/adaptasi proyek, bukan pengukuran semua sumber.
 
-image_plan berisi image_id, primary_area, area_ids, shot_ids, revision, prompt, status, asset_id dan error. Satu gambar aktif untuk satu area tujuan. Fungsi terpadu boleh tercakup pada area_ids; background insidental bukan tujuan tambahan.
+camera.spatial_plan berisi start_position, start_direction, path, end_position, end_direction dan layout_check. Gunakan tata ruang yang sama dengan komposisi gambar; jangan mendeskripsikan kitchen di posisi kedua. framing.start/end menjelaskan hasil komposisi, bukan endpoint referensi wajib.
 
-shots[].reference_image_ids menunjuk image_plan, bukan asset_id. shot_ids pada gambar merupakan peta balik yang harus sama. Living-to-kitchen memerlukan living dan kitchen; exterior-to-living memerlukan exterior dan living. Fungsi terpadu lain dapat memakai kebutuhan tambahan yang masih berada dalam cakupan dan rancangan.
+composition dan spatial_plan boleh null sebelum rancangan lengkap atau pada salinan migrasi yang belum ditinjau; keduanya wajib pada shot_plan dan tahap setelahnya. Nilai numerik adalah perkiraan produksi. Validator tidak mengukur geometri 3D dari piksel.
 
-assets memuat file role reference yang terikat image_id dan revisi. asset_id pada image_plan menunjuk file tersebut. Path relatif dari project.json, tetap di dalam folder proyek; symlink keluar ditolak. Hash, format dan dimensi aktual diperiksa jika folder proyek tersedia; pada tahap final file wajib tersedia. Tidak ada kewajiban gambar 9:16 atau start/end/collage; video tetap 9:16.
+## Referensi per shot
 
-PNG/JPEG/WEBP statis diperiksa sesuai format aktual; kesesuaian input pada aplikasi pengguna diperiksa pada workflow. Dua file identik atau satu path yang dipakai ulang tidak boleh menyamar sebagai area lain. reviewed membutuhkan review_origin dan review_note nyata. Validator tidak membuktikan plafon, naturalitas atau geometri.
+shots[].reference_image_ids menunjuk image_plan, bukan asset_id; shot_ids pada gambar adalah peta balik yang sama. reference_choice berisi count, by (default/user/delegated) dan note.
 
-Pada generate_image, final all_at_once membutuhkan catatan pelaksanaan parallel; one_by_one membutuhkan sequential dan instruksi pengguna. Jumlah file tidak membuktikan pelaksanaan serentak. Pada prompt_to_image, gambar eksternal dicatat dengan execution external atau unknown beserta dasar perolehannya; paket prompt gambar saja sah tanpa pelaksanaan/file.
+- Living-to-kitchen: default satu foto utuh living+kitchen, satu shot 6 detik. Dua referensi hanya atas pilihan pengguna/delegasi; bukan kewajiban.
+- Exterior-to-living: pengguna bebas memilih **1 atau 2 referensi**. Catat by user/delegated dan jumlah yang dipilih; jangan menetapkan salah satu sebagai kewajiban atau meminta pilihan yang sudah diberikan.
+- Dengan satu referensi exterior-to-living, area terlihat boleh lebih sedikit daripada cakupan video, tetapi harus berada dalam cakupan shot dan area tersembunyi mempunyai desain. Jangan memaksa seluruh interior terlihat dalam foto exterior.
+- Dengan dua referensi exterior-to-living, gunakan exterior dan living individual dari rumah yang sama, bukan dua versi desain/file identik. Hubungan pintu masuk dan interior direview.
+- Area lain/fungsi terpadu mengikuti cakupan sumber dan pemetaan yang disetujui. Jumlah gambar bukan penentu jumlah shot atau durasi.
 
-## Kamera dan prompt video
+Cakupan tidak berulang, maksimal satu bedroom/sleeping_loft. Exterior dan kedua penghubung 6 detik; shot lainnya 4 detik. Kamera mencatat komponen translasi/pan/orbit/tilt, simultan/sekuensial, jarak/sudut, waktu, bukti gerak dan timing_note. Pan/orbit terpilih ≥12°; translasi murni tidak dipaksa berputar.
 
-camera mencatat description, motion_relationship, components, visible_motion_evidence dan timing_note. Komponen berjenis translation/pan/orbit/tilt, mempunyai start_s/duration_s serta perkiraan distance_m/angle_deg. single satu komponen sepanjang shot; simultaneous dua atau lebih sepanjang durasi sama; sequential fase berurutan yang tepat mencakup durasi shot. Translasi memerlukan jarak positif; pan/orbit minimal 12 derajat. Ini pemeriksaan rencana, bukan sudut hasil video.
+## File, review dan batch
 
-shots[].prompt null sebelum ditulis; setelah lengkap memuat method R2V, revision, duration_s, reference_image_ids dan sections. Sembilan nama bagian mengikuti prompt_sections pada aturan. REFERENCE IMAGE ROLE menyebut setiap image_id dengan perannya. CONTINUITY AND AUDIO RULES memuat instruksi wajib aturan secara utuh. Penanda template yang belum diisi ditolak.
+assets berisi asset_id, image_id, revision, role reference, path relatif, sha256, dimensi, format PNG/JPEG/WEBP, reviewed, review_origin ai_visual/user_report dan review_note. Path tetap di dalam folder proyek; file/hash/dimensi/format diperiksa bila folder tersedia, dan file wajib pada tahap final. File identik tidak boleh disamarkan sebagai dua referensi berbeda.
 
-sections menjadi satu sumber teks. [Pembuat paket](../scripts/build_production_package.py) merender judul/bagian ke file prompt secara deterministik; tidak ada text kedua yang boleh berbeda dari sections. Isi semantik, naturalitas, bukti gerak dan keselarasan audio tetap ditinjau AI/pengguna dari hasil aktual.
+planned/prompt_ready/failed belum mengaku punya aset; available memerlukan file terdaftar; reviewed memerlukan review dengan asal/catatan nyata. failed memuat error. Persetujuan/review adalah catatan keputusan, bukan hasil pemeriksaan otomatis.
 
-## Revisi, persetujuan dan ekspor
+image_mode adalah prompt_to_image atau generate_image. image_batch mencatat request_mode all_at_once/one_by_one, execution, user_instruction dan note. Satu per satu memerlukan permintaan pengguna. Jangan mengaku parallel dari jumlah file atau permintaan batch saja. Pelaksanaan yang belum terbukti sesuai permintaan tetap draft; tes sintetis bukan bukti kemampuan host.
 
-revision bilangan positif. Prompt gambar, aset, prompt video dan approval aktif harus sesuai revisi tersebut. Perubahan keputusan memerlukan peninjauan ulang, bukan hanya mengganti nomor aset lama. approval memuat revision, by user/delegated dan note dari keputusan sebenarnya; script tidak memberi persetujuan.
+## Prompt dan penyerahan
 
-[Pembuat paket](../scripts/build_production_package.py) menerima image_prompt_package atau prompt_package yang valid. Paket pertama tidak disebut siap video; paket final menyertakan semua gambar dan peta referensi. Salinan divalidasi ulang, tujuan lama tidak ditimpa, file sumber tidak diubah.
+prompt memuat method R2V, revision, duration_s, reference_image_ids dan sections. Sembilan bagian pada rules menjadi satu sumber teks.
 
-Dari root paket:
+REFERENCE IMAGE ROLE memuat kalimat kontrak reference_role dari aturan: gambar sebagai identitas visual/spasial, bukan first/last wajib. **Tidak ada nama file, path, image_id, asset_id atau shot_id internal di badan prompt video.** Pemetaan teknis tetap ada di JSON/panduan lampiran. CONTINUITY AND AUDIO RULES memuat instruksi continuous/ambient dari aturan; isi lainnya harus selaras.
 
-~~~sh
-python skills/produce-home-tour/scripts/validate_project.py /path/to/project.json
-~~~
+Di chat: satu fenced code block berisi satu prompt utuh per shot. Judul, petunjuk lampiran dan penjelasan di luar. Ekspor .txt berisi teks yang sama tanpa pagar Markdown.
 
-[Dependensi](../scripts/requirements.txt) menggunakan Python, PyYAML, jsonschema dan Pillow. Exit 0 valid secara struktural, 1 melanggar kontrak, 2 file/JSON tidak terbaca. Hasil juga menyebut jumlah gambar tersedia/direview dan batas pemeriksaan; bukan sertifikat kelulusan manual.
+Paket prompt gambar boleh tanpa aset; paket R2V final memerlukan file asli. Lihat [checkpoint](../scripts/save_project.py) untuk penyimpanan tahan gagal dan [pembuat paket](../scripts/build_production_package.py) untuk ekspor. File proyek adalah catatan produksi di ruang kerja/unduhan, bukan penambahan otomatis ke GitHub.
+
+## Kompatibilitas
+
+Schema 2.0 dikenali dengan pesan konversi. migrate_project pada validator membuat **salinan** ke 2.1: brief, sumber, konsep, mode dan keputusan konsep/shot dipertahankan; komposisi/spatial_plan/pilihan referensi baru belum diisi. Prompt video lama dibersihkan untuk ditulis ulang, review visual baru tidak diklaim, dan keputusan visual lama dicatat sebagai historis.
+
+Salinan kembali ke concept bila rancangan belum memenuhi kontrak baru. Ini tidak membatalkan pilihan konsep pengguna. Lengkapi data, tinjau dampak, lalu lanjutkan rancangan yang sama; jangan menghasilkan rumah baru atau menggabungkan dua foto lama secara otomatis. CLI konversi menggunakan lokasi keluaran baru, tanpa menimpa sumber.
+
+Schema 1.0 tetap dikenali sebagai alur lama. Frame kolase/first–last tidak otomatis menjadi gambar full area atau membawa persetujuan visual.

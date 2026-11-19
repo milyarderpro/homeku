@@ -1,4 +1,4 @@
-rules_version: 2.0.0
+rules_version: 2.1.0
 knowledge_repository: https://github.com/milyarderpro/homeku
 stages:
 - brief
@@ -32,7 +32,9 @@ shot_kinds:
       - living
     required_primary_areas:
     - exterior
-    - living
+    reference_counts:
+    - 1
+    - 2
   living_to_kitchen:
     duration_s: 6
     coverage_sets:
@@ -47,7 +49,10 @@ shot_kinds:
       - sleeping_loft
     required_primary_areas:
     - living
-    - kitchen
+    reference_counts:
+    - 1
+    - 2
+    default_reference_count: 1
   living:
     duration_s: 4
     coverage_sets:
@@ -110,6 +115,8 @@ prompt_constraints:
   continuous: One continuous shot with no cuts.
   audio: Soft natural ambient sound only. No music, narration, dialogue, or dramatic
     sound effects.
+  reference_role: Attached images provide visual and spatial references, not mandatory
+    first or last frames.
 video:
   method: R2V
   aspect_ratio: '9:16'
@@ -122,6 +129,10 @@ images:
   - JPEG
   - WEBP
   default_request: all_at_once
+  bedroom_view: front_three_quarter
+  bedroom_angle_range_deg:
+  - 35
+  - 45
 camera:
   minimum_rotation_deg: 12
   kinds:

@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
+from copy import deepcopy
 import hashlib
 from io import BytesIO
 import json
@@ -135,12 +136,128 @@ def _camera_errors(shot, errors):
         errors.append(prefix + "alokasi fase berurutan harus berakhir pada durasi shot.")
 
 
+def migrate_project(project):
+    """Convert a schema-2.0 COPY; never invent composition, approval or merged pixels."""
+    legacy = deepcopy(SCHEMA)
+    legacy["properties"]["schema_version"]["const"] = "2.0"
+    legacy["properties"]["rules_version"]["const"] = "2.0.0"
+    for node, key in (
+        (legacy["properties"]["design"], "area_specs"),
+        (legacy["$defs"]["image"], "composition"),
+        (legacy["$defs"]["camera"], "spatial_plan"),
+        (legacy["$defs"]["shot"], "reference_choice"),
+    ):
+        del node["properties"][key]
+        node["required"].remove(key)
+    if not Draft202012Validator(legacy).is_valid(project):
+        raise ValueError("Migrasi memerlukan proyek schema 2.0/rules 2.0.0 yang terstruktur; sumber tidak diubah.")
+    converted = deepcopy(project)
+    converted.update(schema_version="2.1", rules_version="2.1.0")
+    converted["design"]["area_specs"] = []
+    for image in converted["image_plan"]:
+        image["composition"] = None
+        if image["asset_id"] is not None:
+            image["status"] = "available"
+        elif image["status"] != "failed":
+            image["status"] = "planned"
+    for asset in converted["assets"]:
+        asset.update(reviewed=False, review_origin=None, review_note="")
+    for shot in converted["shots"]:
+        shot["camera"]["spatial_plan"] = None
+        shot["reference_choice"] = None
+        shot["prompt"] = None
+    prior_visual = converted["approvals"]["visual"]
+    converted["approvals"]["visual"] = None
+    prior_stage = converted["stage"]
+    if RULES["stages"].index(prior_stage) >= 2:
+        converted["stage"] = "concept"
+    pending = [
+        "Lengkapi area_specs, komposisi gambar dan spatial_plan kamera dari rancangan yang sama.",
+        "Catat pilihan 1/2 referensi exterior-to-living; living-to-kitchen default satu foto gabungan baru.",
+        "Tinjau gambar terhadap aturan baru sebelum visual final; tulis ulang prompt tanpa ID/nama file.",
+    ] if converted["shots"] else []
+    converted["revision_notes"].append(
+        "Migrasi salinan schema 2.0 ke 2.1; tahap asal " + prior_stage +
+        ". Brief, sumber, konsep, mode dan keputusan konsep/shot dipertahankan; "
+        "komposisi/gerak baru belum diisi, aset lama tidak digabung atau diklaim memenuhi review baru."
+    )
+    if prior_visual is not None:
+        converted["revision_notes"].append("Keputusan visual historis sebelum perbaikan: " +
+                                           json.dumps(prior_visual, ensure_ascii=False))
+    return {"project": converted, "needs_review": pending, "source_stage": prior_stage}
+
+
+def _composition_errors(image, errors):
+    composition = image["composition"]
+    prefix = image["image_id"] + ": "
+    if composition is None:
+        errors.append(prefix + "komposisi gambar wajib direncanakan.")
+        return
+    if not math.isfinite(composition["height_m"]):
+        errors.append(prefix + "tinggi kamera harus finite.")
+    if "exterior" in image["area_ids"] and not composition["full_exterior"]:
+        errors.append(prefix + "gambar exterior wajib memuat seluruh rumah dengan tepi aman.")
+    if "bedroom" in image["area_ids"]:
+        angle = composition["view_angle_deg"]
+        low, high = RULES["images"]["bedroom_angle_range_deg"]
+        if (composition["subject_view"] != RULES["images"]["bedroom_view"] or angle is None
+                or not math.isfinite(angle) or not low <= angle <= high or not composition["bed_diagonal"]):
+            errors.append(prefix + "bedroom memerlukan front three-quarter 35–45 derajat terhadap sumbu panjang bed dan bed diagonal.")
+
+
+def _reference_errors(shot, refs, errors):
+    prefix = shot["shot_id"] + ": "
+    choice = shot["reference_choice"]
+    if choice is None or choice["count"] != len(refs):
+        errors.append(prefix + "pilihan jumlah referensi belum tercatat atau tidak cocok.")
+    if shot["kind"] == "exterior_to_living" and choice is not None and choice["by"] == "default":
+        errors.append(prefix + "exterior-to-living memakai pilihan pengguna/delegasi 1 atau 2 referensi.")
+    if shot["kind"] == "living_to_kitchen" and len(refs) > 1 and choice is not None and choice["by"] == "default":
+        errors.append(prefix + "referensi tambahan living-to-kitchen perlu pilihan pengguna/delegasi.")
+    rule = RULES["shot_kinds"][shot["kind"]]
+    if "reference_counts" in rule and len(refs) not in rule["reference_counts"]:
+        errors.append(prefix + "shot penghubung menerima 1 atau 2 referensi sesuai rancangan.")
+    if any(item is None for item in refs):
+        errors.append(prefix + "referensi gambar tidak ada.")
+        return
+    areas = set(shot["covered_areas"])
+    union = set().union(*(set(item["area_ids"]) for item in refs))
+    if shot["kind"] == "exterior_to_living":
+        valid = bool(union) and union <= areas
+        if len(refs) == 2:
+            valid = valid and {item["primary_area"] for item in refs} == {"exterior", "living"} and union == areas
+    else:
+        valid = union == areas and set(rule["required_primary_areas"]) <= {item["primary_area"] for item in refs}
+        if shot["kind"] == "living_to_kitchen" and len(refs) == 1:
+            valid = valid and {"living", "kitchen"} <= set(refs[0]["area_ids"])
+    if not valid:
+        errors.append(prefix + "referensi area tidak cocok dengan cakupan/pilihan shot.")
+
+
+def _prompt_body_errors(shot, images, assets, errors, shot_ids):
+    body = "\n".join(shot["prompt"]["sections"].values())
+    if "```" in body or "~~~" in body:
+        errors.append(shot["shot_id"] + ": badan prompt harus teks siap salin tanpa pagar Markdown.")
+    identifiers = set(images) | set(assets) | set(shot_ids)
+    filenames = {Path(asset["path"]).name for asset in assets.values()}
+    if (any(re.search(r"(?<![A-Za-z0-9_-])" + re.escape(key) + r"(?![A-Za-z0-9_-])",
+                      body, re.IGNORECASE) for key in identifiers)
+            or any(name.casefold() in body.casefold() for name in filenames)
+            or re.search(r"\b[^\s<>]+\.(?:png|jpe?g|webp|gif|json)\b|/mnt/|file://", body, re.IGNORECASE)):
+        errors.append(shot["shot_id"] + ": nama file/path/ID internal harus di luar badan prompt video.")
+    role = shot["prompt"]["sections"]["REFERENCE IMAGE ROLE"]
+    if RULES["prompt_constraints"]["reference_role"] not in role:
+        errors.append(shot["shot_id"] + ": peran referensi wajib tegas bukan frame awal/akhir wajib.")
+
+
 def validate_project(project, project_root=None):
     if isinstance(project, dict) and project.get("schema_version") == "1.0":
         return {"valid": False, "errors": [
             "Proyek V1 (schema 1.0) terdeteksi. Gunakan salinan proyek untuk peninjauan/migrasi V2; "
             "pasangan frame dan persetujuan visual lama tidak otomatis menjadi referensi area R2V."
         ], "limits": LIMITS}
+    if isinstance(project, dict) and project.get("schema_version") == "2.0":
+        return {"valid": False, "errors": ["Proyek schema 2.0 terdeteksi. Gunakan migrate_project pada salinan, lengkapi komposisi dan tinjau gambar; jangan menimpa sumber."], "limits": LIMITS}
     errors = _schema_errors(project)
     if errors:
         return {"valid": False, "errors": errors, "limits": LIMITS}
@@ -198,9 +315,19 @@ def validate_project(project, project_root=None):
     images = _index(project["image_plan"], "image_id", errors)
     assets = _index(project["assets"], "asset_id", errors)
     shots = _index(project["shots"], "shot_id", errors)
-    primary = Counter(item["primary_area"] for item in images.values())
-    if any(count > 1 for count in primary.values()):
-        errors.append("Setiap area tujuan hanya mempunyai satu gambar aktif; jangan menambah variasi sebagai area baru.")
+    if rank >= 2:
+        area_specs = _index(project["design"]["area_specs"], "area", errors)
+        covered = set().union(*(set(shot["covered_areas"]) for shot in shots.values()))
+        if set(area_specs) != covered:
+            errors.append("design/area_specs harus menetapkan satu posisi/plafon/lampu untuk setiap area rancangan.")
+        for area, spec in area_specs.items():
+            if area != "exterior" and not spec["fixtures"]:
+                errors.append("design/area_specs/" + area + ": interior wajib mempunyai armatur lampu.")
+        for image in images.values():
+            _composition_errors(image, errors)
+        for shot in shots.values():
+            if shot["camera"]["spatial_plan"] is None:
+                errors.append(shot["shot_id"] + ": spatial_plan posisi, lintasan dan akhir wajib diisi.")
     paths, hashes = set(), set()
     for asset in assets.values():
         ident = asset["asset_id"]
@@ -222,7 +349,7 @@ def validate_project(project, project_root=None):
             paths.add(key)
             if project_root is not None or ready:
                 _check_file(asset, path, errors)
-        except ValueError as error:
+        except (OSError, ValueError) as error:
             errors.append(ident + ": " + str(error))
     for image in images.values():
         ident = image["image_id"]
@@ -272,15 +399,10 @@ def validate_project(project, project_root=None):
                    and item["continuity"] in ("annotated_continuous", "reviewed_continuous") for item in linked):
             errors.append(ident + ": perlu bukti continuous shot dengan cakupan yang sama.")
         refs = [images.get(key) for key in shot["reference_image_ids"]]
-        if any(item is None for item in refs):
+        if rank >= 2:
+            _reference_errors(shot, refs, errors)
+        elif any(item is None for item in refs):
             errors.append(ident + ": referensi gambar tidak ada.")
-        else:
-            union = set().union(*(set(item["area_ids"]) for item in refs))
-            primaries = {item["primary_area"] for item in refs}
-            if union != areas or not set(rule["required_primary_areas"]) <= primaries:
-                errors.append(ident + ": referensi area tidak cocok; shot penghubung wajib memakai dua gambar area.")
-        if shot["kind"] in ("exterior_to_living", "living_to_kitchen") and len(refs) < 2:
-            errors.append(ident + ": shot penghubung memerlukan dua referensi individual.")
         _camera_errors(shot, errors)
         prompt = shot["prompt"]
         if stage == "prompt_package" and prompt is None:
@@ -292,11 +414,9 @@ def validate_project(project, project_root=None):
                 errors.append(ident + ": prompt memakai referensi berbeda.")
             if any(re.search(r"\{\{[^{}]+\}\}", value) for value in prompt["sections"].values()):
                 errors.append(ident + ": prompt masih berisi penanda template.")
-            role_text = prompt["sections"]["REFERENCE IMAGE ROLE"]
-            if not all(key in role_text for key in shot["reference_image_ids"]):
-                errors.append(ident + ": peran setiap ID gambar harus disebut pada REFERENCE IMAGE ROLE.")
+            _prompt_body_errors(shot, images, assets, errors, shots)
             ending_rules = prompt["sections"]["CONTINUITY AND AUDIO RULES"]
-            for instruction in RULES["prompt_constraints"].values():
+            for instruction in (RULES["prompt_constraints"][key] for key in ("continuous", "audio")):
                 if instruction not in ending_rules:
                     errors.append(ident + ": instruksi continuous/ambient wajib ada pada aturan prompt.")
     if project["shots"] and "exterior" not in project["shots"][0]["covered_areas"]:
@@ -321,9 +441,21 @@ def validate_project(project, project_root=None):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("project", type=Path)
+    parser.add_argument("--migrate-to", type=Path, help="Convert schema 2.0 to a new checkpoint, never the source.")
+    parser.add_argument("--fallback-root", type=Path)
     args = parser.parse_args()
     try:
         project = json.loads(args.project.read_text(encoding="utf-8"))
+        if args.migrate_to is not None:
+            if args.migrate_to.resolve() == args.project.resolve():
+                raise ValueError("Tujuan migrasi harus berbeda dari proyek sumber.")
+            from save_project import save_project
+            report = migrate_project(project)
+            result = save_project(report["project"], args.migrate_to,
+                                  source_root=args.project.resolve().parent, fallback_root=args.fallback_root)
+            result.update(needs_review=report["needs_review"], source_stage=report["source_stage"])
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+            raise SystemExit(0 if result["saved"] else 1)
         result = validate_project(project, args.project.resolve().parent)
     except (OSError, ValueError) as error:
         parser.exit(2, str(error) + "\n")

@@ -1,45 +1,65 @@
-# Brief, satu rumah, shot dan daftar gambar
+# Brief, satu tata ruang dan shot
 
-Baca [aturan produksi](production-rules.yaml) dan [kontrak](project-contract.md). Gunakan [akses repo](repo-access.md) untuk mengambil sumber. Runtime memakai URL web atau konektor GitHub, bukan salinan pustaka dalam plugin.
+Baca [aturan](production-rules.yaml), [kontrak](project-contract.md) dan [akses sumber](repo-access.md). Gunakan anotasi tersimpan secara selektif melalui web/konektor. Tidak menyalin pustaka atau menganalisis ulang seluruh video.
 
-## Konsep dan desain
+## Konsep dan rumah yang sama
 
-Ringkas brief, suasana, skala, lingkungan serta area yang diinginkan. Tidak perlu formulir panjang atau opsi baru ketika keputusan sudah tersedia. Pilih acuan utama untuk struktur video dan pendukung desain yang kompatibel; catat bagian sumber dan adaptasinya.
+Ringkas brief, skala, suasana, lingkungan dan area yang dibutuhkan. Pilih acuan utama untuk bahasa video dan pendukung desain yang kompatibel; catat bukti serta adaptasi. Jangan mengulang pemilihan yang sudah selesai.
 
-Isi design.architecture, layout, ceiling, materials, lighting, environment, connections dan anchors. Jelaskan hubungan yang menentukan pandangan kamera. Plafon mencakup bentuk/tingkat, sambungan, susunan lampu dan balok bila memang dirancang. Jangan menambahkan balok, pintu atau furnitur hanya untuk dijadikan penanda.
+design menetapkan bentuk, atap, material, tata ruang, plafon, lampu, bukaan, furnitur, cahaya dan lingkungan. connections/anchors menjaga sambungan serta elemen tetap. area_specs menetapkan satu posisi/plafon/armatur untuk setiap area yang akan dicakup video, termasuk area yang belum terlihat pada foto.
 
-Connections menjelaskan hubungan ruang/bukaan pada rumah baru. Denah tidak disimpulkan hanya dari urutan shot. Kiri/kanan mengikuti pandangan kamera; elemen tetap berada pada posisi rumah yang sama. Perbedaan plafon antararea boleh mengikuti desain, tanpa berubah tak sengaja pada area yang sama.
+Kitchen merupakan satu zona di satu lokasi; bukan satu di depan dan satu lagi di kanan. Kiri/kanan pada frame bergantung pada posisi/arah kamera, bukan perubahan lokasi ruang. Denah baru adalah keputusan proyek; urutan shot tidak membuktikan denah sumber.
 
-## Shot dan kebutuhan gambar
+Setiap interior mempunyai armatur yang logis untuk fungsi/desainnya. Nyatakan jenis/posisi serta cahaya siang/nyala yang dirancang. Tidak wajib semua lampu menyala. Plafon boleh berbeda antararea bila memang dirancang, tetapi plafon/lampu pada area yang sama tidak berubah antarview. Jangan menambahkan balok/ornamen/pintu hanya untuk membuat penanda.
 
-Satu shot kontinu tanpa cut. Pilih jenis/cakupan yang didukung sumber, tandai fungsi yang sudah diungkap, lalu lanjutkan ke fungsi baru. Bedroom/sleeping loft tetap satu kelompok fungsi tidur. Jangan menambah dining/loft/laundry/wardrobe di luar pola referensi.
+## Pilih cakupan dan referensi
 
-Daftar untuk pengguna memuat shot, cakupan, acuan, durasi, posisi/arah awal–akhir, gerak, bukti gerak dan daftar gambar. Hitung total sesudah cakupan ditetapkan. Jangan menyamaratakan menjadi 4 detik atau memangkas otomatis.
+Satu shot kontinu tanpa cut. Area yang sudah diungkap tidak diulang; background konteks tidak otomatis menjadi area baru. Maksimal satu bedroom/fungsi tidur, termasuk loft. Laundry/wardrobe/dining/loft/fungsi terpadu hanya dari pola sumber yang relevan.
 
-Buat image_plan berisi satu gambar aktif per area tujuan. reference_image_ids pada shot dan shot_ids pada gambar harus saling cocok. area_ids menyatakan fungsi yang memang ingin dijelaskan gambar; background insidental tidak otomatis menjadi tujuan baru.
+image_plan adalah daftar pandangan individual, bukan kuota satu gambar untuk setiap label fungsi. Peta reference_image_ids dan shot_ids harus sama.
+- Living-to-kitchen: default satu foto utuh memperlihatkan kedua area terhubung. Tidak perlu gambar kitchen khusus atau shot kitchen sesudahnya.
+- Exterior-to-living: pengguna memilih **1 atau 2 referensi**. Pilihan dicatat di reference_choice; jangan mewajibkan dua atau memaksakan satu.
+- Jika satu pada exterior-to-living, pilih referensi utama sesuai lintasan, umumnya exterior/pintu masuk. Interior tidak wajib terlihat penuh pada foto yang sama; bagian tersembunyi tetap mempunyai rancangan.
+- Jika dua, gunakan exterior dan living individual dari rumah yang sama; review hubungan pintu, lantai, plafon dan orientasi. Jangan menyamarkan file identik sebagai dua pandangan.
+- Fungsi terpadu lain mengikuti pemetaan yang disetujui; banyaknya label fungsi tidak otomatis menambah ruang/gambar/shot.
 
-Living-to-kitchen memerlukan primary_area living dan kitchen dalam dua gambar berbeda. Exterior-to-living memerlukan exterior dan living. Dua file identik tidak menggantikan dua pandangan area. Untuk fungsi terpadu, area_ids pada gambar dapat memuat beberapa fungsi sesuai rancangan; kebutuhan referensinya dipetakan eksplisit. Jangan menambah shot karena jumlah referensi lebih dari satu.
+Tanyakan pilihan exterior-to-living hanya jika diperlukan dan belum ada; pertahankan jawaban/delegasi. Pilihan jumlah bukan mode video baru. R2V tetap metode video; dua mode gambar hanya mengatur cara memperoleh gambar.
 
-Contoh:
-- Lima area terpisah: lima shot, lima gambar, 22 detik.
-- Exterior + living-to-kitchen + bedroom + bathroom: empat shot, lima gambar, 20 detik.
-- Exterior-to-living + kitchen + bedroom + bathroom: empat shot, lima gambar, 18 detik.
-- Tambahan laundry pada contoh 20 detik: lima shot, enam gambar, 24 detik.
+| Pola | Shot | Gambar | Durasi |
+| --- | --- | --- | --- |
+| Exterior + living + kitchen + bedroom + bathroom | 5 | 5 | 22 detik |
+| Exterior + living-to-kitchen + bedroom + bathroom | 4 | 4 | 20 detik |
+| Exterior-to-living + kitchen + bedroom + bathroom | 4 | 4 atau 5, sesuai pilihan 1/2 referensi | 18 detik |
+| Tambahan laundry pada pola 20 detik, bila didukung sumber | 5 | 5 | 24 detik |
 
-## Rencana kamera yang dapat diterapkan
+## Posisi kamera → gambar → lintasan → akhir
 
-camera.components menguraikan translation, pan, orbit atau tilt yang benar-benar dipilih, dengan description, start_s, duration_s, distance_m dan angle_deg. Angka merupakan perkiraan produksi, bukan hasil pengukuran sumber. Untuk translation, jarak positif diperlukan; pan/orbit minimal 12 derajat. Tilt tidak otomatis mewarisi batas pan.
+Tetapkan posisi, arah pandang, tinggi dan komposisi berdasarkan tata ruang. Isi composition pada gambar dan camera.spatial_plan pada shot; keduanya merujuk keputusan yang sama. framing.start/end menjelaskan hasil pandangan, bukan kewajiban memakai referensi sebagai endpoint.
 
-single berarti satu komponen sepanjang durasi shot. simultaneous berarti dua atau lebih komponen berlangsung sepanjang durasi yang sama. sequential berarti dua atau lebih fase berurutan yang tersambung, totalnya tepat durasi shot. Catat timing_note dan visible_motion_evidence.
+Contoh masalah: gambar memperlihatkan kitchen di depan, sementara teks gerak menganggap kitchen baru berada di kanan. Periksa posisi/arah kamera dan bidang pandangnya dahulu; pan kanan tidak otomatis salah. Jika lintasan tidak mendukung akhir yang diinginkan, ubah komposisi/posisi kamera atau rute yang kompatibel dengan DNA/desain. Jangan memindahkan/menambah kitchen atau hanya mengandalkan kalimat no duplicate kitchen.
 
-Bedakan posisi bergerak mengitari fokus (orbit), rotasi arah pandang (pan), dan pembesaran perspektif karena kamera mendekat. Jangan mengganti gerak kamera dengan memutar objek/rumah, zoom digital atau roll yang tidak diminta.
+Gambar R2V tidak harus sama dengan frame awal/akhir. Namun jangan meminta lintasan yang bertentangan dengan hubungan ruang yang terlihat. Untuk area tersembunyi pada satu referensi exterior-to-living, jelaskan sambungan dan desain interior secara jujur; foto tidak membuktikan detail yang belum terlihat.
 
-Untuk 4 detik, pilih lintasan pendek/komponen yang masuk akal; jangan menggabungkan jarak panjang, banyak fase dan kata slow tanpa alokasi waktu. Jika perlu mengubah rancangan yang sudah disetujui, jelaskan dampaknya. Tidak menambah/menghapus jenis gerak secara diam-diam.
+### Bedroom sesuai preferensi
 
-Bukti gerak dipilih dari elemen yang ada: foreground membesar saat kamera maju, perspektif berubah saat orbit, sisi ruang/kitchen terungkap saat pan. Label gerak sumber belum membuktikan simultan/sekuensial; nyatakan pilihan waktu sebagai adaptasi bila sumber belum memastikan.
+Pilih acuan bedroom yang mendukung front three-quarter dan bed memanjang diagonal. Sasaran sudut 35–45° di bidang horizontal terhadap sumbu panjang bed, bukan sudut kemiringan piksel/roll. Pilih sisi kamera kiri/kanan yang cocok dengan rancangan; pindahkan posisi/arah kamera, bukan memutar bed.
 
-## Keputusan dan tahap
+Rentang tersebut adalah preferensi produksi pengguna. Anotasi edh058/shot-04 mendukung keluarga front three-quarter; edh056/shot-04 hampir frontal. Jangan menyatakan semua referensi memakai 35–45° atau memaksakan framing frontal hanya karena satu sumber utama frontal. Bedakan adaptasi pandangan dari fakta sumber.
 
-Sebelum konsep dipilih, stage brief; sesudah dipilih/didelegasikan, concept; saat desain, shot, kamera dan image_plan lengkap, shot_plan. prompt gambar boleh belum lengkap dan aset belum ada pada perencanaan.
+## Gerak mengikuti sumber dan durasi
 
-Sesudah desain disetujui, pilih image_mode sekali lalu lanjutkan [dua mode gambar](image-workflow.md). Catat approval concept/shot_plan sesuai keputusan/delegasi aktual. Jangan memalsukan persetujuan, bukti sumber atau gambar demi meluluskan validator.
+Pilih gerak per area: dolly maju/mundur, tracking lateral, pan, orbit atau tilt bila sesuai sumber dan geometri. Tidak selalu dolly + pan; gerak tunggal sah. Catat acuan gerak serta adaptasinya.
+
+components mencatat kind translation/pan/orbit/tilt, description, start_s, duration_s, distance_m dan angle_deg. Translasi memakai jarak positif; pan/orbit terpilih ≥12°, tilt tidak otomatis mewarisi batas itu. Angka adalah perkiraan proyek, bukan pengukuran sumber.
+
+single satu komponen sepanjang shot. simultaneous dua atau lebih sepanjang waktu yang sama. sequential fase tersambung tanpa overlap/jeda tak tercatat, total tepat durasi. Label gerak gabungan sumber belum membuktikan hubungan waktunya.
+
+Exterior dan kedua penghubung 6 detik; area/fungsi terpadu lain 4 detik. Sesuaikan jarak, sudut, kompleksitas dan ritme: jangan meminta slow untuk jalur panjang/banyak fase dalam 4 detik. Perubahan material pada rancangan yang sudah disetujui kembali ke review, tanpa diam-diam menghilangkan komponen sumber.
+
+visible_motion_evidence menyebut perubahan pada elemen yang ada: perspektif/foreground saat maju, sisi ruang saat pan, atau parallax saat orbit. Setiap komponen gabungan harus mempunyai bukti yang dapat dinilai. Pan bukan orbit, zoom digital atau roll; rumah/furnitur tidak diputar untuk meniru kamera.
+
+## Menyerahkan rancangan
+
+Tampilkan desain, acuan, area, shot/durasi, gambar/peta lampiran, komposisi/lintasan dan jumlah total sebelum generate. Jangan menambah area untuk memenuhi angka tujuh gambar atau durasi video sumber.
+
+Stage concept setelah konsep dipilih; shot_plan saat rancangan lengkap. Sesudah persetujuan/delegasi desain, gunakan pilihan image_mode yang berlaku lalu lanjutkan [gambar](image-workflow.md). Catatan/persetujuan hanya dari keputusan nyata. Checkpoint internal tidak menjadi penghalang pembahasan jika gagal disimpan.

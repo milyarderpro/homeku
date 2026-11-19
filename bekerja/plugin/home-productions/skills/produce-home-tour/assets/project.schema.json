@@ -1,14 +1,14 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:home-productions:project:2.0",
+  "$id": "urn:home-productions:project:2.1",
   "title": "home-productions R2V project",
   "type": "object",
   "properties": {
     "schema_version": {
-      "const": "2.0"
+      "const": "2.1"
     },
     "rules_version": {
-      "const": "2.0.0"
+      "const": "2.1.0"
     },
     "project_id": {
       "type": "string",
@@ -135,6 +135,12 @@
           },
           "minItems": 0,
           "uniqueItems": true
+        },
+        "area_specs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/area_spec"
+          }
         }
       },
       "required": [
@@ -145,7 +151,8 @@
         "lighting",
         "environment",
         "connections",
-        "anchors"
+        "anchors",
+        "area_specs"
       ],
       "additionalProperties": false
     },
@@ -587,6 +594,16 @@
         "timing_note": {
           "type": "string",
           "pattern": "\\S"
+        },
+        "spatial_plan": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/spatial_plan"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -594,7 +611,8 @@
         "motion_relationship",
         "components",
         "visible_motion_evidence",
-        "timing_note"
+        "timing_note",
+        "spatial_plan"
       ],
       "additionalProperties": false
     },
@@ -692,6 +710,16 @@
               "type": "null"
             }
           ]
+        },
+        "reference_choice": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/reference_choice"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -704,7 +732,8 @@
         "framing",
         "camera",
         "reference_image_ids",
-        "prompt"
+        "prompt",
+        "reference_choice"
       ],
       "additionalProperties": false
     },
@@ -873,6 +902,16 @@
             "string",
             "null"
           ]
+        },
+        "composition": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/composition"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -884,7 +923,8 @@
         "prompt",
         "status",
         "asset_id",
-        "error"
+        "error",
+        "composition"
       ],
       "additionalProperties": false
     },
@@ -956,6 +996,195 @@
         "reviewed",
         "review_origin",
         "review_note"
+      ],
+      "additionalProperties": false
+    },
+    "area_spec": {
+      "type": "object",
+      "properties": {
+        "area": {
+          "enum": [
+            "exterior",
+            "living",
+            "kitchen",
+            "bedroom",
+            "bathroom",
+            "laundry",
+            "wardrobe",
+            "dining",
+            "sleeping_loft"
+          ]
+        },
+        "position": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "ceiling": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "fixtures": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "\\S"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "area",
+        "position",
+        "ceiling",
+        "fixtures"
+      ],
+      "additionalProperties": false
+    },
+    "composition": {
+      "type": "object",
+      "properties": {
+        "camera_position": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "view_direction": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "height_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "subject_view": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "view_angle_deg": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 180
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "subject_placement": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "foreground": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "background": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "visible_bounds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "\\S"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "layout_note": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "shot_alignment": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "full_exterior": {
+          "type": "boolean"
+        },
+        "bed_diagonal": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "camera_position",
+        "view_direction",
+        "height_m",
+        "subject_view",
+        "view_angle_deg",
+        "subject_placement",
+        "foreground",
+        "background",
+        "visible_bounds",
+        "layout_note",
+        "shot_alignment",
+        "full_exterior",
+        "bed_diagonal"
+      ],
+      "additionalProperties": false
+    },
+    "spatial_plan": {
+      "type": "object",
+      "properties": {
+        "start_position": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "start_direction": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "end_position": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "end_direction": {
+          "type": "string",
+          "pattern": "\\S"
+        },
+        "layout_check": {
+          "type": "string",
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "start_position",
+        "start_direction",
+        "path",
+        "end_position",
+        "end_direction",
+        "layout_check"
+      ],
+      "additionalProperties": false
+    },
+    "reference_choice": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "by": {
+          "enum": [
+            "default",
+            "user",
+            "delegated"
+          ]
+        },
+        "note": {
+          "type": "string",
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "count",
+        "by",
+        "note"
       ],
       "additionalProperties": false
     }

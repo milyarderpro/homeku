@@ -1,261 +1,307 @@
-# Rencana implementasi home-productions V2
+# Rencana implementasi perbaikan home-productions 2.1.0
 
-Versi rencana: 2.1
+Diperbarui: 19 November 2026
 
-Tanggal: 18 November 2026
+**Status: tahap 1–6 selesai; source dan rilis privat 2.1.0 sudah diverifikasi.** Schema proyek 2.1 dan rules 2.1.0 aktif. Tahap 7: panduan uji manual siap, penerimaan gambar/batch/video menunggu pengguna. Nomor tahap di sini adalah tahap perbaikan baru, terpisah dari implementasi V2 sebelumnya.
 
-Status: **tahap 1–6 selesai dan rilis privat 2.0.0 sudah diperbarui; tahap 7 menunggu uji manual pengguna**. Pemeriksaan teknis dan source rilis terverifikasi; kualitas/batch/gerak pada lingkungan ChatGPT dan Omni Flash tidak diklaim lulus dari tes kode.
+Dokumen ini menggantikan rencana aktif sebelumnya. [Alur sasaran](production-workflow.md) menjelaskan pengalaman pengguna sesudah perbaikan; [README](README.md) membedakan rencana, source dan rilis. Riwayat implementasi sebelumnya tersedia di Git.
 
-Acuan perilaku: [alur penggunaan V2](production-workflow.md). [Peta folder dan identitas rilis](README.md). Ini satu rencana aktif pengganti rencana V1; riwayat implementasi lama tetap tersedia di Git.
+## 1. Tujuan dan batas pekerjaan
 
-## 1. Dasar dan sasaran
+Memperbaiki produksi dari konsep desain hingga gambar referensi dan prompt Reference-to-Video (R2V) Omni Flash berdasarkan hasil uji manual pengguna. Keseluruhan DNA sumber tetap dipakai: desain, hubungan ruang, plafon, pencahayaan, komposisi, pengungkapan area, urutan, gerak dan ritme.
 
-Temuan manual pengguna pada 18 November 2026:
+Seluruh perubahan pengembangan berada di bekerja/plugin/. Pustaka knowledge/, references/, video/ dan requests/ tidak diubah atau disalin ke plugin. Sumber dibaca selektif melalui URL GitHub atau konektor; tidak perlu analisis ulang seluruh video. Ketidakpastian sumber membatasi klaim fakta, bukan pilihan kreatif proyek.
 
-| Temuan | Kedudukan bukti | Dampak pada V2 |
+Pertahankan satu plugin home-productions dan satu skill produce-home-tour. Generate video, merangkai klip dan publikasi tetap dilakukan pengguna. Tidak menambah server, API produksi, database, UI khusus, mode video baru atau salinan plan/folder versi lain.
+
+## 2. Temuan dan keputusan yang menjadi dasar
+
+| ID | Masalah atau kebutuhan | Perbaikan yang disepakati |
 | --- | --- | --- |
-| Kolase awal–akhir sering tidak konsisten, terutama plafon | Laporan pengujian pengguna | Ganti dengan gambar area individual dan spesifikasi plafon yang sama |
-| Interpolasi first–last masih mengubah susunan meskipun diminta continuous shot | Laporan pengujian pengguna | Ganti metode utama menjadi Reference-to-Video (R2V) |
-| R2V dengan satu gambar memberi hasil lebih baik dan konsisten | Percobaan pengguna; tidak digeneralisasi sebagai jaminan | Jadikan R2V dasar workflow dan uji dua referensi pada shot penghubung |
+| P01 | Dua gambar living dan kitchen memberi hasil kurang konsisten dibanding satu gambar; pengguna juga menghapus kewajiban dua referensi exterior-to-living | Living-to-kitchen memakai **satu foto utuh living dan kitchen terhubung sebagai default**. Exterior-to-living memakai **1 atau 2 referensi sesuai pilihan pengguna saat produksi**, tanpa kewajiban salah satu jumlah. Masing-masing tetap satu shot 6 detik |
+| P02 | Kitchen di depan pada gambar, tetapi lintasan meminta pengungkapan kitchen di kanan; hasil dapat menggandakan kitchen | Satu catatan tata ruang dan elemen tetap mengikat posisi kamera, komposisi gambar, lintasan dan framing akhir; kitchen tetap satu pada tempat yang sama |
+| P03 | Bedroom terlalu frontal, bed terpusat dan simetris | Preferensi produksi pengguna: **front three-quarter**, arah pandang horizontal **35–45° terhadap sumbu panjang bed**, bed tampak memanjang diagonal |
+| P04 | Prompt gambar hanya memakai arahan overview umum | Komposisi setiap gambar dinyatakan eksplisit dan terkait lintasan video; bukan sekadar kata wide atau full |
+| P05 | Gerak tidak terlihat atau terlalu padat untuk 4/6 detik | Review komposisi, geometri, bukti gerak dan ritme; angka dalam data tidak dianggap bukti hasil video |
+| P06 | PermissionError saat menyimpan project.json menghentikan proses | Penyimpanan menjadi checkpoint internal yang dapat pulih; konsep tetap dilanjutkan dari data sesi, tanpa klaim file berhasil tersimpan |
+| P07 | Sisi rumah terpotong pada gambar exterior | Gambar memuat seluruh massa rumah yang terlihat: atap, batas kiri/kanan dan dasar, dengan ruang aman di tepi; sudut kamera fleksibel |
+| P08 | Interior kadang tidak mempunyai lampu | Setiap area interior mempunyai armatur lampu nyata dan masuk akal sesuai desain; plafon serta posisi lampu ditetapkan dan konsisten |
+| P09 | Peran gambar dan penyebutan nama file membingungkan prompt R2V | Tegaskan referensi identitas visual/spasial, **bukan frame awal maupun akhir wajib**; nama file, path dan ID gambar berada di metadata/panduan, di luar teks prompt |
+| P10 | Gerak terlalu sering dolly + pan | Pilih gerak per area dari sumber yang relevan: translasi, pan, orbit atau tilt sesuai kebutuhan; gerak tunggal tetap sah |
+| P11 | Prompt akhir harus mudah disalin | Setiap prompt video lengkap berada dalam satu fenced code block tersendiri; hanya isi prompt di dalamnya, penjelasan di luar |
 
-Sasaran: dari konsep rumah yang mengikuti keseluruhan DNA referensi, menghasilkan prompt/gambar individual per area, lalu prompt R2V sembilan bagian per shot beserta paket proyek yang dapat dilanjutkan.
+Laporan pengguna merupakan bukti temuan pada percobaan tersebut, bukan jaminan bahwa semua R2V satu gambar akan selalu konsisten.
 
-Repository tetap pustaka pengetahuan. Semua pengembangan berada di bekerja/plugin/; knowledge/, references/ dan video/ root tidak diubah atau disalin ke paket. Analisis tersimpan digunakan secara selektif lewat URL web atau konektor GitHub, tanpa analisis ulang seluruh video.
+### Referensi untuk kedua shot penghubung
 
-Generate video Omni Flash, perangkaian klip dan publikasi Facebook tetap dilakukan pengguna. Tidak menambah server, API berbayar, database, UI khusus, skill kedua atau plugin duplikat.
+Pengguna menghapus kewajiban dua referensi pada **living-to-kitchen dan exterior-to-living**. Living-to-kitchen memakai satu foto gabungan sebagai default; tambahan referensi hanya atas permintaan pengguna.
 
-## 2. Kontrak perilaku V2
+**Exterior-to-living fleksibel: pengguna memilih 1 atau 2 referensi saat produksi.** Dengan satu referensi, pakai satu gambar utama yang sesuai lintasan. Dengan dua referensi, pakai gambar exterior dan living individual dari rumah yang sama, dengan hubungan spasial yang diperiksa. Jangan mengunci jumlah menjadi satu, mewajibkan dua, atau otomatis mengganti pilihan pengguna. Pilihan ini dicatat pada rancangan/peta lampiran, bukan menjadi mode produksi baru.
 
-Detail lengkap berada pada alur penggunaan; butir berikut menjadi dasar implementasi dan pemeriksaan.
+Living-to-kitchen memerlukan satu foto koheren kedua area. Pada exterior-to-living, pilih gambar utama yang mendukung lintasan, umumnya exterior dengan pintu masuk yang jelas. Jika memakai gambar exterior, ketentuan seluruh rumah terlihat tetap berlaku. Interior tidak wajib terlihat penuh pada gambar yang sama; jangan membuat dinding transparan, cutaway atau perspektif mustahil. Bagian interior yang belum terlihat ditetapkan pada rancangan dan prompt, bukan diklaim sudah dibuktikan oleh foto.
+
+Kedua pola tetap diuji sesuai geometrinya masing-masing. Menghapus syarat dua referensi merupakan keputusan pengguna; itu bukan bukti bahwa semua hasil video satu referensi sudah konsisten.
+
+### Membedakan sumber dan keputusan proyek
+
+Anotasi tersimpan [edh058/shot-04](../../references/edh058/analysis.yaml) mendukung keluarga pandangan bedroom front three-quarter. Sebaliknya, [edh056/shot-04](../../references/edh056/analysis.yaml) tercatat hampir frontal. Karena itu, angka 35–45° dan bed diagonal merupakan preferensi produksi pengguna, bukan ukuran semua referensi. Pilih acuan bedroom yang kompatibel dan catat adaptasinya; jangan mengubah anotasi sumber agar tampak mendukung keputusan baru.
+
+Pan ke kanan saat kitchen tampak di depan tidak otomatis salah. Kesesuaiannya bergantung pada posisi/arah kamera, sudut pandang, jalur dan akhir yang dituju. Perbaikan harus menyelesaikan hubungan tersebut, bukan sekadar menambahkan larangan duplicate kitchen.
+
+## 3. Aturan produksi yang dipertahankan
 
 | Aspek | Ketentuan |
 | --- | --- |
-| Mode gambar | Pengguna memilih prompt_to_image atau generate_image setelah rancangan disetujui; satu prompt untuk satu gambar area |
-| Batch generate | Seluruh gambar individual dikerjakan sekaligus sesuai jumlah yang disetujui; tujuh berarti tujuh, tanpa kolase dan tanpa menunggu perintah per area. Satu per satu hanya jika diminta pengguna |
-| Gambar | Pandangan luas/informatif, natural dan sesuai desain; bukan pasangan start/end wajib |
-| Plafon dan struktur | Bentuk/tingkat plafon, sambungan, lampu, bukaan, furnitur tetap, material dan cahaya mengikuti keputusan rumah yang sama |
-| Living-to-kitchen | Satu shot 6 detik, dua gambar individual: living dan kitchen; keduanya referensi R2V |
-| Exterior-to-living | Satu shot 6 detik, dua gambar individual: exterior dan living; keduanya referensi R2V |
-| Area lain | Mengikuti jenis/cakupan sumber dan rancangan; kebutuhan gambar fungsi terpadu dipetakan eksplisit, tidak otomatis menambah area fisik |
-| Durasi | Exterior dan dua shot penghubung di atas 6 detik; shot area lain/fungsi terpadu 4 detik |
-| Cakupan | Tidak mengulang pengungkapan area; maksimal satu bedroom/area tidur, termasuk sleeping loft |
-| Kamera | Gerak gabungan harus terlihat; pan/orbit yang dipilih minimal 12 derajat, simultan/sekuensial jelas, jarak/sudut/ritme sesuai durasi |
-| Video dan audio | Video 9:16, satu continuous shot tanpa cut/morphing; ambient natural halus tanpa musik, narasi, dialog atau efek dramatis |
-| Persetujuan | Konsep, desain/shot dan paket gambar final; delegasi tetap berlaku, tanpa persetujuan per gambar yang dipaksakan |
+| Unit produksi | Satu shot = satu rekaman kontinu tanpa cut; bukan penghitungan adegan |
+| Durasi | Exterior, exterior-to-living dan living-to-kitchen 6 detik; area lain/fungsi terpadu yang disetujui 4 detik |
+| Cakupan | Area yang sudah diungkap tidak diulang pada shot berikutnya; kemunculan sebagai background bukan pengungkapan baru |
+| Bedroom | Maksimal satu fungsi tidur, termasuk sleeping loft; tidak menambah kamar lain dengan nama berbeda |
+| Area opsional | Laundry, wardrobe/dining/loft atau fungsi terpadu hanya sesuai sumber dan rancangan |
+| Gambar | Individual, natural dan sesuai desain; tanpa kolase, crop panel atau pasangan first/last wajib |
+| Mode gambar | prompt_to_image atau generate_image, dipilih setelah rancangan disetujui atau mengikuti pilihan yang sudah ada |
+| Batch | Seluruh jumlah gambar yang disetujui dikerjakan sekaligus dalam satu tahap/permintaan; satu per satu hanya atas permintaan pengguna |
+| Kamera | DNA per area, gerak gabungan terlihat jika dipilih; simultan berbeda dari sekuensial |
+| Rotasi | Pan/orbit yang dipilih minimal 12°; tidak memaksa rotasi pada shot translasi atau menyamakan pan dengan orbit/roll |
+| Audio | Ambient natural halus saja; tanpa musik, narasi, dialog atau efek dramatis |
+| Keputusan | Pilihan konsep, persetujuan desain/shot, persetujuan paket visual; delegasi berlaku tanpa persetujuan per gambar yang dipaksakan |
 
-Full area berarti komposisi yang menunjukkan area dan hubungan ruang secara wajar, bukan tuntutan melihat semua sisi terhalang. Rasio gambar referensi dipilih untuk cakupan dan masukan alat; tidak mewarisi kewajiban crop panel/rasio frame V1. Rasio video tetap 9:16. Dimensi, format dan kelayakan aktual tetap diperiksa.
+Jumlah gambar mengikuti kebutuhan pandangan referensi, bukan jumlah label area. Satu gambar gabungan living–kitchen adalah satu foto dari satu sudut kamera yang memperlihatkan ruang terhubung secara wajar. Bukan stitching dua gambar, dinding transparan atau sudut pandang mustahil. Gambar tidak harus menjadi titik awal/akhir video, tetapi harus mendukung lintasan yang direncanakan.
 
-Batch tujuh gambar dan eksekusi yang benar-benar bersamaan harus dibuktikan pada ChatGPT pengguna. Jangan menyamakan tujuh file yang terkumpul dari perintah satu per satu dengan permintaan tujuh sekaligus. Kegagalan alat pengembang tidak menjadi kesimpulan keterbatasan ChatGPT. Jangan diam-diam mengganti alur, mengurangi jumlah atau memindahkan produksi ke API.
+Full exterior berlaku pada **gambar acuan**, bukan kewajiban mempertahankan seluruh rumah dalam setiap frame video. Pada interior, full berarti cakupan ruang yang informatif, bukan melihat semua sisi yang terhalang. Lampu wajib ada dan terbaca; tidak semua lampu harus menyala ketika adegan memakai cahaya siang.
 
-## 3. Arsitektur dan kontrak proyek
+## 4. Kontrak data sasaran dan kompatibilitas
 
-Paket home-productions/ dan skill produce-home-tour dipertahankan. Versi paket **2.0.0**, schema proyek 2.0 dan aturan produksi 2.0.0 sudah diimplementasikan.
+Target: paket/rules **2.1.0**, schema proyek **2.1**. Perbarui schema, template, rules, validator, skill dan exporter bersama agar tidak ada aturan lama yang menolak alur baru.
 
-Gunakan satu project.json per revisi aktif. Rincian field dan tahap yang sudah tersedia dijelaskan pada [kontrak V2](home-productions/skills/produce-home-tour/references/project-contract.md).
-
-| Bagian | Perubahan yang direncanakan |
+| Bagian | Perubahan sasaran |
 | --- | --- |
-| Identitas, brief, konsep | Pertahankan ID/revisi dan keputusan yang sudah ada |
-| knowledge | Pertahankan URL/ref/commit, jalur akses, evidence dan pembedaan fakta/adaptasi |
-| design | Spesifikasi rumah bersama, plafon, elemen tetap serta hubungan area; tidak mengarang denah sumber |
-| image_mode | prompt_to_image atau generate_image; pilihan tersimpan agar sesi baru tidak mengulang pertanyaan |
-| image_plan | Daftar gambar individual: ID, area tujuan, shot pemakai, prompt gambar, revisi dan status pemenuhan |
-| assets | File referensi area, peran/cakupan, dimensi/format/hash aktual, revisi dan catatan review; role reference menggantikan start/end/collage |
-| shots | Cakupan/durasi/source tetap; reference_image_ids menunjuk daftar gambar sesuai kebutuhan shot, bukan frames.start/end |
-| camera | Jenis gerak, hubungan simultan/sekuensial, perkiraan jarak, sudut pan/orbit, alokasi waktu dan visible_motion_evidence |
-| prompt video | Metode R2V, sembilan bagian, durasi/revisi dan ID gambar yang sama dengan shot |
-| audio, approvals, revision_notes | Pertahankan aturan, asal keputusan dan revisi; tidak menciptakan persetujuan/review otomatis |
+| design | Catatan tata ruang bersama, hubungan area, elemen tetap, plafon dan armatur/posisi lampu; cukup untuk mengikat pandangan dan lintasan, bukan sistem denah 3D baru |
+| image_plan | Satu entri per gambar/pandangan; area_ids mencatat area yang benar-benar terlihat. Lepas kewajiban file terpisah per primary_area untuk **kedua** shot penghubung. Satu referensi utama dapat mendukung shot yang cakupan videonya lebih luas daripada area yang terlihat di foto |
+| Komposisi gambar | Posisi/arah/tinggi kamera yang direncanakan, sudut terhadap subjek, penempatan subjek, foreground/background, batas yang harus terlihat, elemen tetap serta hubungan dengan lintasan shot |
+| Bedroom | Preferensi sudut 35–45° di bidang horizontal terhadap sumbu panjang bed; penempatan diagonal di frame. Nilai rencana bukan pengukuran otomatis dari piksel |
+| shots dan camera | Peta gambar, cakupan dan gerak memakai tata ruang yang sama; awal → lintasan → akhir saling sesuai, ritme mengikuti durasi baku. Bedakan area terlihat pada gambar dan area yang akan diungkap video; area tersembunyi tidak diberi status sudah terlihat |
+| assets dan review | Pertahankan file asli, revisi, dimensi/format/hash dan asal review; catat aspek visual yang benar-benar diperiksa, tanpa human_verified global |
+| prompt.sections | Tetap sembilan bagian sebagai sumber tunggal; tidak mewajibkan image_id di REFERENCE IMAGE ROLE |
+| reference_image_ids | Tetap tersedia di data dan peta lampiran; exterior-to-living menerima 1 atau 2 ID sesuai pilihan pengguna. Jumlah gambar, prompt gambar dan aset mengikuti pilihan tersebut, tanpa bocor ke badan prompt video |
+| Checkpoint | Lokasi aktif dan hasil penyimpanan dilaporkan sesuai kenyataan; keputusan sesi tidak hilang karena gagal menulis file |
 
-Pisahkan gambar yang direncanakan dari aset yang benar-benar tersedia. image_plan yang lengkap belum berarti file telah dibuat/dilihat. Dukungan gambar terhadap fungsi terpadu dijelaskan dalam rancangan; background tidak otomatis menjadi area/shot tambahan.
+Gunakan nama field yang ringkas pada implementasi dan dokumentasikan sekali di project-contract.md. Hindari salinan struktur yang menyatakan tata ruang berbeda dalam prompt gambar dan prompt video.
 
-Tahap data yang diimplementasikan:
+Proyek schema 2.0 harus dikenali dan dapat dilanjutkan melalui konversi eksplisit pada salinan/revisi. Pertahankan brief, sumber, konsep, mode, delegasi dan keputusan yang masih berlaku. Jangan menggabungkan dua gambar lama menjadi foto baru secara otomatis atau menandai preferensi/ulasan baru sudah terpenuhi. Tinjau ulang hanya gambar dan shot terdampak. Proyek V1 tetap dikenali sebagai alur lama; tidak otomatis diklaim cocok untuk R2V.
 
-| Stage | Syarat dan batas penyerahan |
-| --- | --- |
-| brief / concept / shot_plan | Data perencanaan sesuai tahap; gambar belum wajib |
-| image_prompt_package | Seluruh prompt gambar sesuai rancangan dan mode; sah tanpa file gambar, belum siap sebagai paket R2V final |
-| image_draft | Gambar sedang dibuat/dikumpulkan atau masih perlu revisi; jumlah belum terpenuhi dicatat |
-| image_final | Seluruh gambar yang diperlukan tersedia, sesuai keputusan, direview dan disetujui/didelegasikan |
-| prompt_package | Gambar final serta prompt R2V sembilan bagian lengkap, terikat ke shot/durasi/revisi yang benar |
+## 5. Tujuh tahap implementasi berurutan
 
-Kedua mode bertemu pada review gambar. Pada prompt_to_image, hasil dari generator pilihan pengguna harus benar-benar dapat dibuka sebelum review dan prompt video final. Jangan menambahkan persyaratan generate otomatis ke mode yang hanya meminta prompt.
+Tahap 1–6 di bawah sudah diimplementasikan dan diperiksa. Tahap 7 baru sampai serah-terima panduan; hasil uji manual rilis baru belum tersedia. Rincian bukti dan batas pemeriksaan ada pada bagian 10.
 
-Validator memeriksa struktur, jumlah/pemetaan, nilai sudut yang diminta, durasi, revisi, file dan hash. Validator tidak membuktikan gambar natural, plafon konsisten, batch berjalan serentak, sudut aktual video atau ketiadaan musik pada hasil. Hal-hal tersebut dinilai dari gambar/video/audio dan laporan pengguna.
+### Tahap 1 — Kontrak gambar, tata ruang dan aturan
 
-## 4. Komponen yang diubah
+**Pekerjaan**
+- Selaraskan rules, schema, template proyek dan project-contract dengan kebutuhan P01–P11.
+- Implementasikan satu foto gabungan sebagai default living-to-kitchen. Untuk exterior-to-living, terima **1 maupun 2 referensi sesuai pilihan pengguna**, tanpa mengunci salah satunya; satu gambar tidak wajib memperlihatkan seluruh interior.
+- Tetapkan data komposisi, elemen ruang tetap, preferensi bedroom dan lampu interior.
+- Hapus validasi yang mewajibkan ID gambar dalam REFERENCE IMAGE ROLE; pertahankan kecocokan ID/revisi pada metadata.
+- Ganti asumsi validator bahwa gabungan area terlihat pada semua gambar harus selalu sama persis dengan cakupan video. Untuk exterior-to-living, area yang baru terungkap boleh belum terlihat pada referensi, tetapi wajib punya hubungan/elemen tetap dalam rancangan.
+- Sediakan jalur konversi schema 2.0 yang tidak memalsukan review atau mengganti aset lama.
 
-Semua path pada tabel relatif terhadap bekerja/plugin/. Gunakan folder dan file yang ada; tambahkan file baru hanya jika langsung mendukung fungsi V2.
+**Keluaran:** kontrak dan validator yang menerima model referensi baru.
+**Selesai bila:** satu foto living–kitchen sah dan kedua pilihan 1/2 referensi exterior-to-living diterima sesuai rancangan, cakupan/tautan salah tetap ditolak, proyek perencanaan sah tanpa gambar, ketentuan durasi/audio/bedroom dan pemisahan metadata tetap terjaga. Nilai geometri diperiksa sebagai data rencana; validator tidak mengklaim menilai piksel.
 
-| Komponen | Pekerjaan |
-| --- | --- |
-| home-productions/plugin.json | Naikkan versi saat implementasi; selaraskan deskripsi R2V. Pertahankan identitas, scope/audience, publisher akun dan defaultPrompt yang masih berlaku |
-| skills/produce-home-tour/SKILL.md | Rute dua mode gambar, batch, review, R2V serta kelanjutan/revisi dalam satu skill |
-| references/production-rules.yaml | Aturan V2 dan versi, kebutuhan referensi, sudut gerak dan batas tahap |
-| references/project-contract.md | Kontrak V2, persetujuan, aset area, pemetaan dan kompatibilitas |
-| references/preproduction.md | Rumah/plafon yang sama, rancangan kamera sesuai durasi dan daftar gambar |
-| references/image-workflow.md | Ganti isi kolase/crop menjadi prompt/gambar individual, batch dan review seluruh area |
-| references/omni-flash.md | R2V satu/dua referensi, sembilan bagian dan revisi hasil |
-| references/repo-access.md | Pertahankan jalur selektif/provenance; ubah hanya jika integrasi data membutuhkan |
-| assets/project-template.json dan project.schema.json | Kontrak proyek V2 tanpa kewajiban pasangan start/end |
-| assets/prompt-template.md | Ganti menjadi template R2V sembilan bagian |
-| assets/image-prompt-template.md | File baru untuk prompt satu gambar area dengan spesifikasi bersama |
-| scripts/validate_project.py | Validasi V2 dan pesan yang jelas untuk data V1 |
-| scripts/build_production_package.py | Paket prompt gambar atau paket R2V sesuai tahap; gambar individual dan peta referensi benar |
-| scripts/split_frames.py | Lepas dari alur V2; hapus dari paket setelah seluruh pemanggil/dokumen diperbarui |
-| agents/openai.yaml | Selaraskan metadata lewat generator yang sesuai, pertahankan kebijakan/dependensi yang masih relevan |
-| tests/ | Perbarui tes kontrak, praproduksi, penyerahan dan arsip; ganti tes crop dengan tes alur gambar V2 yang relevan |
-| tooling/package_plugin.py | Pertahankan pengemas; sesuaikan bila inventaris baru menuntut perubahan nyata |
+### Tahap 2 — Checkpoint tahan gagal dan kelanjutan sesi
 
-Tabel komponen skills/... mengacu ke home-productions/skills/produce-home-tour/. Dokumen pengembangan, tes, dist/ dan runs/ tetap di luar paket plugin. Tidak membuat direktori home-productions-v2/ atau salinan pustaka.
+**Pekerjaan**
+- Tambahkan helper penyimpanan kecil, misalnya scripts/save_project.py, untuk menyelesaikan kegagalan nyata; tidak menambah dependensi/layanan.
+- Validasi data sesuai tahap dari memori sebelum menyimpan; lakukan percobaan menulis file sementara, bukan hanya os.access.
+- Bila file lama tidak dapat ditimpa tetapi folder masih dapat ditulis, gunakan nama revisi baru. Bila folder tidak dapat ditulis, pilih/buat folder proyek yang benar-benar berhasil diuji.
+- Gunakan penulisan aman, baca balik dan validasi sebelum mengaku tersimpan; pertahankan checkpoint terakhir yang baik.
+- Jika pindah folder, bawa aset terdaftar yang dapat dibaca dan pertahankan/perbarui path relatif secara konsisten. Aset yang tidak dapat disalin tetap dilaporkan kurang.
+- Bila penyimpanan gagal seluruhnya, lanjutkan pembahasan konsep dari data sesi dan berikan catatan teks untuk melanjutkan, tanpa tautan file palsu atau persetujuan yang direset.
 
-## 5. Tahap implementasi V2
+**Keluaran:** satu checkpoint aktif yang dapat ditemukan setelah berhasil disimpan, dengan status kegagalan yang tidak memblokir diskusi.
+**Selesai bila:** simulasi file/folder tak dapat ditulis dan gagal baca balik tidak merusak data terakhir atau kehilangan keputusan. Tidak menghapus file pengguna, mengubah ownership/chmod atau mengklaim paket final tanpa file asli.
 
-### Tahap 1 — Menetapkan spesifikasi dan kasus acuan
+Checkpoint dipakai pada keputusan/revisi penting dan penyerahan, bukan kewajiban menulis disk setiap balasan. File proyek berada di ruang kerja produksi ChatGPT atau paket unduhan, bukan otomatis ditambahkan ke repo pengetahuan. Penyebab persis PermissionError yang dilaporkan belum terbukti dari traceback saja.
 
-Petakan keputusan pengguna ke aturan, mode, cakupan gambar dan data proyek. Tetapkan kasus 18/20/22/24 detik serta tujuh gambar sekaligus. Tandai laporan R2V satu gambar sebagai bukti pengguna; batch tujuh dan R2V dua gambar masih perlu diuji.
+### Tahap 3 — Praproduksi dan gambar yang sesuai lintasan
 
-**Keluaran:** spesifikasi field/aturan dan daftar penerimaan yang siap dipakai tahap kontrak. **Selesai bila:** tidak ada kewajiban kolase/start–end yang tersisa pada spesifikasi V2, jumlah gambar dan shot tidak tercampur. Tidak perlu mengulang pengujian R2V satu gambar yang telah dilaporkan pengguna.
+**Pekerjaan**
+- Perbarui SKILL.md, preproduction.md, image-workflow.md dan image-prompt-template.md; pertahankan satu entrypoint dengan panduan rinci bersyarat.
+- Tetapkan tata ruang dan posisi/arah kamera, lalu turunkan komposisi gambar serta lintasan dari keputusan yang sama.
+- Buat satu gambar living–kitchen yang menunjukkan kedua area dan sambungannya. Kitchen tetap satu; jangan memindahkannya untuk menuruti teks pan.
+- Untuk exterior-to-living, ikuti pilihan pengguna: satu gambar utama atau dua gambar exterior/living yang konsisten. Sesuaikan daftar gambar dan sambungan pintu masuk/living; jangan menambah gambar kedua secara wajib atau memaksa pengguna memakai satu saja.
+- Terapkan bedroom front three-quarter 35–45° dan bed memanjang diagonal, tanpa memutar bed atau memberi efek roll demi meniru sudut.
+- Exterior memuat seluruh rumah dengan tepi aman; sudut frontal, three-quarter atau lainnya dipilih sesuai desain/sumber, tanpa sudut wajib universal.
+- Setiap interior memperlihatkan plafon dan lampu yang masuk akal sesuai fungsi/desain; lampu dan plafon tetap konsisten antarview.
+- Kedua mode memakai rancangan yang sama. Hitung seluruh prompt/file sesuai image_plan baru; jangan diam-diam mengurangi batch atau menggantinya dengan kolase.
+- Review hasil nyata sebelum image_final: naturalitas, proporsi, cakupan, elemen tetap, orientasi dan dukungan terhadap gerak.
 
-### Tahap 2 — Kontrak, aturan dan validator V2
+**Keluaran:** seluruh prompt gambar atau gambar individual yang sesuai mode dan rancangan.
+**Selesai secara teknis bila:** pemetaan/jumlah/revisi benar dan instruksi komposisi lengkap. Kualitas visual dan eksekusi batch nyata tetap dinilai pada tahap 7, bukan dibuktikan dari prompt.
 
-Perbarui rules, schema, template dan validator. Implementasikan tahap prompt gambar tanpa aset, tahap gambar final, serta paket R2V. Periksa dua gambar pada masing-masing shot penghubung; ID/path/peran berbeda dan sesuai area, tanpa menyamarkan satu gambar identik sebagai dua area.
+### Tahap 4 — Prompt R2V, variasi gerak dan format salin
 
-**Keluaran:** proyek V2 yang dapat divalidasi beserta tes bermakna. **Selesai bila:** data perencanaan valid tanpa gambar; pemetaan salah, aset kurang/usang, durasi salah, cakupan berulang, bedroom tambahan dan sudut pan/orbit di bawah 12 ditolak sesuai tahap. Video R2V final tidak ditolak hanya karena tidak memiliki start/end frame.
+**Pekerjaan**
+- Perbarui omni-flash.md dan prompt-template.md dengan sembilan bagian yang tetap sama.
+- REFERENCE IMAGE ROLE menyatakan referensi identitas visual/spasial, bukan frame awal/akhir wajib; tanpa nama file, path atau ID internal di badan prompt.
+- Pilih gerak dari sumber yang sesuai per area. Dolly maju/mundur, gerak lateral, pan, orbit atau tilt dipakai bila relevan; tidak mewajibkan dolly + pan.
+- Cocokkan kamera awal, lintasan, geometri dan akhir dengan gambar yang benar-benar tersedia. Jika tidak cocok, revisi gambar atau lintasan yang sesuai DNA/desain; perubahan material kembali ke keputusan desain.
+- Pastikan semua komponen gerak gabungan tampak; jelaskan simultan/sekuensial dan bukti visualnya. Pan/orbit terpilih minimal 12°.
+- Sesuaikan jarak, sudut, jumlah fase dan kecepatan dengan 4/6 detik. Jangan memakai slow sebagai kata baku yang bertentangan dengan tugas gerak.
+- Tampilkan **satu prompt lengkap dalam satu fenced code block per shot**. Judul shot, catatan dan peta lampiran berada di luar block; tidak ada placeholder atau JSON dalam teks siap salin.
 
-### Tahap 3 — Skill, desain bersama dan pilihan mode
+**Keluaran:** prompt yang dapat langsung dipakai pada R2V.
+**Selesai bila:** kesembilan bagian lengkap, peran gambar tegas, tidak ada ID/nama file di badan prompt, dan rancangan gerak tidak bertentangan dengan gambar. Keberhasilan gerak, kontinuitas dan audio hasil tetap menunggu video nyata.
 
-Perbarui entrypoint/praproduksi dan metadata. Tetapkan plafon serta elemen tetap pada rancangan. Pilihan mode diambil satu kali setelah desain disetujui, atau mengikuti pilihan/delegasi yang sudah ada. Gerak berasal dari DNA sumber lalu disesuaikan dengan durasi baku; jangan menambahkan gerak/area generik tanpa acuan.
+### Tahap 5 — Ekspor, konversi dan kelanjutan proyek
 
-**Keluaran:** alur brief sampai daftar shot dan gambar yang jelas. **Selesai bila:** contoh empat shot/20 detik merencanakan lima gambar, bukan delapan frame; pilihan mode dan persetujuan tidak diminta ulang tanpa alasan.
+**Pekerjaan**
+- Selaraskan build_production_package.py dengan model gambar multi-area, checkpoint dan versi baru.
+- Pertahankan dua jenis penyerahan: image_prompt_package sah tanpa aset; prompt_package memerlukan file referensi aktual yang direview dan prompt final.
+- Letakkan ID/nama file dan peta lampiran pada project.json/production-guide.md, terpisah dari isi prompt.
+- Simpan video-prompts/*.txt sebagai teks mentah sembilan bagian, tanpa pagar Markdown; pagar code block hanya format penyerahan di chat.
+- Jalankan konversi pada salinan proyek lama dan tandai kebutuhan baru yang belum dipenuhi; jangan menimpa proyek sumber atau menaikkan status review otomatis.
+- Pastikan paket dapat dibuka di folder/sesi baru, dengan gambar asli, peta shot, keputusan, mode dan delegasi yang masih berlaku.
 
-### Tahap 4 — Prompt gambar dan generate seluruh gambar individual
+**Keluaran:** paket yang konsisten dan dapat dilanjutkan.
+**Selesai bila:** contoh 20 detik memakai empat gambar/prompt gambar dan empat prompt video; contoh 18 detik memakai empat atau lima gambar sesuai pilihan 1/2 referensi exterior-to-living; isi .txt sama dengan isi code block chat; ekspor/migrasi tidak merusak keputusan atau aset lama.
 
-Perbarui image-workflow dan buat template prompt gambar. Mode prompt_to_image menyerahkan seluruh prompt; generate_image mengerjakan seluruh batch individual. Gunakan spesifikasi rumah yang sama pada setiap area; periksa cakupan luas, plafon dan naturalitas. Sediakan file individual serta catatan kekurangan/revisi tanpa mengklaim jumlah selesai secara palsu.
+### Tahap 6 — Pemeriksaan teknis dan rilis privat
 
-**Keluaran:** paket prompt gambar atau gambar area sesuai mode, lalu jalur review menuju image_final. **Selesai secara teknis bila:** penghitungan/pemetaan, file aktual, status batch dan pengikatan revisi berfungsi tanpa kolase/crop. Pemenuhan tujuh gambar sekaligus dan kualitas seluruh gambar tetap dibuktikan manual setelah rilis uji.
+**Pekerjaan**
+- Jalankan tes bermakna untuk kontrak multi-area, migrasi, checkpoint gagal, ekspor, aturan cakupan/durasi/kamera/audio dan arsip.
+- Periksa format skill/manifest/metadata, tautan, struktur ZIP dan semua pemanggil aturan lama. Jangan menambah tes yang sekadar mencari kalimat instruksi.
+- Selaraskan versi manifest 2.1.0, schema 2.1 dan rules 2.1.0. Pertahankan nama/plugin ID, publisher akun, nilai defaultPrompt, scope USER dan audience PRIVATE.
+- Kemas hanya source plugin; docs pengembangan, tests, dist dan runs tetap di luar paket.
+- Saat melaksanakan rilis yang termasuk pekerjaan ini, gunakan Plugin Creator untuk **update plugin yang sama**: baca source/inventory dan current_release_id terbaru, bandingkan perubahan, pakai expected_release_id aktual.
+- Jika menghapus file lama, gunakan delete_paths berkas yang terverifikasi, bukan sekadar tidak memasukkannya ke ZIP. Pertahankan manifest kompatibilitas yang dibuat layanan.
+- Baca balik versi, source terdampak dan inventaris penghapusan; catat release ID aktual dan status uji yang masih belum selesai. Jangan menyalin email akun ke repo.
 
-### Tahap 5 — Prompt R2V, ekspor dan transisi data lama
+**Keluaran:** rilis privat 2.1.0 yang dapat diuji langsung.
+**Selesai bila:** pemeriksaan teknis dan pembacaan balik lulus. Upload berhasil tidak dinyatakan sebagai bukti kualitas hasil, aktivasi host, batch bersamaan atau gerak aktual.
 
-Terapkan sembilan bagian prompt yang sama dengan alur penggunaan. Tentukan peran masing-masing referensi, komposisi awal–akhir, lintasan, perkiraan sudut/jarak dan bukti gerak. Samakan ID gambar/durasi/revisi antara shot, prompt dan paket.
+### Tahap 7 — Uji manual pengguna dan perbaikan terarah
 
-Perbarui ekspor untuk image_prompt_package dan prompt_package. Paket pertama berisi prompt serta catatan tanpa klaim gambar tersedia. Paket final memuat gambar asli, prompt R2V, peta gambar–shot, petunjuk penggunaan dan catatan proyek.
+**Pekerjaan**
+- Pengguna menguji rilis privat di ChatGPT dan video di Omni Flash; tidak mengganti proses ini dengan klaim keterbatasan alat pengembang.
+- Prioritaskan reproduksi masalah: satu referensi living–kitchen, kitchen tidak berganda, bedroom diagonal, exterior utuh, lampu/plafon, variasi dan ritme gerak, prompt siap salin, serta kelanjutan saat save gagal.
+- Uji dua mode gambar dan batch sesuai jumlah yang disetujui; jika tujuh, catat tujuh file dan pelaksanaan yang benar-benar diamati.
+- Uji exterior-to-living dengan **1 atau 2 referensi sesuai pilihan pengguna**; nilai ambang pintu, hubungan ruang dan interior yang terungkap. Penerimaan kontrak kedua pilihan diuji teknis; pengguna tidak diwajibkan menguji kedua pilihan video sekaligus. Catat pilihan yang belum diuji.
+- Catat hasil pada matriks di bawah, perbaiki bagian terdampak dan update plugin yang sama. Tidak perlu pengujian video ulang untuk perubahan dokumen saja.
 
-**Keluaran:** paket yang dapat dilanjutkan pada sesi baru. **Selesai bila:** dua area penghubung tetap satu shot dengan dua referensi; tidak ada instruksi yang memaksa referensi sebagai first/last frame; salinan paket mempertahankan data/file dan tidak menimpa hasil lama.
+**Keluaran:** penerimaan berdasarkan hasil aktual, beserta daftar kasus yang belum diuji.
+**Selesai bila:** kasus inti yang diperbaiki diterima pengguna. Bila salah satu pola penghubung belum diuji, nyatakan batas penerimaan tersebut secara eksplisit; jangan menyatakan seluruh pola lulus.
 
-### Tahap 6 — Pemeriksaan teknis dan update privat untuk uji
+## 6. Matriks penerimaan
 
-Jalankan tes yang relevan, validasi format skill/manifest, pemeriksaan seluruh tautan dan arsip. Inspeksi penghapusan komponen lama beserta pemanggilnya. Kemas hanya source plugin ke dist/; hasil gambar dan proyek percobaan tetap di runs/.
+Pemeriksaan kontrak/file/ekspor sudah dijalankan pada tahap 6. Seluruh pembuktian gambar natural, geometri visual, batch nyata, gerak dan audio pada rilis perbaikan **menunggu uji manual pengguna**. Temuan manual lama pada bagian 2 menjadi dasar, bukan status lulus rilis baru.
 
-Update plugin yang sama melalui Plugin Creator setelah pemeriksaan teknis. Baca inventory/current_release_id terlebih dahulu, gunakan expected_release_id aktual dan delete_paths untuk file lama yang memang dihapus. Update bersifat overlay; tidak cukup hanya menghilangkan file dari ZIP.
-
-**Keluaran:** rilis privat V2 untuk diuji pengguna. **Selesai bila:** versi dan komponen tersimpan dapat dibaca balik, perubahan/penghapusan terverifikasi, dan tautan rilis dicatat. Keberhasilan upload tidak otomatis berarti penerimaan atau aktivasi ChatGPT sudah lulus.
-
-### Tahap 7 — Uji manual pengguna, perbaikan dan penerimaan
-
-Pengguna menguji plugin rilis di ChatGPT. Prioritas: alur prompt-to-image, generate seluruh batch, review plafon/naturalitas, R2V satu gambar dan dua referensi pada kedua shot penghubung, gerak 12 derajat, serta kelanjutan sesi.
-
-Pengguna sudah menjalankan eksperimen Omni Flash; untuk V2, kasus video baru diuji manual sesuai kesediaan/hasil yang dibawa pengguna. Jangan mengubahnya menjadi kewajiban pengujian otomatis developer atau meminta nama aplikasi/API sebagai syarat memulai. Belum diuji tetap dicatat sebagai belum diuji.
-
-**Keluaran:** laporan pada rencana aktif ini, perbaikan terarah dan update plugin yang sama. **Selesai bila:** keluaran wajib serta kasus utama V2 diterima berdasarkan bukti; kasus yang belum teruji tidak diberi status lulus. Uji ulang difokuskan pada bagian terdampak.
-
-## 6. Matriks penerimaan minimum
-
-| Kasus | Hasil yang diharapkan | Cara pembuktian |
+| Kasus / kebutuhan | Harapan | Bukti utama |
 | --- | --- | --- |
-| Lima area terpisah | Lima gambar, lima shot, 22 detik | Kontrak + manual gambar/prompt |
-| Living-to-kitchen | Dua gambar area, satu shot 6 detik; tidak diikuti kitchen lagi | Kontrak + R2V manual |
-| Exterior-to-living | Dua gambar area, satu shot 6 detik; living tidak diulang | Kontrak + R2V manual |
-| Contoh empat shot | Lima gambar dan empat prompt R2V, total 20 atau 18 detik sesuai pola | Kontrak + paket |
-| Laundry/wardrobe/fungsi terpadu | Sesuai sumber, durasi 4 detik; tidak mengubah pola menjadi ruang baru | Sumber + kontrak + manual |
-| Prompt-to-image tujuh gambar | Tujuh prompt individual, tanpa mengklaim file gambar sudah ada | Kontrak + manual |
-| Generate tujuh sekaligus | Tujuh file individual dalam satu tahap/permintaan; tidak diganti kolase/perintah per gambar | Uji manual ChatGPT; catat eksekusi aktual |
-| Plafon dan hubungan ruang | Sama dengan rancangan dan konsisten antararea yang terhubung | Review gambar nyata |
-| Naturalitas dan cakupan area | Area terbaca luas, perspektif/skala/cahaya wajar; tidak ada crop yang membuang informasi utama | Review gambar nyata |
-| R2V dua referensi | Dua identitas area digunakan dalam satu lintasan, bukan blend dua rumah atau interpolasi wajib | Uji manual video |
-| Gerak gabungan | Komponen perpindahan dan pan/orbit terlihat sesuai simultan/sekuensial | Data/prompt + review video |
-| Pan/orbit di bawah 12 derajat | Rancangan ditolak untuk gerak yang memang mensyaratkannya; gerak translasi tidak dipaksa berputar | Validator + review video hasil |
-| Ritme 4/6 detik | Jarak/sudut dan fase masuk akal; tidak hanya kata slow yang bertentangan dengan lintasan | Review prompt + video |
-| Musik atau perubahan struktur | Temuan dicatat dan hasil direvisi; audio hanya dinilai bila dapat didengar | Review media |
-| Sesi baru dan revisi desain | Mode/keputusan tetap terbaca, file asli tersedia, gambar/prompt terdampak direview ulang | Ekspor + manual |
-| Data V1 dan kegagalan akses | Pesan versi/akses jelas, tidak memalsukan migrasi, gambar, review atau keberhasilan batch | Tes kontrak + manual |
+| P01 living-to-kitchen | Satu foto utuh berisi living dan kitchen, satu shot 6 detik, tidak disusul kitchen lagi | Kontrak/paket + gambar/video pengguna |
+| P02 tata ruang | Kitchen tunggal, orientasi gambar dan gerak sesuai; tidak muncul kitchen kedua | Review gambar dan video nyata |
+| P03 bedroom | Three-quarter, sasaran 35–45° terhadap sumbu bed, bed memanjang diagonal; bukan frontal simetris | Data komposisi + review gambar |
+| P04 komposisi | Posisi/arah kamera, subjek, kedalaman, batas penting dan dukungan lintasan jelas | Kontrak + review visual |
+| P05 ritme | Gerak terpilih terbaca dalam 4/6 detik; simultan/sekuensial sesuai rencana | Data waktu + video nyata |
+| P06 save gagal | Diskusi/revisi konsep berlanjut; checkpoint terakhir utuh, lokasi baru hanya diklaim setelah berhasil | Tes kegagalan terkontrol + laporan host bila terjadi |
+| P07 exterior | Atap, sisi kiri/kanan dan dasar terlihat utuh dengan margin wajar | Gambar nyata; bukan tuntutan semua frame video |
+| P08 lampu/plafon | Setiap interior mempunyai armatur yang terbaca, logis dan sesuai desain; antarview konsisten | Rancangan + gambar/video nyata |
+| P09 peran referensi | Bukan first/last wajib; prompt tanpa nama file/ID, metadata tetap benar | Template/validator/ekspor + salin manual |
+| P10 kamera | Gerak dipilih dari DNA per area, tanpa paksaan dolly + pan; pan/orbit terpilih ≥12° | Provenance + rencana + video nyata |
+| P11 format chat | Satu block berisi satu prompt lengkap sembilan bagian; tidak perlu membersihkan isi | Tampilan/copy ChatGPT + kesamaan isi ekspor |
+| Dua mode | Prompt-only tidak mengaku sudah ada gambar; generate menghasilkan file sesuai rencana | Kontrak + uji ChatGPT |
+| Batch tujuh jika direncanakan | Tujuh gambar individual dari satu permintaan/tahap; tidak menjadi kolase atau perintah per gambar | Catatan pelaksanaan nyata; jumlah file bukan bukti paralel |
+| Exterior-to-living | **1 atau 2 referensi sesuai pilihan pengguna**, satu shot 6 detik; living tidak diulang, jumlah aset sesuai pilihan | Tes kontrak kedua pilihan + uji video pilihan pengguna; hasil pilihan lain tidak otomatis lulus |
+| Audio/struktur | Ambient halus tanpa musik; tidak ada cut/morphing/perubahan elemen tetap | Video dan audio yang benar-benar diakses |
+| Ekspor/resume/migrasi | File asli, keputusan dan delegasi terjaga; aset/review lama tidak otomatis cocok dengan aturan baru | Tes paket + kelanjutan manual |
 
-## 7. Migrasi dan kebersihan repo
+Validator dapat membuktikan struktur, rentang nilai rencana, pemetaan, revisi, file dan hash. Validator tidak membuktikan geometri 3D dari gambar, naturalitas, sudut kamera aktual, pan aktual, kualitas audio atau eksekusi batch paralel.
 
-V2 adalah pengganti alur produksi utama, bukan tambahan pilihan kolase/interpolasi dalam menu. Dua mode hanya mengatur cara memperoleh gambar; metode video utamanya R2V.
+## 7. Contoh jumlah dan durasi sesudah perbaikan
 
-Proyek schema 1.0 dikenali dan diberi penjelasan versi. Jangan diam-diam mengubah pasangan frame lama menjadi gambar full area atau membawa persetujuan visual ke V2. Brief, desain, sumber dan keputusan yang masih berlaku boleh dipakai kembali dengan peninjauan. Migrasi nyata dilakukan pada salinan/revisi proyek sesuai permintaan, tanpa menimpa proyek V1.
+| Susunan | Shot | Gambar utama | Prompt video | Total |
+| --- | --- | --- | --- | --- |
+| Exterior + living + kitchen + bedroom + bathroom | 5 | 5 | 5 | 22 detik |
+| Exterior + living-to-kitchen + bedroom + bathroom | 4 | **4** | 4 | **20 detik** |
+| Exterior-to-living + kitchen + bedroom + bathroom | 4 | **4 atau 5**, sesuai pilihan 1/2 referensi penghubung | 4 | **18 detik** |
+| Exterior + living-to-kitchen + bedroom + laundry + bathroom | 5 | 5 | 5 | 24 detik |
 
-Hapus file kolase/crop yang tidak lagi dipakai setelah semua tautan, tes dan callers diperiksa. Riwayat Git serta rilis lama menyimpan versi V1; jangan mempertahankan dua entrypoint produksi yang membingungkan AI. Tool probe lama yang berada di luar paket ditinjau kegunaannya sebelum dipertahankan/dihapus.
+Contoh adalah pola hitung, bukan kewajiban memakai semua area. Area opsional tetap mengikuti sumber. Tujuh gambar hanya bila rencana sah benar-benar memerlukannya, bukan kuota setiap produksi. Tidak menambah gambar kedua pada salah satu shot penghubung sebagai kewajiban terselubung.
 
-Jangan menghapus manifest kompatibilitas yang dibuat layanan jika deklarasi yang meregenerasikannya masih berlaku. Tidak menyalin email akun ke repo. Publisher, scope/audience dan pengaturan akun dipertahankan melalui mekanisme update yang benar.
+## 8. Peta berkas dan batas perubahan
 
-## 8. Identitas rilis dan status
+Seluruh path berikut relatif terhadap bekerja/plugin/. R = ubah saat implementasi, B = baru untuk kebutuhan nyata, P = pertahankan kecuali integrasi menuntut perubahan.
 
-Identitas terakhir yang tercatat, dibaca ulang saat implementasi/update:
+| Komponen | Tindakan / tahap |
+| --- | --- |
+| home-productions/plugin.json | R — versi/ringkasan saat tahap 6, identitas tetap |
+| home-productions/skills/produce-home-tour/SKILL.md | R — rute, keputusan, checkpoint, gambar, format chat; tahap 2–4 |
+| references/production-rules.yaml dan project-contract.md | R — kontrak/pemetaan, versi, kompatibilitas; tahap 1 |
+| assets/project.schema.json dan project-template.json | R — schema 2.1 dan data pandangan/tata ruang; tahap 1 |
+| scripts/validate_project.py | R — kontrak, metadata terpisah dan review sesuai tahap; tahap 1/5 |
+| scripts/save_project.py | B — penyimpanan aman, fallback dan hasil nyata; tahap 2 |
+| references/preproduction.md dan image-workflow.md | R — geometri, komposisi, gambar gabungan dan review; tahap 3 |
+| assets/image-prompt-template.md | R — exterior utuh, bedroom diagonal, plafon/lampu, naturalitas; tahap 3 |
+| references/omni-flash.md dan assets/prompt-template.md | R — R2V, variasi/ritme kamera dan format salin; tahap 4 |
+| scripts/build_production_package.py | R — ekspor dan peta gambar–shot; tahap 5 |
+| agents/openai.yaml | Tinjau/sesuaikan bila deskripsi berubah; tahap 3/6, kebijakan tetap |
+| references/repo-access.md dan scripts/requirements.txt | P — jalur akses dan dependensi yang sudah sesuai |
+| tests/ | R/B — tes perilaku nyata terdampak, termasuk checkpoint dan migrasi; tahap 1–6 |
+| tooling/package_plugin.py | P — sesuaikan hanya jika inventaris baru memerlukannya |
+| README.md, production-workflow.md, implementation-plan.md | R — satu set dokumen aktif, status aktual tiap tahap |
 
-- Nama: home-productions; skill: produce-home-tour.
-- Versi tersedia: 2.0.0; versi sebelumnya 0.1.0 tetap tercatat dalam riwayat rilis.
+Path singkat references/, assets/, scripts/ dan agents/ dalam tabel mengacu ke home-productions/skills/produce-home-tour/. Tidak membuat folder versi baru atau mengembalikan skrip crop yang sudah dihapus.
+
+## 9. Baseline dan pelaporan kemajuan
+
+Baseline tersedia: source/rilis privat 2.0.0, schema 2.0/rules 2.0.0; 53 tes teknis pernah lulus sebelum temuan baru ini. Angka tersebut bukan bukti perbaikan 2.1.0 atau penerimaan manual.
+
+- Plugin: [home-productions](https://chatgpt.com/plugins/plugins_6afd5aeb32208191a60a8b85426c898f).
 - Plugin ID: plugins_6afd5aeb32208191a60a8b85426c898f.
-- Release ID terakhir terverifikasi: pluginrel_6afd8f59eab0819199eed6bf3b189717; baca ulang sebelum update berikutnya.
-- [Tautan plugin yang sama](https://chatgpt.com/plugins/plugins_6afd5aeb32208191a60a8b85426c898f).
-- Scope terakhir USER, PRIVATE; tidak diperluas atau dipublikasikan ke direktori umum.
+- Release ID baseline 2.0.0: pluginrel_6afd8f59eab0819199eed6bf3b189717, hanya riwayat. Rilis aktif 2.1.0 dicatat pada bagian 10; baca current_release_id aktual sebelum update berikutnya.
+- Scope/audience: USER / PRIVATE.
+- Publisher akun dan defaultPrompt dipertahankan; tidak membuat plugin baru.
 
-| Tahap V2 | Status |
-| --- | --- |
-| 1 — Spesifikasi dan kasus acuan | Selesai; aturan, kontrak dan kasus 18/20/22/24 detik serta tujuh gambar |
-| 2 — Kontrak dan validator | Selesai; schema/rules V2, gambar area, batch, kamera dan kompatibilitas V1 |
-| 3 — Skill dan desain bersama | Selesai; satu skill, plafon/connections dan keputusan mode |
-| 4 — Dua mode gambar individual | Implementasi selesai; pemenuhan batch/naturalitas menunggu uji manual |
-| 5 — Prompt R2V, paket dan transisi | Selesai; sembilan bagian dan dua jenis ekspor tanpa start/end wajib |
-| 6 — Teknis dan update privat untuk uji | Selesai; 53 tes V2 lulus, rilis 2.0.0 dibaca balik |
-| 7 — Penerimaan manual dan perbaikan | Menunggu hasil pengguna; panduan uji sudah tersedia |
+Setelah tiap tahap, catat berkas yang berubah, hasil pemeriksaan, status rilis dan aspek yang belum diuji pada dokumen aktif ini. Rencana baru tidak menandai tahap lama gagal seluruhnya, dan tidak menganggap temuan manual sudah selesai hanya karena instruksi telah ditulis.
 
-Urutan tetap: implementasi → pemeriksaan teknis → update privat untuk uji → uji manual pengguna → perbaikan → penerimaan. Tidak menahan seluruh rilis hingga pengguna menguji salinan master prompt.
+## 10. Hasil implementasi — 19 November 2026
 
-## 9. Acuan pemeliharaan
+| Tahap | Hasil aktual | Status |
+| --- | --- | --- |
+| 1 — Kontrak | Schema 2.1/rules 2.1.0; composition, spatial_plan, area_specs/lampu dan reference_choice. Living–kitchen satu foto; exterior-to-living menerima pilihan 1/2. ID/nama file tidak boleh di badan prompt | Selesai |
+| 2 — Checkpoint | save_project.py menulis file sementara, memvalidasi/baca balik dan menerbitkan tanpa menimpa file lama. Fallback nama/folder membawa aset asli; gagal tetap mengembalikan status jujur tanpa merusak dict/keputusan sesi | Selesai |
+| 3 — Gambar | Instruksi dua mode/batch diperbarui; posisi kamera, komposisi dan tata ruang bersama; bedroom diagonal 35–45°, exterior utuh, plafon/lampu dan review piksel | Implementasi selesai; kualitas menunggu manual |
+| 4 — R2V | Sembilan bagian, referensi bukan first/last wajib, tanpa ID/nama file; variasi gerak mengikuti sumber, geometri/ritme sesuai durasi dan code block per shot | Implementasi selesai; hasil gerak/audio menunggu manual |
+| 5 — Paket/migrasi | Empat gambar/20 detik; empat atau lima/18 detik sesuai pilihan. Renderer chat dan .txt memakai isi sama. CLI --migrate-to membuat salinan dengan aset, tanpa menggabungkan foto lama atau memalsukan review baru | Selesai |
+| 6 — Teknis/rilis | 70 tes lulus; format skill, schema manifest resmi, template, tautan, arsip dan source rilis dibaca balik | Selesai |
+| 7 — Manual | Panduan tersedia di README; kasus P01–P11, dua mode/batch, pilihan exterior-to-living dan resume. Belum ada hasil manual 2.1.0 | Serah-terima siap; penerimaan belum selesai |
 
-Perubahan perilaku memperbarui alur penggunaan, aturan mesin dan kontrak pada perubahan implementasi yang sama. Source dan rilis aktif sudah memakai V2; alur V1 tersedia pada riwayat Git/rilis sebelumnya. Setiap tahap mencatat hasil aktual pada dokumen aktif, bukan laporan/salinan plan baru.
+### Bukti teknis dan peninjauan terhadap plan
 
-Baseline V1: implementasi kolase/first–last tersedia pada 0.1.0; 65 tes teknis pernah lulus. Temuan manual pengguna mendorong penggantian alur, sehingga angka tersebut tidak menjadi bukti keberhasilan V2.
+| Kelompok | Jumlah tes | Cakupan |
+| --- | --- | --- |
+| test_project_rules.py | 31 | Cakupan/durasi/sumber, satu foto gabungan, pilihan 1/2, komposisi bedroom/exterior, lokasi/lampu, metadata/prompt dan migrasi |
+| test_checkpoint.py | 9 | File/folder tidak dapat ditulis, baca balik gagal, pemindahan/corrupt/missing aset, checkpoint lama utuh, CLI dari memori dan konversi salinan |
+| test_images.py | 7 | Dua mode, parsial/draft/review, tujuh aset sintetis, fungsi terpadu dan pan tunggal |
+| test_preproduction.py | 4 | Struktur anotasi tersimpan edh022/edh035 dan sumber daya/tautan skill; bukan analisis ulang video |
+| test_production_package.py | 13 | Ekspor/portabilitas, pilihan referensi, empat gambar/20 detik, kesamaan code block/.txt, kegagalan salinan dan perlindungan paket lama |
+| test_package.py | 6 | Inventaris, determinisme, byte/CRC arsip, manifest/skill dan tidak mengemas file pengembangan |
 
-Revisi 2.0 — Menyusun migrasi ke gambar area individual dan R2V, dua mode gambar, batch tujuh, plafon/naturalitas, gerak terlihat minimal 12 derajat serta update privat sebelum penerimaan manual.
+P01–P11 ditelusuri pada kontrak/instruksi/template serta tes data/ekspor yang relevan. Variasi gerak, komposisi, naturalitas, lampu, plafon dan hubungan ruang tetap memerlukan penilaian media; tidak dibuat tes kata kunci yang mengaku membuktikan perilaku model.
 
+quick_validate menyatakan skill valid. Template brief sah pada validator. Manifest 2.1.0 divalidasi terhadap schema resmi Agent Plugins 1.0.0. Seluruh tautan lokal dalam paket diperiksa. Pustaka pengetahuan tidak berubah, tidak ada analisis ulang semua video, folder versi baru, layanan tambahan atau komponen crop yang dikembalikan.
 
-## 10. Hasil implementasi — 18 November 2026
+Fixture aset/batch/review/approval dan kegagalan izin adalah sintetis/terkontrol. Tes membuktikan konsistensi data dan perilaku I/O, bukan kualitas produksi atau izin filesystem ChatGPT pengguna yang sesungguhnya.
 
-| Bagian | Hasil aktual |
-| --- | --- |
-| Kontrak | Schema 2.0/rules 2.0.0; image_plan terpisah dari file assets, mode tersimpan, plafon/connections wajib pada rancangan |
-| Gambar | Prompt-to-image sah tanpa aset; generate_image mencatat permintaan/pelaksanaan batch, gambar parsial/gagal tetap draft; PNG/JPEG/WEBP aktual diperiksa tanpa memaksa crop 9:16 |
-| Pemetaan | Lima gambar untuk empat shot/20 atau 18 detik; dua referensi individual untuk living-to-kitchen dan exterior-to-living |
-| Kamera | Komponen dan fase diperiksa; pan/orbit minimal 12°, translasi tidak dipaksa berputar, perkiraan jarak serta total alokasi durasi konsisten |
-| Prompt | Sembilan sections menjadi satu sumber teks; peran setiap image_id, revisi/durasi/pemetaan dan aturan ambient/continuous diperiksa |
-| Ekspor | image_prompt_package dan prompt_package; gambar asli, prompt, panduan dan project.json dapat dibawa ke folder/sesi baru, tanpa klaim review otomatis |
-| Transisi | Data V1 mendapat pesan migrasi pada salinan; tidak otomatis mengubah frame lama atau membawa persetujuan visual |
-| Pembersihan | split_frames.py dan tes crop V1 dihapus; probe_stage1.py yang tidak lagi dirujuk juga dihapus. Template gambar individual ditambahkan |
-| Teknis | 53 tes V2 lulus; format skill, schema manifest resmi, Python/JSON/YAML, tautan internal dan arsip diperiksa |
-| Rilis | Plugin yang sama di-update ke 2.0.0, USER/PRIVATE. Enam belas berkas upload diverifikasi lewat pembacaan balik; manifest kompatibilitas layanan menjadi berkas ke-17 |
-| Preservasi | Plugin ID, publisher akun, defaultPrompt dan scope/audience tetap. Tidak menyalin email akun ke repo atau mengubah pustaka sumber |
+### Rilis terverifikasi
 
-Pengujian memakai fixture yang ditandai sintetis. Catatan parallel, review dan persetujuan pada fixture bukan bukti batch nyata atau keputusan pengguna. Dua kasus anotasi edh022/edh035 dipakai ulang untuk pemeriksaan struktur; bukan analisis ulang video. Tes ekspor membuktikan file/data tetap dapat divalidasi setelah folder kerja asal dihapus.
+- [home-productions 2.1.0](https://chatgpt.com/plugins/plugins_6afd5aeb32208191a60a8b85426c898f), plugin ID tetap plugins_6afd5aeb32208191a60a8b85426c898f.
+- Release ID: pluginrel_6afe70c8ec04819189e0f70757fec57a.
+- Arsip: dist/home-productions-2.1.0.zip; SHA-256 3b5d62b56db89963320e140dfd4f16f57b766638fcbc9491fd205213dcb4718d.
+- Tujuh belas berkas source cocok dengan pembacaan balik; manifest kompatibilitas layanan menjadi berkas ke-18 dan versinya sinkron 2.1.0.
+- Baseline remote dibandingkan dengan source Git sebelum update; tidak ada perubahan remote tak terduga. Update memakai expected_release_id yang dibaca segar.
+- Tidak ada file lama yang perlu dihapus pada rilis ini; helper checkpoint ditambahkan. Publisher, defaultPrompt, USER/PRIVATE dipertahankan, tanpa menyalin email akun ke repo.
 
-Rilis: [home-productions 2.0.0](https://chatgpt.com/plugins/plugins_6afd5aeb32208191a60a8b85426c898f).
-Release ID: pluginrel_6afd8f59eab0819199eed6bf3b189717.
-Arsip: dist/home-productions-2.0.0.zip, diabaikan Git.
-SHA-256 upload: 1f0a90d3f156055f04ae4f52a2bc9fa123b3a230c636c4c36b3ff7a1f1d10677.
+### Serah-terima tahap 7
 
-Update memakai expected_release_id aktual dan delete_paths untuk script crop lama. Pembacaan inventaris lengkap memverifikasi script tersebut hilang, template gambar baru tersedia, versi kompatibilitas sinkron serta publisher/defaultPrompt dipertahankan. Tidak dibuat plugin baru atau mengubah sharing.
+Gunakan [panduan uji 2.1.0](README.md#panduan-uji-manual-210). Prioritas reproduksi: kitchen tunggal pada satu foto living–kitchen, bedroom diagonal, exterior utuh, lampu/plafon, gerak beragam sesuai ritme, prompt siap salin dan checkpoint/resume.
 
-### Tahap 7 — Serah-terima uji manual
-
-Gunakan [panduan uji di README](README.md#uji-manual-v2). Uji terpisah:
-1. Prompt-to-image: seluruh prompt area, tanpa generate otomatis atau klaim file tersedia.
-2. Generate image: seluruh jumlah gambar individual sekaligus; khusus tujuh gambar, catat jumlah file dan pelaksanaan aktual.
-3. Review plafon, geometri, hubungan ruang, naturalitas dan kesesuaian desain dari hasil nyata.
-4. R2V satu gambar dan dua referensi pada living-to-kitchen serta exterior-to-living; satu shot, bukan dua klip.
-5. Gerak gabungan, minimum rotasi yang diminta, ritme 4/6 detik, continuous shot dan ambient tanpa musik.
-6. Ekspor serta kelanjutan sesi dengan file asli, lalu revisi satu keputusan dan tinjau dampaknya.
-
-Belum ada hasil manual V2 yang diterima pada saat rilis ini. Aktivasi/pemilihan skill di ChatGPT, tujuh gambar serentak, naturalitas/plafon dan video/audio tidak dinyatakan lulus dari source atau 53 tes. Perbaikan berikutnya mengikuti temuan pengguna dan menggunakan plugin ID yang sama.
-
-Revisi 2.1 — Mencatat implementasi tahap 1–6, pemeriksaan teknis, pembersihan alur lama, rilis privat 2.0.0 yang terverifikasi dan tahap 7 yang menunggu hasil manual.
+Exterior-to-living mengikuti pilihan pengguna 1 atau 2; pengguna tidak diwajibkan menguji kedua opsi sekaligus. Penerimaan opsi yang belum diuji tidak disimpulkan dari opsi lainnya. Aktivasi skill pada host, batch simultan nyata, kualitas gambar serta video/audio belum diverifikasi pada rilis baru.

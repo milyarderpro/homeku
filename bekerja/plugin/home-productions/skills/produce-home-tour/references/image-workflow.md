@@ -1,53 +1,61 @@
-# Gambar area individual: prompt atau batch
+# Gambar individual: dua mode, komposisi dan review
 
-Gunakan setelah desain/shot disetujui atau didelegasikan. Baca [kontrak](project-contract.md), [aturan](production-rules.yaml) dan [template prompt gambar](../assets/image-prompt-template.md).
+Gunakan setelah rancangan disetujui/didelegasikan. Baca [kontrak](project-contract.md), [aturan](production-rules.yaml) dan [template gambar](../assets/image-prompt-template.md).
 
-## Pilihan mode
+## Pilihan mode dan batch
 
-prompt_to_image menyerahkan seluruh prompt gambar individual. Satu image_id mempunyai satu prompt lengkap. Jangan otomatis menjalankan generator. Gunakan stage image_prompt_package untuk penyerahan ini; aset belum wajib. Hasil dari alat pilihan pengguna kemudian dibuka melalui akses nyata, tanpa meminta unggah ulang bila file sudah tersedia.
+prompt_to_image menyerahkan seluruh prompt, satu prompt lengkap per image_id. Jangan otomatis generate. Gunakan image_prompt_package; file belum wajib, belum disebut siap R2V final. Buka hasil alat pilihan pengguna saat benar-benar tersedia, tanpa meminta unggah ulang jika akses sudah ada.
 
-generate_image membuat seluruh gambar individual sesuai image_plan dalam satu tahap. Jika tujuh, kerjakan tujuh sekaligus. Jangan membuat kolase/contact sheet atau berhenti menunggu perintah setelah setiap gambar. Generate satu per satu hanya untuk permintaan eksplisit pengguna, dicatat pada image_batch.user_instruction.
+generate_image membuat seluruh gambar individual sesuai rencana **sekaligus dalam satu tahap/permintaan**. Tujuh berarti tujuh file, bukan kolase/contact sheet atau berhenti meminta perintah tiap area. Satu per satu hanya bila pengguna meminta, dicatat di image_batch.user_instruction.
 
-Gunakan kemampuan generate/edit bawaan yang benar-benar tersedia. Sertakan gambar acuan melalui mekanisme alat yang sebenarnya; menyebut nama file tidak melampirkan piksel. Jangan beralih ke API atau layanan berbayar tanpa permintaan. Ketersediaan batch simultan dibuktikan pada host pengguna, bukan disimpulkan dari alat pengembang.
+Gunakan kemampuan generate/edit yang tersedia pada host. Lampirkan piksel lewat mekanisme alat, bukan hanya nama file. Jangan memindahkan produksi ke API/layanan berbayar atau menyatakan batas ChatGPT dari kegagalan alat pengembang. Jika ada batas nyata, laporkan hasil parsial; jangan mengubah permintaan diam-diam.
 
-## Satu rumah pada seluruh gambar
+Semua tugas gambar memakai desain yang sama. Aset yang sudah tersedia boleh membantu konsistensi jika benar-benar dilampirkan, tetapi jangan mewajibkan membuat gambar tambahan sebelum batch.
 
-Semua prompt memakai keputusan design yang sama dan mencatat area tujuan, plafon, bukaan, furnitur, material, cahaya, lingkungan serta hubungan ruang. Gambar yang sudah tersedia/diperiksa boleh menjadi acuan bersama sesuai arahan proyek; jangan mewajibkan generate gambar tambahan sebelum batch.
+## Satu pandangan yang mendukung shot
 
-Komposisi memperlihatkan area secara luas/informatif: lantai, plafon, bukaan dan susunan furnitur yang dibutuhkan kamera. Jangan memaksa seluruh dinding terhalang terlihat melalui fisheye, transparansi atau dollhouse. Hindari close-up yang membuang informasi utama.
+Gunakan design.area_specs, connections dan anchors untuk menyusun composition: posisi/arah/tinggi kamera, sudut terhadap subjek, penempatan subjek, foreground/background, visible_bounds, layout_note serta shot_alignment. Kamera video memakai tata ruang yang sama. Jangan menyerahkan hanya kata wide/full overview.
 
-Video tetap 9:16. Gambar area bukan endpoint video wajib, sehingga rasio acuan dipilih sesuai cakupan dan alat; tidak dipotong/diregangkan demi memenuhi rasio frame V1. Simpan dimensi dan format aktual. PNG menjadi pilihan penyerahan bila tersedia; PNG/JPEG/WEBP statis dapat dicatat sesuai file sebenarnya. Jangan mengasumsikan format/input tambahan didukung aplikasi yang belum diperiksa.
+| Jenis gambar | Komposisi wajib |
+| --- | --- |
+| Exterior | Seluruh massa rumah yang terlihat: atap, batas kiri/kanan, dasar; ada ruang aman di tepi. Sudut frontal, three-quarter atau lainnya sesuai desain/sumber |
+| Living–kitchen | Satu foto koheren kedua area dan sambungan, kitchen tunggal pada lokasi tetap; orientasi mendukung lintasan |
+| Bedroom | Front three-quarter, sasaran 35–45° terhadap sumbu panjang bed secara horizontal; bed memanjang diagonal, hindari frontal terpusat/simetris |
+| Interior lainnya | Ruang terbaca luas: lantai, plafon, bukaan/furnitur utama dan armatur lampu yang sesuai fungsi/desain |
 
-Naturalitas dinilai dari gambar: perspektif, skala, tekstur, garis bangunan, pencahayaan, pantulan dan bayangan masuk akal; tidak tampak seperti CGI/plastik/HDR berlebihan. Kata photorealistic bukan hasil review.
+Untuk bedroom, pilih sisi kamera yang sesuai layout; jangan memutar bed atau memakai roll. Sudut tersebut target proyek, bukan pengukuran otomatis dari piksel atau ukuran semua referensi.
 
-Living-to-kitchen tetap dua gambar individual; exterior-to-living juga dua. Kedua area harus memperlihatkan hubungan ruang yang sama sesuai rancangan. Fungsi lain yang terpadu mengikuti pemetaan image_plan; tidak otomatis membuat area fisik baru.
+Setiap interior punya lampu nyata yang terbaca; jenis dan posisinya mengikuti rancangan. Lampu boleh mati pada cahaya siang. Plafon, lampu, bukaan dan furnitur tetap tidak berubah antarview. Jangan menambah dekorasi/struktur yang belum dirancang.
 
-## Status batch yang jujur
+Living-to-kitchen default satu foto gabungan, bukan dua foto yang ditempel. Exterior-to-living mengikuti pilihan pengguna 1/2 referensi. Jika satu, tidak perlu memaksakan seluruh living terlihat pada foto exterior. Jika dua, exterior/living individual harus menunjukkan rumah dan sambungan yang sama. Jangan menambah referensi kedua sebagai syarat tersembunyi.
 
-image_batch.request_mode default all_at_once. execution mencatat not_started, parallel, sequential, external atau unknown. note menjelaskan dasar pengamatan/laporan; jangan menyimpulkan parallel hanya dari jumlah file.
+Full exterior merupakan syarat gambar, bukan semua frame video. Full interior adalah cakupan informatif, bukan melihat seluruh sisi yang tertutup. Hindari close-up yang membuang konteks, fisheye ekstrem, dinding transparan, dollhouse/cutaway atau perspektif mustahil.
 
-Jika tujuh diminta tetapi lima berhasil, catat dua gambar gagal/tertunda dan pertahankan image_draft. Jika eksekusi serentak tidak teramati, gunakan unknown dan laporkan batas pengamatan. Jika alat terbukti memproses satu per satu, catat sequential; jangan mengklaim permintaan simultan sudah dipenuhi atau mengubah permintaan tanpa arahan.
+Gambar adalah identitas visual/spasial R2V, bukan frame awal/akhir wajib. Video 9:16; rasio gambar dipilih agar cakupan wajar dan sesuai alat, tanpa crop/resize paksa yang membuang informasi. Simpan dimensi/format aktual, tanpa mengarang resolusi minimum atau mengklaim upscaling menambah detail. PNG/JPEG/WEBP statis didukung kontrak; PNG dapat dipilih bila tersedia.
 
-all_at_once pada mode generate_image baru dapat dinyatakan final bila pelaksanaan parallel dicatat berdasarkan bukti aktual atau laporan pengguna. one_by_one memerlukan instruksi pengguna dan pelaksanaan sequential yang sesuai. Ini pemeriksaan konsistensi catatan, bukan pengukuran concurrency otomatis.
+Naturalitas dilihat dari perspektif, skala, garis, tekstur, cahaya, bayangan dan pantulan yang masuk akal. Hindari plastik/CGI/HDR berlebihan. Kata photorealistic bukan bukti gambar sudah natural.
 
-Pada mode prompt_to_image, gambar yang dibawa dari luar dicatat sebagai external, dengan dasar perolehannya pada note. Tidak ada klaim batch internal ChatGPT pada mode ini.
+## Review sebelum final
 
-## Review dan aset
+Periksa setiap gambar serta seluruh set sebagai satu rumah:
+- Desain/material, plafon/lampu, bukaan, lantai, furnitur tetap, cahaya dan lingkungan.
+- Exterior utuh dengan margin; bedroom benar-benar three-quarter dan bed diagonal.
+- Kitchen tunggal, hubungan ruang dan arah pandang sesuai posisi kamera/lintasan/akhir.
+- Jika dua referensi exterior-to-living dipilih, sambungan masuk/living dan geometri saling sesuai.
+- Cakupan cukup dan perspektif natural tanpa memaksa bagian yang tersembunyi terlihat.
 
-Periksa setiap gambar dan seluruh set sebagai satu rumah. Bandingkan plafon/tingkat/sambungan/lampu, bukaan, lantai, furnitur tetap, material, cahaya dan lingkungan. Perbedaan antararea yang memang dirancang boleh ada; perubahan tak direncanakan direvisi.
+Review didasarkan pada piksel yang dilihat atau laporan pengguna, dengan review_origin ai_visual/user_report dan note yang menjelaskan cakupan. Data komposisi, hash atau kalimat larangan tidak membuktikan visual benar.
 
-Simpan satu aset role reference per image_id, dengan asset_id unik, revision, path relatif dari folder project.json, SHA-256, width, height dan format aktual. File asli diperlukan. Pastikan dimensi/keterbacaan cukup untuk kebutuhan; tanpa target resolusi tertentu, jangan mengarang standar minimum atau mengklaim upscaling menambah detail.
+Revisi bagian yang menyimpang sebelum image_final. Perubahan elemen tetap meninjau gambar/shot terdampak. Jangan menyalin nomor revisi baru ke isi aset lama agar tampak mutakhir. Persetujuan paket visual mengikuti pengguna/delegasi, bukan wajib per gambar.
 
-image_plan.status: planned selama perencanaan, prompt_ready ketika prompt siap, available setelah file ada, reviewed setelah review, atau failed dengan error aktual tanpa mengklaim aset. image_plan.asset_id mengikat file; jangan menyamarkan file sama sebagai dua area melalui nama berbeda.
+## Status dan penyerahan
 
-reviewed hanya true setelah piksel dilihat atau laporan pengguna diterima; review_origin ai_visual/user_report dan review_note memuat temuan serta cakupan. image_final memerlukan seluruh gambar, persetujuan visual aktual/delegasi, dan revisi yang sama. Tidak meminta persetujuan setiap gambar satu per satu.
+image_batch.execution berisi not_started/parallel/sequential/external/unknown. Catat bukti pelaksanaan pada note; jumlah file/permintaan/tes tidak membuktikan parallel. Jika tidak teramati, unknown; jika alat memproses berurutan, catat sequential dan laporkan ketidaksesuaian. all_at_once pada generate_image tetap draft sampai pemenuhan permintaan tercatat berdasarkan pelaksanaan/laporan, bukan disimpulkan.
 
-Bila desain berubah, tinjau area dan shot terdampak. File/review lama tidak otomatis cocok hanya dengan mengganti nomor revisi. Tidak ada human_verified atau review manual setiap referensi pustaka.
+prompt_to_image mencatat external saat file dibawa dari generator pengguna. one_by_one hanya atas instruksi pengguna. Kegagalan/parsial tidak diberi status seluruh batch selesai.
 
-## Penyerahan
+Satu aset reference per image_id, dengan ID unik, path relatif, revisi, hash, dimensi dan format sebenarnya. File identik tidak menyamar sebagai dua gambar. planned/prompt_ready/failed belum mengaku punya aset; failed menyimpan error. available berarti file ada; reviewed memerlukan catatan review aktual.
 
-Jalankan [validator](../scripts/validate_project.py) dengan file proyek dan [dependensi](../scripts/requirements.txt) yang tersedia. Ia memeriksa file/metadata, bukan naturalitas atau plafon.
+Gunakan [checkpoint](../scripts/save_project.py) untuk menyimpan dict aktif; bila gagal, lanjutkan dari data sesi tanpa mengaku file tersedia. Jalankan [validator](../scripts/validate_project.py) terhadap file yang benar-benar berhasil disimpan.
 
-Serahkan tautan individu setiap gambar, ukuran aktual, ringkasan review dan project.json. File harus dapat dibuka sebelum disebut tersedia; keberhasilan pengguna mengunduh hanya disebut jika diamati/dilaporkan. ZIP opsional tidak menggantikan file individual.
-
-Sesudah gambar final, lanjutkan [prompt R2V](omni-flash.md) bila diminta. Kolase, pemotongan panel dan pasangan first/last frame tidak menjadi alur produksi V2.
+Serahkan unduhan setiap gambar, ukuran aktual, ringkasan review dan catatan proyek. ZIP opsional tidak menggantikan gambar individual. Sesudah paket final, lanjutkan [R2V](omni-flash.md); tidak ada kolase/crop panel/interpolasi dalam alur utama.

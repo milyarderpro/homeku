@@ -65,6 +65,7 @@ def source_case(reference_id):
     project["revision_notes"] = [
         "6/4-second duration, travel estimates and 12-degree pan are test project adaptations.",
         "Compound source labels do not prove the original timing relationship.",
+        "Bedroom three-quarter/40-degree composition is a user preference adaptation, not a measured source angle.",
     ]
     for index, shot in enumerate(project["shots"]):
         annotated = source["shots"][index]
@@ -92,7 +93,7 @@ class SourcePlanningTests(unittest.TestCase):
         self.assertTrue(result["valid"], result)
         self.assertEqual(result["total_duration_s"], expected)
         self.assertEqual(len(project["shots"]), 4)
-        self.assertEqual(len(project["image_plan"]), 5)
+        self.assertEqual(len(project["image_plan"]), 4)
         areas = [area for shot in project["shots"] for area in shot["covered_areas"]]
         self.assertEqual(len(areas), len(set(areas)))
         self.assertEqual(areas.count("kitchen"), 1)

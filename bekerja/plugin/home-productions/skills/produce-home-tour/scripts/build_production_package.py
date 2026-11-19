@@ -26,6 +26,19 @@ def render_video_prompt(prompt):
     return "\n\n".join(name + "\n" + prompt["sections"][name] for name in RULES["prompt_sections"]) + "\n"
 
 
+def render_chat_prompts(project):
+    """Use the same prompt source as .txt; keep labels and attachment maps outside fences."""
+    if project["stage"] != "prompt_package" or any(shot["prompt"] is None for shot in project["shots"]):
+        raise ValueError("Chat delivery requires complete prompt_package.")
+    blocks = []
+    for shot in project["shots"]:
+        body = render_video_prompt(shot["prompt"])
+        if "```" in body or "~~~" in body:
+            raise ValueError("Prompt body must be plain text without Markdown fences.")
+        blocks.append(f"{shot['shot_id']} · {shot['duration_s']} detik\n\n```\n" + body + "```")
+    return "\n\n".join(blocks) + "\n"
+
+
 def production_guide(project):
     final = project["stage"] == "prompt_package"
     images = {image["image_id"]: image for image in project["image_plan"]}
@@ -39,14 +52,19 @@ def production_guide(project):
         "Brief: " + project["brief"], "", "## Satu rumah", "",
     ]
     for key, value in project["design"].items():
-        lines.append("- " + key + ": " + ("; ".join(value) if isinstance(value, list) else value))
+        if key == "area_specs":
+            for spec in value:
+                fixtures = "; ".join(spec["fixtures"]) or "Tidak ada armatur interior pada exterior."
+                lines.append(f"- {spec['area']}: {spec['position']}; plafon/atap: {spec['ceiling']}; lampu: {fixtures}")
+        else:
+            lines.append("- " + key + ": " + ("; ".join(value) if isinstance(value, list) else value))
     lines.extend(["", "## Gambar area", "",
-                  "| ID | Area tujuan | Prompt gambar | File referensi |",
+                  "| ID | Area terlihat | Prompt gambar | File referensi |",
                   "| --- | --- | --- | --- |"])
     for image in images.values():
         asset = assets.get(image["asset_id"])
         file = file_link(asset["path"]) if asset else "Belum tersedia"
-        lines.append(f"| {image['image_id']} | {cell(image['primary_area'])} | "
+        lines.append(f"| {image['image_id']} | {cell(', '.join(image['area_ids']))} | "
                      f"{file_link('image-prompts/' + image['image_id'] + '.txt')} | {file} |")
     lines.extend(["", "## Peta shot dan referensi R2V", "",
                   "| Shot | Cakupan | Detik | ID gambar referensi | Prompt video |",
@@ -55,11 +73,16 @@ def production_guide(project):
         prompt = file_link("video-prompts/" + shot["shot_id"] + ".txt") if final else "Belum disiapkan"
         lines.append(f"| {shot['shot_id']} | {cell(', '.join(shot['covered_areas']))} | "
                      f"{shot['duration_s']} | {', '.join(shot['reference_image_ids'])} | {prompt} |")
+    lines.extend(["", "## Komposisi gambar", ""])
+    for image in images.values():
+        lines.extend(["", "### " + image["image_id"], ""])
+        for key, value in image["composition"].items():
+            lines.append("- " + key + ": " + ("; ".join(value) if isinstance(value, list) else str(value)))
     lines.extend(["", "## Cara menggunakan", ""])
     if final:
         lines.extend([
             "1. Gunakan mode Reference-to-Video (R2V). Pasang file sesuai ID referensi pada baris shot yang sama.",
-            "2. Dua gambar pada shot penghubung menetapkan dua area satu rumah; bukan alternatif desain atau endpoint yang wajib disalin.",
+            "2. Living-to-kitchen default satu foto gabungan; exterior-to-living memakai pilihan 1/2 referensi pada peta. Referensi bukan frame awal/akhir wajib.",
             "3. Salin prompt video shot tersebut. Pilih durasi tabel dan video 9:16 melalui kontrol yang tersedia.",
             "4. Generate satu klip kontinu per shot. Periksa struktur, plafon, gerak dan ambient dari hasil yang tersedia.",
             "5. Rangkai klip sesuai urutan. Cut antarklip terpisah dari gerak kontinu di dalam klip; jangan menambah pengungkapan area atau musik.",
@@ -82,8 +105,12 @@ def production_guide(project):
             "Hubungan: " + shot["camera"]["motion_relationship"],
             "Bukti gerak yang ditargetkan: " + shot["camera"]["visible_motion_evidence"],
             "Alokasi ritme: " + shot["camera"]["timing_note"],
+            "Pilihan referensi: " + str(shot["reference_choice"]["count"]) + "; " +
+            shot["reference_choice"]["by"] + "; " + shot["reference_choice"]["note"],
             "Akhir: " + shot["framing"]["end"], "",
         ])
+        for key, value in shot["camera"]["spatial_plan"].items():
+            lines.append("- " + key + ": " + value)
         for component in shot["camera"]["components"]:
             details = [component["kind"] + ": " + component["description"],
                        f"mulai {component['start_s']}s, durasi {component['duration_s']}s"]

@@ -1,185 +1,175 @@
-# Alur penggunaan home-productions V2
+# Alur penggunaan home-productions 2.1.0
 
-Versi alur: 2.0
+Diperbarui: 19 November 2026
 
-Diperbarui: 18 November 2026
+**Status: source dan rilis privat 2.1.0 sudah diperbarui dan dibaca balik.** Tahap teknis 1–6 selesai; penerimaan gambar/batch/video menunggu uji manual pengguna. Ikuti [rencana dan hasil implementasi](implementation-plan.md) serta [README](README.md) untuk panduan uji. Versi sebelumnya tersedia di Git; tidak ada alur produksi kedua.
 
-Status: **alur V2 sudah diimplementasikan dan tersedia pada rilis privat 2.0.0 untuk uji manual**. Penerimaan gambar, batch, gerak dan video/audio menunggu hasil pengguna; keberhasilan teknis tidak menggantikan uji tersebut.
+## 1. Tujuan dan batas
 
-Acuan pembangunan: [rencana implementasi V2](implementation-plan.md). [Peta pengembangan dan rilis](README.md). Satu alur dan satu rencana aktif dipertahankan; versi sebelumnya tersedia melalui riwayat Git.
+Mendukung proses kreatif dari brief, konsep rumah dan shot sampai gambar referensi individual serta prompt Reference-to-Video (R2V) Omni Flash.
 
-## 1. Tujuan dan sumber pengetahuan
+Repo merupakan pustaka pengetahuan. Plugin membaca sumber secara selektif lewat URL GitHub atau konektor, tanpa menyalin pustaka ke plugin atau menganalisis ulang seluruh video. Produksi tidak mengubah anotasi sumber.
 
-Membantu pengguna dari brief dan konsep desain rumah sampai gambar referensi individual serta prompt Reference-to-Video (R2V) Omni Flash.
+DNA meliputi desain, tata ruang, material, plafon, lampu, bukaan, furnitur, lingkungan, komposisi, cakupan/urutan area, pengungkapan ruang, gerak dan ritme. Bedakan fakta sumber dari adaptasi proyek. Confidence membatasi kepastian klaim, bukan penggunaan material dalam konsep kreatif. Tidak ada human_verified atau kewajiban review manual per referensi.
 
-Repository tetap menjadi pustaka pengetahuan yang dibaca melalui URL web atau konektor GitHub. Skill/plugin menjalankan workflow. Tidak menyalin pustaka ke plugin, mengubah anotasi sumber atau menganalisis ulang seluruh video untuk perubahan V2.
+Referensi dikurasi pengguna dari video viral; kesesuaian DNA menjadi sasaran, tanpa jaminan hasil baru akan viral.
 
-DNA yang dipelajari mencakup bentuk, tata ruang, material, plafon, bukaan, furnitur, lighting, lingkungan, komposisi, cakupan/urutan area, pengungkapan ruang, gerak kamera dan ritme. Pilihan baru dibedakan dari fakta sumber; urutan edit tidak membuktikan denah. Confidence membatasi kepastian klaim sumber, bukan kebebasan memilih bahan desain baru. Tidak ada human_verified atau kewajiban review manual setiap referensi.
+**Brief → sumber dan pilihan konsep → desain/shot disetujui → pilih mode gambar → seluruh prompt atau gambar individual → review visual → prompt R2V per shot → paket proyek → generate video dan revisi hasil.**
 
-Pengguna mengkurasi referensi berdasarkan performa viral. Kesesuaian DNA menjadi sasaran produksi; performa viral setiap hasil baru tidak dijamin.
+## 2. Memilih konsep dan merancang satu rumah
 
-**Brief → referensi dan konsep → desain/shot disetujui → pengguna memilih mode gambar → seluruh prompt atau gambar individual → review gambar → prompt R2V per shot → paket proyek → generate dan revisi hasil.**
+Pada proyek baru, lengkapi hanya informasi yang memengaruhi hasil. Pada kelanjutan, pertahankan pilihan, persetujuan dan delegasi yang sudah diberikan. Analisis sumber saja tidak otomatis memulai produksi penuh.
 
-## 2. Shot, gambar dan cakupan
+Baca pengetahuan dan anotasi yang relevan; catat sumber/shot, URL/ref/commit yang benar-benar diakses, bukti dan adaptasi. Jumlah referensi tidak dibekukan dalam instruksi.
 
-Shot adalah satu tampilan kamera kontinu tanpa cut. Adegan tidak menjadi unit penghitungan produksi.
+Sesudah konsep dipilih, tetapkan satu rancangan rumah:
+- Massa, atap, proporsi, material, bukaan dan hubungan area.
+- Lantai, plafon serta sambungan antararea yang terhubung.
+- Furnitur utama dan elemen tetap, termasuk satu lokasi kitchen.
+- Armatur lampu nyata pada setiap interior, jenis/posisi sesuai fungsi dan desain.
+- Lighting, lingkungan serta hal yang terlihat di luar bukaan.
 
-Gambar V2 menetapkan identitas visual suatu area, bukan frame awal atau akhir wajib. Komposisi awal–akhir video tetap direncanakan dalam teks, tanpa mewajibkan generator menyalin piksel referensi pada kedua ujung klip. Tidak ada kolase atau crop panel dalam alur utama.
+Hubungan baru merupakan keputusan proyek, bukan denah sumber yang sudah terbukti. Jangan menambah balok, ornamen, ruang atau kamar yang tidak dirancang.
 
-| Pola | Gambar individual | Video |
+## 3. Merancang shot, gambar dan kamera bersama
+
+Shot adalah satu pengambilan kamera kontinu tanpa cut. Shot menjadi unit produksi; jumlah gambar dapat berbeda dari jumlah shot atau label area.
+
+| Pola | Referensi sasaran | Video |
 | --- | --- | --- |
-| Area tersendiri | Satu gambar area tersebut | Satu continuous shot |
-| Living-to-kitchen | Satu gambar living dan satu gambar kitchen | Satu continuous shot 6 detik dengan dua referensi R2V |
-| Exterior-to-living | Satu gambar exterior dan satu gambar living | Satu continuous shot 6 detik dengan dua referensi R2V |
+| Area tersendiri | Satu foto individual yang informatif | Satu continuous shot |
+| Living-to-kitchen | **Satu foto utuh yang memperlihatkan living dan kitchen terhubung** | Satu continuous shot 6 detik |
+| Exterior-to-living | **1 atau 2 referensi sesuai pilihan pengguna saat produksi**: satu gambar utama, atau gambar exterior dan living individual | Satu continuous shot 6 detik |
 
-Kedua gambar pada shot penghubung menggambarkan area berbeda dalam rumah yang sama. Keduanya bukan alternatif desain, kolase atau dua shot.
+Gambar living–kitchen merupakan satu pandangan ruang yang koheren, bukan kolase, dua panel atau dua shot. **Kedua shot penghubung tidak mewajibkan dua referensi.** Living-to-kitchen memakai satu foto gabungan sebagai default. Untuk exterior-to-living, pengguna bebas memilih **1 atau 2 referensi**; keduanya sah dan dicatat pada rancangan. Jika dua, gambar exterior dan living harus menggambarkan rumah yang sama dengan hubungan spasial yang konsisten.
 
-Jenis/jumlah area serta pola gabungan mengikuti referensi terpilih. Bedroom yang ditampilkan maksimal satu; sleeping loft yang sudah mencakup fungsi tidur tidak diikuti bedroom lain. Tidak menambah ruang atau kamar dengan mengganti namanya.
+Untuk exterior-to-living, gambar utama tidak harus memperlihatkan seluruh interior bersamaan dengan exterior. Bila memakai exterior, seluruh rumah tetap masuk frame; interior yang belum terlihat mengikuti rancangan dan prompt. Jangan memakai dinding transparan, cutaway atau mengklaim foto sudah menunjukkan ruang tersembunyi. Kedua pola diuji sesuai geometrinya masing-masing.
 
-Setelah living-to-kitchen, living dan kitchen sudah tercakup. Setelah exterior-to-living, exterior dan living sudah tercakup. Jangan menumpuk kedua pola tersebut sehingga living terungkap ulang. Area lama boleh terlihat sebagai background ketika mengungkap fungsi baru; itu bukan alasan membuat shot tambahan.
+Cakupan mengikuti sumber terpilih. Living-to-kitchen sudah mencakup living dan kitchen; jangan membuat shot kitchen lagi. Exterior-to-living sudah mencakup exterior dan living; jangan menambahkan living-to-kitchen yang mengulang living. Area sebelumnya boleh muncul sebagai background ketika mengungkap area baru.
 
-Laundry, wardrobe/closet, dining, sleeping loft atau bathroom–laundry hanya digunakan sesuai pola sumber. Untuk fungsi terpadu, kebutuhan gambar dipetakan secara eksplisit dalam rancangan; banyaknya label fungsi tidak otomatis menambah ruang fisik, gambar atau shot. Dua gambar pada living-to-kitchen dan exterior-to-living tetap wajib.
+Maksimal satu fungsi tidur: bedroom atau sleeping loft yang sudah mengungkap fungsi tidur. Tidak menambah bedroom lain melalui label utama/tamu. Laundry, wardrobe, dining, loft atau bathroom–laundry hanya bila didukung sumber dan rancangan. Label fungsi tidak otomatis berarti ruangan atau gambar tambahan.
 
-Baca ID anotasi bersama continuity, transition_out dan observation_note. Segmen tematik yang tersambung tanpa cut tidak otomatis menjadi shot produksi terpisah.
+Baca anotasi bersama continuity, transition_out dan observation_note. Pemisahan segmen tematik tanpa cut tidak otomatis berarti beberapa shot produksi.
 
 ### Durasi dan audio
 
-| Jenis shot | Durasi |
+| Shot | Durasi |
 | --- | --- |
-| Exterior | 6 detik |
-| Exterior-to-living | 6 detik |
-| Living-to-kitchen | 6 detik |
-| Living, kitchen, bedroom, bathroom, laundry, wardrobe dan area lainnya | 4 detik |
-| Fungsi terpadu lain, misalnya bathroom–laundry | 4 detik |
+| Exterior, exterior-to-living, living-to-kitchen | 6 detik masing-masing |
+| Living, kitchen, bedroom, bathroom, laundry, wardrobe dan area/fungsi terpadu lain yang disetujui | 4 detik masing-masing |
 
-Jumlah gambar bukan penentu durasi. Total merupakan penjumlahan seluruh shot. Jangan menyamaratakan durasi, mempercepat atau memangkas otomatis untuk mengejar panjang video referensi.
+Total dijumlahkan dari shot. Jangan menyeragamkan semua klip 4 detik atau memangkas untuk mengejar durasi sumber.
 
-Semua prompt/klip memakai ambient natural yang halus. Tanpa musik, soundtrack, beat, narasi, dialog atau efek dramatis. Musik sumber tidak diterapkan pada produksi. Cut antarklip dicatat di panduan perangkaian, terpisah dari gerak kontinu dalam klip.
+Audio hanya ambient natural halus; tanpa musik, soundtrack, beat, narasi, dialog atau efek dramatis. Cut perangkaian hanya antarklip, bukan di dalam shot.
 
-## 3. Menetapkan satu rumah dan rancangan
+### Satu catatan tata ruang untuk gambar dan video
 
-Plugin membaca pengetahuan inti, tema, direktori dan sumber yang relevan secara selektif. Catat URL/ref/commit, referensi, shot/segmen, bukti yang benar-benar dibaca, serta adaptasi. Tidak membekukan jumlah referensi dalam instruksi plugin.
+Dari rancangan yang sama, tentukan **posisi/arah kamera → komposisi gambar → lintasan → framing akhir**. Perkirakan tinggi, jarak, sudut dan fase sebagai rencana proyek; jangan menyebutnya pengukuran sumber.
 
-Tawarkan konsep bila pengguna masih memilih; pertahankan keputusan yang sudah diberikan. Rancangan terpilih menetapkan:
+Kitchen tetap satu pada lokasi yang sama. Bila di foto tampak di depan, jangan menuliskan seolah ada kitchen lain di kanan. Pan kanan masih mungkin sesuai, tetapi harus diperiksa terhadap posisi kamera, bidang pandang dan akhir lintasan. Jika tidak sesuai, ubah posisi kamera/komposisi gambar atau lintasan dalam batas DNA/desain, bukan memindahkan/menambah kitchen secara diam-diam.
 
-- Bentuk/massa, proporsi, atap, bukaan dan hubungan ruang.
-- Plafon: bentuk, tingkat, sambungan antararea, balok bila ada, serta susunan lampu.
-- Material, warna, tekstur, lantai dan furnitur utama.
-- Lighting, lingkungan dan dunia di luar jendela.
-- Elemen tetap yang harus konsisten antararea serta sepanjang video.
+Gambar R2V bukan frame awal/akhir wajib. Meski demikian, gambar harus mendukung lintasan yang masuk akal. Larangan duplicate kitchen tidak menggantikan rancangan geometri yang sesuai.
 
-Rincian tersebut mengikuti desain yang disetujui, bukan alasan menambahkan ornamen atau geometri yang tidak dirancang. Hubungan baru dinyatakan sebagai keputusan proyek, bukan denah sumber yang telah terbukti.
+Pilih gerak per area dari DNA sumber yang relevan: maju/mundur, lateral, pan, orbit atau tilt bila sesuai. Tidak ada default dolly + pan untuk semua ruang. Gerak tunggal tetap sah. Gerak gabungan terpilih harus terbaca seluruh komponennya; bedakan maju sambil pan dan maju lalu pan.
 
-Daftar shot mencatat cakupan, acuan, posisi/komposisi awal–akhir, lintasan, jenis gerak, hubungan simultan/sekuensial, perkiraan jarak/sudut, ritme, bukti visual gerak dan durasi. Perkiraan adalah rencana produksi, bukan ukuran fisik referensi yang sudah terverifikasi.
+Pan/orbit terpilih minimal 12°. Pan mengubah arah pandang; orbit mengubah posisi mengitari subjek. Jangan menggantinya dengan roll atau memaksa rotasi pada gerak translasi.
 
-Rancangan juga memuat daftar gambar individual dan pemetaannya ke shot. Jumlah gambar, prompt gambar, shot, prompt video dan total durasi ditampilkan sebelum produksi gambar.
+Sesuaikan jarak, sudut, kecepatan dan fase dengan 4/6 detik. Jangan menulis slow sambil meminta jarak panjang, sudut besar dan banyak fase. Tetapkan bukti visual dari elemen nyata: perubahan perspektif, foreground, sisi ruang yang terungkap dan hubungan area yang tetap.
 
-## 4. Dua mode gambar setelah rancangan disetujui
+## 4. Menyetujui rancangan dan memilih mode gambar
 
-Pengguna memilih satu mode. Pilihan dapat diberikan bersama persetujuan desain; jangan meminta ulang jika sudah jelas.
+Sebelum generate, tampilkan desain, daftar shot, acuan, cakupan, durasi, komposisi/lintasan serta daftar gambar. Untuk exterior-to-living, gunakan pilihan pengguna 1 atau 2 referensi; tanyakan hanya bila pilihan belum jelas dan diperlukan untuk menetapkan daftar gambar. Jangan meminta ulang jika sudah dipilih. Tunjukkan jumlah gambar, prompt gambar, shot, prompt video dan total durasi sesuai pilihan.
 
-| Mode | Keluaran |
+Sesudah rancangan disetujui, gunakan pilihan mode yang sudah diberikan atau minta pilihan:
+- **Prompt-to-image:** seluruh prompt individual, satu prompt untuk satu gambar; tidak otomatis generate atau mengaku file tersedia.
+- **Generate image:** seluruh gambar individual sesuai rencana dibuat sekaligus dalam satu tahap/permintaan; bukan kolase.
+
+Jika rencana memerlukan tujuh gambar, permintaan adalah tujuh sekaligus, tanpa berhenti meminta perintah setelah setiap gambar. Satu per satu hanya jika diminta spesifik. Jangan menyimpulkan paralel hanya dari tujuh file; catat pelaksanaan aktual. Bila alat menunjukkan batas nyata, laporkan hasil parsial tanpa diam-diam mengubah alur atau memindahkan ke API.
+
+Pada prompt-to-image, hasil generator pilihan pengguna harus benar-benar tersedia/dapat dibuka sebelum review gambar dan paket R2V final. Dua mode memakai rancangan yang sama.
+
+### Aturan gambar dan komposisi
+
+Setiap prompt menyatakan posisi/arah/tinggi kamera, sudut terhadap subjek, penempatan subjek, foreground/background, kedalaman, batas yang harus terlihat serta elemen tetap. Informasi harus konkret, bukan hanya wide/full overview.
+
+| Gambar | Ketentuan |
 | --- | --- |
-| Prompt-to-image | Seluruh prompt gambar area; satu prompt untuk satu gambar individual |
-| Generate image | Seluruh gambar area individual dibuat dalam satu tahap sesuai jumlah yang direncanakan |
+| Exterior | Seluruh massa rumah yang terlihat masuk frame: atap, batas kiri/kanan dan dasar, dengan ruang aman di tepi. Sudut frontal, three-quarter atau lainnya sesuai desain/sumber |
+| Living–kitchen | Satu foto menunjukkan kedua area dan sambungan nyata; satu kitchen pada lokasi rancangan, orientasinya sesuai lintasan |
+| Bedroom | Front three-quarter; sasaran sudut horizontal 35–45° terhadap sumbu panjang bed; bed memanjang diagonal dalam frame, menghindari tampilan frontal terpusat dan simetris |
+| Setiap interior | Cakupan informatif memperlihatkan hubungan lantai, plafon, furnitur dan bukaan penting; armatur lampu terbaca dan sesuai desain |
 
-Pada prompt-to-image, AI menyerahkan prompt gambar tanpa otomatis menjalankan generator. Gambar hasil generator yang dipilih pengguna kemudian dibawa kembali atau dibaca lewat akses yang benar-benar tersedia sebelum review visual dan prompt video final. Jangan mengklaim gambar sudah dihasilkan/dilihat hanya karena promptnya lengkap.
+Sudut bedroom adalah pilihan pengguna. Pilih sisi kiri/kanan yang cocok dengan rancangan; jangan memutar bed, memiringkan gambar atau mengklaim semua sumber memakai sudut tersebut. Rentang 35–45° adalah rencana arah pandang di bidang horizontal, bukan kemiringan garis bed pada piksel.
 
-Pada generate image, bila rencana berisi tujuh gambar, AI diminta membuat **tujuh gambar individual sekaligus**, tanpa berhenti setelah satu gambar atau meminta perintah lanjutan per area. Generate satu per satu hanya bila diminta spesifik oleh pengguna. Jangan mengganti batch dengan satu kolase/contact sheet.
+Lampu tidak harus semuanya menyala; pada siang hari armatur dapat mati. Bentuk plafon, posisi lampu dan elemen tetap tidak berubah antarview.
 
-Pemenuhan batch dan proses yang benar-benar bersamaan diuji pada ChatGPT pengguna. Jangan menyatakan batas kemampuan dari keterbatasan alat pengembang. Jika alat menunjukkan batas nyata, laporkan apa yang berhasil/terhenti; jangan mengklaim batch lengkap, mengubah menjadi alur satu per satu, atau beralih ke API berbayar tanpa arahan pengguna.
+Full exterior adalah aturan gambar; video boleh mendekat sesuai lintasan. Full interior bukan tuntutan melihat semua sisi yang terhalang. Hindari close-up yang membuang konteks, fisheye berlebihan, cutaway, dinding transparan atau perspektif mustahil.
 
-Kedua mode memakai spesifikasi rumah dan kebutuhan area yang sama. Satu prompt memuat area tujuan, desain tetap, plafon, komposisi luas, lighting, lingkungan, naturalitas serta hal yang harus dipertahankan. Batch tidak berarti setiap gambar boleh mendesain rumahnya sendiri.
+Gambar wajib natural seperti fotografi arsitektur, dengan skala, perspektif, tekstur, cahaya, bayangan dan pantulan wajar. Hindari tampilan plastik/CGI dan HDR berlebihan. Video tetap 9:16; rasio gambar referensi dipilih agar cakupan wajar dan sesuai masukan alat, tanpa crop paksa yang merusak informasi.
 
-### Cakupan penuh dan naturalitas
+## 5. Review gambar sebagai satu rumah
 
-Gambar harus memperlihatkan area secara luas dan informatif: hubungan furnitur, plafon, lantai serta bukaan yang diperlukan untuk merencanakan gerak. Full area tidak berarti seluruh sisi ruangan yang terhalang terlihat sekaligus.
+Periksa piksel yang benar-benar tersedia: kesesuaian desain, naturalitas, cakupan, plafon/lampu, bukaan, furnitur, material dan hubungan ruang. Khusus bedroom periksa arah pandang serta bed diagonal; exterior periksa seluruh batas rumah; living–kitchen periksa kitchen tunggal dan geometri lintasan.
 
-Hindari close-up yang memotong informasi utama, fisheye berlebihan, dinding transparan, tampilan dollhouse dan perspektif mustahil. Rasio video tetap 9:16. Gambar R2V berfungsi sebagai referensi; rasio/komposisinya dipilih untuk memperlihatkan area secara wajar dan sesuai masukan yang diterima alat, tanpa memaksa crop 9:16 yang merusak informasi.
+Bedakan review AI dari laporan pengguna. Jangan menandai gambar tersedia/direview hanya dari nama file atau promptnya.
 
-Hasil wajib mengikuti desain yang disetujui dan terlihat natural seperti fotografi arsitektur: skala, garis bangunan, tekstur, pencahayaan, bayangan dan pantulan masuk akal. Hindari tampilan plastik/CGI, HDR berlebihan atau perubahan struktur. Penilaian dilakukan pada hasil nyata, bukan hanya kata photorealistic dalam prompt.
+Revisi bagian yang menyimpang dan tinjau dampak perubahan elemen tetap pada gambar/shot lain. Pertahankan yang sudah benar. Persetujuan visual mengikuti pengguna atau delegasi yang berlaku; tidak dipaksakan per gambar.
 
-## 5. Review paket gambar
+File individual harus dapat dibuka dan diunduh. Catat format, dimensi/hash aktual serta revisi. Paket final tidak dapat dinyatakan lengkap tanpa file asli yang masih dipakai.
 
-Periksa setiap gambar dan seluruh gambar sebagai satu rumah, terutama plafon, bukaan, lantai, furnitur tetap, cahaya dan lingkungan. Untuk dua area yang tersambung, bukaan/batas ruang dan orientasinya harus saling sesuai.
+## 6. Prompt Omni Flash siap salin
 
-Living dan kitchen tetap dua file individual, walaupun sebagian area lain terlihat sebagai konteks pada gambar masing-masing. Referensi diberi peran yang jelas; jangan menyerahkan dua file identik yang hanya diganti nama sebagai dua gambar area.
-
-Revisi gambar yang menyimpang sebelum menyatakannya final. Pertahankan yang sudah benar. Perubahan elemen tetap memicu peninjauan area/shot terdampak serta revisi keputusan; jangan sekadar mengganti nomor versi aset lama.
-
-AI dapat melakukan review dari piksel yang benar-benar dilihat; laporan pengguna dibedakan asalnya. Persetujuan paket visual mengikuti keputusan pengguna atau delegasi yang sudah berlaku. Tidak ada kewajiban persetujuan setiap gambar satu per satu.
-
-File individual harus dapat dibuka dan diserahkan melalui unduhan. Simpan dimensi/format aktual, hash, peran area dan revisinya. Nama file atau tautan lama bukan pengganti file asli.
-
-## 6. Prompt R2V sembilan bagian
-
-Satu shot menghasilkan satu prompt dan satu klip. Prompt disusun setelah melihat gambar referensi final serta rancangan aktif.
+Satu shot menghasilkan satu prompt dan satu klip. Susun prompt dari rancangan aktif dan gambar final yang benar-benar dilihat.
 
 | Bagian | Isi |
 | --- | --- |
-| OUTPUT SPECIFICATION | Durasi 6/4 detik, video 9:16, home tour dan identitas shot |
-| REFERENCE IMAGE ROLE | Peran tiap gambar sebagai identitas area; bukan kewajiban first/last frame |
-| ARCHITECTURE AND DESIGN | Material, furnitur, plafon, bukaan dan hubungan ruang yang dipertahankan |
-| CAMERA START COMPOSITION | Posisi/arah kamera, subjek dan foreground/background |
-| CAMERA MOVEMENT | Lintasan, perkiraan jarak/sudut, kecepatan dan simultan atau berurutan |
-| VISIBLE MOTION EVIDENCE | Perubahan visual yang menunjukkan gerak benar-benar terjadi |
-| ENDING COMPOSITION | Framing akhir yang masuk akal terhadap lintasan |
-| VISUAL CONSISTENCY LOCK | Struktur dan objek tetap yang tidak boleh berubah |
-| CONTINUITY AND AUDIO RULES | Satu shot kontinu, tanpa cut/morphing, ambient natural halus tanpa musik/narasi/dialog |
+| OUTPUT SPECIFICATION | Durasi baku 4/6 detik, video 9:16 dan jenis tampilan home tour |
+| REFERENCE IMAGE ROLE | Gambar terlampir adalah identitas visual/spasial, **bukan frame awal maupun frame akhir wajib**; tanpa nama file, path atau ID internal |
+| ARCHITECTURE AND DESIGN | Struktur, material, furnitur, plafon/lampu, bukaan dan hubungan ruang yang dipertahankan |
+| CAMERA START COMPOSITION | Posisi/arah kamera, subjek dan foreground/background yang sesuai tata ruang |
+| CAMERA MOVEMENT | Gerak pilihan per area, lintasan, perkiraan jarak/sudut, ritme dan hubungan simultan/sekuensial |
+| VISIBLE MOTION EVIDENCE | Perubahan visual yang membuktikan setiap gerak terpilih terjadi |
+| ENDING COMPOSITION | Framing akhir yang sesuai posisi, lintasan dan geometri |
+| VISUAL CONSISTENCY LOCK | Elemen tetap dan posisi objek yang tidak boleh berubah/berlipat, termasuk kitchen |
+| CONTINUITY AND AUDIO RULES | Satu shot kontinu tanpa cut/morphing; ambient natural halus tanpa musik/narasi/dialog/efek dramatis |
 
-Untuk living-to-kitchen, gambar living dan kitchen menjadi dua acuan area terhubung pada satu rumah. Untuk exterior-to-living, gambar exterior dan living memiliki peran yang sama sesuai areanya. Jelaskan sambungan ruang; jangan meminta dissolve, perpindahan mendadak atau pergantian rumah.
+Teks memakai sebutan seperti “the attached reference image” dan deskripsi visual bila perlu, bukan nama berkas. ID dan nama file tetap ada pada peta lampiran di luar badan prompt. Tidak meminta generator menyalin gambar sebagai frame pembuka/penutup atau melakukan interpolasi first–last.
 
-### Gerak yang terlihat dan sesuai durasi
+Di chat, setiap shot mempunyai **satu fenced code block berisi hanya prompt final lengkap sembilan bagian**. Judul, durasi ringkas, petunjuk lampiran dan catatan berada di luar block. Tidak memasukkan placeholder, JSON atau instruksi untuk membersihkan teks. File .txt hasil ekspor memuat teks prompt yang sama tanpa pagar Markdown.
 
-Gerak gabungan harus terlihat seluruh komponennya. Pan dan orbit yang memang dipilih dalam rancangan mempunyai target minimal **12 derajat**. Bedakan rotasi arah pandang saat pan dari perpindahan posisi mengitari subjek saat orbit; jangan menggantinya dengan memutar gambar/roll.
+Gerak, sudut dan audio yang tertulis adalah target, bukan bukti hasil sudah sesuai. Penilaian video dilakukan setelah hasil tersedia.
 
-Jangan menambahkan pan/orbit pada setiap shot jika pola sumber dan rancangan hanya meminta gerak translasi. Maju sambil pan berarti bersamaan; maju lalu pan mempunyai fase berurutan.
+## 7. Checkpoint dan penyerahan
 
-Sesuaikan perkiraan jarak, sudut dan alokasi waktu terhadap 4 atau 6 detik. Jangan menulis slow sambil meminta lintasan panjang dan banyak fase dalam waktu pendek. Bila terlalu padat, kurangi jarak/kompleksitas dalam batas rancangan; perubahan keputusan yang material dikembalikan ke review desain.
+Catatan proyek menjaga keputusan, sumber, revisi dan pemetaan gambar–shot–prompt agar dapat dilanjutkan. Penyimpanan dilakukan sebagai checkpoint internal pada keputusan/revisi penting serta penyerahan; bukan syarat setiap balasan dan bukan penambahan file otomatis ke repo GitHub.
 
-Bukti gerak dipilih dari elemen yang memang ada: foreground membesar saat mendekat, perubahan perspektif yang wajar, sisi ruang yang terungkap atau kitchen yang terlihat bertahap. Pan tidak boleh dianggap telah terjadi hanya karena prompt mencantumkan angka sudut.
+Jika project.json gagal ditulis, pertahankan data sesi dan lanjutkan konsep. Coba nama revisi baru bila folder dapat ditulis, atau folder proyek yang terbukti dapat ditulis. Jangan menghapus file pengguna, mengubah izin/ownership atau meminta pengguna mengurus filesystem sebagai alur rutin.
 
-Sudut/jarak merupakan target instruksi. JSON dan teks prompt tidak membuktikan hasil video mematuhinya; keberhasilan dinilai dari media yang benar-benar terlihat.
+Klaim tersimpan hanya setelah penulisan dan baca balik berhasil. Jika pindah folder, bawa aset yang tersedia dan perbaiki peta relatif. Jika seluruh penyimpanan gagal, berikan status/catatan teks yang jujur; jangan mengarang tautan unduhan. Paket final tetap memerlukan file asli.
 
-## 7. Penyerahan, generate dan revisi
+Penyerahan:
+- **Paket prompt gambar:** prompt lengkap sesuai rencana; sah tanpa aset pada tahap ini, belum disebut siap R2V final.
+- **Paket R2V final:** gambar asli yang direview, prompt per shot, peta lampiran, durasi, panduan, sumber dan catatan keputusan/revisi.
 
-Paket prompt-to-image dapat diserahkan tanpa gambar pada tahap tersebut, dengan status yang jelas. Paket R2V final memerlukan gambar asli yang tersedia dan sudah direview.
+ZIP opsional tidak menggantikan unduhan gambar individual. Pengguna melampirkan referensi sesuai peta pada mode R2V, bukan kontrol first–last. Jangan menebak tombol, versi aplikasi atau parameter API.
 
-Paket proyek memuat brief, konsep, desain tetap, sumber, shot/durasi, pilihan mode, prompt gambar, aset area, pemetaan gambar–shot, prompt R2V, petunjuk penggunaan dan keputusan/revisi. Pertahankan file individual; ZIP opsional tidak menggantikan tautan setiap gambar.
+Kelanjutan sesi mempertahankan mode, sumber, keputusan dan delegasi yang berlaku. Data schema 2.0 dipakai melalui konversi pada salinan/revisi, tanpa otomatis mengklaim gambar/review lama sesuai ketentuan baru.
 
-Pengguna memasang satu atau dua referensi sesuai peta shot pada mode R2V, lalu memakai prompt dan durasi shot tersebut. Jangan memasangnya sebagai kontrol first–last frame. Fungsi terpadu lain mengikuti pemetaan gambar yang sudah disetujui. Jangan menebak nama tombol, parameter API, batas input atau versi aplikasi.
+## 8. Generate video, evaluasi dan keputusan
 
-Generate video, perangkaian klip dan publikasi Facebook tetap dijalankan pengguna. Setelah hasil tersedia, nilai desain, plafon, konsistensi, gerak, framing, ritme dan audio sesuai media yang dapat diakses. Pemeriksaan yang belum dilakukan tetap dinyatakan belum dilakukan.
+Pengguna generate video di Omni Flash, merangkai klip dan mempublikasikan hasil. Setelah media tersedia, nilai geometri, struktur, desain, framing, gerak, ritme serta audio sesuai akses yang nyata. Perbaiki bagian terdampak; pemeriksaan yang belum dilakukan tetap dicatat belum diuji.
 
-Kelanjutan sesi membutuhkan catatan dan file asli yang masih dipakai. Pertahankan keputusan yang berlaku; minta hanya data yang hilang. Hasil produksi tidak otomatis mengubah pengetahuan sumber.
+Tiga titik keputusan tetap: konsep, desain/shot dan paket visual. Pilihan mode tidak menjadi persetujuan tambahan setiap gambar. Delegasi pengguna tetap berlaku.
 
-## 8. Keputusan pengguna dan contoh
-
-Tiga titik keputusan tetap: pilihan konsep, persetujuan desain/shot, dan persetujuan paket gambar final. Pilihan mode gambar merupakan pilihan alur setelah desain, bukan persetujuan tambahan setiap area. Delegasi dan jawaban sebelumnya tetap berlaku.
-
-| Susunan shot | Shot | Gambar individual | Prompt video | Total |
+| Susunan shot | Shot | Gambar utama | Prompt video | Total |
 | --- | --- | --- | --- | --- |
 | Exterior + living + kitchen + bedroom + bathroom | 5 | 5 | 5 | 22 detik |
-| Exterior + living-to-kitchen + bedroom + bathroom | 4 | 5 | 4 | 20 detik |
-| Exterior-to-living + kitchen + bedroom + bathroom | 4 | 5 | 4 | 18 detik |
-| Exterior + living-to-kitchen + bedroom + laundry + bathroom | 5 | 6 | 5 | 24 detik |
+| Exterior + living-to-kitchen + bedroom + bathroom | 4 | 4 | 4 | 20 detik |
+| Exterior-to-living + kitchen + bedroom + bathroom | 4 | 4 atau 5, sesuai pilihan 1/2 referensi penghubung | 4 | 18 detik |
+| Exterior + living-to-kitchen + bedroom + laundry + bathroom | 5 | 5 | 5 | 24 detik |
 
-Jumlah gambar pada contoh mengikuti area yang disebutkan, bukan dua kali jumlah shot. Area opsional tetap harus didukung sumber.
+Area opsional tetap harus didukung sumber; tujuh gambar bukan jumlah wajib. Living-to-kitchen memakai satu gambar gabungan sebagai default; exterior-to-living mengikuti pilihan pengguna 1 atau 2 referensi. Konsistensi video masing-masing tetap dinilai dari uji nyata.
 
-Contoh permintaan:
+Dasar perbaikan: laporan pengguna mengenai dua referensi living–kitchen yang kurang konsisten, konflik gambar dengan lintasan, bedroom frontal dan kegagalan penyimpanan; ditambah ketentuan exterior utuh, plafon/lampu, peran referensi, variasi kamera dan format salin.
 
-> Gunakan mode prompt-to-image. Berikan seluruh prompt individual untuk area dalam rancangan; satu prompt untuk satu gambar.
-
-> Gunakan mode generate image. Buat seluruh tujuh gambar area individual sekaligus sesuai rancangan. Jangan membuat kolase atau berhenti meminta perintah setelah setiap gambar.
-
-> Paket gambar ini sudah saya setujui. Susun prompt R2V sembilan bagian per shot, petakan referensinya dan sesuaikan gerak dengan durasi 6/4 detik.
-
-## 9. Dasar perubahan
-
-Pengguna melaporkan kolase awal–akhir sering tidak konsisten, terutama plafon, dan video interpolasi masih mengubah susunan. Percobaan R2V satu gambar dinilai lebih baik dan konsisten oleh pengguna. Itu menjadi dasar V2, bukan klaim bahwa semua video R2V selalu konsisten.
-
-Batch tujuh gambar, R2V dua referensi pada dua jenis shot penghubung, serta keberhasilan gerak minimal 12 derajat tetap menjadi sasaran uji manual V2.
-
-Rujukan: [pengetahuan inti](../../knowledge/ai-knowledge.md), [akses pustaka](../../knowledge/access-contract.md), [kontinuitas](../../knowledge/continuity-dna.md), [sinematografi](../../knowledge/cinematography-dna.md), [pola korpus](../../knowledge/corpus-patterns.md).
-
-Revisi 2.0 mengganti kolase/crop dan interpolasi first–last dengan dua mode gambar individual serta R2V. Riwayat alur sebelumnya tersedia di Git.
+Rujukan pengetahuan: [inti](../../knowledge/ai-knowledge.md), [akses](../../knowledge/access-contract.md), [kontinuitas](../../knowledge/continuity-dna.md), [sinematografi](../../knowledge/cinematography-dna.md), [pola korpus](../../knowledge/corpus-patterns.md). Perubahan preferensi plugin tidak mengubah fakta pada pustaka tersebut.

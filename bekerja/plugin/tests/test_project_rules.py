@@ -26,7 +26,35 @@ def blank():
     return json.loads((SKILL / "assets/project-template.json").read_text())
 
 
-def planning(kinds=("exterior", "living_to_kitchen", "bedroom", "bathroom")):
+def composition(primary):
+    return {
+        "camera_position": "Synthetic position near the front corner; no source measurement.",
+        "view_direction": "Toward the fixed subject and the designed connection.",
+        "height_m": 1.4,
+        "subject_view": "front_three_quarter" if primary == "bedroom" else "overview",
+        "view_angle_deg": 40 if primary == "bedroom" else None,
+        "subject_placement": "Bed extends diagonally" if primary == "bedroom" else "Wide informative placement",
+        "foreground": "Existing foreground", "background": "Existing fixed background",
+        "visible_bounds": ["Relevant subject and room boundaries"],
+        "layout_note": "Positions follow design.area_specs, not an independently invented layout.",
+        "shot_alignment": "Supports the planned continuous path without moving fixed objects.",
+        "full_exterior": primary == "exterior", "bed_diagonal": primary == "bedroom",
+    }
+
+
+def legacy_project(project):
+    legacy = deepcopy(project)
+    legacy.update(schema_version="2.0", rules_version="2.0.0")
+    del legacy["design"]["area_specs"]
+    for image in legacy["image_plan"]:
+        del image["composition"]
+    for shot in legacy["shots"]:
+        del shot["camera"]["spatial_plan"]
+        del shot["reference_choice"]
+    return legacy
+
+
+def planning(kinds=("exterior", "living_to_kitchen", "bedroom", "bathroom"), exterior_references=1, living_references=1):
     project = blank()
     project.update(stage="shot_plan", brief="Synthetic planning case; not a user production.",
                    concept={"title": "Fixture", "summary": "Contract checks only."})
@@ -59,20 +87,25 @@ def planning(kinds=("exterior", "living_to_kitchen", "bedroom", "bathroom")):
             "access_status": "read", "error": None,
         })
         refs = []
-        for primary in rule["required_primary_areas"]:
+        primaries = list(rule["required_primary_areas"])
+        if kind == "exterior_to_living" and exterior_references == 2:
+            primaries = ["exterior", "living"]
+        if kind == "living_to_kitchen" and living_references == 2:
+            primaries = ["living", "kitchen"]
+        for primary in primaries:
             if primary not in image_index:
                 image_id = "img-" + primary.replace("_", "-")
                 item = {"image_id": image_id, "primary_area": primary, "area_ids": [primary],
                         "shot_ids": [], "revision": 1, "prompt": "Test wide area " + primary,
-                        "status": "planned", "asset_id": None, "error": None}
+                        "status": "planned", "asset_id": None, "error": None, "composition": composition(primary)}
                 image_index[primary] = item
                 project["image_plan"].append(item)
             image = image_index[primary]
             image["shot_ids"].append(shot_id)
             refs.append(image["image_id"])
-        for extra in set(areas) - set(rule["required_primary_areas"]):
-            if extra not in image_index[rule["required_primary_areas"][0]]["area_ids"]:
-                image_index[rule["required_primary_areas"][0]]["area_ids"].append(extra)
+        for extra in (set() if kind == "exterior_to_living" else set(areas) - set(primaries)):
+            if extra not in image_index[primaries[0]]["area_ids"]:
+                image_index[primaries[0]]["area_ids"].append(extra)
         components = [{"kind": "translation", "description": "Test adaptation: move forward",
                        "start_s": 0, "duration_s": seconds, "distance_m": 0.4, "angle_deg": None}]
         combined = kind in ("living_to_kitchen", "exterior_to_living")
@@ -86,9 +119,20 @@ def planning(kinds=("exterior", "living_to_kitchen", "bedroom", "bathroom")):
             "camera": {"description": "Synthetic motion decision, not source timing.",
                        "motion_relationship": "simultaneous" if combined else "single",
                        "components": components, "visible_motion_evidence": "Foreground grows; side becomes visible.",
-                       "timing_note": "Test travel estimate fitted to the full shot duration."},
+                       "timing_note": "Test travel estimate fitted to the full shot duration.",
+                       "spatial_plan": {key: "Synthetic spatial decision: " + key for key in
+                           ("start_position", "start_direction", "path", "end_position", "end_direction", "layout_check")}},
             "reference_image_ids": refs, "prompt": None,
+            "reference_choice": {"count": len(refs), "by": "user" if kind == "exterior_to_living" or (kind == "living_to_kitchen" and living_references == 2) else "default",
+                                 "note": "Synthetic choice fixture; not an actual user action."},
         })
+    area_set = sorted({area for shot in project["shots"] for area in shot["covered_areas"]})
+    project["design"]["area_specs"] = [
+        {"area": area, "position": "One fixed test location for " + area,
+         "ceiling": "Test approved ceiling" if area != "exterior" else "Test roof",
+         "fixtures": ["Test ceiling fixture at a fixed position; off in daylight"] if area != "exterior" else []}
+        for area in area_set
+    ]
     project["total_duration_s"] = sum(shot["duration_s"] for shot in project["shots"])
     return project
 
@@ -128,13 +172,10 @@ def add_video_prompts(project):
     for shot in project["shots"]:
         sections = {name: "Test authored section: " + name for name in VALIDATOR.RULES["prompt_sections"]}
         sections["OUTPUT SPECIFICATION"] = f"Home tour, {shot['duration_s']} seconds, 9:16."
-        sections["REFERENCE IMAGE ROLE"] = "; ".join(
-            key + " identifies its designed area, not a mandatory endpoint."
-            for key in shot["reference_image_ids"]
-        )
+        sections["REFERENCE IMAGE ROLE"] = VALIDATOR.RULES["prompt_constraints"]["reference_role"]
         sections["CAMERA MOVEMENT"] = shot["camera"]["description"]
         sections["VISIBLE MOTION EVIDENCE"] = shot["camera"]["visible_motion_evidence"]
-        sections["CONTINUITY AND AUDIO RULES"] = " ".join(VALIDATOR.RULES["prompt_constraints"].values())
+        sections["CONTINUITY AND AUDIO RULES"] = " ".join(VALIDATOR.RULES["prompt_constraints"][key] for key in ("continuous", "audio"))
         shot["prompt"] = {"method": "R2V", "revision": project["revision"],
                           "duration_s": shot["duration_s"],
                           "reference_image_ids": shot["reference_image_ids"].copy(), "sections": sections}
@@ -142,8 +183,8 @@ def add_video_prompts(project):
     return project
 
 
-def final_project(root, prompt=True, kinds=("exterior", "living_to_kitchen", "bedroom", "bathroom")):
-    project = planning(kinds)
+def final_project(root, prompt=True, kinds=("exterior", "living_to_kitchen", "bedroom", "bathroom"), **choices):
+    project = planning(kinds, **choices)
     project.update(stage="image_final", image_mode="generate_image")
     project["image_batch"].update(execution="parallel", note="Synthetic execution metadata; no live batch was run.")
     for kind in project["approvals"]:
@@ -178,9 +219,9 @@ class ProjectRulesTests(unittest.TestCase):
     def test_plans_count_images_instead_of_endpoint_pairs(self):
         for kinds, count, seconds in (
             (("exterior", "living", "kitchen", "bedroom", "bathroom"), 5, 22),
-            (("exterior", "living_to_kitchen", "bedroom", "bathroom"), 5, 20),
-            (("exterior_to_living", "kitchen", "bedroom", "bathroom"), 5, 18),
-            (("exterior", "living_to_kitchen", "bedroom", "laundry", "bathroom"), 6, 24),
+            (("exterior", "living_to_kitchen", "bedroom", "bathroom"), 4, 20),
+            (("exterior_to_living", "kitchen", "bedroom", "bathroom"), 4, 18),
+            (("exterior", "living_to_kitchen", "bedroom", "laundry", "bathroom"), 5, 24),
             (("exterior", "living", "kitchen", "bedroom", "bathroom", "laundry", "wardrobe"), 7, 30),
         ):
             with self.subTest(kinds=kinds):
@@ -197,21 +238,32 @@ class ProjectRulesTests(unittest.TestCase):
         self.assertEqual(result["available_image_count"], 0)
         self.assertTrue(all(shot["prompt"] is None for shot in project["shots"]))
 
-    def test_r2v_final_accepts_five_landscape_area_images_without_start_end(self):
+    def test_r2v_final_accepts_four_reference_views_without_start_end(self):
         project = final_project(self.root)
         result = self.check(project)
         self.assertTrue(result["valid"], result)
-        self.assertEqual(result["reviewed_image_count"], 5)
-        self.assertEqual(len(project["shots"][1]["reference_image_ids"]), 2)
+        self.assertEqual(result["reviewed_image_count"], 4)
+        self.assertEqual(len(project["shots"][1]["reference_image_ids"]), 1)
         self.assertFalse(any("frames" in shot for shot in project["shots"]))
 
-    def test_both_connectors_need_their_two_distinct_areas(self):
-        for kinds in (("exterior", "living_to_kitchen", "bedroom", "bathroom"),
-                      ("exterior_to_living", "kitchen", "bedroom", "bathroom")):
-            project = planning(kinds)
-            shot = next(item for item in project["shots"] if item["kind"].endswith(("to_living", "to_kitchen")))
-            shot["reference_image_ids"].pop()
-            self.invalid(project, "dua referensi")
+    def test_shared_living_kitchen_photo_requires_both_visible_areas(self):
+        project = planning()
+        project["image_plan"][1]["area_ids"] = ["living"]
+        self.invalid(project, "referensi area tidak cocok")
+
+    def test_exterior_connector_accepts_user_choice_one_or_two(self):
+        kinds = ("exterior_to_living", "kitchen", "bedroom", "bathroom")
+        for count in (1, 2):
+            with self.subTest(count=count):
+                project = planning(kinds, exterior_references=count)
+                result = self.check(project)
+                self.assertTrue(result["valid"], result)
+                self.assertEqual(result["image_count"], 3 + count)
+                self.assertEqual(result["total_duration_s"], 18)
+        project["shots"][0]["reference_choice"]["by"] = "default"
+        self.invalid(project, "pilihan pengguna")
+        project["shots"][0]["reference_choice"].update(by="user", count=1)
+        self.invalid(project, "jumlah referensi")
 
     def test_coverage_duration_and_sleeping_area_cannot_expand(self):
         self.invalid(planning(("exterior", "living_to_kitchen", "kitchen")), "Area sudah tercakup")
@@ -233,6 +285,8 @@ class ProjectRulesTests(unittest.TestCase):
         project["shots"][1]["covered_areas"].append("sleeping_loft")
         project["knowledge"]["evidence"][1]["covered_areas"].append("sleeping_loft")
         project["image_plan"][1]["area_ids"].append("sleeping_loft")
+        project["design"]["area_specs"].append({"area": "sleeping_loft", "position": "Approved test loft",
+            "ceiling": "Approved loft ceiling", "fixtures": ["Fixed loft fixture"]})
         self.assertTrue(self.check(project)["valid"], self.check(project))
         bad = planning()
         bad["shots"][1]["covered_areas"].append("sleeping_loft")
@@ -390,7 +444,7 @@ class ProjectRulesTests(unittest.TestCase):
         self.invalid(project, "penanda template")
         project = final_project(self.root)
         project["shots"][0]["prompt"]["sections"]["REFERENCE IMAGE ROLE"] = "Unlabelled references"
-        self.invalid(project, "setiap ID gambar")
+        self.invalid(project, "peran referensi")
 
     def test_prompt_versions_duration_audio_and_method_cannot_drift(self):
         project = final_project(self.root)
@@ -435,6 +489,76 @@ class ProjectRulesTests(unittest.TestCase):
         path.write_text("{broken")
         run = subprocess.run([sys.executable, "-B", str(script), str(path)], capture_output=True, text=True)
         self.assertEqual(run.returncode, 2)
+
+
+    def test_composition_rules_and_lights_are_plan_constraints_not_pixel_claims(self):
+        for mutate, fragment in (
+            (lambda p: p["image_plan"][0]["composition"].update(full_exterior=False), "seluruh rumah"),
+            (lambda p: p["image_plan"][2]["composition"].update(view_angle_deg=34), "35–45"),
+            (lambda p: p["image_plan"][2]["composition"].update(view_angle_deg=46), "35–45"),
+            (lambda p: p["image_plan"][2]["composition"].update(subject_view="frontal"), "35–45"),
+            (lambda p: p["image_plan"][2]["composition"].update(bed_diagonal=False), "diagonal"),
+            (lambda p: p["image_plan"][2].update(composition=None), "komposisi"),
+            (lambda p: p["shots"][1]["camera"].update(spatial_plan=None), "spatial_plan"),
+            (lambda p: p["design"]["area_specs"][1].update(fixtures=[]), "armatur"),
+        ):
+            with self.subTest(fragment=fragment):
+                project = planning()
+                mutate(project)
+                self.invalid(project, fragment)
+        for angle in (35, 45):
+            project = planning()
+            project["image_plan"][2]["composition"]["view_angle_deg"] = angle
+            self.assertTrue(self.check(project)["valid"], self.check(project))
+
+    def test_area_locations_are_unique_and_hidden_living_still_needs_design(self):
+        project = planning(("exterior_to_living", "kitchen", "bedroom", "bathroom"))
+        self.assertNotIn("living", project["image_plan"][0]["area_ids"])
+        self.assertTrue(self.check(project)["valid"], self.check(project))
+        project["design"]["area_specs"] = [s for s in project["design"]["area_specs"] if s["area"] != "living"]
+        self.invalid(project, "area_specs")
+        project = planning()
+        kitchen = next(s for s in project["design"]["area_specs"] if s["area"] == "kitchen")
+        project["design"]["area_specs"].append(deepcopy(kitchen))
+        self.invalid(project, "area berulang")
+
+    def test_prompt_is_reference_role_explicit_and_free_of_file_identifiers(self):
+        project = final_project(self.root)
+        self.assertTrue(self.check(project)["valid"], self.check(project))
+        for leak in ("img-living", "random-reference.png", "/mnt/data/reference", "shot-01", "shot-03"):
+            with self.subTest(leak=leak):
+                bad = deepcopy(project)
+                bad["shots"][0]["prompt"]["sections"]["ARCHITECTURE AND DESIGN"] += " " + leak
+                self.invalid(bad, "di luar badan prompt")
+
+    def test_schema20_conversion_preserves_decisions_without_fabricating_new_review(self):
+        original = legacy_project(final_project(self.root))
+        before = deepcopy(original)
+        report = VALIDATOR.migrate_project(original)
+        project = report["project"]
+        self.assertEqual(original, before)
+        self.assertEqual(project["schema_version"], "2.1")
+        for key in ("brief", "concept", "knowledge", "image_mode", "image_batch"):
+            self.assertEqual(project[key], original[key])
+        self.assertEqual(project["approvals"]["concept"], original["approvals"]["concept"])
+        self.assertEqual(project["approvals"]["shot_plan"], original["approvals"]["shot_plan"])
+        self.assertIsNone(project["approvals"]["visual"])
+        self.assertTrue(all(not a["reviewed"] for a in project["assets"]))
+        self.assertTrue(all(s["prompt"] is None for s in project["shots"]))
+        self.assertEqual(project["stage"], "concept")
+        self.assertTrue(report["needs_review"])
+        self.assertTrue(self.check(project)["valid"], self.check(project))
+        project["stage"] = "shot_plan"
+        self.invalid(project, "komposisi")
+        self.invalid(before, "schema 2.0")
+
+
+    def test_additional_living_kitchen_reference_is_valid_only_when_chosen(self):
+        project = planning(living_references=2)
+        self.assertTrue(self.check(project)["valid"], self.check(project))
+        self.assertEqual(len(project["image_plan"]), 5)
+        project["shots"][1]["reference_choice"]["by"] = "default"
+        self.invalid(project, "referensi tambahan")
 
 
 if __name__ == "__main__":

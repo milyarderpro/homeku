@@ -1,19 +1,24 @@
-# Template satu gambar area
+# Template satu gambar referensi
 
-Gunakan satu prompt lengkap untuk satu image_id dalam image_plan. Isi dari desain yang disetujui dan [alur gambar](../references/image-workflow.md); jangan menyerahkan penanda yang belum diisi.
+Isi satu prompt lengkap per pandangan di image_plan, berdasarkan desain dan composition yang sama dengan [lintasan](../references/preproduction.md). Baca [alur gambar](../references/image-workflow.md). Tidak menyerahkan placeholder yang belum diisi.
 
 ~~~text
-Create one individual, natural architectural photograph of {{AREA_AND_ID}} in the approved house.
-House design and spatial relationships: {{ARCHITECTURE_LAYOUT_CONNECTIONS}}.
-Ceiling and fixed structure for this area: {{CEILING_OPENINGS_FIXED_ELEMENTS}}.
-Materials and principal furniture: {{MATERIALS_FURNITURE}}.
-Lighting and surroundings: {{LIGHT_ENVIRONMENT}}.
-Show a wide, informative overview of the area, including the relevant floor, ceiling, openings and furniture relationships.
-Composition and reference role: {{COMPOSITION_AND_REFERENCE_ROLE}}.
-Keep the approved geometry, proportions and object positions. Use plausible photographic perspective, textures, light, reflections and shadows.
-No collage, split panels, labels, artificial CGI/plastic appearance, extreme fisheye, transparent walls or impossible cutaway views.
+Create one individual, natural architectural photograph of {{VISIBLE_AREA_OR_CONNECTED_LIVING_KITCHEN}} in the approved house.
+House architecture, materials, furnishings and fixed spatial relationships: {{APPROVED_DESIGN_AREA_SPECS_CONNECTIONS_AND_ANCHORS}}.
+Ceiling and visible functional light fixtures: {{APPROVED_CEILING_FIXTURE_TYPES_POSITIONS_AND_DAYLIGHT_OR_ON_STATE}}.
+Camera position and height: {{CAMERA_POSITION_AND_HEIGHT}}.
+Viewing direction and subject angle: {{VIEW_DIRECTION_SUBJECT_VIEW_AND_ANGLE}}.
+Subject placement, foreground and background: {{SUBJECT_PLACEMENT_FOREGROUND_BACKGROUND_AND_DEPTH}}.
+Required visible boundaries and composition: {{TYPE_SPECIFIC_FULL_EXTERIOR_OR_BEDROOM_DIAGONAL_OR_CONNECTED_SPACE_COMPOSITION}}.
+Spatial alignment with the planned video path: {{LAYOUT_NOTE_AND_SHOT_ALIGNMENT_WITHOUT_MOVING_FIXED_OBJECTS}}.
+Lighting and surroundings: {{APPROVED_LIGHT_ENVIRONMENT}}.
+Show an informative wide view with plausible photographic perspective, proportions, textures, natural light, reflections and shadows.
+Preserve the approved geometry and positions. This is a visual and spatial reference, not a required first or last video frame.
+One photograph only: no collage, split panels or labels; no plastic CGI appearance, excessive HDR, extreme fisheye, transparent walls or impossible cutaways.
 ~~~
 
-Semua prompt dalam batch memakai keputusan rumah yang sama, dengan plafon/elemen tiap area yang sesuai rancangan. Jangan membuat rancangan berbeda secara independen untuk setiap gambar. Full area berarti overview yang wajar, bukan seluruh sisi terhalang terlihat sekaligus.
+Untuk exterior, isi batas atap, kiri/kanan dan dasar rumah seluruhnya dengan margin; sudut kamera fleksibel. Untuk bedroom, front three-quarter 35–45° horizontal terhadap sumbu panjang bed, bed memanjang diagonal; jangan memutar bed atau roll. Untuk living-to-kitchen, satu pandangan utuh living+kitchen yang terhubung dengan satu kitchen tetap.
 
-Pada prompt_to_image, serahkan seluruh prompt. Pada generate_image, gunakan prompt ini sebagai tugas tiap gambar dalam batch yang diminta; jangan mengubah tujuh gambar menjadi satu kolase. Referensi visual yang dipakai harus benar-benar dilampirkan melalui alat, bukan hanya disebut namanya.
+Setiap interior mempunyai plafon dan armatur lampu yang dirancang; tidak semua lampu wajib menyala. Jika memakai satu foto exterior untuk exterior-to-living, jangan memaksa seluruh interior tampak di foto yang sama.
+
+Kedua mode memakai spesifikasi yang sama. Satu prompt menghasilkan satu gambar individual; seluruh batch mengikuti jumlah yang disetujui, bukan satu kolase.
