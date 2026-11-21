@@ -1,7 +1,7 @@
 # Rencana Implementasi Pustaka HOMEKU
 
 Tanggal: 21 November 2026  
-Status: rencana implementasi; belum mengaktifkan pipeline.
+Status: Phase 1 terimplementasi dan teruji lokal; Phase 2 belum dimulai. Aktivasi workflow hosted menunggu push dan run GitHub pertama.
 Pelaksanaan dibagi menjadi dua phase: fondasi dan otomasi, kemudian workflow audit dan pilot.
 
 ## 1. Tujuan dan batas pekerjaan
@@ -200,7 +200,7 @@ Parser menyimpan komponen, hubungan urutan/simultan, interval, arah, karakter, e
 - Workflow mengenali seluruh ZIP baru pada event, bukan memilih file terbaru saja. Sediakan pemicu manual untuk retry paket yang sama.
 - Periksa versi kontrak, ID, inventaris file, struktur MD, waktu/media, hash, tautan, sumber dan konsistensi field.
 - Ekstraksi membatasi path dan ukuran; tolak traversal, symlink, file eksekusi dan nama bentrok. Isi ZIP tidak dijalankan sebagai kode.
-- Bangun keluaran pada staging. Paket gagal tidak mengubah referensi aktif maupun halaman turunannya.
+- Bangun keluaran pada staging. Paket gagal tidak mengubah referensi aktif maupun halaman turunannya. CLI memakai lock dan journal pemulihan; publikasi remote berupa satu commit. Batas pembacaan filesystem lokal dijelaskan dalam panduan operasi.
 - Gunakan fingerprint paket sebagai identitas ingest: replay identik tidak membuat referensi/commit baru.
 - Revisi baru menyebut versi/hash yang digantikan. Konflik isi pada ID/revisi yang sama ditolak; tidak menimpa diam-diam.
 - Serialkan publikasi dan bangun ulang terhadap registry terbaru agar unggahan berdekatan tidak menghilangkan hasil. Commit bot tidak memicu loop.
@@ -239,6 +239,8 @@ Prinsip umum yang kelak ditulis terpisah diberi jenis klaim yang jelas dan tidak
 ## 10. Dua phase implementasi
 
 ### Phase 1 — Fondasi repo dan otomasi pustaka
+
+**Status:** implementasi lokal selesai. [Kontrak teknis](contracts/package-v1.md), [operasi](operations.md) dan [hasil verifikasi](phase-1-verification.md) tersedia; 23 pengujian lulus, termasuk 300 referensi/600 shot sintetis dan konflik push pada remote Git lokal.
 
 | Pekerjaan | Keluaran |
 | --- | --- |
@@ -300,6 +302,6 @@ Setelah standar stabil, ketujuh paket menjadi referensi aktif pertama. Pengisian
 
 ## 12. Langkah berikutnya
 
-Mulai Phase 1 dengan struktur dan kontrak teknis awal, kemudian satu fixture ZIP valid serta satu fixture gagal. Implementasikan parser/importer, generator dan workflow sampai alur otomatis lolos pengujian. Lanjutkan Phase 2 untuk menyusun perangkat audit lengkap, menjalankan tujuh pilot di chat Gemini/ChatGPT, lalu menetapkan standar berdasarkan paket nyata.
+Phase 1 tersedia dalam README, kontrak/template awal, tooling, contoh ZIP, pengujian dan workflow. Setelah implementasi dipush, jalankan Library checks dan Library ingest untuk membuktikan konfigurasi hosted. Lanjutkan Phase 2 untuk menyusun perangkat audit lengkap, menjalankan tujuh pilot di chat Gemini/ChatGPT, lalu menetapkan standar berdasarkan paket nyata.
 
 Implementasi saat ini berfokus pada pustaka. Masterprompt hanya menjadi acuan format ringkasan kamera; perubahan plugin dan instruksi produksi berada di luar pekerjaan ini.
