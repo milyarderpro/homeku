@@ -4,6 +4,7 @@ Label berasal dari timeline. Beberapa fungsi dalam satu shot tetap ditampilkan b
 
 | Label | Referensi | Shot | Rincian |
 | --- | --- | --- | --- |
+| Bathroom & Laundry | 1 | 1 | [Buka](bathroom-laundry-9fa7c5dd/README.md) |
 | bathroom | 1 | 1 | [Buka](bathroom-3486577c/README.md) |
 | bedroom | 1 | 1 | [Buka](bedroom-a05e6feb/README.md) |
 | entry | 1 | 1 | [Buka](entry-923fe539/README.md) |

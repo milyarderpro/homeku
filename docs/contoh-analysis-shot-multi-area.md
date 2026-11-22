@@ -33,7 +33,7 @@ Video berdurasi 18 detik dan seluruhnya merupakan **satu shot tanpa cut**. Kamer
 
 ## 4. Storyboard
 
-Storyboard disusun satu baris: **Shot 01 · Exterior → Shot 01 · Living → Shot 01 · Kitchen**. Setiap panel memakai frame dengan gambaran area paling jelas, disertai nama area dan waktu. Ketiganya tetap berasal dari satu shot berkelanjutan, bukan tiga shot berbeda.
+Header: **CONTOH-MULTI-AREA — American Cottage — 18.00s — 1 shot**. Storyboard disusun satu baris: **Shot 01 · Exterior → Shot 01 · Living → Shot 01 · Kitchen**. Setiap panel memakai frame dengan gambaran area paling jelas, disertai nama area dan waktu. Ketiganya tetap berasal dari satu shot berkelanjutan, bukan tiga shot berbeda.
 
 ## 5. Detail shot
 
@@ -41,9 +41,9 @@ Storyboard disusun satu baris: **Shot 01 · Exterior → Shot 01 · Living → S
 
 **Jenis shot:** berkelanjutan, multi area, tanpa cut.
 
-**Kolase shot:** satu gambar dengan empat panel pilihan dalam satu baris. Jumlah mengikuti momen penting perjalanan, bukan ketentuan lima panel.
+**Kolase shot:** satu gambar dengan empat panel pilihan dalam satu baris. Header cukup judul/rentang/durasi; di bawah foto ada nomor/nama momen bold dengan timestamp kecil. Jumlah mengikuti momen penting perjalanan, bukan ketentuan lima panel.
 
-**Urutan panel:** 01 · Awal — fasad dari taman → 02 · Melewati pintu — sekitar detik 8 → 03 · Living dan kitchen terlihat bersama — sekitar detik 10 → 04 · Akhir — sink kitchen. Label pada gambar final menyertakan timestamp setiap frame yang dipilih.
+**Urutan panel:** 01 · Start · 0.00s → 02 · Entrance reveal · 8.00s → 03 · Living → Kitchen · 10.00s → 04 · End · 17.97s. Nama momen dan timestamp kecil berada di bawah setiap foto. Urutan panel berikut tetap memuat waktu agar MD mudah ditelusuri.
 
 #### A. Desain area
 

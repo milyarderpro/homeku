@@ -1,12 +1,11 @@
 # Membaca referensi
 
-Mulai dari [katalog](../catalogs/README.md), lalu buka `<id>/analysis.md`. Ringkasan dan storyboard memberi tinjauan seluruh video; setiap shot memuat rincian desain, sudut pandang, gerak, tempo dan ketidakpastiannya.
+Manusia mulai dari katalog lalu analysis.md terpilih. Laporan V2 mempunyai lima bagian: identitas desain, ukuran/proporsi, timeline, storyboard dan detail shot A/B/C. Nama gaya utama, rentang luas, detail rumah, posisi awal, kamera sederhana/teknis dan ritme tersedia tanpa tabel proses teknis.
 
-`media/shot-XX/area-overview.jpg` adalah satu frame asli dengan cakupan area paling jelas. Biasanya berada di awal untuk IN dan di akhir untuk OUT. Laporan menjelaskan alasan pemilihan dan peran frame dalam lintasan.
+V2 menyimpan audit.json sebagai sumber, analysis.md hasil render dan manifest.json teknis. Media memakai satu kolase per shot: normal tiga panel, multi area dinamis. Storyboard overview seluruh area satu baris; satu take tanpa cut yang melalui beberapa area tetap satu shot. Overview awal IN/akhir OUT adalah pilihan frame, bukan JPEG mandiri. Untuk gambar awal video, baca panel awal dan posisi/arah kamera; overview akhir Dolly-Out bukan posisi awal.
 
-Untuk konsep/prompt gambar baru, baca posisi serta arah pandang kamera, foreground, kedalaman, target dan perkembangan komposisi. Sesuaikan dengan gerakan yang dituju. Frame gambaran area di akhir Dolly-Out berperan sebagai pandangan akhir sumber; frame awal tersedia terpisah.
+AI memakai data/search-index.json lalu tools/library.py read untuk identitas/shot/area terpilih; JSON lengkap di data/projections/. [Kontrak pembaca](../docs/contracts/ai-reader-v2.md) menjelaskan pointer, status dan bukti. Area yang terlihat dibedakan dari rute kamera yang benar-benar dilalui.
 
-Folder referensi diisi importer dari ZIP final. Perbaikan isi dikirim sebagai revisi ZIP, bukan mengedit laporan aktif dan halaman turunan secara terpisah.
+Referensi legacy 1.0/1.1 tetap memakai MD sebagai sumber dan media frame terpisah menurut kontraknya. edh001 aktif kini r0002/2.0, disetujui dan masuk melalui ZIP revisi eksplisit; paket r0001 disimpan sebagai riwayat. Tidak ada konversi atau penambahan luas/gaya otomatis. Laporan contoh V2 bukan sumber aktif.
 
-
-Laporan baru memakai format 1.1: profil DNA, palet, storyboard, ikhtisar dan desain setiap shot terlihat langsung; tabel teknis dapat dilipat. AI mulai dari data/search-index.json lalu JSON terpilih dalam data/projections/. Data tersebut mempertahankan narasi, status, bukti dan media dari sumber. Kontrak pembaca tersedia di docs/contracts/ai-reader-v1.md. Format lama yang masih dibaca tidak otomatis mendapat fakta DNA baru.
+Folder aktif hanya diisi importer dari ZIP final. Koreksi isi memakai revisi ZIP; jangan edit audit.json/MD aktif atau katalog/knowledge secara manual. Arsip tidak menjadi input build.

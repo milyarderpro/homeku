@@ -4,4 +4,4 @@
 
 | Referensi | Judul | Shot |
 | --- | --- | --- |
-| [edh001](../references/edh001/analysis.md) | Rumah lengkung batu terang — bay, storage dan bathroom–laundry | 5 |
+| [edh001](../references/edh001/analysis.md) | Curved Stone Winter Home | 5 |

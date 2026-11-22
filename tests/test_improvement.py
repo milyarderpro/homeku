@@ -219,6 +219,8 @@ class ImprovementTests(unittest.TestCase):
         portable = self.work / "chat"
         with zipfile.ZipFile(kit) as archive:
             archive.extractall(portable)
+        boot=subprocess.run([sys.executable,str(portable/"homeku_runtime.py"),"--output",str(portable)],capture_output=True,text=True)
+        self.assertEqual(boot.returncode,0,boot.stdout+boot.stderr)
         output = self.work / "review.md"
         command = subprocess.run([sys.executable, str(portable / "tools/audit.py"), "review", str(candidate), "--output", str(output)],
                                  cwd=portable, text=True, capture_output=True)

@@ -4,18 +4,23 @@
   "principles": "knowledge/principles.json",
   "references": [
     {
+      "floor_area_m2": {
+        "max": 90,
+        "min": 60
+      },
+      "format_version": "2.0",
       "id": "edh001",
       "json": "data/projections/edh001.json",
       "profile_available": true,
       "profile_facets": [
         {
           "aspect": "primary-style",
-          "canonical": "Modern kontemporer bergeometri lengkung",
+          "canonical": "Contemporary Modern",
           "confidence": "medium",
           "id": "dna-01",
           "pointer": "/reference/profile/0",
           "state": "uncertain",
-          "value": "Modern kontemporer bergeometri lengkung"
+          "value": "Contemporary Modern"
         },
         {
           "aspect": "style-influence",
@@ -277,22 +282,45 @@
           "pointer": "/reference/profile/29",
           "state": "observed",
           "value": "Pengulangan frame gelap, bidang terang, aksen kayu, kurva/bukaan membulat dan lingkungan bersalju."
+        },
+        {
+          "aspect": "interior-style",
+          "canonical": "Warm Contemporary",
+          "confidence": "medium",
+          "id": "dna-31",
+          "pointer": "/reference/profile/30",
+          "state": "uncertain",
+          "value": "Warm Contemporary"
+        },
+        {
+          "aspect": "style-influence",
+          "canonical": "Scandinavian Contemporary",
+          "confidence": "low",
+          "id": "dna-32",
+          "pointer": "/reference/profile/31",
+          "state": "uncertain",
+          "value": "Scandinavian Contemporary"
         }
       ],
-      "revision": 1,
+      "revision": 2,
       "shots": [
         {
           "areas": [
-            "exterior",
-            "entry"
+            "Exterior",
+            "entry",
+            "exterior"
           ],
           "areas_canonical": [
             "entry",
             "exterior"
           ],
           "camera": "Orbit Right (~15°–20°) →\nAccelerating Dolly-In (~2×) toward entrance door.",
+          "continuity": "Satu pengambilan kontinu; hubungan denah dengan shot lain tidak ditetapkan dari urutan edit.",
           "design_facets": [
             {
+              "area_ids": [
+                "exterior-01"
+              ],
               "attribute": "layout",
               "confidence": "high",
               "domain": "space",
@@ -302,6 +330,9 @@
               "value": "Jalur depan mengarah ke tangga/landing; bay window kiri dan entrance kanan tersusun berdampingan menurut layar awal."
             },
             {
+              "area_ids": [
+                "exterior-01"
+              ],
               "attribute": "shape",
               "confidence": "high",
               "domain": "architecture",
@@ -311,6 +342,9 @@
               "value": "Fascia gelap mengikuti garis lengkung pada beberapa level atap."
             },
             {
+              "area_ids": [
+                "exterior-01"
+              ],
               "attribute": "shape",
               "confidence": "high",
               "domain": "architecture",
@@ -320,6 +354,9 @@
               "value": "Bay kaca melengkung dengan beberapa panel vertikal berbingkai gelap di kiri entrance."
             },
             {
+              "area_ids": [
+                "exterior-01"
+              ],
               "attribute": "shape",
               "confidence": "high",
               "domain": "architecture",
@@ -329,6 +366,9 @@
               "value": "Kanopi entrance bertepi membulat, fascia gelap dan soffit terang."
             },
             {
+              "area_ids": [
+                "exterior-01"
+              ],
               "attribute": "opening",
               "confidence": "high",
               "domain": "architecture",
@@ -338,6 +378,9 @@
               "value": "Daun pintu gelap dengan kaca atas dan glazing sempit di sisi kanan bukaan."
             },
             {
+              "area_ids": [
+                "exterior-01"
+              ],
               "attribute": "shape",
               "confidence": "high",
               "domain": "architecture",
@@ -347,6 +390,9 @@
               "value": "Beberapa anak tangga lurus lebar menuju landing, dengan pembatas rendah terang di sisi-sisinya."
             },
             {
+              "area_ids": [
+                "exterior-01"
+              ],
               "attribute": "shape",
               "confidence": "high",
               "domain": "architecture",
@@ -361,10 +407,13 @@
             "Dolly-In",
             "Orbit Right"
           ],
-          "overview": "references/edh001/media/shot-01/area-overview.jpg",
+          "multi_area": false,
+          "overview": "references/edh001/media/shot-01.jpg",
           "path": "references/edh001/analysis.md#shot-01",
+          "route": [],
           "shot": "shot-01",
           "tempos": [
+            "fast",
             "moderate",
             "variable"
           ],
@@ -373,14 +422,19 @@
         },
         {
           "areas": [
+            "Living Room",
             "living"
           ],
           "areas_canonical": [
             "living"
           ],
           "camera": "Dolly-Out (~2×) + Orbit Left + Pan Right.",
+          "continuity": "Satu pengambilan kontinu; hubungan denah dengan shot lain tidak ditetapkan dari urutan edit.",
           "design_facets": [
             {
+              "area_ids": [
+                "living-01"
+              ],
               "attribute": "layout",
               "confidence": "high",
               "domain": "space",
@@ -390,6 +444,9 @@
               "value": "Sofa sectional dan chaise mengitari coffee table; media wall kiri dan bay window di belakang/sisi kanan membatasi area duduk."
             },
             {
+              "area_ids": [
+                "living-01"
+              ],
               "attribute": "shape",
               "confidence": "high",
               "domain": "architecture",
@@ -399,6 +456,9 @@
               "value": "Bay window tinggi terdiri dari beberapa panel vertikal berbingkai gelap, dengan bagian atas bermullion."
             },
             {
+              "area_ids": [
+                "living-01"
+              ],
               "attribute": "shape",
               "confidence": "high",
               "domain": "architecture",
@@ -408,6 +468,9 @@
               "value": "Bidang plafon turun dengan tepi melengkung mengikuti sisi bay."
             },
             {
+              "area_ids": [
+                "living-01"
+              ],
               "attribute": "shape",
               "confidence": "high",
               "domain": "furnishing",
@@ -417,6 +480,9 @@
               "value": "Coffee table rendah berbentuk balok persegi panjang dengan permukaan/tampilan kayu hangat."
             },
             {
+              "area_ids": [
+                "living-01"
+              ],
               "attribute": "shape",
               "confidence": "high",
               "domain": "furnishing",
@@ -426,6 +492,9 @@
               "value": "Ceruk/perangkat hitam memanjang terbenam di bawah TV."
             },
             {
+              "area_ids": [
+                "living-01"
+              ],
               "attribute": "configuration",
               "confidence": "high",
               "domain": "storage",
@@ -441,8 +510,10 @@
             "Orbit Left",
             "Pan Right"
           ],
-          "overview": "references/edh001/media/shot-02/area-overview.jpg",
+          "multi_area": false,
+          "overview": "references/edh001/media/shot-02.jpg",
           "path": "references/edh001/analysis.md#shot-02",
+          "route": [],
           "shot": "shot-02",
           "tempos": [
             "moderate"
@@ -452,14 +523,19 @@
         },
         {
           "areas": [
+            "Kitchen",
             "kitchen"
           ],
           "areas_canonical": [
             "kitchen"
           ],
           "camera": "Accelerating Dolly-In (~2×) + Pan Left (~25°–30°) toward refrigerator and coffee niche.",
+          "continuity": "Satu pengambilan kontinu; hubungan denah dengan shot lain tidak ditetapkan dari urutan edit.",
           "design_facets": [
             {
+              "area_ids": [
+                "kitchen-01"
+              ],
               "attribute": "layout",
               "confidence": "high",
               "domain": "space",
@@ -469,6 +545,9 @@
               "value": "Deret kabinet dinding memuat refrigerator di ujung kiri, niche kopi di sebelahnya dan range di bawah window horizontal."
             },
             {
+              "area_ids": [
+                "kitchen-01"
+              ],
               "attribute": "opening",
               "confidence": "high",
               "domain": "architecture",
@@ -478,6 +557,9 @@
               "value": "Jendela horizontal persegi panjang berada di atas area range/counter."
             },
             {
+              "area_ids": [
+                "kitchen-01"
+              ],
               "attribute": "shape",
               "confidence": "high",
               "domain": "architecture",
@@ -487,6 +569,9 @@
               "value": "Bukaan bundar besar terlihat di sebelah kiri refrigerator."
             },
             {
+              "area_ids": [
+                "kitchen-01"
+              ],
               "attribute": "configuration",
               "confidence": "high",
               "domain": "storage",
@@ -496,6 +581,9 @@
               "value": "Kabinet bawah berisi laci/pintu; kabinet tinggi/atas mengapit zona refrigerator dan niche."
             },
             {
+              "area_ids": [
+                "kitchen-01"
+              ],
               "attribute": "configuration",
               "confidence": "high",
               "domain": "storage",
@@ -505,6 +593,9 @@
               "value": "Rak terbuka bertingkat di samping refrigerator berisi wadah, buku/objek dan tanaman."
             },
             {
+              "area_ids": [
+                "kitchen-01"
+              ],
               "attribute": "configuration",
               "confidence": "high",
               "domain": "storage",
@@ -514,6 +605,9 @@
               "value": "Beberapa rak dinding horizontal gelap di kanan atas menampung piring, wadah dan tanaman."
             },
             {
+              "area_ids": [
+                "kitchen-01"
+              ],
               "attribute": "shape",
               "confidence": "high",
               "domain": "furnishing",
@@ -528,10 +622,14 @@
             "Dolly-In",
             "Pan Left"
           ],
-          "overview": "references/edh001/media/shot-03/area-overview.jpg",
+          "multi_area": false,
+          "overview": "references/edh001/media/shot-03.jpg",
           "path": "references/edh001/analysis.md#shot-03",
+          "route": [],
           "shot": "shot-03",
           "tempos": [
+            "fast",
+            "moderate",
             "variable"
           ],
           "view_angle": "oblique",
@@ -539,14 +637,19 @@
         },
         {
           "areas": [
+            "Bedroom",
             "bedroom"
           ],
           "areas_canonical": [
             "bedroom"
           ],
           "camera": "Dolly-Out (~1.3×) + Orbit Left + strong Pan Right (~30°–35°).",
+          "continuity": "Satu pengambilan kontinu; hubungan denah dengan shot lain tidak ditetapkan dari urutan edit.",
           "design_facets": [
             {
+              "area_ids": [
+                "bedroom-01"
+              ],
               "attribute": "layout",
               "confidence": "high",
               "domain": "space",
@@ -556,6 +659,9 @@
               "value": "Ranjang pada platform rendah menghadap kamera secara serong; storage terintegrasi di headwall dan window besar di kanan."
             },
             {
+              "area_ids": [
+                "bedroom-01"
+              ],
               "attribute": "shape",
               "confidence": "high",
               "domain": "furnishing",
@@ -565,6 +671,9 @@
               "value": "Platform persegi panjang bersudut lembut menonjol di luar kasur dan tampak memiliki base setback/efek melayang."
             },
             {
+              "area_ids": [
+                "bedroom-01"
+              ],
               "attribute": "shape",
               "confidence": "high",
               "domain": "furnishing",
@@ -574,6 +683,9 @@
               "value": "Meja samping berbentuk barrel/silinder dengan hoop mendatar pada sisi kiri ranjang."
             },
             {
+              "area_ids": [
+                "bedroom-01"
+              ],
               "attribute": "configuration",
               "confidence": "high",
               "domain": "storage",
@@ -583,6 +695,9 @@
               "value": "Niche display bertingkat terbuka di sisi kiri headwall, dengan kotak, buku/objek kecil dan tanaman."
             },
             {
+              "area_ids": [
+                "bedroom-01"
+              ],
               "attribute": "configuration",
               "confidence": "high",
               "domain": "storage",
@@ -592,6 +707,9 @@
               "value": "Hanging bay terbuka dengan pakaian dan rak atas menyatu di sisi kanan headwall."
             },
             {
+              "area_ids": [
+                "bedroom-01"
+              ],
               "attribute": "configuration",
               "confidence": "high",
               "domain": "storage",
@@ -601,6 +719,9 @@
               "value": "Linen lipat, kotak dan keranjang menempati rak atas headwall."
             },
             {
+              "area_ids": [
+                "bedroom-01"
+              ],
               "attribute": "shape",
               "confidence": "high",
               "domain": "architecture",
@@ -616,8 +737,10 @@
             "Orbit Left",
             "Pan Right"
           ],
-          "overview": "references/edh001/media/shot-04/area-overview.jpg",
+          "multi_area": false,
+          "overview": "references/edh001/media/shot-04.jpg",
           "path": "references/edh001/analysis.md#shot-04",
+          "route": [],
           "shot": "shot-04",
           "tempos": [
             "moderate"
@@ -627,16 +750,22 @@
         },
         {
           "areas": [
+            "Bathroom & Laundry",
             "bathroom",
             "laundry"
           ],
           "areas_canonical": [
+            "Bathroom & Laundry",
             "bathroom",
             "laundry"
           ],
           "camera": "Dolly-In (~2×) + gentle Pan Right (~10°–15°).",
+          "continuity": "Satu pengambilan kontinu; hubungan denah dengan shot lain tidak ditetapkan dari urutan edit.",
           "design_facets": [
             {
+              "area_ids": [
+                "bathroom-laundry-01"
+              ],
               "attribute": "layout",
               "confidence": "high",
               "domain": "space",
@@ -646,6 +775,9 @@
               "value": "Vanity parsial kiri depan, toilet kiri-tengah, shower sudut tengah dan laundry tower kanan tersusun dalam satu cakupan."
             },
             {
+              "area_ids": [
+                "bathroom-laundry-01"
+              ],
               "attribute": "combined-functions",
               "confidence": "high",
               "domain": "space",
@@ -655,6 +787,9 @@
               "value": "Fungsi mandi/toilet dan laundry tampak dalam shot yang sama."
             },
             {
+              "area_ids": [
+                "bathroom-laundry-01"
+              ],
               "attribute": "circulation",
               "confidence": "high",
               "domain": "space",
@@ -664,6 +799,9 @@
               "value": "Lantai terbuka di depan shower/toilet menjadi area akses yang tampak; lebar fisik tidak diketahui."
             },
             {
+              "area_ids": [
+                "bathroom-laundry-01"
+              ],
               "attribute": "shape",
               "confidence": "high",
               "domain": "furnishing",
@@ -673,6 +811,9 @@
               "value": "Tray terang tampak berbentuk seperempat lingkaran dengan bibir/threshold naik dari lantai."
             },
             {
+              "area_ids": [
+                "bathroom-laundry-01"
+              ],
               "attribute": "configuration",
               "confidence": "high",
               "domain": "furnishing",
@@ -682,6 +823,9 @@
               "value": "Top rail melengkung gelap, panel/pintu kaca dan handle vertikal gelap membatasi wet zone."
             },
             {
+              "area_ids": [
+                "bathroom-laundry-01"
+              ],
               "attribute": "shape",
               "confidence": "high",
               "domain": "architecture",
@@ -691,6 +835,9 @@
               "value": "Bukaan bundar dengan bezel/reveal putih tebal berada di dalam area shower."
             },
             {
+              "area_ids": [
+                "bathroom-laundry-01"
+              ],
               "attribute": "configuration",
               "confidence": "high",
               "domain": "storage",
@@ -700,6 +847,9 @@
               "value": "Niche horizontal berisi botol/perlengkapan berada di bawah porthole."
             },
             {
+              "area_ids": [
+                "bathroom-laundry-01"
+              ],
               "attribute": "shape",
               "confidence": "medium",
               "domain": "furnishing",
@@ -709,6 +859,9 @@
               "value": "Elemen gelap berbentuk disk/oval di bagian atas shower terlihat parsial; identifikasinya sebagai shower head belum sepenuhnya pasti."
             },
             {
+              "area_ids": [
+                "bathroom-laundry-01"
+              ],
               "attribute": "shape",
               "confidence": "high",
               "domain": "furnishing",
@@ -718,6 +871,9 @@
               "value": "Counter terang dengan basin persegi terintegrasi terlihat parsial di kiri foreground."
             },
             {
+              "area_ids": [
+                "bathroom-laundry-01"
+              ],
               "attribute": "configuration",
               "confidence": "high",
               "domain": "storage",
@@ -727,6 +883,9 @@
               "value": "Shelf kayu terbuka di atas tower menyimpan linen/handuk lipat."
             },
             {
+              "area_ids": [
+                "bathroom-laundry-01"
+              ],
               "attribute": "opening",
               "confidence": "high",
               "domain": "architecture",
@@ -741,19 +900,39 @@
             "Dolly-In",
             "Pan Right"
           ],
-          "overview": "references/edh001/media/shot-05/area-overview.jpg",
+          "multi_area": false,
+          "overview": "references/edh001/media/shot-05.jpg",
           "path": "references/edh001/analysis.md#shot-05",
+          "route": [],
           "shot": "shot-05",
           "tempos": [
+            "fast",
+            "moderate",
             "variable"
           ],
           "view_angle": "oblique",
           "view_angle_canonical": "oblique"
         }
       ],
-      "title": "Rumah lengkung batu terang — bay, storage dan bathroom–laundry"
+      "style_relations": [
+        {
+          "confidence": "medium",
+          "from": "Contemporary Modern",
+          "relation": "influence",
+          "state": "uncertain",
+          "to": "Organic Modern"
+        },
+        {
+          "confidence": "low",
+          "from": "Warm Contemporary",
+          "relation": "influence",
+          "state": "uncertain",
+          "to": "Scandinavian Contemporary"
+        }
+      ],
+      "title": "Curved Stone Winter Home"
     }
   ],
-  "schema_version": "1.0",
+  "schema_version": "2.0",
   "taxonomy": "data/taxonomy.json"
 }

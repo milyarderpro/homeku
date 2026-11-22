@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 from homeku.common import LibraryError, read_json, sha256
-from homeku.exporter import assemble, frame_times, sample
+from homeku.exporter import assemble, assemble_v2, export_v2, review_v2, frame_times, sample
 from homeku.validation import probe_video, validate_folder
 from homeku.markdown import review_cards
 
@@ -42,10 +42,49 @@ def main():
         command.add_argument("--include-source", action="store_true")
         if name == "export":
             command.add_argument("--reviewed-sha256", required=True)
+    v2draft=commands.add_parser("draft-v2", help="Render authored audit.json into a complete candidate")
+    v2draft.add_argument("source",type=Path)
+    v2draft.add_argument("audit",type=Path)
+    v2draft.add_argument("--audit-info",type=Path,required=True)
+    v2draft.add_argument("--output",type=Path,required=True)
+    v2draft.add_argument("--supersedes",type=Path)
+    v2draft.add_argument("--include-source",action="store_true")
+    v2draft.add_argument("--quality",type=int,default=91)
+    v2draft.add_argument("--scale",type=float,default=1.0)
+    v2draft.add_argument("--columns",type=int,default=4)
+    v2export=commands.add_parser("export-v2",help="Package an accepted whole-snapshot candidate unchanged")
+    v2export.add_argument("candidate",type=Path)
+    v2export.add_argument("--output",type=Path,required=True)
+    lock=v2export.add_mutually_exclusive_group(required=True)
+    lock.add_argument("--reviewed-sha256")
+    lock.add_argument("--receipt",type=Path,help="Review receipt outside the candidate; explicit human approval is still required")
+    v2export.add_argument("--source",type=Path)
     args = parser.parse_args()
     try:
+        if args.command == "draft-v2":
+            result=assemble_v2(args.source.resolve(),args.audit.resolve(),read_json(args.audit_info),args.output.resolve(),
+                 include_source=args.include_source,supersedes=read_json(args.supersedes) if args.supersedes else None,
+                 quality=args.quality,scale=args.scale,columns=args.columns)
+            print(json.dumps(result,ensure_ascii=False,indent=2));return 0
+        if args.command == "export-v2":
+            digest=args.reviewed_sha256
+            if args.receipt:
+                candidate=args.candidate.resolve()
+                if args.receipt.resolve().is_relative_to(candidate):
+                    raise LibraryError("Keep review receipt outside candidate")
+                receipt=read_json(args.receipt)
+                if Path(receipt.get("candidate", "")).resolve()!=candidate:
+                    raise LibraryError("Review receipt belongs to another candidate")
+                digest=receipt.get("snapshot_sha256")
+                if not isinstance(digest,str) or len(digest)!=64:
+                    raise LibraryError("Invalid review receipt digest")
+            result=export_v2(args.candidate.resolve(),args.output.resolve(),digest,args.source.resolve() if args.source else None)
+            print(json.dumps(result,ensure_ascii=False,indent=2));return 0
         if args.command == "review":
             candidate = args.candidate.resolve()
+            if read_json(candidate / "manifest.json").get("contract_version") == "2.0":
+                result=review_v2(candidate,args.output.resolve(),args.source.resolve() if args.source else None)
+                print(json.dumps(result,ensure_ascii=False,indent=2));return 0
             override = {candidate.name: args.source.resolve()} if args.source else None
             snapshot_hash = sha256(candidate / "analysis.md")
             _, model, _ = validate_folder(candidate, candidate.parent, source_overrides=override)

@@ -2,7 +2,7 @@
 
 Acuan: [contoh normal](contoh-analysis-shot-normal.md), [contoh multi area](contoh-analysis-shot-multi-area.md), dan [plan V2](improvement-v2-plan.md).
 
-Status: template tampilan untuk V2; tooling dan kontrak aktif belum diubah. Saat implementasi, renderer menghasilkan MD dari audit.json.
+Status: fondasi renderer V2 tersedia dan menghasilkan MD dari audit.json. Renderer 2.1.2 memakai salinan template beku yang berisi struktur ini; workflow chat serta audit ulang pilot tetap Tahap 2.
 
 **Petunjuk pengisian**
 
@@ -11,12 +11,14 @@ Status: template tampilan untuk V2; tooling dan kontrak aktif belum diubah. Saat
 - Satu pengambilan berkelanjutan tetap satu shot meskipun melewati banyak area. Area terlihat dan rute kamera dicatat berbeda; jangan membuat cut yang tidak ada.
 - Desain berupa paragraf konkret tentang bentuk, susunan, posisi dan hubungan objek. Panjang mengikuti detail yang terlihat, tanpa kuota objek atau batas kata yang menghilangkan informasi penting. Jangan mengarang detail.
 - Untuk multi area, setiap kategori desain memuat paragraf berpenanda **Nama area.** mengikuti urutan kemunculan, tetap dalam satu kartu shot.
+- Nama gaya utama, pengaruh gaya dan gaya interior memakai istilah bahasa Inggris; penjelasan tetap bahasa Indonesia. identity.style_names_language wajib en pada renderer 2.1.2. Generator tidak menerjemahkan atau menebak nama gaya.
 - Gaya utama wajib bernama jelas; pengaruh gaya mengikuti bukti. Luas lantai wajib rentang estimasi total lantai rumah, ditampilkan hanya sebagai **angka–angka m²** tanpa catatan kepastian atau dasar perkiraan. Rincian estimasi tetap dalam JSON.
 - Bahasa sederhana menjelaskan semua arah, urutan/kebersamaan gerak, target dan perubahan penting secara singkat. Bedakan perpindahan kamera dari perubahan arah pandang.
 - Notasi teknis berbahasa Inggris: + untuk bersamaan, → untuk urutan, ~× untuk perubahan skala terhadap jangkar, bukan kelipatan kecepatan. Tempo terpisah; arah, waktu dan ritme mengikuti sumber.
 - Timeline gerakan wajib untuk multi area atau beberapa fase. Fase mengikuti perubahan komponen kamera; pergantian area atau tempo saja tidak memaksa fase baru. Waktu mengacu ke awal video, berurutan sesuai shot. Semua tampilan kamera harus sejalan.
 - Media final hanya satu kolase per shot dan satu storyboard. Shot satu area tepat 3 panel awal/tengah/akhir dalam 3 kolom. Multi area memakai panel dinamis: awal/akhir ditambah area, penghubung/reveal dan perubahan penting; pilih jumlah paling sedikit yang tetap lengkap, tanpa wajib 5 atau panel berulang. Panel kronologis; boleh beberapa baris jika terlalu panjang.
 - Storyboard overview seluruh area penting dalam satu baris. Multi area boleh beberapa panel dengan nomor shot sama. Overview adalah pilihan frame asli, biasanya awal IN/akhir OUT, bukan JPEG terpisah. Frame kerja hanya sementara.
+- Judul kolase/storyboard serta nama area tetap tebal tetapi 15% lebih kecil daripada 2.1.0. Header kolase cukup judul diikuti rentang/durasi pada satu baris, font regular sekitar 75% ukuran judul; dapat membungkus jika teks panjang. Timestamp Start/Middle/End atau momen multi area dikembalikan ke bawah masing-masing foto, memakai font regular sekitar 75% ukuran label bold. Timestamp tiap panel tidak dirangkum lagi dalam header. Caption rata kiri dan sejajar; waktu dua desimal seperti 2.37s. Header storyboard: ID — Primary style — 18.40s — 5 shot; setiap panel memakai nomor shot/nama area tebal lalu Overview · 2.37s.
 - Kolase berlabel nomor shot/area/waktu/durasi; tiap panel berlabel peran atau kejadian serta timestamp. Tulisan di luar foto, rasio/detail sumber terjaga; metadata panel tetap dapat ditelusuri.
 - Hapus bagian opsional yang tidak berlaku. Jangan menyisakan penanda kosong. Batas pengamatan penting dijelaskan singkat; hash, log frame dan tabel pembuktian teknis tidak tampil pada laporan manusia.
 

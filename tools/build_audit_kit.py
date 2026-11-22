@@ -15,31 +15,18 @@ sys.path.insert(0, str(ROOT / "tools"))
 from homeku.common import LibraryError, require, sha256
 
 RUNTIME = ["tools/audit.py", "tools/homeku/__init__.py", "tools/homeku/common.py", "tools/homeku/markdown.py",
-           "tools/homeku/validation.py", "tools/homeku/exporter.py", "docs/contracts/manifest-v1.schema.json", "audit/template-analysis.md"]
-GUIDES = ["audit/protocol.md", "audit/rubric.md", "audit/vocabulary.md", "audit/providers.md", "audit/calibration.md",
+           "tools/homeku/validation.py", "tools/homeku/exporter.py", "docs/contracts/manifest-v1.schema.json", "audit/template-analysis.md",
+           "tools/homeku/video.py", "tools/homeku/models.py", "tools/homeku/media.py", "tools/homeku/reporting.py",
+           "docs/contracts/audit-v2.schema.json", "docs/contracts/manifest-v2.schema.json",
+           "tools/homeku/media_v2_0.py", "tools/homeku/media_v2_1.py", "tools/homeku/media_v2_1_1.py", "tools/assets/templates/analysis-2.1.2.md", "tools/assets/templates/analysis-2.1.1.md", "tools/assets/fonts/DejaVuSans-Bold.ttf", "tools/assets/templates/analysis-2.1.0.md",
+           "tools/assets/fonts/DejaVuSans.ttf", "tools/assets/fonts/LICENSE.txt", "tools/assets/templates/analysis-2.0.0.md"]
+GUIDES = ["audit/README.md", "audit/json-guide.md", "audit/protocol.md", "audit/rubric.md", "audit/vocabulary.md", "audit/providers.md", "audit/calibration.md",
           "audit/prompts/01-audit.md", "audit/prompts/02-correct.md", "audit/prompts/03-export.md",
-          "docs/contracts/package-v1.md", "docs/contracts/analysis-v1.md", "docs/contracts/ai-reader-v1.md"]
+          "docs/contracts/package-v2.md", "docs/contracts/analysis-v2.md", "docs/template-analysis-v2.md"]
+OUTER_FILES = {"README.md", "homeku_runtime.py", "template-audit.json", "template-audit-info.json"}
 
 
-def build_bytes():
-    parts = ["# HOMEKU — kit audit chat\n\nKit input ini dipakai berulang bersama satu MP4 yang dilampirkan terpisah. Hasil setiap audit adalah satu ZIP referensi baru. Kit berisi sembilan file tanpa video/audio. Baca panduan berikut dan gunakan helper, bukan meminta pengguna mengedit file repo.\n",
-             "## Helper di workspace chat\n\nBuka kit ke folder kerja. Dependensi Python: Pillow dan jsonschema; FFmpeg/ffprobe tersedia pada PATH. Gunakan alat yang benar-benar tersedia; error aktual dilaporkan spesifik. Perintah berikut dijalankan AI di workspace chat, bukan oleh pengguna di repo.\n\n"
-             "```sh\npython tools/audit.py inspect /path/<id>.mp4\npython tools/audit.py sample /path/<id>.mp4 --output work/shot-01 --start 0 --end <AKHIR_SHOT_01> --shot-id shot-01\npython tools/audit.py sample /path/<id>.mp4 --output work/dense --native --start <AWAL_RENTANG> --end <AKHIR_RENTANG> --shot-id shot-01 --reason \"Pan atau orbit belum jelas\"\npython tools/audit.py draft /path/<id>.mp4 work/analysis.md --audit-info work/audit-info.json --output work/candidate\npython tools/audit.py review work/candidate/<id> --source /path/<id>.mp4 --output work/review.md\npython tools/audit.py export /path/<id>.mp4 work/analysis.md --audit-info work/audit-info.json --output work/final --reviewed-sha256 <SHA256_MD_YANG_DITINJAU> --include-source\n```\n\n"
-             "inspect mengembalikan metadata/hash dan seluruh timestamp PTS; itu bukan bukti semua frame sudah dilihat. sample menghasilkan frame native dan contact sheet sementara. Pilih overview_timestamp_s dari PTS aktual. draft/export tidak mengubah isi MD; jika waktu overview bukan PTS sumber, perbaiki draft sebelum ditinjau.\n\n"
-             "audit-info.json hanya instruksi kerja: objek reviewed_ranges (start_s/end_s/mode aktual), frame_reviews (record baseline/pendalaman), ai (provider/model/model_build), dan created_at opsional. method/limitations diambil dari MD. Mode hanya sampling, playback atau frame-by-frame yang benar-benar dilakukan; ekstraksi tidak sama dengan pemeriksaan. frame_reviews memakai review_record_template dari sampling.json: isi viewed_frame_indices hanya setelah benar-benar dilihat; baseline seluruh shot wajib selesai. Jumlah frame berasal dari daftar indeks. --native memakai semua frame asli tanpa interpolasi, termasuk sumber 60 FPS. Tidak ada status persetujuan pengguna yang diisi otomatis.\n\n"
-             "Jika perlu, --extras menunjuk daftar objek shot_id/path/timestamp_s/crop, untuk reveal-NN atau detail-NN. crop null untuk frame utuh, atau [x,y,width,height] untuk detail. --supersedes menunjuk revision/content_sha256 versi aktif hanya untuk revisi berikutnya. JSON kerja ini tidak masuk ZIP referensi.\n\n"
-             "Input MD dan video harus berada di luar folder kandidat. Setiap build membuat media/manifest baru. Hasil candidate/<id>/ dapat ditampilkan untuk review; ZIP ada di candidate/packages/. Digest --reviewed-sha256 hanya mengunci snapshot MD, bukan bukti otomatis persetujuan manusia. Gunakan export setelah pengguna menyatakan isi sesuai. Tidak diperlukan API AI atau akses repo dari chat.\n\n"
-             "--include-source digunakan jika sumber belum terbukti ada dengan hash sama di repo; jika sumber cocok sudah ada, opsi ini dapat dihilangkan. Batas kontrak sumber tetap berlaku.\n"]
-    for name in GUIDES:
-        text = (ROOT / name).read_text(encoding="utf-8")
-        # Relative doc links are flattened because their complete content is
-        # embedded below; preserve external official documentation links.
-        text = re.sub(r"\[([^\]]+)\]\((?!https?://)[^)]+\)", r"\1", text)
-        parts.append(f"\n---\n\n<!-- Source: {name} -->\n\n{text}")
-    parts.append("\n## Inventaris runtime\n\n| File | SHA-256 |\n| --- | --- |\n" + "".join(f"| {name} | {sha256(ROOT / name)} |\n" for name in RUNTIME))
-    files = {name: (ROOT / name).read_bytes() for name in RUNTIME}
-    files["README.md"] = "\n".join(parts).encode("utf-8")
-    require(len(files) == 9 and not any(name.endswith((".mp4", ".mp3", ".wav")) for name in files), "Input kit must have nine non-media files")
+def zip_bytes(files):
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
         for name, content in sorted(files.items()):
@@ -48,6 +35,79 @@ def build_bytes():
             info.compress_type = zipfile.ZIP_DEFLATED
             archive.writestr(info, content)
     return buffer.getvalue()
+
+
+def bootstrap_source():
+    import base64, json
+    files = {name: (ROOT / name).read_bytes() for name in RUNTIME}
+    payload = zip_bytes(files)
+    inventory = {name: hashlib.sha256(content).hexdigest() for name, content in files.items()}
+    # This standard-library bootstrap restores the complete, versioned runtime.
+    # ZIP input has four members; video is always attached separately.
+    template = r'''#!/usr/bin/env python3
+"""Restore the bundled HOMEKU runtime; no network or AI calls."""
+import argparse, base64, hashlib, io, json, zipfile
+from pathlib import Path, PurePosixPath
+PAYLOAD = __PAYLOAD__
+DIGEST = __DIGEST__
+INVENTORY = json.loads(__INVENTORY__)
+
+def main():
+    parser=argparse.ArgumentParser()
+    parser.add_argument("--output", type=Path, default=Path("."))
+    args=parser.parse_args()
+    root=args.output.resolve()
+    data=base64.b64decode(PAYLOAD, validate=True)
+    if hashlib.sha256(data).hexdigest()!=DIGEST:
+        raise SystemExit("Runtime payload hash mismatch")
+    pending=[]
+    with zipfile.ZipFile(io.BytesIO(data)) as archive:
+        if len(archive.infolist())!=len(INVENTORY) or set(archive.namelist())!=set(INVENTORY):
+            raise SystemExit("Runtime inventory mismatch")
+        for entry in archive.infolist():
+            name=entry.filename
+            parts=PurePosixPath(name).parts
+            if not parts or name.startswith("/") or ".." in parts or "\\" in name or (entry.external_attr>>16)&0o170000!=0o100000:
+                raise SystemExit("Unsafe runtime path")
+            target=root.joinpath(*parts)
+            if not target.resolve().is_relative_to(root) or any(p.is_symlink() for p in [target,*target.parents] if p!=root.parent):
+                raise SystemExit("Runtime path escapes workspace")
+            content=archive.read(entry)
+            if hashlib.sha256(content).hexdigest()!=INVENTORY[name]:
+                raise SystemExit("Runtime file hash mismatch: "+name)
+            if target.exists() and (not target.is_file() or target.read_bytes()!=content):
+                raise SystemExit("Refusing to replace a different file: "+name)
+            pending.append((target,content))
+    for target,content in pending:
+        target.parent.mkdir(parents=True,exist_ok=True)
+        target.write_bytes(content)
+    print(json.dumps({"status":"ok","runtime_files":len(pending),"output":str(root)}))
+
+if __name__=="__main__":
+    main()
+'''
+    return (template.replace("__PAYLOAD__", repr(base64.b64encode(payload).decode()))
+            .replace("__DIGEST__", repr(hashlib.sha256(payload).hexdigest()))
+            .replace("__INVENTORY__", repr(json.dumps(inventory, sort_keys=True)))).encode()
+
+
+def build_bytes():
+    parts = ["# HOMEKU — kit audit V2\n\nInput: satu ZIP ini dan satu MP4 terpisah.\n\n"
+             "Ekstrak empat file input, lalu jalankan `python homeku_runtime.py --output .`. "
+             "Bootstrap memulihkan seluruh runtime/schema/font/lisensi dari payload lokal yang diinventarisasi; tidak mengunduh kode. "
+             "Dependensi runtime: Python 3.11+, Pillow, jsonschema, FFmpeg/ffprobe. "
+             "Baca seluruh panduan berikut. Placeholder template wajib diganti dengan hasil audit nyata. "
+             "Versi sumber 2.0; renderer/template 2.1.2. Jangan mengubah renderer versi lama.\n"]
+    for name in GUIDES:
+        body = (ROOT / name).read_text(encoding="utf-8")
+        body = re.sub(r"\[([^\]]+)\]\((?!https?://)[^)]+\)", r"\1", body)
+        parts.append(f"\n---\n\n<!-- Source: {name} -->\n\n{body}")
+    parts.append("\n## Inventaris runtime terpulihkan\n\n| File | SHA-256 |\n| --- | --- |\n" + "".join(f"| {name} | {sha256(ROOT / name)} |\n" for name in RUNTIME))
+    files = {"README.md": "\n".join(parts).encode(), "homeku_runtime.py": bootstrap_source(),
+             "template-audit.json": (ROOT / "audit/template-audit.json").read_bytes(),
+             "template-audit-info.json": (ROOT / "audit/template-audit-info.json").read_bytes()}
+    require(set(files)==OUTER_FILES and len(files)<=10, "Incomplete input kit inventory")
+    return zip_bytes(files)
 
 
 def main():
@@ -60,7 +120,7 @@ def main():
         require(target.is_file() and target.read_bytes() == expected, "Chat kit is stale; run tools/build_audit_kit.py")
     else:
         target.write_bytes(expected)
-    print(f"Chat kit: 9 files, {len(expected)} bytes, SHA-256 {hashlib.sha256(expected).hexdigest()}")
+    print(f"Chat kit: {len(OUTER_FILES)} input files, {len(RUNTIME)} runtime files, {len(expected)} bytes, SHA-256 {hashlib.sha256(expected).hexdigest()}")
 
 
 if __name__ == "__main__":

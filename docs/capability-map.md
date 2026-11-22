@@ -1,5 +1,7 @@
 # Kemampuan pustaka lama yang dipertahankan
 
+Fondasi V2 mempertahankan kemampuan berikut melalui audit.json, laporan manusia, indeks/proyeksi 2.0 serta pembacaan sebagian. Area fisik/fungsi/rute/fase terpisah; tempo interval dan hubungan gaya eksplisit dapat dicari. Paket MD 1.1 yang sudah diterima tetap utuh. Lihat [pemetaan V2](v2-field-map.md).
+
 Penelaahan ini mengambil prinsip umum dan kemampuan akses, bukan memindahkan fakta audit lama ke koleksi aktif. Arsip hanya dibaca saat penelaahan, tidak menjadi input generator.
 
 | Kemampuan lama | Sumber lama yang ditelaah | Penerapan baru |

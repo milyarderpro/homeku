@@ -2,7 +2,7 @@
 
 Tanggal: 22 November 2026.
 
-Status: rencana implementasi; tooling V2 belum diterapkan. Peta file dan urutan pekerjaan telah diperjelas berdasarkan eksplorasi repo. Template dan dua contoh laporan sudah disetujui pengguna. Pembaruan ini menetapkan format baku, detail desain lengkap, kamera sederhana, shot multi area dan media kolase hemat salinan: tiga panel untuk satu area, panel dinamis untuk multi area, serta storyboard satu baris. Penguatan akses AI yang telah disepakati tetap berlaku.
+Status: **Tahap 1 (1.1–1.12) dan Tahap 2 langkah 2.1–2.10 telah selesai**; lihat [verifikasi fondasi](v2-stage-1-verification.md) dan [hasil Tahap 2](v2-stage-2-verification.md). Workflow/kit V2 siap; audit ulang edh001 telah disetujui pengguna lalu di-ingest sebagai r0002/2.0. Enam pilot pengguna (2.11) belum dijalankan dan kalibrasi lintas pilot (2.12) masih terbuka, sehingga keseluruhan Tahap 2 belum selesai. Template dan dua contoh laporan yang disetujui tetap menjadi acuan renderer 2.1.2; versi terdahulu didukung. [Verifikasi tampilan](v2-stage-1-media-verification.md) mencatat penyempurnaan sebelumnya. ZIP r0001 dipertahankan sebagai riwayat; perubahan referensi dilakukan melalui revisi eksplisit.
 
 ## 1. Tujuan dan keputusan utama
 
@@ -10,7 +10,7 @@ Status: rencana implementasi; tooling V2 belum diterapkan. Peta file dan urutan 
 
 Plan ini memperbarui ketentuan sumber isi, format laporan dan paket pada [plan utama](implementation-plan.md) serta [plan improvement sebelumnya](phase-2-audit-improvement-plan.md). Aturan sumber, tampilan dan media diganti untuk format V2 sesuai plan ini; audit adaptif, revisi ZIP, pemisahan arsip dan produksi tetap berlaku. Ketentuan legacy tentang frame terpisah dan storyboard vertikal tidak diterapkan pada paket V2. Kontrak dan AGENTS.md diselaraskan saat implementasi, bukan dianggap sudah berubah hanya karena plan ini dibuat.
 
-Saat ini edh001 revisi 1 sudah aktif lokal dengan format 1.1 berbasis MD. Enam pilot lain belum selesai. Perubahan V2 tidak mengubah isi atau hash paket aktif secara diam-diam. [Alur konsep V2](alur-konsep-desain-v2.md) menjelaskan penggunaan data oleh AI; ketentuan pembacaan dan pemilihan referensi pada Bagian 6 mendukung alur tersebut.
+Saat ini edh001 revisi 2 sudah aktif lokal dengan format 2.0 berbasis audit.json setelah persetujuan isi dan ingest ZIP revisi eksplisit. Enam pilot lain belum selesai. Perubahan V2 tidak mengubah isi atau hash paket aktif secara diam-diam. [Alur konsep V2](alur-konsep-desain-v2.md) menjelaskan penggunaan data oleh AI; ketentuan pembacaan dan pemilihan referensi pada Bagian 6 mendukung alur tersebut.
 
 **Acuan penyajian yang sudah disetujui:** [template baku](template-analysis-v2.md), [contoh shot normal](contoh-analysis-shot-normal.md) dan [contoh shot multi area](contoh-analysis-shot-multi-area.md). Template menjadi acuan struktur renderer; kedua contoh memperlihatkan tingkat kelengkapan dan bahasa yang diharapkan. Isi contoh adalah simulasi, bukan referensi aktif atau bukti audit pilot.
 
@@ -56,7 +56,7 @@ Gunakan [template baku V2](template-analysis-v2.md). Judul laporan **ID — nama
 - **Palet utama:** warna dan tampilan material dominan.
 - **Suasana dan lingkungan:** karakter cahaya serta lingkungan yang terlihat.
 
-Nama gaya wajib tampil tersendiri. Organic Modern Cottage dan American Cottage pada pembahasan/contoh bukan label wajib atau penetapan baru untuk edh001. Label asli dipertahankan; alasan penamaan gaya disimpan dalam JSON.
+Nama gaya wajib tampil tersendiri. Nama gaya utama, pengaruh gaya serta gaya interior memakai istilah bahasa Inggris; penjelasan tetap bahasa Indonesia. Renderer 2.1.x memerlukan deklarasi identity.style_names_language=en tanpa menerjemahkan atau menebak nama gaya. Organic Modern Cottage dan American Cottage pada pembahasan/contoh bukan label wajib atau penetapan baru untuk edh001. Label asli dipertahankan; alasan penamaan gaya disimpan dalam JSON.
 
 ### B. Ukuran dan proporsi bangunan
 
@@ -105,7 +105,7 @@ Panel kolase mengikuti waktu sumber dari kiri ke kanan; bila satu baris terlalu 
 
 **Overview tetap ada sebagai pilihan frame, bukan file mandiri.** Pilih frame asli dengan cakupan area paling jelas, biasanya awal IN/akhir OUT, dengan alasan bila berbeda. Storyboard berisi satu gambaran representatif per area penting; satu frame yang jelas mencakup dua area tidak harus disalin dua kali. Jika multi area membutuhkan beberapa gambaran, beri label seperti Shot 01 · Exterior, Shot 01 · Living dan Shot 01 · Kitchen. Panel storyboard bukan shot baru. Overview boleh sama dengan panel kolase atau diambil dari frame sumber lain; asalnya tetap tercatat meskipun JPEG frame terpisah tidak disimpan.
 
-**Tampilan baku:** gunakan gaya [storyboard lama edh015](../archive/oldrepo/references/edh015/storyboard.jpg) sebagai acuan visual saja: latar terang, judul kontras, ruang antar panel dan tipografi konsisten. Header kolase memuat nomor shot, area/urutan area, rentang waktu dan durasi; setiap panel memiliki nomor/peran, area atau kejadian singkat serta timestamp. Header storyboard memuat ID/nama desain, durasi dan jumlah shot; tiap panel berlabel shot, area dan waktu. Tulisan berada di luar bagian foto. Gerak lengkap tetap di MD; jangan menyalin label slow/default produksi dari arsip.
+**Tampilan baku:** renderer 2.1.2 mempertahankan ukuran judul/nama area 15% lebih kecil dari 2.1.0, termasuk storyboard. Header kolase cukup judul beserta rentang waktu dan durasi pada satu baris bila muat. Di bawah tiap foto, label Start/Middle/End atau nomor/momen multi area ditulis bold, diikuti timestamp regular yang lebih kecil (sekitar 75% ukuran label), sejajar pada baseline yang sama. Tidak ada daftar timestamp semua panel dalam header. Header storyboard tetap ID — Primary style — durasi x.xxs — jumlah shot; tiap area memiliki nama bold lalu Overview · x.xxs dengan font waktu lebih kecil. Caption panjang membungkus di luar foto. Dua desimal hanya tampilan; presisi/pointer JSON tetap. Versi sebelumnya beserta template/fontnya dipertahankan. Gaya acuan lama hanya untuk tata letak, bukan sumber label gerak.
 
 **Resolusi dan ukuran:** pertahankan rasio serta detail frame asli, tanpa crop yang membuang konteks atau pembesaran generatif. Resolusi kolase mengikuti ukuran panel dan tata letak, bukan memperbesar sumber secara semu. Kompresi JPEG dapat dikonfigurasi untuk menyeimbangkan detail dan ukuran. Ukur jumlah byte media/ZIP sebelum–sesudah pada pilot; jumlah file lebih sedikit tidak dianggap jaminan penghematan. Seluruh frame audit dan potongan panel sementara tetap di workspace kerja, bukan paket/Git.
 
@@ -235,7 +235,7 @@ Ringkasan ini adalah konteks proyek produksi, bukan fakta audit atau referensi a
 
 ## 7. Peta perubahan file
 
-Nama file baru berikut adalah target implementasi. Tambahkan pada tahap terkait; penulisan plan ini tidak membuat modul, schema atau hasil audit baru. Pertahankan nama/versi legacy untuk kompatibilitas dan riwayat.
+Peta berikut mencakup fondasi Tahap 1 yang sudah tersedia dan file workflow/pilot Tahap 2 yang masih direncanakan. Status aktual dicatat pada verifikasi Tahap 1; keberadaan tooling tidak berarti audit/pilot selesai. Nama/versi legacy dipertahankan untuk kompatibilitas dan riwayat.
 
 ### A. Tooling yang diubah
 
@@ -262,7 +262,7 @@ Nama file baru berikut adalah target implementasi. Tambahkan pada tahap terkait;
 | --- | --- |
 | `tools/homeku/models.py` | Membaca sumber berdasarkan versi, membentuk model bersama dan mempertahankan isi/status/bukti asli; tidak memperkaya legacy lewat tebakan |
 | `tools/homeku/reporting.py` | Merender MD/kartu sesuai template, heading/anchor stabil serta aturan opsional; tidak membuat narasi AI baru |
-| `tools/homeku/media.py` | Kolase tiga panel/dinamis, storyboard satu baris, label/tata letak, inventaris penempatan panel dan pengambilan bagian foto |
+| `tools/homeku/media.py`, `media_v2_0.py` | Kolase tiga panel/dinamis, storyboard satu baris, label/tata letak, inventaris penempatan panel dan pengambilan bagian foto |
 | `tools/homeku/reader.py` | Indeks/pencarian dan pembacaan bagian identitas/shot/area/panel beserta konteks kontinuitas, dengan hasil terbatas |
 | `tools/homeku/video.py` | PTS, pemilihan indeks dan ekstraksi frame bersama; pindahkan helper yang diperlukan tanpa mengubah aturan audit 10 FPS/native |
 | `tools/assets/fonts/<font>.ttf`, `tools/assets/fonts/LICENSE.txt` | Font distribusi yang dipilih saat implementasi dan lisensi sebenarnya; profil/hash font masuk inventaris renderer dan kit |
@@ -309,7 +309,7 @@ Kontrak/schema V1 tetap melayani legacy. `docs/template-analysis-v2.md` menjadi 
 | `audit/homeku-audit-kit.zip` | Bangun ulang dari builder setelah runtime/panduan siap; bukan diedit langsung |
 | `catalogs/`, `knowledge/`, `data/projections/`, indeks/dependencies/build/registry/ingest | Keluaran tooling sesuai sumber/ingest yang sah; tidak dirawat sebagai salinan fakta manual |
 
-Builder dan tes saat ini mengunci sembilan file kit. V2 harus menetapkan inventaris bundel portabel yang lengkap; runtime/schema/font tidak boleh dihilangkan demi mempertahankan angka sembilan. Tetap satu ZIP input tanpa video/audio dan satu ZIP hasil per referensi. Susunan bundel diuji dari workspace kosong; penerapan pada chat nyata dicatat pada tahap workflow/pilot.
+Pada saat rencana awal dibuat, builder dan tes mengunci sembilan file kit. V2 harus menetapkan inventaris bundel portabel yang lengkap; runtime/schema/font tidak boleh dihilangkan demi mempertahankan angka sembilan. Tetap satu ZIP input tanpa video/audio dan satu ZIP hasil per referensi. Susunan bundel diuji dari workspace kosong; penerapan pada chat nyata dicatat pada tahap workflow/pilot.
 
 Cache dan CI harus mengenali perubahan template, schema, profil renderer dan aset. Katalog/knowledge mempertahankan lingkup area dan pointer tanpa menggandakan hitungan shot karena fase/kemunculan. Prinsip terkurasi tetap bersumber dari `sources/design-principles.json`; perubahan isinya hanya bila diperlukan dan tidak diisi lewat sintesis saat ingest. Arsip tidak menjadi input generator atau kumpulan contoh aktif.
 
@@ -321,7 +321,7 @@ edh001 menjadi uji audit nyata pertama untuk format baru: **periksa ulang seluru
 
 Audit ulang melengkapi identitas/gaya, proporsi dan luas wajib, tiga kategori detail desain, posisi/framing/cahaya, kamera sederhana yang sejalan dengan notasi/ritme serta pilihan panel/overview. Gerakan yang sudah disetujui menjadi acuan pemeriksaan, dengan alasan berbukti bila hasilnya perlu diperbaiki. Pindahkan fakta/status lama tanpa kehilangan bukti; perubahan atau koreksi ditelusuri melalui pemetaan bidang dan riwayat, bukan dihapus diam-diam.
 
-Siapkan **ZIP revisi 2**, menyebut supersedes revisi 1 dan hash aktif yang benar. Konversi mekanis membantu memindahkan data, tetapi tidak mengarang gaya interior, luas, detail shot atau klaim pemeriksaan. Audit ulang V2 belum dijalankan hanya karena rencana ini ditulis.
+Siapkan **ZIP revisi 2**, menyebut supersedes revisi 1 dan hash aktif yang benar. Konversi mekanis membantu memindahkan data, tetapi tidak mengarang gaya interior, luas, detail shot atau klaim pemeriksaan. Pelaksanaan audit V2 dibuktikan melalui log pemeriksaan aktual, bukan penyusunan rencana.
 
 edh001 tetap lima shot sesuai cut sumber; migrasi tidak mengubahnya menjadi satu shot multi area. Paket V2 menargetkan lima kolase tiga panel dan satu storyboard horizontal, dengan label informatif. Bandingkan ukuran file aktual dan petakan bukti/overview ke panel atau timestamp sumber; paket r0001 tetap menyimpan bukti lama. Kedua contoh Willow Cottage adalah simulasi penyajian dan tidak dimasukkan ke registry atau dipakai untuk mengklaim audit multi area sudah dijalankan.
 
@@ -370,6 +370,8 @@ Kerjakan menurut urutan 1.1–1.12. Hasil langkah sebelumnya menjadi input langk
 **Tahap 1 selesai bila:** kontrak dan pemetaan data tersedia; normal/multi area dapat diproses sesuai template; kandidat/ekspor tidak berubah setelah dikunci; reader dan turunan mempertahankan isi/status/bukti; jalur legacy, kit yang sedang berlaku serta transaksi tetap berjalan; seluruh pemeriksaan wajib dan regresi V2 lulus. Kemampuan ini dibuktikan melalui tes terisolasi dan check pustaka aktif, bukan jumlah file yang telah dibuat.
 
 ### B. Urutan lengkap Tahap 2
+
+**Status pelaksanaan 22 November 2026:** 2.1–2.10 selesai: workflow/kit diuji, kelima shot edh001 diaudit ulang, seluruh kandidat disetujui pengguna, lalu r0002 diekspor tanpa perubahan dan di-ingest. Enam run pengguna pada 2.11 belum dijalankan dan kalibrasi 2.12 masih terbuka. Rincian/bukti aktual: [verifikasi Tahap 2](v2-stage-2-verification.md).
 
 **Tujuan:** workflow ChatGPT/Gemini memakai fondasi V2 untuk mengaudit sumber, menampilkan laporan/kolase yang mudah dikoreksi dan menyerahkan satu ZIP final. edh001 diaudit ulang di chat ini; enam pilot berikutnya dijalankan pengguna di ChatGPT/Gemini. Tahap 2 baru dimulai setelah kriteria penyerahan Tahap 1 terpenuhi.
 
@@ -421,7 +423,7 @@ Tidak ada implementasi plugin produksi, percobaan konsep/gambar atau benchmark m
 
 ### D. Pemeriksaan setelah implementasi tooling
 
-Perintah berikut dijalankan pada akhir Tahap 1 dan sesudah perubahan tooling berikutnya; pada penyusunan plan ini belum dijalankan sebagai bukti implementasi V2.
+Perintah berikut telah lulus pada akhir Tahap 1; hasil aktual dan batas pembuktian terdapat pada [verifikasi](v2-stage-1-verification.md). Jalankan kembali setelah perubahan tooling yang relevan.
 
 ```sh
 python -m unittest discover -s tests -t . -v
@@ -445,4 +447,4 @@ Regresi yang diperlukan:
 
 Ini pengujian teknis struktur, akses dan pelestarian data, bukan benchmark konsep atau generate gambar. Validasi teknis bukan klaim kebenaran estimasi visual atau bukti audit video yang belum dijalankan.
 
-Metode audit tetap 10 FPS dengan pendalaman native sesuai kebutuhan, tanpa seluruh frame/motion dalam paket. Tidak ditambahkan plugin produksi, watcher lokal, benchmark manfaat pustaka, percobaan konsep atau generate gambar. Pengguna tetap cukup mengunduh satu ZIP, menaruhnya di incoming/ dan menjalankan ingest lokal. Pembaruan plan/template tidak mengubah referensi aktif atau berarti implementasi V2 sudah selesai.
+Metode audit tetap 10 FPS dengan pendalaman native sesuai kebutuhan, tanpa seluruh frame/motion dalam paket. Tidak ditambahkan plugin produksi, watcher lokal, benchmark manfaat pustaka, percobaan konsep atau generate gambar. Pengguna tetap cukup mengunduh satu ZIP, menaruhnya di incoming/ dan menjalankan ingest lokal. Fondasi Tahap 1 tidak mengubah isi referensi aktif; keseluruhan V2 belum selesai sampai workflow dan pilot Tahap 2 benar-benar dijalankan.

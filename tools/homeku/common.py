@@ -84,3 +84,14 @@ def slug(value: str) -> str:
     # Hash suffix prevents categories such as 'A B' and 'A-B' from colliding.
     base = re.sub(r"[^a-z0-9]+", "-", value.casefold()).strip("-")[:60] or "label"
     return base + "-" + hashlib.sha256(value.encode()).hexdigest()[:8]
+
+
+def snapshot_hash(folder):
+    """Bind every candidate payload byte, including an optional source copy."""
+    require(folder.is_dir() and not folder.is_symlink(), "Invalid candidate folder")
+    rows=[]
+    for p in sorted(folder.rglob("*")):
+        require(not p.is_symlink(), "Symlink in candidate")
+        if p.is_file(): rows.append([p.relative_to(folder).as_posix(),sha256(p)])
+    require(rows, "Empty candidate")
+    return hashlib.sha256(dumps(rows).encode()).hexdigest()

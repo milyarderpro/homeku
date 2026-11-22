@@ -137,17 +137,30 @@ class AuditHelperTests(unittest.TestCase):
             self.build()
         self.assertFalse((self.work / "candidate/audit-sample").exists())
 
-    def test_input_kit_is_deterministic_nine_files_without_video_or_reference_data(self):
+    def test_input_kit_is_deterministic_complete_inventory_without_source_data(self):
         first = kit_builder.build_bytes()
         self.assertEqual(first, kit_builder.build_bytes())
         target = self.work / "kit.zip"
         target.write_bytes(first)
         with zipfile.ZipFile(target) as archive:
-            self.assertEqual(len(archive.namelist()), 9)
+            self.assertEqual(set(archive.namelist()), kit_builder.OUTER_FILES)
+            self.assertLessEqual(len(archive.namelist()),10)
             self.assertFalse(any(name.endswith((".mp4", ".wav", ".mp3")) for name in archive.namelist()))
-            self.assertFalse(any("pilots/edh001" in name for name in archive.namelist()))
-            self.assertIn(b"--reviewed-sha256", archive.read("README.md"))
+            self.assertIn(b"--receipt", archive.read("README.md"))
             self.assertIn(b"tools/audit.py", archive.read("README.md"))
+        isolated=self.work/"inventory-workspace"
+        with zipfile.ZipFile(target) as archive:archive.extractall(isolated)
+        command=[sys.executable,str(isolated/"homeku_runtime.py"),"--output",str(isolated)]
+        for _ in range(2):
+            result=subprocess.run(command,capture_output=True,text=True)
+            self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+        for name in kit_builder.RUNTIME:
+            self.assertEqual((isolated/name).read_bytes(),(CODE_ROOT/name).read_bytes())
+        (isolated/"tools/audit.py").write_text("local change")
+        result=subprocess.run(command,capture_output=True,text=True)
+        self.assertNotEqual(result.returncode,0)
+        self.assertIn("Refusing to replace",result.stderr)
+        self.assertEqual((isolated/"tools/audit.py").read_text(),"local change")
 
     def test_export_runs_from_unpacked_kit_without_full_repository(self):
         target = self.work / "kit.zip"
@@ -155,6 +168,8 @@ class AuditHelperTests(unittest.TestCase):
         isolated = self.work / "chat-workspace"
         with zipfile.ZipFile(target) as archive:
             archive.extractall(isolated)
+        boot=subprocess.run([sys.executable,str(isolated/"homeku_runtime.py"),"--output",str(isolated)],capture_output=True,text=True)
+        self.assertEqual(boot.returncode,0,boot.stdout+boot.stderr)
         info = self.work / "audit-info.json"
         info.write_text(json.dumps(self.info))
         command = subprocess.run([sys.executable, str(isolated / "tools/audit.py"), "draft", str(self.source), str(self.analysis),

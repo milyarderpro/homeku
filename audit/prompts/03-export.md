@@ -1,11 +1,9 @@
-# Prompt ekspor final
+# Prompt ekspor final V2
 
-Isi audit terbaru sudah sesuai. Buat satu ZIP final HOMEKU dari keseluruhan snapshot terbaru yang saya periksa.
+Keseluruhan kandidat audit terbaru yang saya tinjau sudah sesuai. Ekspor satu ZIP final HOMEKU dari snapshot tersebut.
 
-Pastikan frame_reviews mencatat seluruh baseline serta pendalaman yang benar-benar dilihat dan kartu terakhir memakai snapshot MD yang sama. Hitung SHA-256 analysis.md tersebut dan gunakan perintah export dengan --reviewed-sha256. Bangun ulang seluruh frame pilihan, storyboard dan manifest; hash, waktu dan dimensi harus dihitung dari file nyata. Gunakan identitas AI yang diketahui; model_build yang tidak diketahui null. Jangan mengubah penjelasan atau membalik gerakan sumber saat ekspor.
+Gunakan export-v2 atas folder kandidat dan receipt review terakhir, bukan menjalankan draft ulang. JSON, MD, manifest, JPEG dan created_at harus tetap sama dengan kandidat yang saya periksa. Jangan mengubah isi atau memperbarui media/metadata saat ekspor. Jika kandidat berubah atau receipt tidak cocok, tampilkan ulang perubahan sebelum meminta persetujuan versi baru.
 
-Sertakan source.mp4 jika sumber belum terbukti tersedia dengan hash yang sama di video/<id>.mp4 repo. Jika ketersediaannya belum diketahui, sertakan sumber agar paket tidak kehilangan sumber. Untuk pilot yang sudah memiliki sumber cocok di repo, MP4 dapat tidak disertakan. Jangan menaruh script helper, audit-info, extras, motion/, klip shot atau seluruh frame dalam ZIP referensi.
+Pastikan log mencatat pemeriksaan nyata dan sumber terikat hash yang sama. source.mp4 hanya disertakan jika sumber kanonis belum terverifikasi tersedia; jika diperlukan tetapi belum ada dalam kandidat yang disetujui, buat kandidat lengkap baru dan tampilkan kembali sebelum ekspor. Jangan menambahkan script, receipt, audit-info, frame sementara, motion/ atau klip shot ke ZIP referensi.
 
-Jalankan validasi atas folder kandidat dan atas ZIP yang dibuka ulang. Pastikan MD dalam ZIP mempunyai hash yang sama dengan snapshot yang saya setujui dan seluruh media berasal dari sumber yang sama. Jika tes gagal, perbaiki masalah teknis di chat; perubahan isi yang dibutuhkan harus ditampilkan kembali kepada saya.
-
-Berikan satu tautan download <id>-r0001.zip atau nomor revisi yang benar, jumlah shot/gambar, identitas/hash sumber, dan ringkasan pemeriksaan teknis yang benar-benar dijalankan. Saya cukup mengunduh ZIP lalu mengunggahnya ke incoming/; jangan meminta saya memperbaiki file atau melakukan review isi lagi di repo.
+Jalankan validasi folder dan ZIP yang dibuka ulang serta kesamaan digest seluruh payload. Jika gagal, jelaskan error nyata; jangan menulis hash/bukti rekaan. Berikan satu tautan download <id>-rNNNN.zip, jumlah shot/gambar dan ringkasan pemeriksaan teknis singkat. Saya menaruh ZIP di incoming/ lokal lalu menjalankan ingest; tidak ada review isi kedua di repo.

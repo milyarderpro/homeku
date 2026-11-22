@@ -1,11 +1,10 @@
-"""Chat-side media and ZIP assembly. Semantic audit content stays in analysis.md."""
+"""Chat-side candidates/ZIPs: legacy Markdown or authored V2 JSON by explicit version."""
 
 from __future__ import annotations
 
 import bisect
 import hashlib
 import io
-import json
 import math
 import os
 import re
@@ -14,71 +13,14 @@ import subprocess
 import tempfile
 import zipfile
 from datetime import datetime, timezone
-from fractions import Fraction
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
 from .common import LibraryError, dumps, read_json, require, sha256
-from .markdown import LINK, parse
-from .validation import CODE_ROOT, extract_package, probe_video, validate_folder
-
-
-def frame_times(source):
-    """Presentation timestamps in decoder order, relative to the first video frame."""
-    try:
-        stream_index = probe_video(source)["video_stream_index"]
-        result = subprocess.run(["ffprobe", "-v", "error", "-protocol_whitelist", "file,pipe", "-select_streams", str(stream_index),
-                                 "-show_frames", "-show_streams", "-show_entries", "frame=best_effort_timestamp:stream=time_base", "-of", "json", str(source)],
-                                capture_output=True, text=True, check=True, timeout=120)
-        data = json.loads(result.stdout)
-        base = Fraction(data["streams"][0]["time_base"])
-        raw = [int(f["best_effort_timestamp"]) for f in data["frames"]]
-    except (OSError, subprocess.SubprocessError, KeyError, ValueError) as error:
-        raise LibraryError(f"Cannot read native frame timestamps: {error}") from error
-    require(raw and len(raw) <= 100_000, "Empty video or too many frames for one audit package")
-    # ffprobe's *_timestamp_time string is rounded to six decimals; using it
-    # can assign the first frame after a cut to the preceding shot at 30 fps.
-    times = [round(float((t - raw[0]) * base), 9) for t in raw]
-    require(all(a < b for a, b in zip(times, times[1:])), "Duplicate/nonmonotonic PTS needs explicit frame-index contract support")
-    return times
-
-
-def nearest(times, timestamp, start=0.0, end=float("inf")):
-    lo, hi = bisect.bisect_left(times, start), bisect.bisect_left(times, end)
-    require(lo < hi, "Shot interval has no native video frame")
-    pivot = bisect.bisect_left(times, timestamp, lo, hi)
-    candidates = [index for index in (pivot - 1, pivot) if lo <= index < hi]
-    return min(candidates, key=lambda i: (abs(times[i] - timestamp), i))
-
-
-def extract_frame(source, index, stream_index=None):
-    try:
-        if stream_index is None:
-            stream_index = probe_video(source)["video_stream_index"]
-        result = subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-protocol_whitelist", "file,pipe",
-                                 "-i", str(source), "-map", f"0:{stream_index}", "-vf", f"select=eq(n\\,{index})", "-frames:v", "1", "-f", "image2pipe",
-                                 "-vcodec", "mjpeg", "-q:v", "2", "-threads", "1", "-"], capture_output=True, check=True, timeout=120)
-        with Image.open(io.BytesIO(result.stdout)) as picture:
-            picture.load()
-        return result.stdout
-    except (OSError, subprocess.SubprocessError) as error:
-        raise LibraryError(f"Cannot extract native frame {index}: {error}") from error
-
-
-def selected_indices(times, start, end, fps=10.0, *, native=False, source_fps=None):
-    """PTS-based selection with exact first/last native frames, never interpolation."""
-    require(math.isfinite(start) and math.isfinite(end) and 0 <= start < end, "Invalid frame selection interval")
-    lo, hi = bisect.bisect_left(times, start), bisect.bisect_left(times, end)
-    require(lo < hi, "Shot interval has no native video frame")
-    if not native:
-        require(math.isfinite(fps) and 0 < fps <= 240, "Sampling fps must be in (0, 240]")
-    if native or (source_fps is not None and source_fps <= fps):
-        return list(range(lo, hi))
-    require((end - start) * fps <= 100_000, "Use bounded sampling intervals")
-    chosen = {nearest(times, start + i / fps, start, end) for i in range(math.ceil((end - start) * fps))
-              if start + i / fps < end}
-    return sorted(chosen | {lo, hi - 1})
+from .markdown import parse
+from .validation import CODE_ROOT, extract_package, validate_folder
+from .video import probe_video, frame_times, nearest, extract_frame, selected_indices
 
 
 def sample(source, output, fps=10.0, start=0.0, end=None, *, native=False, shot_id=None, reason=None):
@@ -287,3 +229,98 @@ def assemble(source, analysis, audit_info, output_root, *, extras=None, include_
             "content_sha256": validated["content_sha256"], "package": str(zip_dir / package_name),
             "candidate": str(destination), "media_count": len(media), "source_included": include_source,
             "mode": "reviewed-export" if reviewed_sha256 is not None else "draft-for-chat-review"}
+
+
+def assemble_v2(source, audit_path, audit_info, output_root, *, supersedes=None, purpose="reference",
+                include_source=False, quality=91, scale=1.0, columns=4):
+    """Create a candidate only. No ZIP or acceptance is inferred from drafting."""
+    from .models import validate_audit
+    from .media import build_media
+    from .reporting import render_config, render_report
+    from .common import snapshot_hash
+    require(source.is_file() and audit_path.is_file(),"MP4 and authored audit.json required")
+    authored=audit_path.read_bytes();audit=read_json(audit_path)
+    require(isinstance(audit,dict),"Audit JSON must be an object")
+    info={"path":f"video/{audit.get('id','')}.mp4","sha256":sha256(source),**probe_video(source)}
+    validate_audit(audit,info["duration_s"],frame_times(source))
+    rid=audit["id"]
+    require(source.stem==rid and source.suffix.casefold()==".mp4","ID must match original MP4 stem")
+    require(isinstance(audit_info,dict),"Actual audit metadata required")
+    output_root.mkdir(parents=True,exist_ok=True);destination=output_root/rid
+    require(not destination.resolve().is_relative_to((CODE_ROOT/"references").resolve()),"Active references change through ingest only")
+    require(not source.resolve().is_relative_to(destination.resolve()) and not audit_path.resolve().is_relative_to(destination.resolve()),"Keep input source outside candidate")
+    if destination.exists():
+        require(destination.is_dir() and not destination.is_symlink(),"Invalid existing candidate")
+        old=read_json(destination/"manifest.json") if (destination/"manifest.json").is_file() else {}
+        require(old.get("contract_version")=="2.0" and old.get("id")==rid,"Refusing to replace unmanaged candidate")
+        owned={"audit.json","analysis.md","manifest.json","source.mp4"}|{m["path"] for m in old["media"]}
+        require(all(not f.is_symlink() and (not f.is_file() or f.relative_to(destination).as_posix() in owned) for f in destination.rglob("*")),"Unmanaged files in candidate folder")
+    with tempfile.TemporaryDirectory(prefix=".v2-draft-",dir=output_root) as work_name:
+        folder=Path(work_name)/rid;folder.mkdir()
+        (folder/"audit.json").write_bytes(authored)
+        config=render_config(quality=quality,scale=scale,columns=columns)
+        media=build_media(folder,audit,source,info,config)
+        (folder/"analysis.md").write_text(render_report(audit,config),encoding="utf-8",newline="\n")
+        logs=dict(audit_info)
+        logs.setdefault("created_at",datetime.now(timezone.utc).isoformat())
+        manifest={"contract_version":"2.0","id":rid,"revision":audit["revision"],"supersedes":supersedes,
+                  "purpose":purpose,"source":info,"audit":logs,"audit_sha256":sha256(folder/"audit.json"),"render":config,"media":media}
+        (folder/"manifest.json").write_text(dumps(manifest),encoding="utf-8")
+        if include_source:shutil.copyfile(source,folder/"source.mp4")
+        validate_folder(folder,output_root,source_overrides={rid:source})
+        require(sha256(source)==info["sha256"] and audit_path.read_bytes()==authored,"Source changed during draft assembly")
+        # Keep the old candidate until the replacement is complete and validated.
+        backup=Path(work_name)/"previous-candidate"
+        if destination.exists():os.replace(destination,backup)
+        try:
+            os.replace(folder,destination)
+        except OSError:
+            if backup.exists():os.replace(backup,destination)
+            raise
+    return {"mode":"draft-for-chat-review","candidate":str(destination),"snapshot_sha256":snapshot_hash(destination),
+            "media_count":len(media),"media_bytes":sum((destination/m["path"]).stat().st_size for m in media)}
+
+
+def review_v2(candidate, output, source=None):
+    """Produce readable cards and a separate receipt; this is not user approval."""
+    from .common import snapshot_hash
+    from .reporting import review_report
+    digest=snapshot_hash(candidate)
+    overrides={candidate.name:source} if source else None
+    manifest,_,_=validate_folder(candidate,candidate.parent,source_overrides=overrides)
+    require(manifest["contract_version"]=="2.0","Use the explicit legacy workflow for this contract")
+    require(not output.resolve().is_relative_to(candidate.resolve()),"Receipt/cards must remain outside candidate")
+    audit=read_json(candidate/"audit.json")
+    output.parent.mkdir(parents=True,exist_ok=True)
+    output.write_text(review_report(audit,manifest["render"],candidate.as_posix()),encoding="utf-8")
+    require(snapshot_hash(candidate)==digest,"Candidate changed during review generation")
+    receipt=output.with_suffix(output.suffix+".json")
+    receipt.write_text(dumps({"candidate":str(candidate),"snapshot_sha256":digest,"report":str(output)}),encoding="utf-8")
+    return {"review":str(output),"receipt":str(receipt),"snapshot_sha256":digest}
+
+
+def export_v2(candidate, output_root, reviewed_sha256, source=None):
+    """Package reviewed bytes; never regenerate images, timestamps or narratives."""
+    from .common import snapshot_hash
+    require(snapshot_hash(candidate)==reviewed_sha256,"Candidate changed since whole-snapshot review")
+    overrides={candidate.name:source} if source else None
+    manifest,_,_=validate_folder(candidate,candidate.parent,source_overrides=overrides)
+    require(manifest["contract_version"]=="2.0","Use the explicit legacy workflow for this contract")
+    output_root.mkdir(parents=True,exist_ok=True)
+    require(not output_root.resolve().is_relative_to(candidate.resolve()),"ZIP output must stay outside candidate")
+    filename=f"{manifest['id']}-r{manifest['revision']:04d}.zip"
+    destination=output_root/filename
+    with tempfile.TemporaryDirectory(prefix=".v2-export-",dir=output_root) as work_name:
+        work=Path(work_name);target=work/filename
+        with zipfile.ZipFile(target,"w",zipfile.ZIP_DEFLATED) as archive:
+            for p in sorted(candidate.rglob("*")):
+                if p.is_file():
+                    info=zipfile.ZipInfo(f"{candidate.name}/{p.relative_to(candidate).as_posix()}",date_time=(1980,1,1,0,0,0))
+                    info.external_attr=0o100644<<16;info.compress_type=zipfile.ZIP_DEFLATED
+                    archive.writestr(info,p.read_bytes())
+        unpacked=extract_package(target,work/"roundtrip")
+        validate_folder(unpacked,candidate.parent,filename,overrides)
+        require(snapshot_hash(unpacked)==reviewed_sha256 and snapshot_hash(candidate)==reviewed_sha256,"Export snapshot mismatch")
+        os.replace(target,destination)
+    return {"mode":"reviewed-export","package":str(destination),"snapshot_sha256":reviewed_sha256,
+            "package_sha256":sha256(destination),"package_bytes":destination.stat().st_size}

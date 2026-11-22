@@ -2,14 +2,11 @@
 
 from __future__ import annotations
 
-import json
 import re
 import stat
-import subprocess
 import warnings
 import zipfile
 from datetime import datetime
-from fractions import Fraction
 from pathlib import Path
 
 from jsonschema import Draft202012Validator, FormatChecker
@@ -17,6 +14,7 @@ from PIL import Image
 
 from .common import LibraryError, content_hash, read_json, require, safe_relative, sha256
 from .markdown import parse
+from .video import probe_video
 
 CODE_ROOT = Path(__file__).resolve().parents[2]
 SCHEMA = CODE_ROOT / "docs/contracts/manifest-v1.schema.json"
@@ -64,10 +62,10 @@ def extract_package(package: Path, destination: Path) -> Path:
                             f"Unsupported directory in ZIP: {directory}")
             for info, name in files:
                 relative = name[len(reference_id) + 1:]
-                require(relative in {"analysis.md", "manifest.json", "source.mp4"} or
-                        re.fullmatch(r"media/(?:storyboard\.jpg|shot-[0-9]{2,}/(?:area-overview|start|middle|end|reveal-[0-9]{2,}|detail-[0-9]{2,})\.jpg)", relative),
+                require(relative in {"analysis.md", "audit.json", "manifest.json", "source.mp4"} or
+                        re.fullmatch(r"media/(?:shot-[0-9]{2,}\.jpg|storyboard\.jpg|shot-[0-9]{2,}/(?:area-overview|start|middle|end|reveal-[0-9]{2,}|detail-[0-9]{2,})\.jpg)", relative),
                         f"Unsupported file in package: {name}")
-                if relative in {"analysis.md", "manifest.json"}:
+                if relative in {"analysis.md", "audit.json", "manifest.json"}:
                     require(info.file_size <= 2 * 1024 * 1024, f"Text file exceeds 2 MiB: {name}")
             destination.mkdir(parents=True)
             for info, name in files:
@@ -80,30 +78,6 @@ def extract_package(package: Path, destination: Path) -> Path:
             return destination / reference_id
     except (zipfile.BadZipFile, RuntimeError, OSError) as error:
         raise LibraryError(f"{package.name}: cannot extract ZIP: {error}") from error
-
-
-def probe_video(path: Path):
-    try:
-        completed = subprocess.run(["ffprobe", "-v", "error", "-protocol_whitelist", "file,pipe",
-                                    "-show_streams", "-show_format", "-of", "json", str(path)],
-                                   check=True, capture_output=True, text=True, timeout=30)
-        data = json.loads(completed.stdout)
-        videos = [s for s in data["streams"] if s.get("codec_type") == "video" and not s.get("disposition", {}).get("attached_pic")]
-        require(videos, f"No video stream: {path.name}")
-        video = videos[0]
-        duration = float(video.get("duration", data.get("format", {}).get("duration", 0)))
-        fps = Fraction(video["avg_frame_rate"])
-        require(duration > 0 and 0 < fps <= 240, "Invalid source duration/frame rate")
-        width, height = video["width"], video["height"]
-        rotations = [v.get("rotation", 0) for v in video.get("side_data_list", [])]
-        rotation = rotations[0] if rotations else float(video.get("tags", {}).get("rotate", 0))
-        if abs(rotation) % 180 == 90:
-            width, height = height, width
-        return {"duration_s": duration, "width": width, "height": height,
-                "fps": {"numerator": fps.numerator, "denominator": fps.denominator},
-                "video_stream_index": video["index"]}
-    except (OSError, subprocess.SubprocessError, KeyError, ValueError, ZeroDivisionError) as error:
-        raise LibraryError(f"ffprobe cannot read {path.name}: {error}") from error
 
 
 def jpeg_size(path: Path):
@@ -122,6 +96,9 @@ def validate_folder(folder: Path, root: Path, package_name=None, source_override
     manifest_path = folder / "manifest.json"
     require(manifest_path.is_file(), "manifest.json is missing")
     manifest = read_json(manifest_path)
+    require(isinstance(manifest, dict), "Manifest must be an object")
+    if manifest.get("contract_version") == "2.0":
+        return validate_v2_folder(folder, root, manifest, package_name, source_overrides)
     validator = Draft202012Validator(read_json(SCHEMA), format_checker=FormatChecker())
     errors = sorted(validator.iter_errors(manifest), key=lambda e: str(list(e.path)))
     if errors:
@@ -267,12 +244,13 @@ def validate_folder(folder: Path, root: Path, package_name=None, source_override
     require(actual_files == allowed, f"Unexpected/unlisted files: {sorted(actual_files ^ allowed)}")
     model.update({"source": source_info, "media": manifest["media"], "audit": manifest["audit"],
                   "content_sha256": content_hash(folder)})
-    return manifest, model, source
+    from .models import legacy_model
+    return manifest, legacy_model(model), source
 
 
 def validate_frame_reviews(reviews, shots, source, info):
     """Check declarations against native PTS; cannot prove an AI actually looked."""
-    from .exporter import frame_times, selected_indices
+    from .video import frame_times, selected_indices
     times = frame_times(source)
     source_fps = info["fps"]["numerator"] / info["fps"]["denominator"]
     by_shot = {s["shot"]: s for s in shots}
@@ -298,3 +276,73 @@ def validate_frame_reviews(reviews, shots, source, info):
         require(abs(cursor - shot["end_s"]) <= 0.000001,
                 f"Every shot requires a complete 10 FPS (or native) viewed baseline including boundary frames: {sid}")
     return times
+
+
+def validate_v2_folder(folder, root, manifest, package_name=None, source_overrides=None):
+    from .models import schema_check, validate_audit, v2_model
+    from .media import expected_media
+    from .reporting import render_report, verify_renderer
+    from .video import frame_times
+    schema_check(manifest, "manifest-v2.schema.json")
+    rid = manifest["id"]
+    require(folder.name == rid, "Manifest ID differs from package folder")
+    if package_name:
+        require(package_name == f"{rid}-r{manifest['revision']:04d}.zip", "ZIP revision differs from manifest")
+    info=manifest["source"]
+    require(info["path"]==f"video/{rid}.mp4", "Source must be video/<id>.mp4")
+    if (root / "video").is_dir():
+        require(all(p.name.casefold()!=f"{rid}.mp4".casefold() or p.name==f"{rid}.mp4" for p in (root/"video").iterdir()), "Source filename case collision")
+    source=folder/"source.mp4"
+    if not source.exists():source=(source_overrides or {}).get(rid,root/info["path"])
+    require(source.is_file() and not source.is_symlink(), "Source unavailable")
+    require(sha256(source)==info["sha256"], "Source SHA-256 mismatch")
+    canonical=root/info["path"]
+    if manifest["revision"]==1 and canonical.exists():
+        require(sha256(canonical)==info["sha256"], "First revision cannot overwrite different canonical source bytes")
+    actual=probe_video(source)
+    for key in ("duration_s","width","height","fps","video_stream_index"):
+        require(actual[key]==info[key],f"Source {key} differs from ffprobe")
+    audit_path=folder/"audit.json"
+    require(audit_path.is_file() and not audit_path.is_symlink(),"audit.json is missing")
+    require(sha256(audit_path)==manifest["audit_sha256"],"Audit JSON hash mismatch")
+    audit=read_json(audit_path);times=frame_times(source)
+    validate_audit(audit,info["duration_s"],times)
+    require(audit["id"]==rid and audit["revision"]==manifest["revision"],"Audit identity/revision differs from manifest")
+    logs=manifest["audit"]
+    validate_frame_reviews(logs["frame_reviews"],audit["shots"],source,info)
+    ranges=sorted(logs["reviewed_ranges"],key=lambda r:r["start_s"])
+    cursor=0
+    for r in ranges:
+        require(0<=r["start_s"]<r["end_s"]<=info["duration_s"] and r["start_s"]<=cursor+1e-6,"Audit coverage gap/invalid range")
+        cursor=max(cursor,r["end_s"])
+        if r["mode"]=="frame-by-frame":
+            native=sorted((v["start_s"],v["end_s"]) for v in logs["frame_reviews"] if v["mode"]=="frame-by-frame")
+            end=r["start_s"]
+            for lo,hi in native:
+                if lo<=end+1e-6:end=max(end,hi)
+            require(end>=r["end_s"]-1e-6,"Frame-by-frame coverage claim lacks native review records")
+    require(abs(cursor-info["duration_s"])<1e-6,"Audit must cover source duration")
+    created=datetime.fromisoformat(logs["created_at"].replace("Z","+00:00"))
+    require(created.utcoffset() is not None,"Audit timestamp needs timezone")
+    verify_renderer(manifest["render"])
+    expected=[m for m,*_ in expected_media(audit,info,manifest["render"])]
+    require(len(manifest["media"])==len(expected),"Exactly one collage per shot plus storyboard required")
+    paths=set()
+    for item,wanted in zip(manifest["media"],expected):
+        name=safe_relative(item["path"])
+        require(name not in paths,"Duplicate media path");paths.add(name)
+        require({k:v for k,v in item.items() if k!="sha256"}==wanted,"Media layout/panel provenance differs from audit selections")
+        target=folder/name
+        require(target.is_file() and not target.is_symlink(),"Missing media")
+        require(sha256(target)==item["sha256"],"Media hash mismatch")
+        require(jpeg_size(target)==(item["width"],item["height"]),"Media dimensions mismatch")
+    report=folder/"analysis.md"
+    require(report.is_file() and report.read_bytes()==render_report(audit,manifest["render"]).encode("utf-8"),"analysis.md differs from versioned JSON renderer")
+    allowed=paths|{"analysis.md","audit.json","manifest.json"}
+    if (folder/"source.mp4").is_file():allowed.add("source.mp4")
+    actual_files=set()
+    for p in folder.rglob("*"):
+        require(not p.is_symlink(),"Symlink not allowed")
+        if p.is_file():actual_files.add(p.relative_to(folder).as_posix())
+    require(actual_files==allowed,"Unexpected/unlisted V2 files")
+    return manifest,v2_model(audit,manifest,content_hash(folder),times),source

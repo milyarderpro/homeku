@@ -26,6 +26,7 @@ class GitPublicationTests(unittest.TestCase):
             for directory in ("tools", "docs/contracts", "sources"):
                 shutil.copytree(CODE_ROOT / directory, root / directory, ignore=shutil.ignore_patterns("__pycache__"))
             shutil.copyfile(CODE_ROOT / ".gitignore", root / ".gitignore")
+            shutil.copyfile(CODE_ROOT / "docs/template-analysis-v2.md", root / "docs/template-analysis-v2.md")
             (root / "references").mkdir()
             (root / "references/README.md").write_text("Temporary test library only.")
             template = make_folder(work / "template")

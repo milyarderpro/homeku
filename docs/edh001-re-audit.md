@@ -45,3 +45,7 @@ Paket final mempunyai 22 JPEG: storyboard, empat gambar wajib per shot, dan satu
 Ekspor final memakai --reviewed-sha256 untuk mengunci MD yang disetujui. Isi MD dipertahankan persis; sebutan draf/menunggu persetujuan di dalam snapshot menjelaskan tahap penyusunannya sebelum persetujuan pada chat berikutnya. Status persetujuan terbaru dicatat pada dokumen ini, tanpa menulis ulang audit saat ekspor.
 
 [ZIP final edh001-r0001.zip](../audit/pilots/packages/edh001-r0001.zip) berukuran 4215439 byte. Setelah ekspor, CRC ZIP, seluruh hash media, sumber kanonis dan kecocokan MD dengan kartu/ZIP diperiksa ulang. [Paket penyerahan](../incoming/edh001-r0001.zip) sudah masuk incoming/ dan di-ingest tanpa review isi tambahan. [Referensi aktif](../references/edh001/analysis.md) serta [JSON pembaca AI](../data/projections/edh001.json) tersedia; katalog, indeks dan knowledge diperbarui generator. Publikasi GitHub belum dijalankan. Enam pilot lain tetap dikerjakan pengguna di ChatGPT/Gemini.
+
+## Pembaruan V2
+
+Catatan di atas merupakan riwayat penerimaan r0001/1.1. Setelah audit V2 baru dan persetujuan seluruh kandidat di chat, [edh001 r0002](../incoming/edh001-r0002.zip) telah diekspor serta di-ingest. Referensi aktif sekarang memakai audit.json 2.0 dan enam JPEG kolase/storyboard. Log audit, hash snapshot, preservasi r0001 dan pemeriksaan teknis terbaru tercatat pada [verifikasi Tahap 2 V2](v2-stage-2-verification.md).

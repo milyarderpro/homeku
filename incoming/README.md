@@ -1,6 +1,8 @@
 # Menyerahkan ZIP final
 
-Upload satu file `<id>-r0001.zip` langsung di folder ini pada branch utama. ZIP berisi satu folder `<id>/` dengan laporan, manifest dan seluruh media. [Kontrak paket](../docs/contracts/package-v1.md) menjelaskan format teknis awal.
+Untuk lokal: letakkan ZIP final di folder ini, lalu jalankan `python tools/library.py ingest`. Menyalin ZIP saja tidak menjalankan proses.
+
+Untuk GitHub: upload satu file `<id>-r0001.zip` langsung di folder ini pada branch utama. ZIP berisi satu folder `<id>/` dengan laporan, manifest dan seluruh media. [Kontrak V2](../docs/contracts/package-v2.md) dan [kontrak legacy](../docs/contracts/package-v1.md) menentukan isi sesuai versi. V2 menambahkan audit.json, MD hasil render serta kolase; paket lama tetap valid.
 
 Audit/koreksi dilakukan sebelum download ZIP dari chat. Setelah upload, workflow **Library ingest** memproses seluruh ZIP yang tersedia, termasuk unggahan berdekatan. Tidak perlu mengirim perintah save now atau mengedit requests/save.json.
 

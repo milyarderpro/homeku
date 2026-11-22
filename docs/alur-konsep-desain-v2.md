@@ -2,7 +2,7 @@
 
 Tanggal: 22 November 2026.
 
-Panduan penggunaan setelah [plan improvement V2](improvement-v2-plan.md) diimplementasikan, termasuk penguatan pembacaan ringan dan pemilihan variasi referensi. V2 masih berupa rencana; dokumen ini menyimpan alur yang dituju.
+Panduan penggunaan [pustaka V2](improvement-v2-plan.md), termasuk pembacaan ringan dan pemilihan variasi referensi. Fondasi reader/ingest Tahap 1 tersedia; audit ulang dan workflow chat V2 tetap Tahap 2. Dokumen ini menyimpan alur penggunaan oleh AI, bukan klaim pengujian konsep atau implementasi plugin produksi.
 
 **Permintaan pengguna → mencari referensi → membaca DNA dan gambar → membuat pilihan konsep → mengunci desain terpilih → menyiapkan gambar dan gerakan video.**
 

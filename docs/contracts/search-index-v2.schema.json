@@ -1,0 +1,234 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0"
+    },
+    "kind": {
+      "const": "homeku.search-index"
+    },
+    "taxonomy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "principles": {
+      "type": "string",
+      "minLength": 1
+    },
+    "knowledge": {
+      "type": "string",
+      "minLength": 1
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "revision",
+          "json",
+          "profile_available",
+          "profile_facets",
+          "shots",
+          "format_version",
+          "floor_area_m2",
+          "style_relations"
+        ],
+        "properties": {
+          "profile_available": {
+            "type": "boolean"
+          },
+          "profile_facets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "aspect",
+                "value",
+                "state",
+                "confidence",
+                "canonical",
+                "pointer"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "state": {
+                  "enum": [
+                    "observed",
+                    "uncertain",
+                    "not-visible",
+                    "not-present",
+                    "unknown"
+                  ]
+                },
+                "confidence": {
+                  "enum": [
+                    "high",
+                    "medium",
+                    "low",
+                    "unknown"
+                  ]
+                },
+                "aspect": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "canonical": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "pointer": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "shots": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "shot",
+                "areas",
+                "areas_canonical",
+                "view_angle",
+                "view_angle_canonical",
+                "camera",
+                "movements",
+                "tempos",
+                "design_facets",
+                "path",
+                "json_pointer",
+                "overview"
+              ],
+              "properties": {
+                "shot": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "areas": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "areas_canonical": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "view_angle": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "view_angle_canonical": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "camera": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "movements": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "tempos": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "design_facets": {
+                  "type": "array"
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "json_pointer": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "overview": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "json": {
+            "type": "string",
+            "minLength": 1
+          },
+          "format_version": {
+            "enum": [
+              "1.0",
+              "1.1",
+              "2.0"
+            ]
+          },
+          "floor_area_m2": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "style_relations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "from",
+                "to",
+                "relation",
+                "state",
+                "confidence"
+              ]
+            }
+          }
+        }
+      },
+      "minItems": 0
+    }
+  },
+  "required": [
+    "schema_version",
+    "kind",
+    "taxonomy",
+    "principles",
+    "knowledge",
+    "references"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

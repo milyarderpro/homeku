@@ -10,6 +10,7 @@ from pathlib import Path
 from . import GENERATOR_VERSION
 from .common import LibraryError, cell, content_hash, dumps, read_json, require, sha256, slug
 from .validation import CODE_ROOT, validate_folder
+from .models import evidence_inventory
 
 PAGE_SIZE = 40
 
@@ -17,6 +18,8 @@ PAGE_SIZE = 40
 def generator_fingerprint(root: Path):
     inputs = [(p.name, sha256(p)) for p in sorted((CODE_ROOT / "tools/homeku").glob("*.py"))]
     inputs += [(p.name, sha256(p)) for p in sorted((CODE_ROOT / "docs/contracts").glob("*.schema.json"))]
+    inputs += [(p.relative_to(CODE_ROOT).as_posix(), sha256(p)) for p in sorted((CODE_ROOT / "tools/assets").rglob("*")) if p.is_file()]
+    inputs += [("approved-template", sha256(CODE_ROOT / "docs/template-analysis-v2.md"))]
     inputs += [("principles", sha256(CODE_ROOT / "sources/design-principles.json")), ("taxonomy", sha256(root / "data/taxonomy.json")), ("version", GENERATOR_VERSION)]
     return hashlib.sha256(dumps(inputs).encode()).hexdigest()
 
@@ -40,6 +43,9 @@ def load_models(root: Path, registry, full=False):
         require(sha256(folder / "analysis.md") == entry["analysis_sha256"] and sha256(folder / "manifest.json") == entry["manifest_sha256"],
                 f"Registry document hash mismatch: {reference_id}")
         manifest = read_json(folder / "manifest.json")
+        require(entry.get("contract_version",manifest["contract_version"])==manifest["contract_version"],f"Registry source version differs: {reference_id}")
+        if manifest["contract_version"] == "2.0":
+            require(entry.get("contract_version")=="2.0" and sha256(folder/"audit.json")==entry.get("audit_sha256"),f"Registry audit JSON hash mismatch: {reference_id}")
         require(manifest["id"] == reference_id and manifest["revision"] == entry["revision"], f"Registry identity mismatch: {reference_id}")
         require(manifest["source"]["path"] == f"video/{reference_id}.mp4", f"Invalid registered source path: {reference_id}")
         source = root / manifest["source"]["path"]
@@ -56,7 +62,7 @@ def load_models(root: Path, registry, full=False):
             # Cache is disposable. It cannot be used if its own payload was edited.
             if (previous_build.get("projections", {}).get(reference_id) == expected and
                     previous_build.get("projection_sha256", {}).get(reference_id) == sha256(cache) and
-                    cached.get("schema_version") == "1.0" and cached.get("kind") == "homeku.reference"):
+                    cached.get("schema_version") == "2.0" and cached.get("kind") == "homeku.reference"):
                 models[reference_id] = cached["reference"]
                 continue
         _, model, _ = validate_folder(folder, root)
@@ -69,7 +75,7 @@ def render(root: Path, models):
     require(isinstance(taxonomy.get("version"), int) and isinstance(taxonomy.get("areas"), dict), "Invalid taxonomy")
     alias_groups = {}
     for group, entries in taxonomy.items():
-        if not isinstance(entries, dict):
+        if group == "style_relations" or not isinstance(entries, dict):
             continue
         group_aliases = {}
         for canonical, values in sorted(entries.items()):
@@ -84,6 +90,7 @@ def render(root: Path, models):
     def canonical(group, value):
         return alias_groups.get(group, {}).get(value.casefold(), value)
 
+    inventories={rid:evidence_inventory(model) for rid,model in models.items()}
     outputs, dependencies = {}, {}
     all_ids = sorted(models)
     count_shots = sum(len(m["shots"]) for m in models.values())
@@ -100,7 +107,19 @@ def render(root: Path, models):
         return link(page, f"references/{rid}/analysis.md#{sid}", f"{rid} / {sid}")
 
     def media_link(page, rid, sid):
-        return link(page, f"references/{rid}/media/{sid}/area-overview.jpg", "gambar area")
+        path=f"media/{sid}.jpg" if models[rid]["format_version"]=="2.0" else f"media/{sid}/area-overview.jpg"
+        return link(page, f"references/{rid}/{path}", "kolase shot" if models[rid]["format_version"]=="2.0" else "gambar area")
+
+    def proof_path(rid, key):
+        item=inventories[rid][key]
+        name=item["path"]
+        if name.startswith("media/"):name=f"references/{rid}/{name}"
+        if "bbox" in item:name+="#xywh="+",".join(map(str,item["bbox"]))
+        elif name.startswith("video/"):name+=f"#t={item['timestamp_s']}"
+        return name
+
+    def proof_link(page,rid,key):
+        return link(page,proof_path(rid,key),"bukti")
 
     def paged(base, title, records, columns, row_fn):
         index_path = f"{base}/README.md"
@@ -129,7 +148,10 @@ def render(root: Path, models):
         references.append(f"| {link('catalogs/references.md', f'references/{rid}/analysis.md', rid)} | {cell(model['title'])} | {len(model['shots'])} |")
         for shot in model["shots"]:
             shots.append((rid, shot))
-            for area in sorted({aliases.get(a.casefold(), a) for a in shot["areas"]}):
+            room_labels=set(shot["areas"])
+            if model["format_version"]=="2.0":
+                room_labels|={f for a in model["areas"] if a["id"] in shot["area_ids"] for f in a["functions"]}
+            for area in sorted({aliases.get(a.casefold(), a) for a in room_labels}):
                 rooms[area].append((rid, shot))
             facts += [(rid, shot, fact) for fact in shot["facts"]]
             phases += [(rid, shot, phase) for phase in shot["phases"]]
@@ -141,7 +163,7 @@ def render(root: Path, models):
         index = paged(base, area, records, ["Sumber", "Fungsi asli", "Posisi dan pandangan", "Peran overview", "Bukti"],
                       lambda p, r: [source(p, r[0], r[1]["shot"]), cell("; ".join(r[1]["areas"])),
                                     cell(r[1]["composition"]["camera_position"] + "; " + r[1]["composition"]["camera_direction"] + "; " + r[1]["composition"]["view_angle"]),
-                                    cell(r[1]["composition"]["overview_role"] + "; " + r[1]["composition"]["overview_reason"]), media_link(p, r[0], r[1]["shot"])])
+                                    cell(r[1]["composition"].get("overview_role", "panel storyboard") + "; " + r[1]["composition"].get("overview_reason", "Pilihan eksplisit pada audit.json")), media_link(p, r[0], r[1]["shot"])])
         room_index.append(f"| {cell(area)} | {len({r[0] for r in records})} | {len(records)} | {link('catalogs/rooms/README.md', index, 'Buka')} |")
     emit("catalogs/rooms/README.md", "\n".join(room_index), all_ids)
 
@@ -153,8 +175,8 @@ def render(root: Path, models):
         index = paged(f"catalogs/design/{slug(domain)}", domain, records,
                       ["Sumber / fakta", "Subjek", "Atribut", "Nilai tercatat", "Status", "Confidence", "Bukti"],
                       lambda p, r: [source(p, r[0], r[1]["shot"]) + " / " + cell(r[2]["id"]),
-                                    cell(r[2]["subject"]), cell(r[2]["attribute"]), cell(r[2]["value"]), cell(r[2]["state"]), cell(r[2]["confidence"]),
-                                    "; ".join(link(p, f"references/{r[0]}/{v}", "frame") for v in r[2]["evidence"]) or "—"])
+                                    cell(r[2]["subject"]+(" ["+", ".join(r[2]["area_ids"])+"]" if "area_ids" in r[2] else "")), cell(r[2]["attribute"]), cell(r[2]["value"]), cell(r[2]["state"]), cell(r[2]["confidence"]),
+                                    "; ".join(proof_link(p, r[0], v) for v in r[2]["evidence"]) or "—"])
         domain_index.append("- " + link("catalogs/design/README.md", index, domain))
     emit("catalogs/design/README.md", "\n".join(domain_index), all_ids)
 
@@ -164,14 +186,14 @@ def render(root: Path, models):
                         cell("; ".join(r[1]["composition"][k] for k in ("camera_height", "camera_tilt"))),
                         cell("; ".join(r[1]["composition"][k] for k in ("foreground", "depth"))), cell(r[1]["composition"]["reveal"]),
                         cell(r[1]["composition"]["start_composition"] + " → " + r[1]["composition"]["end_composition"]),
-                        media_link(p, r[0], r[1]["shot"]) + "; " + cell(r[1]["composition"]["overview_role"] + "; " + r[1]["composition"]["motion_compatibility"])])
+                        media_link(p, r[0], r[1]["shot"]) + "; " + cell(r[1]["composition"].get("overview_role", "panel storyboard") + "; " + r[1]["composition"]["motion_compatibility"])])
     paged("catalogs/camera", "Gerakan dan ritme kamera", phases,
           ["Sumber / fase", "Interval (s)", "Ringkasan shot", "Komponen fase", "Jangkar", "Tempo / perubahan", "Dasar", "Confidence / batas", "Bukti"],
           lambda p, r: [source(p, r[0], r[1]["shot"]) + " / " + cell(r[2]["phase"]), cell(f"{r[2]['start_s']}–{r[2]['end_s']}"),
                         cell(r[1]["camera_summary"]), cell(r[2]["components"]), cell(r[2]["anchor"]),
                         cell(r[2]["tempo"] + "; " + r[2]["speed_change"]), cell(r[2]["basis"]),
                         cell(r[2]["confidence"] + "; " + r[2]["uncertainty"]),
-                        "; ".join(link(p, f"references/{r[0]}/{v}", "frame") for v in r[2]["evidence"])])
+                        "; ".join(proof_link(p, r[0], v) for v in r[2]["evidence"])])
 
     comparisons = defaultdict(list)
     for record in facts:
@@ -208,7 +230,7 @@ def render(root: Path, models):
                      "shot_count": r[4], "denominator": r[5],
                      "source": f"references/{r[0]}/analysis.md#{r[1]['shot']}",
                      "json": f"data/projections/{r[0]}.json",
-                     "evidence": [f"references/{r[0]}/{v}" for v in r[2]["evidence"]]} for r in chunk]
+                     "evidence": [proof_path(r[0],v) for v in r[2]["evidence"]]} for r in chunk]
             emit(json_path, dumps({"schema_version": "1.0", "kind": "homeku.fact-comparisons", "claims": rows}), [r[0] for r in chunk])
             json_pages.append(json_path)
         emit(f"{json_base}/index.json", dumps({"schema_version": "1.0", "attribute": list(key), "denominator": denominator, "pages": json_pages}), [r[0] for r in records])
@@ -249,7 +271,7 @@ def render(root: Path, models):
           ["Sumber", "Aspek", "Nilai", "Status", "Confidence", "Bukti"],
           lambda p, r: [link(p, f"references/{r[0]}/analysis.md#profil-dna", r[0] + " / " + r[1]["id"]),
                         cell(r[1]["aspect"]), cell(r[1]["value"]), cell(r[1]["state"]), cell(r[1]["confidence"]),
-                        "; ".join(link(p, f"references/{r[0]}/{v}", "frame") for v in r[1]["evidence"]) or "—"])
+                        "; ".join(proof_link(p, r[0], v) for v in r[1]["evidence"]) or "—"])
     outputs["catalogs/README.md"] += "- [Profil DNA, gaya dan skala](dna/README.md)\n"
 
     fingerprint = generator_fingerprint(root)
@@ -257,43 +279,56 @@ def render(root: Path, models):
     for rid, model in sorted(models.items()):
         md_path = f"references/{rid}/analysis.md"
         json_path = f"data/projections/{rid}.json"
-        media_by_path = {m["path"]: m for m in model["media"]}
-
-        def proof(paths):
-            return [{"path": f"references/{rid}/{name}", **{k: v for k, v in media_by_path[name].items() if k != "path"}} for name in paths]
-
-        pointers = {"/reference": {"md": md_path, "manifest": f"references/{rid}/manifest.json"}}
+        inventory=inventories[rid]
+        def proof_ids(paths):
+            return list(paths)
+        audit_path=f"references/{rid}/audit.json" if model["format_version"]=="2.0" else None
+        pointers = {"/reference": {"md": md_path, "manifest": f"references/{rid}/manifest.json", "json": audit_path, "source_pointer":""}}
         for i, claim in enumerate(model.get("profile", [])):
-            pointers[f"/reference/profile/{i}"] = {"md": md_path + "#profil-dna", "claim_id": claim["id"], "evidence": proof(claim["evidence"])}
+            pointers[f"/reference/profile/{i}"] = {"md": md_path + "#profil-dna", "json":audit_path,"source_pointer":f"/profile/{i}","claim_id": claim["id"], "evidence_ids": proof_ids(claim["evidence"])}
+        if audit_path:
+            for section in ("identity","size","areas","limitations","timeline_notes"):
+                pointers[f"/reference/{section}"]={"md":md_path,"json":audit_path,"source_pointer":f"/{section}"}
         indexed_shots = []
         for i, shot in enumerate(model["shots"]):
             pointer = f"/reference/shots/{i}"
             shot_md = md_path + "#" + shot["shot"]
-            pointers[pointer] = {"md": shot_md, "interval_s": [shot["start_s"], shot["end_s"]],
-                                 "media": proof([m["path"] for m in model["media"] if m["shot_id"] == shot["shot"]])}
+            pointers[pointer] = {"md": shot_md,"json":audit_path,"source_pointer":f"/shots/{i}", "interval_s": [shot["start_s"], shot["end_s"]]}
             for group in ("facts", "phases"):
                 for j, claim in enumerate(shot[group]):
-                    pointers[f"{pointer}/{group}/{j}"] = {"md": shot_md, "claim_id": claim.get("id", claim.get("phase")), "evidence": proof(claim["evidence"])}
-            indexed_shots.append({"shot": shot["shot"], "areas": shot["areas"],
-                                  "areas_canonical": sorted({canonical("areas", a) for a in shot["areas"]}),
+                    pointers[f"{pointer}/{group}/{j}"] = {"md": shot_md,"json":audit_path,"source_pointer":f"/shots/{i}/{group}/{j}", "claim_id": claim.get("id", claim.get("phase")), "evidence_ids": proof_ids(claim["evidence"])}
+            if audit_path:
+                for section in ("design","composition","route","area_relations","tempo_profile","panels","overviews","camera_simple","journey_dna"):
+                    pointers[f"{pointer}/{section}"]={"md":shot_md,"json":audit_path,"source_pointer":f"/shots/{i}/{section}"}
+            is_v2=model["format_version"]=="2.0"
+            labels=list(shot["areas"])
+            if is_v2:
+                labels=sorted(set(labels)|{f for a in model["areas"] if a["id"] in shot["area_ids"] for f in a["functions"]})
+            indexed_shots.append({"shot": shot["shot"], "areas": labels,
+                                  "areas_canonical": sorted({canonical("areas", a) for a in labels}),
+                                  "multi_area": len(shot["area_ids"])>1 if is_v2 else None,
+                                  "route": [next(a["label"] for a in model["areas"] if a["id"]==r["area_id"]) for r in shot["route"]] if is_v2 else [],
+                                  "continuity":shot["continuity"],
                                   "view_angle": shot["composition"]["view_angle"],
                                   "view_angle_canonical": canonical("view_angles", shot["composition"]["view_angle"]),
                                   "camera": shot["camera_summary"],
                                   "movements": sorted({canonical("movements", c["movement"] if c["movement"] != "other" else c["raw"])
                                                        for p in shot["phases"] for c in p["components_parsed"]}),
-                                  "tempos": sorted({p["tempo"] for p in shot["phases"]}),
+                                  "tempos": sorted({t["tempo"] for t in shot.get("tempo_profile",[])}|{p["tempo"] for p in shot["phases"]}),
                                   "design_facets": [{"domain": f["domain"], "subject": f["subject"], "attribute": f["attribute"],
                                                      "value": f["value"], "state": f["state"], "confidence": f["confidence"],
-                                                     "pointer": pointer + f"/facts/{j}"} for j, f in enumerate(shot["facts"])
+                                                     "area_ids":f.get("area_ids",[]),"pointer": pointer + f"/facts/{j}"} for j, f in enumerate(shot["facts"])
                                                      if f["attribute"] in {"layout", "room-shape", "combined-functions", "configuration", "shape", "opening", "circulation", "floor-level"}],
                                   "path": shot_md, "json_pointer": pointer,
-                                  "overview": f"references/{rid}/media/{shot['shot']}/area-overview.jpg"})
+                                  "overview": f"references/{rid}/media/{shot['shot']}.jpg" if is_v2 else f"references/{rid}/media/{shot['shot']}/area-overview.jpg"})
         for i, relation in enumerate(model["relations"]):
-            pointers[f"/reference/relations/{i}"] = {"md": md_path + "#hubungan-antarshot", "evidence": proof(relation["evidence"])}
-        reader = {"schema_version": "1.0", "kind": "homeku.reference", "reference": model,
-                  "paths": {"analysis": md_path, "manifest": f"references/{rid}/manifest.json", "source": model["source"]["path"]},
+            pointers[f"/reference/relations/{i}"] = {"md": md_path if audit_path else md_path+"#hubungan-antarshot","json":audit_path,"source_pointer":f"/relations/{i}","evidence_ids":proof_ids(relation["evidence"])}
+        reader = {"schema_version": "2.0", "kind": "homeku.reference", "reference": model,
+                  "paths": {"analysis": md_path, "manifest": f"references/{rid}/manifest.json", "source": model["source"]["path"],"audit":audit_path},
                   "provenance": pointers}
-        validate_reader(reader, "reference-reader-v1.schema.json")
+        # Inventory is shared once; no full media objects on every fact/phase pointer.
+        reader["evidence_inventory"]=inventory
+        validate_reader(reader, "reference-reader-v2.schema.json")
         fp = hashlib.sha256((model["content_sha256"] + fingerprint).encode()).hexdigest()
         projection_fingerprints[rid] = fp
         emit(json_path, dumps(reader), [rid])
@@ -303,13 +338,15 @@ def render(root: Path, models):
                                           else "scales" if c["aspect"] == "apparent-scale" else c["aspect"], c["value"]),
                    "pointer": f"/reference/profile/{i}"} for i, c in enumerate(model.get("profile", []))]
         search.append({"id": rid, "title": model["title"], "revision": model["revision"], "json": json_path,
+                       "format_version":model["format_version"],"floor_area_m2":{k:model["size"]["floor_area_m2"][k] for k in ("min","max")} if model["format_version"]=="2.0" else None,
+                       "style_relations":[{k:r[k] for k in ("from","to","relation","state","confidence")} for r in model.get("identity",{}).get("style_relations",[])],
                        "profile_available": bool(model.get("profile")), "profile_facets": facets, "shots": indexed_shots})
-    index = {"schema_version": "1.0", "kind": "homeku.search-index", "taxonomy": "data/taxonomy.json",
+    index = {"schema_version": "2.0", "kind": "homeku.search-index", "taxonomy": "data/taxonomy.json",
              "principles": "knowledge/principles.json", "knowledge": "knowledge/topics/index.json", "references": search}
-    validate_reader(index, "search-index-v1.schema.json")
+    validate_reader(index, "search-index-v2.schema.json")
     emit("data/search-index.json", dumps(index), all_ids)
     emit("data/dependencies.json", dumps({"generator_fingerprint": fingerprint,
-                                         "source_files": ["data/taxonomy.json", "sources/design-principles.json"],
+                                         "source_files": ["data/taxonomy.json", "sources/design-principles.json", "docs/template-analysis-v2.md", "tools/assets/"],
                                          "outputs": dependencies.copy()}), all_ids)
     emit("data/build.json", dumps({"generator_fingerprint": fingerprint, "projections": projection_fingerprints,
                                   "projection_sha256": projection_hashes,

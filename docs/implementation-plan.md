@@ -9,7 +9,7 @@ Pelaksanaan dibagi menjadi dua phase: fondasi dan otomasi, kemudian workflow aud
 
 **Hubungan dokumen:** [plan improvement Phase 2](phase-2-audit-improvement-plan.md) merinci dan memperbarui bagian format laporan, profil DNA/pengetahuan, akses AI, audit kamera, tinjauan pengguna dan batas pengujian. Jika ada perbedaan pada bagian tersebut, ketentuan plan improvement berlaku; ketentuan lain pada plan utama tetap berlaku. Status implementasi terbaru dan batas pengujian dicatat pada [verifikasi improvement](phase-2-improvement-verification.md).
 
-**Rencana V2 berikutnya:** [plan improvement V2](improvement-v2-plan.md) menjadi acuan perubahan yang belum diterapkan: audit.json sebagai sumber, MD manusia mengikuti [template baku](template-analysis-v2.md), detail desain lengkap, shot multi area, satu kolase per shot dengan panel dinamis dan storyboard satu baris. Untuk implementasi V2, ketentuan baru tersebut mengungguli bagian yang berbeda pada plan ini; uraian format/media 1.1 di sini tetap menjelaskan implementasi yang sedang berlaku.
+**Status V2:** fondasi Tahap 1 pada [plan V2](improvement-v2-plan.md) telah diimplementasikan; lihat [verifikasi](v2-stage-1-verification.md). audit.json menjadi sumber paket 2.0, MD manusia dirender otomatis, normal/multi area memakai kolase dan storyboard satu baris, reader/index memakai 2.0. Workflow/kit V2 telah disiapkan pada Tahap 2; edh001 r0002 telah disetujui dan di-ingest, enam pilot pengguna belum dijalankan. Lihat [status Tahap 2](v2-stage-2-verification.md). Uraian 1.0/1.1 di dokumen ini dipertahankan sebagai riwayat dan kontrak legacy; ZIP edh001 r0001 tetap utuh sebagai riwayat.
 
 ## 1. Tujuan dan batas pekerjaan
 

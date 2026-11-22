@@ -177,3 +177,62 @@ def modernize(folder):
     manifest["audit"]["frame_reviews"] = reviews
     (folder / "manifest.json").write_text(dumps(manifest))
     return folder
+
+
+def make_v2_inputs(parent, rid="v2-fixture", *, multi=False, revision=1, base=None):
+    """Synthetic declarations only: real test-pattern MP4, no claimed visual audit."""
+    from homeku.video import frame_times, selected_indices
+    from homeku.markdown import PROFILE_ASPECTS, component
+    parent.mkdir(parents=True,exist_ok=True)
+    base=base or make_base_video(parent)
+    source=parent/f"{rid}.mp4"
+    payload=rid.encode();source.write_bytes(base.read_bytes()+struct.pack(">I4s",len(payload)+8,b"free")+payload)
+    times=frame_times(source);end=probe_video(source)["duration_s"]
+    area_ids=["living-1","kitchen-1"] if multi else ["bath-1"]
+    labels=["living","kitchen"] if multi else ["bathroom"]
+    areas=[{"id":aid,"label":label,"functions":[label] if multi else ["bathroom","laundry"],
+            "visible_intervals":[{"start_s":0 if i==0 else 0.4,"end_s":1.0 if multi and i==0 else end}]} for i,(aid,label) in enumerate(zip(area_ids,labels))]
+    def selection(key,index,role,ids,label):
+        return {"id":key,"shot_id":"shot-01","area_ids":ids,"frame_index":index,"timestamp_s":times[index],"role":role,"label":label,"reason":"Pilihan sintetis untuk memeriksa kontrak panel."}
+    if multi:
+        panels=[selection("p-start",0,"start",[area_ids[0]],"Awal living"),selection("p-reveal",4,"reveal",area_ids,"Living and kitchen reveal"),selection("p-connector",7,"connector",area_ids,"Open-plan connection"),selection("p-end",11,"end",[area_ids[1]],"Akhir kitchen")]
+        overviews=[selection("overview-living",0,"overview",[area_ids[0]],"Living"),selection("overview-kitchen",11,"overview",[area_ids[1]],"Kitchen")]
+        evidence="p-reveal"
+    else:
+        panels=[selection("p-start",0,"start",area_ids,"Awal bathroom"),selection("p-middle",6,"middle",area_ids,"Tengah bathroom"),selection("p-end",11,"end",area_ids,"Akhir bathroom")]
+        overviews=[selection("overview-bath",11,"overview",area_ids,"Bathroom dan laundry")];evidence="p-middle"
+    def claim(key,value,state="observed",ids=None,proof=None):
+        return {"id":key,"value":value,"state":state,"confidence":"medium" if state!="unknown" else "unknown","evidence":proof if proof is not None else [evidence],"area_ids":ids or [],"basis":"Fixture kontrak sintetis.","uncertainty":"Bukan pengamatan rumah nyata."}
+    profile=[]
+    for i,aspect in enumerate(PROFILE_ASPECTS,1):
+        value={"primary-style":"american cattage","apparent-scale":"small","massing":"l-shaped","distinctive-features":"fixture-new-shape"}.get(aspect,"unknown")
+        profile.append({**claim(f"dna-{i:02d}",value,"uncertain" if value!="unknown" else "unknown",proof=[evidence] if value!="unknown" else []),"aspect":aspect})
+    facts=[]
+    for i,aid in enumerate(area_ids):
+        proof=["p-start" if i==0 else "p-end"]
+        facts.append({**claim(f"f-{i+1:02d}","curved island" if multi else "raised tub platform",ids=[aid],proof=proof),"domain":"space","subject":labels[i],"attribute":"layout"})
+    facts.append({**claim("f-absence","overhead cabinet","not-visible",ids=[area_ids[0]],proof=["frame:shot-01:2"]),"domain":"furnishing","subject":"cabinet","attribute":"storage"})
+    facts.append({**claim("f-new-label","belum diketahui","unknown",ids=[area_ids[0]],proof=[]),"domain":"new-domain","subject":"unknown fixture","attribute":"new-attribute"})
+    notation="Dolly-In (~1.3×) + gentle Pan Right (~15°)"
+    phase={"phase":"phase-01","start_s":0,"end_s":end,"components":notation,"components_parsed":[component(v.strip()) for v in notation.split("+")],"area_ids":area_ids,"focus":"Perjalanan fixture","anchor":"Jangkar sintetis","tempo":"variable","speed_change":"accelerating","basis":"Data uji, bukan estimasi video rumah.","evidence":[evidence],"confidence":"low","uncertainty":"Gerakan sintetis untuk pengujian."}
+    composition={k:"Deskripsi komposisi sintetis." for k in ("camera_position","camera_direction","camera_height","camera_tilt","foreground","depth","reveal","start_composition","end_composition","motion_compatibility","focus","lighting")}
+    composition.update(camera_position="Dekat bukaan pada sisi kiri area.",camera_direction="Menghadap serong ke sudut belakang.",view_angle="oblique",start_composition="Wide dari sudut pintu",end_composition="Medium wide menuju bidang kerja",lighting="Cahaya jendela dari samping dengan lampu hangat.")
+    relation={"id":"area-link-01","from":area_ids[0],"to":area_ids[-1],"relation":"open-plan","description":"Living terhubung ke kitchen melalui bukaan lebar.","state":"observed","confidence":"medium","evidence":[evidence],"basis":"Hubungan sintetis untuk tes.","uncertainty":"Tidak menggambarkan rumah nyata."}
+    shot={"shot":"shot-01","start_s":0,"end_s":end,"transition":"end","continuity":"Satu pengambilan tanpa cut dalam fixture.","area_ids":area_ids,
+          "route":[{"area_id":area_ids[0],"start_s":0,"end_s":0.7,"connector":"awal","focus":"living"},{"area_id":area_ids[1],"start_s":0.7,"end_s":end,"connector":"bukaan open plan","focus":"kitchen"}] if multi else [],
+          "area_relations":[relation] if multi else [],
+          "design":[{"area_ids":[aid],"architecture":"Susunan sintetis: dinding berpanel, bukaan tinggi di samping dan lantai papan. Semua uraian ini adalah data fixture, bukan hasil melihat rumah.","furnishings":"Susunan properti uji mencakup kabinet rendah di bawah bukaan dan rak ceruk pada sisi kanan.","environment":"Pemandangan luar tidak dinyatakan pada fixture ini."} for aid in area_ids],
+          "facts":facts,"composition":composition,"camera_summary":notation+".","camera_simple":"Kamera bergerak maju sambil memutar pandangan perlahan ke kanan menuju bidang kerja.","rhythm":"Sedang di awal, kemudian cepat.",
+          "tempo_profile":[{"start_s":0,"end_s":0.6,"tempo":"moderate","description":"Sedang di awal"},{"start_s":0.6,"end_s":end,"tempo":"fast","description":"Cepat pada bagian akhir"}],
+          "journey_dna":"Awal living → penghubung terbuka → kitchen; tempo sedang menjadi cepat." if multi else "",
+          "phases":[phase],"panels":panels,"overviews":overviews,"uncertainty":"Fixture sintetis, bukan audit.","review_summary":"Kartu uji sintetis.","composition_notes":"Catatan komposisi tersimpan.","camera_notes":"Catatan kamera tersimpan."}
+    audit={"schema_version":"2.0","id":rid,"revision":revision,
+           "identity":{"style_names_language":"en","name":"Rumah Fixture Sintetis","primary_style":"american cattage","influences":"Pengaruh fixture dicatat tanpa klaim sejarah.","interior_style":"cozy minimalist","distinctive_features":["Kabinet ceruk","Bukaan serong"],"palette":"Putih, kayu tampak terang dan aksen gelap.","mood_environment":"Terang dan hangat dalam contoh sintetis.",
+                       "style_relations":[{"from":"american cattage","to":"cottage","relation":"family","state":"uncertain","confidence":"medium","evidence":[evidence],"basis":"Hubungan eksplisit fixture, bukan alias."}]},
+           "size":{"scale":"small","massing":"l-shaped","vertical":"Satu tingkat pada fixture","footprint":"Kompak","proportions":"Lebar lebih dominan daripada tinggi","floor_area_m2":{"min":60,"max":90,"basis":"Rentang sintetis untuk tes.","uncertainty":"Bukan estimasi rumah nyata."}},
+           "timeline_notes":"Durasi 1,2 detik, satu shot berkelanjutan tanpa cut; data sintetis.","profile":profile,"areas":areas,"shots":[shot],"relations":[],"limitations":"Seluruh isi merupakan data uji, bukan audit video referensi."}
+    indices=selected_indices(times,0,end,10,source_fps=10)
+    info={"method":"synthetic-fixture","limitations":"Pernyataan pemeriksaan sintetis untuk tes validator; bukan audit visual.","created_at":"2026-11-22T00:00:00Z","ai":{"provider":"synthetic","model":"not-an-audit","model_build":None},"reviewed_ranges":[{"start_s":0,"end_s":end,"mode":"sampling"}],
+          "frame_reviews":[{"shot_id":"shot-01","start_s":0,"end_s":end,"mode":"sampling","sampling_fps":10,"selected_frame_indices":list(indices),"viewed_frame_indices":list(indices),"reason":"Log sintetis untuk menguji cakupan."}]}
+    path=parent/"audit.json";path.write_text(dumps(audit),encoding="utf-8")
+    return source,path,info

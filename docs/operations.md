@@ -1,8 +1,28 @@
 # Operasi pustaka HOMEKU
 
-## Menyiapkan audit di chat
+## Fondasi V2 dan batas workflow
 
-Gunakan [panduan audit](../audit/README.md), MP4 terpisah dan kit input berulang. Prompt audit/koreksi/ekspor mengatur tinjauan isi di chat; helper menyiapkan media dan memvalidasi ZIP sebelum download. Satu ZIP hasil final diunggah ke incoming/ tanpa menata file satu per satu.
+V2 menerima audit.json sebagai sumber, MD hasil renderer dan satu kolase/shot plus storyboard. Legacy 1.0/1.1 tetap memakai MD menurut kontraknya. [Kontrak V2](contracts/package-v2.md) dan [pemetaan field](v2-field-map.md) adalah acuan teknis; workflow/prompt chat V2 tersedia pada audit/README.md. edh001 r0002/2.0 telah disetujui dan di-ingest; ZIP r0001 dipertahankan sebagai riwayat. Lihat [status Tahap 2](v2-stage-2-verification.md).
+
+Renderer terbaru 2.1.2 memperkecil judul/nama area sekitar 15% dari 2.1.0. Header kolase cukup judul serta rentang/durasi. Di bawah foto terdapat Start/Middle/End atau momen, diikuti timestamp regular 75% ukuran label bold pada baseline yang sama. Header storyboard tetap memakai gaya utama. Nama gaya utama/pengaruh/interior memakai istilah bahasa Inggris dengan deklarasi identity.style_names_language=en; penjelasan tetap bahasa Indonesia. Renderer 2.0.0/2.1.0/2.1.1, template dan font lamanya tetap didukung. Tidak ada penerjemahan atau perubahan isi referensi aktif otomatis.
+
+Alur helper V2 berikut telah diuji secara terisolasi dan digunakan pada edh001 r0002:
+
+```sh
+python tools/audit.py draft-v2 /path/<id>.mp4 /work/audit.json --audit-info /work/audit-info.json --output /work/candidate
+python tools/audit.py review /work/candidate/<id> --source /path/<id>.mp4 --output /work/review.md
+python tools/audit.py export-v2 /work/candidate/<id> --source /path/<id>.mp4 --output /work/packages --reviewed-sha256 <DIGEST_SNAPSHOT>
+```
+
+Tambahkan --include-source saat draft bila sumber kanonis belum terverifikasi. --quality/--scale/--columns mengatur media secara eksplisit. Receipt review berada di luar kandidat dan bukan persetujuan otomatis. Sesudah pengguna menyetujui keseluruhan kandidat, export mengemas byte yang sama; setiap koreksi dilakukan pada JSON/log aktual lalu draft/review ulang. Tidak ada regenerasi JPEG/created_at pada export. Aset renderer/font/template versi diterima tidak ditimpa; versi baru harus didaftarkan agar paket lama tetap dapat diperiksa.
+
+Registry tetap version 1; entri V2 menambah contract_version/audit_sha256. Taksonomi version 3 membedakan alias dari hubungan gaya. Reader/index memakai 2.0 untuk semua format sumber. Fingerprint meliputi runtime, schema, template penulisan, template beku, font/lisensi dan prinsip/taksonomi; cache tidak menjadi sumber fakta.
+
+Menyalin ZIP ke incoming/ lokal tidak otomatis mengolahnya. Jalankan `python tools/library.py ingest`; tidak ada review isi kedua setelah ingest. Perbaikan referensi yang sudah aktif memerlukan ZIP revisi berikutnya dengan supersedes yang benar.
+
+## Menyiapkan audit V2 di chat
+
+Gunakan [panduan audit V2](../audit/README.md), MP4 terpisah dan kit input berulang. ZIP input berisi empat file; AI menjalankan bootstrap untuk memulihkan 24 file runtime lengkap dengan schema/font/lisensi, lalu inspect/sample/draft-v2/review. Setelah keseluruhan kandidat disetujui, export-v2 memakai --receipt yang dibuat helper; receipt bukan persetujuan otomatis. Prompt audit/koreksi/ekspor mengatur tinjauan isi di chat; helper menyiapkan media dan memvalidasi ZIP sebelum download. Satu ZIP hasil final diunggah ke incoming/ tanpa menata file satu per satu.
 
 `tools/audit.py` adalah helper workspace chat, bukan jalur publikasi ke references/. Input MD dan video disimpan di luar folder kandidat, sampling memakai folder baru per pass, dan regenerasi menolak file pengguna yang tidak dimilikinya. Lihat [hasil verifikasi Phase 2](phase-2-verification.md) untuk batas pengujian nyata.
 
@@ -14,7 +34,7 @@ CLI `python tools/library.py ingest` memindai semua ZIP langsung dalam incoming/
 
 Registry dalam data/registry.json menyimpan revisi dan fingerprint sumber/isi/paket. data/ingest.json mengikat hasil dengan hash ZIP; tanggal eksekusi tidak dimasukkan agar replay identik tidak mengubah repo. Paket gagal dapat dicoba ulang setelah sumber/tooling diperbaiki. Revisi yang sudah berhasil tetap tercatat meskipun telah diganti oleh revisi berikutnya.
 
-Berkas JSON dalam data/projections/ dihasilkan dari MD dan dapat dibangun ulang. Jangan edit manual. Kontrak pembaca tidak berisi metadata cache. Fingerprint dan hash proyeksi disimpan di data/build.json, mengikat seluruh byte referensi serta versi generator/schema/taksonomi/prinsip terkurasi. Alias hanya berlaku untuk label eksplisit; label baru tetap dicari dari katalog, dan konflik/negasi/unknown tetap tersimpan.
+Berkas JSON dalam data/projections/ dihasilkan dari sumber sesuai versinya (audit.json V2 atau MD legacy) dan dapat dibangun ulang. Jangan edit manual. Kontrak pembaca tidak berisi metadata cache. Fingerprint dan hash proyeksi disimpan di data/build.json, mengikat seluruh byte referensi serta versi generator/schema/taksonomi/prinsip terkurasi. Alias hanya berlaku untuk label eksplisit; label baru tetap dicari dari katalog, dan konflik/negasi/unknown tetap tersimpan.
 
 ## Rebuild dan pemulihan
 

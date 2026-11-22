@@ -8,3 +8,7 @@ Semua isi sintetis untuk menguji format dan alur; bukan audit referensi dan buka
 Regenerasi: `python tools/make_test_packages.py`. Factory membuat media nyata dari pola uji FFmpeg, timestamp dan hash aktual. Narasi serta label kamera merupakan simulasi yang dinyatakan eksplisit, bukan hasil pengamatan rumah.
 
 Pemeriksaan tanpa publikasi: `python tools/library.py validate tests/fixtures/fixture-valid-r0001.zip`. Fixture invalid harus gagal dengan error hash media. Tes integrasi membangun fixture tambahan saat runtime, termasuk 300 referensi dan remote Git lokal sementara.
+
+## Fixture V2
+
+make_v2_inputs menghasilkan MP4 test-pattern nyata dan audit JSON sintetis di root sementara. Normal: satu area bathroom dengan fungsi laundry, tiga panel. Multi: living/kitchen dengan visibilitas bertumpang tindih, rute terpisah dari visibilitas, satu fase lintas area dan tempo moderate → fast. Tes memperluas kasus reentry, kamera tidak berpindah antararea, fase/ruang berulang, input tidak valid, revisi serta kapasitas 300 model. Log viewed pada fixture adalah deklarasi sintetis untuk validator; bukan bukti audit video rumah nyata. Tidak boleh masuk registry produksi.

@@ -1,11 +1,11 @@
-# Prompt koreksi
+# Prompt koreksi V2
 
-Perbaiki audit terakhir berdasarkan catatan saya berikut:
+Perbaiki audit terbaru berdasarkan catatan saya:
 
-[TULIS SHOT/TIMESTAMP DAN KOREKSI DI SINI]
+[TULIS SHOT/TIMESTAMP DAN KOREKSI]
 
-Periksa kembali rentang sumber terkait; perdalam seluruh frame native bila koreksi menyentuh arah/fase/laju yang belum jelas. Perbarui log frame_reviews hanya untuk frame yang benar-benar dilihat. Terapkan tiga tes arah/fase dari protokol, usahakan estimasi berbukti dan saring drift/jitter vertikal kecil dari tilt utama. Terapkan perubahan pada analysis.md lengkap yang terbaru, termasuk fakta, arah/urutan fase, tempo, posisi/arah pandang, peran overview, bukti dan ketidakpastian yang terdampak. Bagian lain tetap dibawa ke snapshot baru agar tidak hilang.
+Baca ulang sumber terkait; periksa native jika arah/fase/tempo atau detail belum jelas. Isi frame_reviews hanya untuk gambar yang benar-benar dilihat. Terapkan oklusi/paralaks/perspektif serta bedakan jitter dari tilt nyata.
 
-Bangun ulang kandidat beserta seluruh media dan manifest dari snapshot baru. Jangan mencampur gambar atau metadata revisi lama. Periksa ulang konsistensi ringkasan kamera dengan tabel fase dan timestamp. Jalankan helper review, lalu tampilkan kartu shot yang berubah beserta konteksnya serta tautan/preview MD lengkap terbaru. Pastikan hash snapshot kartu sama dengan MD; persetujuan satu aspek tidak berarti seluruh audit disetujui. Jika ada interpretasi yang belum dapat dipastikan, jelaskan buktinya dan pertahankan uncertainty.
+Perbarui audit.json dan metadata/log aktual di workspace, bukan MD hasil render. Bawa seluruh desain/fakta/status/bukti dan bagian yang tidak berubah ke kandidat baru. Periksa dampak pada identitas/luas, area/fungsi/rute, komposisi, kamera sederhana/summary/fase/tempo dan pilihan panel. Usahakan besaran kamera berbukti tanpa mengarang presisi.
 
-Jangan mengekspor ZIP final sebelum saya menyatakan isi terbaru sesuai. Revisi chat sebelum ingest tidak perlu menaikkan revisi paket. Jika revisi sebelumnya sudah aktif di repo, gunakan revisi berikutnya dan supersedes yang benar.
+Jalankan draft-v2 lalu review ulang. Tampilkan kolase/bagian yang berubah beserta konteks, storyboard dan MD lengkap terbaru. Receipt/digest sebelumnya batal jika isi kandidat berubah. Jangan mengekspor sampai saya menyatakan keseluruhan versi terbaru sesuai; persetujuan satu aspek bukan persetujuan seluruh kandidat. Koreksi sebelum ingest boleh tetap revisi yang sama; referensi yang sudah aktif memakai revisi berikutnya dengan supersedes yang benar.

@@ -54,19 +54,22 @@ Accelerating memerlukan perubahan yang lebih besar pada interval akhir daripada 
 ## Siap ditinjau pengguna
 
 - Seluruh durasi tercakup; cut dibedakan dari segmen fungsi.
-- Seluruh area dan pembeda yang terlihat tercatat dalam MD/tabel, dengan bukti yang tepat.
+- Seluruh area dan pembeda yang terlihat tercatat pada audit.json dan laporan MD hasil render, dengan bukti yang tepat.
 - Kamera mempunyai arah, fase, estimasi besaran yang diusahakan, tempo, dasar dan batas; tidak ada default slow/frontal atau tilt tipis dari jitter.
 - Gambaran area sesuai IN/OUT atau pengecualian dijelaskan; storyboard memakai gambaran area setiap shot.
 - Gambar awal produksi dapat ditentukan dari posisi/peran frame dan target lintasan, tanpa mengubah kronologi sumber.
 - Kandidat lolos validasi teknis di chat. Pengguna kemudian menilai isi; kelulusan kode tidak menjadi pengganti penilaian visual.
 
 
-## Kriteria 1.1
+## Kriteria V2
 
 - Seluruh aspek profil DNA dicatat beserta nilai/status/confidence/bukti, bukan hanya nama gaya. Unknown eksplisit untuk yang belum diketahui.
 - Baseline 10 FPS mencakup setiap shot dan frame asli pertama/terakhir; pendalaman native dilaksanakan bila arah/fase/laju meragukan. Jumlah serta rentang dilaporkan dari indeks yang benar-benar dilihat.
 - Gunakan aturan arah/fase pada protokol: pan murni menyapu berlawanan arah kamera; delta paralaks mendukung translasi tetapi perlu oklusi dan perspektif. Orbit mengubah sudut mengelilingi jangkar, truck menilai arah translasi dan orientasi pandangan.
 - Drift/jitter kecil bukan tilt utama. Rotasi vertikal yang jelas dan berkelanjutan dibedakan dari perubahan tinggi. Penyebab goyangan atau penggunaan gimbal tidak dipastikan.
-- Ringkasan literal, tabel fase dan kartu identik pada notasi. + untuk simultan, → untuk berurutan; kartu menampilkan waktu sumber dan relatif shot.
+- Ringkasan literal, tabel fase dan kartu identik pada notasi. + untuk simultan, → untuk berurutan; timeline menampilkan waktu sumber dan relatif shot.
 - Usahakan ~×/~° dengan jangkar/basis. Rasio skala bukan faktor percepatan; angka tidak diketahui dijelaskan tanpa rekaan.
-- MD mudah dibaca dengan gambar/narasi dan tabel terlipat; JSON reader mempertahankan isi serta batasnya. Kartu dan ZIP mengacu hash MD yang sama.
+- audit.json menjadi satu sumber audit; MD lima bagian mengikuti template baku, dengan kategori Arsitektur, Furnitur dan properti, Lingkungan serta kamera sederhana dan teknis. Snapshot review mengikat JSON, MD, manifest dan seluruh media; ekspor tidak merender ulang.
+- Nama gaya teknis berbahasa Inggris; identitas dan detail tidak hanya menyebut warna. Luas lantai wajib rentang positif, tampil sebagai angka m² tanpa catatan tambahan. Basis dan ketidakpastian tetap dalam JSON.
+- Satu continuous take tetap satu shot; fungsi, area terlihat, rute yang dilalui dan fase gerak dibedakan. Multi area memakai panel dinamis yang cukup menjelaskan perjalanan, tanpa menambah cut rekaan.
+- Satu kolase per shot dan storyboard satu baris; normal Start · Middle · End, waktu kecil di bawah foto. Tidak ada frame terpisah dalam paket.

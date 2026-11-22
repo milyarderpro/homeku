@@ -35,7 +35,7 @@ Video berdurasi 18 detik, terdiri dari tiga shot dengan cut pada detik 5 dan 12.
 
 ## 4. Storyboard
 
-Storyboard disusun satu baris dari tiga gambaran area berikut, dengan judul referensi serta label shot, area dan waktu:
+Storyboard disusun satu baris dari tiga gambaran area berikut, dengan header **CONTOH-NORMAL — American Cottage — 18.00s — 3 shot**. Nama area tebal di bawah foto, lalu waktu ringkas seperti Overview · 0.00s:
 
 | Shot | Gambaran area | Posisi gambar dalam shot |
 | --- | --- | --- |
@@ -47,9 +47,9 @@ Storyboard disusun satu baris dari tiga gambaran area berikut, dengan judul refe
 
 ### Shot 01 — Eksterior dan teras masuk · 5 detik
 
-**Kolase shot:** satu gambar, tiga panel dalam satu baris.
+**Kolase shot:** satu gambar, tiga panel dalam satu baris. Judul lebih kecil; header cukup judul/rentang/durasi. Di bawah foto ada Start, Middle, End yang bold, diikuti timestamp regular lebih kecil pada baris yang sama.
 
-**Urutan panel:** 01 · Awal — fasad dan taman → 02 · Tengah — mendekati teras → 03 · Akhir — pintu kayu.
+**Urutan panel:** Start · 0.00s → Middle · 2.50s → End · 4.97s.
 
 #### A. Desain area
 
@@ -92,9 +92,9 @@ Dolly-In (~1.6×) + gentle Pan Right (~10°) toward teak entrance door.
 
 ### Shot 02 — Living · 7 detik
 
-**Kolase shot:** satu gambar, tiga panel dalam satu baris.
+**Kolase shot:** satu gambar, tiga panel dalam satu baris. Judul lebih kecil; header cukup judul/rentang/durasi. Di bawah foto ada Start, Middle, End yang bold, diikuti timestamp regular lebih kecil pada baris yang sama.
 
-**Urutan panel:** 01 · Awal — meja dan sebagian sofa → 02 · Tengah — kelompok duduk mulai terbuka → 03 · Akhir — living terlihat luas.
+**Urutan panel:** Start · 5.00s → Middle · 8.50s → End · 11.97s.
 
 #### A. Desain area
 
@@ -137,9 +137,9 @@ Dolly-Out (~1.5×) + Orbit Left (~12°) + Pan Right (~20°).
 
 ### Shot 03 — Kitchen · 6 detik
 
-**Kolase shot:** satu gambar, tiga panel dalam satu baris.
+**Kolase shot:** satu gambar, tiga panel dalam satu baris. Judul lebih kecil; header cukup judul/rentang/durasi. Di bawah foto ada Start, Middle, End yang bold, diikuti timestamp regular lebih kecil pada baris yang sama.
 
-**Urutan panel:** 01 · Awal — susunan kitchen → 02 · Tengah — melewati meja persiapan → 03 · Akhir — sink dan jendela.
+**Urutan panel:** Start · 12.00s → Middle · 15.00s → End · 17.97s.
 
 #### A. Desain area
 
