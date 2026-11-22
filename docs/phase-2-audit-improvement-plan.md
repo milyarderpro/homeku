@@ -6,6 +6,8 @@ Diperbarui: 22 November 2026
 
 Status: langkah 1–3 telah diimplementasikan pada 22 November 2026: format MD 1.1/profil DNA, kontrak pembaca JSON, standar audit adaptif, prinsip terkurasi, parser/generator/alias dan pemeriksaan teknis. Langkah 4 dan bagian edh001 pada langkah 5 sudah selesai: audit 1.1 disetujui pengguna dan diekspor final; kit telah diperbarui. Ingest paket final edh001 telah selesai secara lokal; enam pilot/kalibrasi berikutnya masih menunggu pelaksanaan. Hasil verifikasi dicatat pada [verifikasi improvement](phase-2-improvement-verification.md).
 
+**Rencana V2 berikutnya:** [plan improvement V2](improvement-v2-plan.md) menjadi acuan perubahan yang belum diterapkan: audit.json sebagai sumber, MD manusia mengikuti [template baku](template-analysis-v2.md), detail desain lengkap, shot multi area, satu kolase per shot dengan panel dinamis dan storyboard satu baris. Untuk implementasi V2, ketentuan baru tersebut mengungguli bagian yang berbeda pada plan ini; uraian format/media 1.1 di sini tetap menjelaskan implementasi yang sedang berlaku.
+
 ## 1. Tujuan dan batas pekerjaan
 
 Hasil analisis video menjadi pengetahuan desain dan kamera yang lengkap, mudah dibaca manusia, serta mudah ditemukan dan dipahami AI. Informasinya mendukung pengembangan konsep sesuai brief dan DNA referensi, kontinuitas satu rumah, serta komposisi gambar awal yang cocok dengan gerakan sumber.

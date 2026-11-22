@@ -9,6 +9,8 @@ Pelaksanaan dibagi menjadi dua phase: fondasi dan otomasi, kemudian workflow aud
 
 **Hubungan dokumen:** [plan improvement Phase 2](phase-2-audit-improvement-plan.md) merinci dan memperbarui bagian format laporan, profil DNA/pengetahuan, akses AI, audit kamera, tinjauan pengguna dan batas pengujian. Jika ada perbedaan pada bagian tersebut, ketentuan plan improvement berlaku; ketentuan lain pada plan utama tetap berlaku. Status implementasi terbaru dan batas pengujian dicatat pada [verifikasi improvement](phase-2-improvement-verification.md).
 
+**Rencana V2 berikutnya:** [plan improvement V2](improvement-v2-plan.md) menjadi acuan perubahan yang belum diterapkan: audit.json sebagai sumber, MD manusia mengikuti [template baku](template-analysis-v2.md), detail desain lengkap, shot multi area, satu kolase per shot dengan panel dinamis dan storyboard satu baris. Untuk implementasi V2, ketentuan baru tersebut mengungguli bagian yang berbeda pada plan ini; uraian format/media 1.1 di sini tetap menjelaskan implementasi yang sedang berlaku.
+
 ## 1. Tujuan dan batas pekerjaan
 
 Bangun pustaka yang tumbuh dari 57 referensi awal menjadi ratusan video. AI kreatif dapat menemukan variasi desain, memahami komposisi dan mengadaptasi gerakan kamera berdasarkan bukti referensi. Laporan Markdown harus lengkap dan nyaman dibaca manusia. Jalur utama AI adalah indeks JSON, JSON referensi/shot terpilih, media dan knowledge terkait; seluruh isi audit penting harus tersedia tanpa mewajibkan pembacaan MD.
