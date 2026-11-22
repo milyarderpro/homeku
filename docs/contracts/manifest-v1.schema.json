@@ -1,10 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "HOMEKU provisional manifest 1.0",
+  "title": "HOMEKU provisional manifest 1.0 / 1.1",
   "type": "object",
   "properties": {
     "contract_version": {
-      "const": "1.0"
+      "enum": [
+        "1.0",
+        "1.1"
+      ]
     },
     "id": {
       "type": "string",
@@ -171,6 +174,74 @@
             "model_build"
           ],
           "additionalProperties": false
+        },
+        "frame_reviews": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "shot_id": {
+                "type": "string",
+                "pattern": "^shot-[0-9]{2,}$"
+              },
+              "start_s": {
+                "type": "number",
+                "minimum": 0
+              },
+              "end_s": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "mode": {
+                "enum": [
+                  "sampling",
+                  "frame-by-frame"
+                ]
+              },
+              "sampling_fps": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "minimum": 10,
+                "maximum": 240
+              },
+              "selected_frame_indices": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "viewed_frame_indices": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "shot_id",
+              "start_s",
+              "end_s",
+              "mode",
+              "sampling_fps",
+              "selected_frame_indices",
+              "viewed_frame_indices",
+              "reason"
+            ]
+          }
         }
       },
       "required": [
@@ -294,5 +365,25 @@
     "media",
     "purpose"
   ],
-  "additionalProperties": false
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "contract_version": {
+            "const": "1.1"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "audit": {
+            "required": [
+              "frame_reviews"
+            ]
+          }
+        }
+      }
+    }
+  ]
 }

@@ -1,5 +1,5 @@
 # Gerakan dan ritme kamera
 
-0 entri tercatat; rincian dan ketidakpastian mengikuti sumber.
+6 entri tercatat; rincian dan ketidakpastian mengikuti sumber.
 
-Belum ada entri aktif.
+- [Halaman 1](page-001.md)

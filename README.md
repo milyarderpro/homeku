@@ -2,9 +2,11 @@
 
 Pustaka referensi desain, komposisi dan gerakan kamera berbasis audit video. Laporan utama berada dalam Markdown; katalog dan knowledge dibangun otomatis dari data yang ditulis eksplisit dalam laporan.
 
-**Phase 1:** fondasi dan tooling tersedia. **Phase 2:** workflow audit Gemini/ChatGPT serta tujuh pilot belum dijalankan. Kontrak 1.0 masih provisional.
+**Phase 1:** fondasi dan tooling tersedia. **Phase 2:** perangkat audit chat dan helper ekspor tersedia; audit edh001 sudah disetujui dan diekspor sebagai ZIP final r0001, enam pilot berikutnya akan dijalankan pengguna di ChatGPT/Gemini. Format 1.1, profil DNA, JSON pembaca AI dan audit adaptif tersedia; paket final edh001 1.1 sudah masuk registry lokal sebagai 1 referensi/5 shot aktif. Kontrak masih provisional.
 
 ## Mencari referensi
+
+Untuk AI: [indeks JSON](data/search-index.json) → `data/projections/<id>.json` terpilih → media dan knowledge yang relevan. JSON lengkap dihasilkan dari MD/manifest, tanpa perlu membaca ratusan MD. Lihat [kontrak pembaca AI](docs/contracts/ai-reader-v1.md). MD tetap sumber isi audit untuk manusia.
 
 - [Katalog aktif](catalogs/README.md): ruang, desain, posisi kamera dan gerakan.
 - [Knowledge dan perbandingan](knowledge/README.md): variasi beserta status dan sumbernya.
@@ -14,7 +16,7 @@ Koleksi aktif hanya berasal dari registry. Video yang belum diaudit dan pustaka 
 
 ## Menambahkan referensi
 
-1. Audit video dan koreksi seluruh isi di chat sampai sesuai. Perangkat chat lengkap disiapkan pada Phase 2.
+1. Ikuti [panduan audit chat](audit/README.md): lampirkan MP4 dan kit, periksa kartu shot bergambar dan MD lengkap bila diperlukan, lalu koreksi sampai sesuai.
 2. Unduh satu ZIP final sesuai [kontrak paket](docs/contracts/package-v1.md).
 3. Upload ZIP ke [incoming/](incoming/README.md) pada branch utama repo dan simpan perubahan.
 4. Workflow **Library ingest** memvalidasi paket, memperbarui referensi/katalog/knowledge, lalu membuat satu commit hasil.
@@ -41,8 +43,9 @@ Perintah contoh memerlukan FFmpeg tersedia pada PATH. `build --full` melewati ca
 
 - [Kontrak paket dan media](docs/contracts/package-v1.md)
 - [Format laporan Markdown](docs/contracts/analysis-v1.md)
+- [Pemetaan kemampuan lama dan sumber prinsip](docs/capability-map.md)
 - [Operasi, revisi, retensi dan Actions](docs/operations.md)
 - [Rencana implementasi](docs/implementation-plan.md)
-- [Perangkat audit dan batas Phase 1](audit/README.md)
+- [Perangkat audit Gemini/ChatGPT](audit/README.md)
 
-Workflow mulai berjalan setelah file implementasi dipush ke GitHub. Pengujian lokal tidak membuktikan izin Actions pada repo atau ketepatan audit visual; audit nyata diuji pada Phase 2.
+Workflow mulai berjalan setelah file implementasi dipush ke GitHub. Pengujian lokal tidak membuktikan izin Actions pada repo atau ketepatan audit visual; status audit nyata dicatat pada [pilot](audit/pilots/README.md).

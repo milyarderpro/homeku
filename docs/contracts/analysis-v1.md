@@ -1,8 +1,10 @@
-# Kontrak laporan Markdown 1.0 — provisional
+# Kontrak laporan Markdown 1.1 — provisional
+
+Format 1.1 dipakai untuk audit baru. Parser tetap membaca 1.0 secara eksplisit untuk draf/paket lama; dukungan ini tidak memperkaya atau menyetujui audit lama secara otomatis. Versi MD harus sama dengan manifest.
 
 Laporan memakai bahasa Indonesia, dengan istilah gerak kamera dalam bahasa Inggris. Prosa menjelaskan desain secara lengkap; tabel menjadi sumber fakta untuk katalog. Jangan menambah fakta katalog melalui narasi yang tidak masuk tabel. Tidak ada analysis.json yang diedit terpisah.
 
-Gunakan [template awal](../../audit/template-analysis.md). Heading dan nama kolom berikut stabil serta peka kapitalisasi. Setiap tabel memakai satu baris header/separator; sel wajib diisi. Gunakan unknown untuk nilai belum diketahui, '-' untuk field yang secara eksplisit tidak berlaku, dan `\\|` untuk pipe dalam sel. Daftar dipisahkan titik koma hanya pada kolom yang disebutkan.
+Gunakan [template awal](../../audit/template-analysis.md). Heading dan nama kolom berikut stabil serta peka kapitalisasi. Setiap tabel memakai satu baris header/separator; sel wajib diisi. Gunakan unknown untuk nilai belum diketahui, '-' untuk field yang secara eksplisit tidak berlaku, dan `\|` untuk pipe dalam sel. Daftar dipisahkan titik koma hanya pada kolom yang disebutkan.
 
 ## Heading utama
 
@@ -10,17 +12,34 @@ Gunakan [template awal](../../audit/template-analysis.md). Heading dan nama kolo
 | --- | --- |
 | Identitas | Tabel field/value: format_version, id, revision, title |
 | Ringkasan | Karakter referensi dan pembeda, dalam prosa |
+| Profil DNA | Narasi manusia dan tabel klaim DNA; wajib pada 1.1 |
+| Palet dan suasana | Uraian hierarki material/warna/cahaya/lingkungan; wajib pada 1.1 |
 | Cakupan | Tabel field/value: method dan limitations; sama dengan manifest |
 | Timeline | Tabel shot, start_s, end_s, areas, transition, continuity |
-| Shot shot-XX | Lima H3 per shot, sesuai daftar di bawah |
+| Shot shot-XX | Enam H3 pada 1.1, sesuai daftar di bawah |
 | Hubungan antarshot | Tabel from, to, relation, description, state, confidence, evidence; boleh tanpa baris data |
 | Keterbatasan | Ketidakpastian keseluruhan, termasuk hal yang belum diamati |
+
+Tabel teknis boleh dibungkus `<details>` dan `<summary>Judul</summary>` dengan baris kosong di sekitarnya. Heading tetap di luar pembungkus. Narasi dan gambar tidak disembunyikan. Tabel menjadi data eksplisit; generator tidak menebak klaim dari narasi. Komposisi dan Kamera menyediakan penjelasan natural di luar tabel; proyeksi mempertahankannya sebagai composition_notes/camera_notes. Timeline boleh memiliki uraian natural di luar tabel, disimpan sebagai timeline_notes.
+
+### Profil DNA 1.1
+
+Kolom `id | aspect | value | state | confidence | evidence`. ID dna-01 dst. unik; satu nilai/klaim per baris. State/confidence memakai aturan Fakta, termasuk interpretasi uncertain dan unknown. Klaim selain unknown harus menautkan frame asli terdaftar; storyboard bukan bukti detail DNA. Nama gaya adalah interpretasi yang dijelaskan dalam narasi, bukan kepastian sejarah arsitektur.
+
+Aspek wajib: primary-style, style-influence, apparent-scale, levels-visible, massing, roof, entrance, porch, openings, material-hierarchy, palette, lighting, environment, spatial-configuration, distinctive-features, continuity. Gunakan unknown secara eksplisit bila tidak terlihat/belum diketahui. Aspek boleh berulang untuk beberapa nilai; aspek baru disimpan. Nilai pencarian bukan daftar prosa yang ditebak parser: tulis nilai diskret pada baris terpisah bila perlu ditemukan secara mandiri.
+
+Narasi Profil DNA disimpan sebagai profile_notes, Palet dan suasana sebagai palette_notes. Tabel menjadi profile. Seluruh field sumber tetap tersedia dalam JSON pembaca; status negasi/ketidakpastian tidak diubah.
 
 Shot bernomor shot-01, shot-02, dan seterusnya tanpa lompatan; tambahkan anchor eksplisit `<a id="shot-01"></a>` sebelum heading shot. Timeline mencakup durasi sumber tanpa gap/overlap. `areas` memuat satu atau beberapa fungsi eksplisit dipisahkan ';'. Cut dibedakan dari segmen fungsi dalam shot kontinu; anotasi tidak membuat cut yang tidak terlihat.
 
 MD menampilkan/menautkan media/storyboard.jpg dan gambaran area setiap shot dengan tautan relatif. Bukti hanya menautkan media yang terdaftar, anchor shot, atau sumber ../../video/<id>.mp4.
 
-## Lima bagian per shot
+## Bagian per shot (enam pada 1.1; lima pada 1.0)
+
+### Ikhtisar — wajib pada 1.1
+
+Paragraf ringkas tentang area, konfigurasi dan pembeda untuk kartu tinjauan. Desain lengkap tetap pada bagian berikutnya. Satu gambar area ditampilkan sebelum Ikhtisar.
+
 
 ### Desain dan konfigurasi
 
@@ -87,3 +106,14 @@ Jelaskan hal yang belum terlihat, klaim yang belum pasti dan batas bukti. Pemeri
 Hubungan memakai status/confidence yang sama dengan fakta. from/to harus ID shot yang ada; bukti dari media terdaftar. Adjacency, material pasti, dimensi, lokasi dan rumah independen tidak disimpulkan tanpa dukungan.
 
 Generator menyalin nilai, status, confidence, notasi kamera dan pointer sumber. Knowledge mengelompokkan variasi atribut; hitungan adalah pasangan referensi/shot unik yang mencatat atribut tersebut, dengan denominator eksplisit. Tidak ada sintesis AI bebas pada ingest.
+
+
+## Cakupan audit 1.1 dan kartu tinjauan
+
+Awali setiap shot dengan 10 FPS sepanjang durasi, termasuk frame asli pertama/terakhir. Perdalam rentang meragukan pada seluruh frame asli; perluas ke seluruh shot bila belum cukup. FPS asli dapat 24/30/60 atau lainnya, tanpa interpolasi. Sumber kurang dari 10 FPS memakai seluruh frame yang ada. Log frame_reviews pada manifest mencatat pilihan dan pernyataan pemeriksaan aktual; lihat kontrak paket. Tidak ada seluruh rangkaian frame di paket final.
+
+Arah kamera ditentukan memakai oklusi, paralaks, perspektif dan pembingkaian bersama. Pan murni menyapu gambar berlawanan arah kamera; arah lateral tidak ditetapkan dari satu objek atau satu angka delta. Orbit mengubah sudut mengelilingi jangkar; truck menilai translasi lateral dan orientasi kamera. Jangan menyebut drift/jitter vertikal kecil sebagai subtle tilt. Tilt-Up/Down memerlukan rotasi pandangan vertikal yang jelas dan berkelanjutan, berbeda dari perubahan tinggi.
+
+Estimasi ~×/~° wajib diusahakan berdasarkan jangkar dan dijelaskan dalam basis; bila tidak cukup, catat batasnya tanpa mengarang angka. ~× adalah rasio perubahan skala, bukan tempo/percepatan. Fase menyimpan waktu sumber; kartu juga menampilkan waktu relatif shot.
+
+Perintah review menghasilkan kartu dari model MD yang sama serta hash snapshot. Kartu berisi gambar, ikhtisar, posisi/arah, awal/akhir, notasi lengkap, ritme, dasar dan ketidakpastian. Pengguna tidak diwajibkan membaca semua tabel teknis; MD lengkap tersedia. Pemeriksaan kesesuaian narasi dengan fakta tetap dilakukan AI saat audit/koreksi; parser hanya memeriksa konsistensi teknis eksplisit.

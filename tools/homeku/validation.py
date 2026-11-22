@@ -178,6 +178,16 @@ def validate_folder(folder: Path, root: Path, package_name=None, source_override
     for previous, current in zip(shots, shots[1:]):
         require(abs(previous["end_s"] - current["start_s"]) <= 0.001, "Timeline has a gap/overlap; use segments inside a continuous shot")
     by_shot = {s["shot"]: s for s in shots}
+    if manifest["contract_version"] == "1.1":
+        native_times = validate_frame_reviews(manifest["audit"]["frame_reviews"], shots, source, source_info)
+        for interval in ranges:
+            if interval["mode"] == "frame-by-frame":
+                intervals = sorted((r["start_s"], r["end_s"]) for r in manifest["audit"]["frame_reviews"] if r["mode"] == "frame-by-frame")
+                cursor = interval["start_s"]
+                for left, right in intervals:
+                    if left <= cursor + 0.000001:
+                        cursor = max(cursor, right)
+                require(cursor >= interval["end_s"] - 0.000001, "Frame-by-frame coverage claim lacks native review records")
     media, folded = {}, set()
     for item in manifest["media"]:
         name = safe_relative(item["path"])
@@ -217,6 +227,17 @@ def validate_folder(folder: Path, root: Path, package_name=None, source_override
         required = {kind: media.get(f"media/{sid}/{kind}.jpg") for kind in ("area-overview", "start", "middle", "end")}
         require(all(required.values()), f"{sid}: missing required area/start/middle/end media")
         t0, tm, t1 = [required[k]["timestamp_s"] for k in ("start", "middle", "end")]
+        if manifest["contract_version"] == "1.1":
+            import bisect
+            first = bisect.bisect_left(native_times, shot["start_s"])
+            last = bisect.bisect_left(native_times, shot["end_s"]) - 1
+            require(abs(t0 - native_times[first]) <= 0.000001 and abs(t1 - native_times[last]) <= 0.000001,
+                    f"{sid}: start/end must be exact first/last native shot frames")
+            for item in media.values():
+                if item["shot_id"] == sid:
+                    pos = bisect.bisect_left(native_times, item["timestamp_s"])
+                    require(any(abs(native_times[j] - item["timestamp_s"]) <= 0.000001 for j in (pos - 1, pos) if 0 <= j < len(native_times)),
+                            f"{sid}: media timestamp must match native PTS")
         require(t0 <= tm <= t1, f"{sid}: start/middle/end timestamps not ordered")
         require(t0 - shot["start_s"] <= step + 0.002 and shot["end_s"] - t1 <= step * 2 + 0.002,
                 f"{sid}: boundary frames too far from shot boundaries")
@@ -230,6 +251,8 @@ def validate_folder(folder: Path, root: Path, package_name=None, source_override
         for claim in shot["facts"] + shot["phases"]:
             for link in claim["evidence"]:
                 require(link in media and media[link]["shot_id"] == sid, f"{sid}: evidence must belong to this shot: {link}")
+    for claim in model.get("profile", []):
+        require(all(name in media and media[name]["kind"] != "storyboard" for name in claim["evidence"]), "DNA evidence must link original shot media")
     for relation in model["relations"]:
         require(all(link in media for link in relation["evidence"]), "Unknown relation evidence")
     for link in model["links"]:
@@ -245,3 +268,33 @@ def validate_folder(folder: Path, root: Path, package_name=None, source_override
     model.update({"source": source_info, "media": manifest["media"], "audit": manifest["audit"],
                   "content_sha256": content_hash(folder)})
     return manifest, model, source
+
+
+def validate_frame_reviews(reviews, shots, source, info):
+    """Check declarations against native PTS; cannot prove an AI actually looked."""
+    from .exporter import frame_times, selected_indices
+    times = frame_times(source)
+    source_fps = info["fps"]["numerator"] / info["fps"]["denominator"]
+    by_shot = {s["shot"]: s for s in shots}
+    coverage = {sid: [] for sid in by_shot}
+    for review in reviews:
+        sid = review["shot_id"]
+        require(sid in by_shot, "Frame review has unknown shot")
+        shot = by_shot[sid]
+        start, end = review["start_s"], review["end_s"]
+        require(shot["start_s"] <= start < end <= shot["end_s"], "Frame review outside shot")
+        native = review["mode"] == "frame-by-frame"
+        fps = review["sampling_fps"]
+        require((native and fps is None) or (not native and fps is not None), "Native review uses null FPS; sampling declares FPS")
+        expected = selected_indices(times, start, end, fps or 10, native=native, source_fps=source_fps)
+        require(review["selected_frame_indices"] == expected, "Selected frame indices differ from native PTS selection")
+        require(sorted(review["viewed_frame_indices"]) == expected, "Frame review incomplete: declare only frames actually viewed; finish the pass before export")
+        coverage[sid].append((start, end))
+    for sid, shot in by_shot.items():
+        cursor = shot["start_s"]
+        for start, end in sorted(coverage[sid]):
+            require(start <= cursor + 0.000001, f"Every shot requires a complete 10 FPS (or native) viewed baseline; gap in {sid}")
+            cursor = max(cursor, end)
+        require(abs(cursor - shot["end_s"]) <= 0.000001,
+                f"Every shot requires a complete 10 FPS (or native) viewed baseline including boundary frames: {sid}")
+    return times

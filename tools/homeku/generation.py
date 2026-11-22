@@ -8,21 +8,30 @@ from collections import defaultdict
 from pathlib import Path
 
 from . import GENERATOR_VERSION
-from .common import cell, content_hash, dumps, read_json, require, sha256, slug
-from .validation import CODE_ROOT, SCHEMA, validate_folder
+from .common import LibraryError, cell, content_hash, dumps, read_json, require, sha256, slug
+from .validation import CODE_ROOT, validate_folder
 
 PAGE_SIZE = 40
 
 
 def generator_fingerprint(root: Path):
     inputs = [(p.name, sha256(p)) for p in sorted((CODE_ROOT / "tools/homeku").glob("*.py"))]
-    inputs += [("schema", sha256(SCHEMA)), ("taxonomy", sha256(root / "data/taxonomy.json")), ("version", GENERATOR_VERSION)]
+    inputs += [(p.name, sha256(p)) for p in sorted((CODE_ROOT / "docs/contracts").glob("*.schema.json"))]
+    inputs += [("principles", sha256(CODE_ROOT / "sources/design-principles.json")), ("taxonomy", sha256(root / "data/taxonomy.json")), ("version", GENERATOR_VERSION)]
     return hashlib.sha256(dumps(inputs).encode()).hexdigest()
 
 
 def load_models(root: Path, registry, full=False):
     """Reuse projections only when every reference byte and source still match."""
     models = {}
+    build_path = root / "data/build.json"
+    try:
+        previous_build = read_json(build_path) if build_path.is_file() else {}
+    except (LibraryError, OSError):
+        previous_build = {}
+    if not isinstance(previous_build, dict):
+        previous_build = {}
+    fingerprint = generator_fingerprint(root)
     for reference_id, entry in sorted(registry["references"].items()):
         folder = root / "references" / reference_id
         require(folder.is_dir() and not folder.is_symlink(), f"Missing/symlinked registered reference: {reference_id}")
@@ -36,7 +45,7 @@ def load_models(root: Path, registry, full=False):
         source = root / manifest["source"]["path"]
         require(source.is_file() and sha256(source) == entry["source_sha256"], f"Registered source changed: {reference_id}")
         cache = root / "data/projections" / f"{reference_id}.json"
-        expected = hashlib.sha256((actual_hash + generator_fingerprint(root)).encode()).hexdigest()
+        expected = hashlib.sha256((actual_hash + fingerprint).encode()).hexdigest()
         if not full and cache.is_file():
             try:
                 cached = read_json(cache)
@@ -45,12 +54,11 @@ def load_models(root: Path, registry, full=False):
             if not isinstance(cached, dict):
                 cached = {}
             # Cache is disposable. It cannot be used if its own payload was edited.
-            if cached.get("fingerprint") == expected:
-                payload = cached.get("model")
-                digest = hashlib.sha256(dumps(payload).encode()).hexdigest()
-                if digest == cached.get("model_sha256"):
-                    models[reference_id] = payload
-                    continue
+            if (previous_build.get("projections", {}).get(reference_id) == expected and
+                    previous_build.get("projection_sha256", {}).get(reference_id) == sha256(cache) and
+                    cached.get("schema_version") == "1.0" and cached.get("kind") == "homeku.reference"):
+                models[reference_id] = cached["reference"]
+                continue
         _, model, _ = validate_folder(folder, root)
         models[reference_id] = model
     return models
@@ -59,13 +67,23 @@ def load_models(root: Path, registry, full=False):
 def render(root: Path, models):
     taxonomy = read_json(root / "data/taxonomy.json")
     require(isinstance(taxonomy.get("version"), int) and isinstance(taxonomy.get("areas"), dict), "Invalid taxonomy")
-    aliases = {}
-    for canonical, values in sorted(taxonomy["areas"].items()):
-        require(isinstance(values, list) and all(isinstance(v, str) for v in values), "Invalid area alias list")
-        for name in [canonical, *values]:
-            key = name.casefold()
-            require(key not in aliases or aliases[key] == canonical, f"Ambiguous area alias: {name}")
-            aliases[key] = canonical
+    alias_groups = {}
+    for group, entries in taxonomy.items():
+        if not isinstance(entries, dict):
+            continue
+        group_aliases = {}
+        for canonical, values in sorted(entries.items()):
+            require(isinstance(values, list) and all(isinstance(v, str) for v in values), "Invalid alias list")
+            for name in [canonical, *values]:
+                key = name.casefold()
+                require(key not in group_aliases or group_aliases[key] == canonical, f"Ambiguous {group} alias: {name}")
+                group_aliases[key] = canonical
+        alias_groups[group] = group_aliases
+    aliases = alias_groups["areas"]
+
+    def canonical(group, value):
+        return alias_groups.get(group, {}).get(value.casefold(), value)
+
     outputs, dependencies = {}, {}
     all_ids = sorted(models)
     count_shots = sum(len(m["shots"]) for m in models.values())
@@ -181,10 +199,27 @@ def render(root: Path, models):
                       ["Nilai", "Status", "Referensi", "Shot / denominator tercatat", "Sumber / fakta", "Confidence"],
                       lambda p, r: [cell(r[2]["value"]), cell(r[2]["state"]), str(r[3]), f"{r[4]} / {r[5]}",
                                     source(p, r[0], r[1]["shot"]) + " / " + cell(r[2]["id"]), cell(r[2]["confidence"])])
+        json_base = f"knowledge/comparisons/{slug(title)}"
+        json_pages = []
+        for offset in range(0, len(expanded), PAGE_SIZE):
+            json_path = f"{json_base}/page-{offset // PAGE_SIZE + 1:03d}.json"
+            chunk = expanded[offset:offset + PAGE_SIZE]
+            rows = [{"reference": r[0], "shot": r[1]["shot"], "fact": r[2], "reference_count": r[3],
+                     "shot_count": r[4], "denominator": r[5],
+                     "source": f"references/{r[0]}/analysis.md#{r[1]['shot']}",
+                     "json": f"data/projections/{r[0]}.json",
+                     "evidence": [f"references/{r[0]}/{v}" for v in r[2]["evidence"]]} for r in chunk]
+            emit(json_path, dumps({"schema_version": "1.0", "kind": "homeku.fact-comparisons", "claims": rows}), [r[0] for r in chunk])
+            json_pages.append(json_path)
+        emit(f"{json_base}/index.json", dumps({"schema_version": "1.0", "attribute": list(key), "denominator": denominator, "pages": json_pages}), [r[0] for r in records])
         topics.append((records[0][0], key, denominator, index))
     paged("knowledge/topics", "Daftar perbandingan", topics,
           ["Domain", "Subjek", "Atribut", "Shot yang mencatat atribut", "Rincian"],
           lambda p, r: [cell(r[1][0]), cell(r[1][1]), cell(r[1][2]), str(r[2]), link(p, r[3], "Buka perbandingan")])
+    emit("knowledge/topics/index.json", dumps({"schema_version": "1.0", "kind": "homeku.knowledge-topics",
+                                               "topics": [{"attribute": list(key), "denominator": denom,
+                                                           "json": path.removesuffix("README.md") + "index.json"}
+                                                          for _, key, denom, path in topics]}), all_ids)
     # A topic's denominator can depend on any source, not just its first example.
     for path in list(dependencies):
         if path.startswith("knowledge/topics/"):
@@ -192,25 +227,98 @@ def render(root: Path, models):
     knowledge.append("[Daftar perbandingan menurut domain, subjek dan atribut](topics/README.md)")
     if not comparisons:
         knowledge.append("Belum ada audit aktif. Tidak ada pengetahuan baru yang disimpulkan dari arsip.")
-    emit("knowledge/README.md", "\n".join(knowledge), all_ids)
     emit("catalogs/README.md", "# Katalog HOMEKU\n\n" + f"{len(models)} referensi aktif; {count_shots} shot.\n\n" +
          "\n".join(f"- [{label}]({target})" for label, target in [("Semua referensi", "references.md"), ("Ruang dan fungsi", "rooms/README.md"),
                       ("Desain, arsitektur dan lingkungan", "design/README.md"), ("Posisi kamera dan komposisi", "composition/README.md"),
                       ("Gerakan dan ritme", "camera/README.md"), ("Knowledge dan perbandingan", "../knowledge/README.md")]), all_ids)
+    # Curated general principles are published verbatim; no archived audit facts.
+    principles = read_json(CODE_ROOT / "sources/design-principles.json")
+    require(principles.get("schema_version") == "1.0" and isinstance(principles.get("principles"), list), "Invalid curated principles")
+    require(len({p["id"] for p in principles["principles"]}) == len(principles["principles"]), "Duplicate principle IDs")
+    principle_lines = ["# Prinsip desain terkurasi", "", "Prinsip umum, bukan pengamatan video atau keputusan konsep baru.", ""]
+    for item in principles["principles"]:
+        require(item["claim_type"] == "design-principle", "General principles must remain distinct from audit facts")
+        principle_lines += [f"## {item['title']}", "", item["guidance"], "", "Batas: " + item["limitations"], ""]
+    emit("knowledge/principles.md", "\n".join(principle_lines), [])
+    emit("knowledge/principles.json", dumps(principles), [])
+    knowledge += ["", "[Prinsip desain umum terkurasi](principles.md) · [Data prinsip untuk AI](principles.json)"]
+    emit("knowledge/README.md", "\n".join(knowledge), all_ids)
+
+    dna_records = [(rid, claim) for rid, model in sorted(models.items()) for claim in model.get("profile", [])]
+    paged("catalogs/dna", "Profil DNA, gaya dan skala", dna_records,
+          ["Sumber", "Aspek", "Nilai", "Status", "Confidence", "Bukti"],
+          lambda p, r: [link(p, f"references/{r[0]}/analysis.md#profil-dna", r[0] + " / " + r[1]["id"]),
+                        cell(r[1]["aspect"]), cell(r[1]["value"]), cell(r[1]["state"]), cell(r[1]["confidence"]),
+                        "; ".join(link(p, f"references/{r[0]}/{v}", "frame") for v in r[1]["evidence"]) or "—"])
+    outputs["catalogs/README.md"] += "- [Profil DNA, gaya dan skala](dna/README.md)\n"
+
     fingerprint = generator_fingerprint(root)
-    projection_fingerprints = {}
+    projection_fingerprints, projection_hashes, search = {}, {}, []
     for rid, model in sorted(models.items()):
-        model_hash = hashlib.sha256(dumps(model).encode()).hexdigest()
+        md_path = f"references/{rid}/analysis.md"
+        json_path = f"data/projections/{rid}.json"
+        media_by_path = {m["path"]: m for m in model["media"]}
+
+        def proof(paths):
+            return [{"path": f"references/{rid}/{name}", **{k: v for k, v in media_by_path[name].items() if k != "path"}} for name in paths]
+
+        pointers = {"/reference": {"md": md_path, "manifest": f"references/{rid}/manifest.json"}}
+        for i, claim in enumerate(model.get("profile", [])):
+            pointers[f"/reference/profile/{i}"] = {"md": md_path + "#profil-dna", "claim_id": claim["id"], "evidence": proof(claim["evidence"])}
+        indexed_shots = []
+        for i, shot in enumerate(model["shots"]):
+            pointer = f"/reference/shots/{i}"
+            shot_md = md_path + "#" + shot["shot"]
+            pointers[pointer] = {"md": shot_md, "interval_s": [shot["start_s"], shot["end_s"]],
+                                 "media": proof([m["path"] for m in model["media"] if m["shot_id"] == shot["shot"]])}
+            for group in ("facts", "phases"):
+                for j, claim in enumerate(shot[group]):
+                    pointers[f"{pointer}/{group}/{j}"] = {"md": shot_md, "claim_id": claim.get("id", claim.get("phase")), "evidence": proof(claim["evidence"])}
+            indexed_shots.append({"shot": shot["shot"], "areas": shot["areas"],
+                                  "areas_canonical": sorted({canonical("areas", a) for a in shot["areas"]}),
+                                  "view_angle": shot["composition"]["view_angle"],
+                                  "view_angle_canonical": canonical("view_angles", shot["composition"]["view_angle"]),
+                                  "camera": shot["camera_summary"],
+                                  "movements": sorted({canonical("movements", c["movement"] if c["movement"] != "other" else c["raw"])
+                                                       for p in shot["phases"] for c in p["components_parsed"]}),
+                                  "tempos": sorted({p["tempo"] for p in shot["phases"]}),
+                                  "design_facets": [{"domain": f["domain"], "subject": f["subject"], "attribute": f["attribute"],
+                                                     "value": f["value"], "state": f["state"], "confidence": f["confidence"],
+                                                     "pointer": pointer + f"/facts/{j}"} for j, f in enumerate(shot["facts"])
+                                                     if f["attribute"] in {"layout", "room-shape", "combined-functions", "configuration", "shape", "opening", "circulation", "floor-level"}],
+                                  "path": shot_md, "json_pointer": pointer,
+                                  "overview": f"references/{rid}/media/{shot['shot']}/area-overview.jpg"})
+        for i, relation in enumerate(model["relations"]):
+            pointers[f"/reference/relations/{i}"] = {"md": md_path + "#hubungan-antarshot", "evidence": proof(relation["evidence"])}
+        reader = {"schema_version": "1.0", "kind": "homeku.reference", "reference": model,
+                  "paths": {"analysis": md_path, "manifest": f"references/{rid}/manifest.json", "source": model["source"]["path"]},
+                  "provenance": pointers}
+        validate_reader(reader, "reference-reader-v1.schema.json")
         fp = hashlib.sha256((model["content_sha256"] + fingerprint).encode()).hexdigest()
         projection_fingerprints[rid] = fp
-        emit(f"data/projections/{rid}.json", dumps({"fingerprint": fp, "model_sha256": model_hash, "model": model}), [rid])
-    search = [{"id": rid, "title": model["title"], "revision": model["revision"],
-               "shots": [{"shot": s["shot"], "areas": s["areas"], "view_angle": s["composition"]["view_angle"],
-                          "camera": s["camera_summary"], "tempos": sorted({p["tempo"] for p in s["phases"]}),
-                          "path": f"references/{rid}/analysis.md#{s['shot']}"} for s in model["shots"]]}
-              for rid, model in sorted(models.items())]
-    emit("data/search-index.json", dumps({"references": search}), all_ids)
-    emit("data/dependencies.json", dumps({"generator_fingerprint": fingerprint, "outputs": dependencies.copy()}), all_ids)
+        emit(json_path, dumps(reader), [rid])
+        projection_hashes[rid] = hashlib.sha256(outputs[json_path].encode()).hexdigest()
+        facets = [{**{k: c[k] for k in ("id", "aspect", "value", "state", "confidence")},
+                   "canonical": canonical("styles" if c["aspect"] in {"primary-style", "style-influence"}
+                                          else "scales" if c["aspect"] == "apparent-scale" else c["aspect"], c["value"]),
+                   "pointer": f"/reference/profile/{i}"} for i, c in enumerate(model.get("profile", []))]
+        search.append({"id": rid, "title": model["title"], "revision": model["revision"], "json": json_path,
+                       "profile_available": bool(model.get("profile")), "profile_facets": facets, "shots": indexed_shots})
+    index = {"schema_version": "1.0", "kind": "homeku.search-index", "taxonomy": "data/taxonomy.json",
+             "principles": "knowledge/principles.json", "knowledge": "knowledge/topics/index.json", "references": search}
+    validate_reader(index, "search-index-v1.schema.json")
+    emit("data/search-index.json", dumps(index), all_ids)
+    emit("data/dependencies.json", dumps({"generator_fingerprint": fingerprint,
+                                         "source_files": ["data/taxonomy.json", "sources/design-principles.json"],
+                                         "outputs": dependencies.copy()}), all_ids)
     emit("data/build.json", dumps({"generator_fingerprint": fingerprint, "projections": projection_fingerprints,
+                                  "projection_sha256": projection_hashes,
                                   "outputs": {path: hashlib.sha256(value.encode()).hexdigest() for path, value in sorted(outputs.items())}}), all_ids)
     return outputs
+
+
+def validate_reader(value, schema_name):
+    from jsonschema import Draft202012Validator
+    validator = Draft202012Validator(read_json(CODE_ROOT / "docs/contracts" / schema_name))
+    errors = sorted(validator.iter_errors(value), key=lambda e: str(list(e.path)))
+    require(not errors, f"Invalid {schema_name}: {errors[0].message}" if errors else "")

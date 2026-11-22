@@ -1,0 +1,17 @@
+# Prompt mulai audit
+
+Audit MP4 terlampir untuk pustaka referensi HOMEKU. Buka homeku-audit-kit.zip dan baca README, template serta helper di dalamnya. Kerjakan pemeriksaan sumber dan pembuatan kandidat di workspace chat; jangan meminta saya menata file hasil di repo.
+
+Tujuan laporan: AI kreatif dapat menemukan variasi desain yang nyata, memahami posisi/arah pandang kamera, lalu membangun konsep baru dengan DNA referensi dan gerakan yang sesuai. Catat bentuk, konfigurasi, fungsi, bukaan, furnitur, penyimpanan, dekorasi, cahaya dan lingkungan yang terlihat. Hindari isi furnitur generik atau hanya label gaya/warna. Ketidakpastian dan bagian yang tidak terlihat harus tetap jelas.
+
+Gunakan ID dari stem nama sumber. Jalankan inspect untuk metadata/hash/PTS aktual, lalu periksa seluruh durasi. Tentukan shot/cut dari bukti, bukan jumlah ruangan. Periksa baseline 10 FPS sepanjang setiap shot dan frame asli pertama/terakhir. Perdalam dengan --native pada rentang arah/fase/laju yang meragukan, blur/oklusi, atau koreksi yang belum cocok; perluas ke seluruh shot bila perlu. Gunakan FPS asli, bukan dipaksa 30 FPS. Isi frame_reviews dari indeks yang benar-benar dilihat; jangan menandai selesai jika pendalaman yang diperlukan belum dilakukan. Lihat gambar yang diambil; jumlah ekstraksi bukan klaim jumlah frame yang sudah diperiksa.
+
+Periksa kamera secara khusus: pisahkan dolly/pan/orbit/tracking/zoom; arah kamera dari arah benda di layar; smooth dari tempo; percepatan visual dari ukuran proyeksi. Gunakan notasi Inggris → berurutan dan + simultan. Semua fase harus mempunyai interval, jangkar, tempo, perubahan kecepatan, dasar dan uncertainty. Usahakan estimasi ~×/~° berdasarkan jangkar visual, dan jelaskan batasnya bila belum dapat diperkirakan. Terapkan aturan arah/fase pada protokol: gabungkan tes oklusi, paralaks dan perspektif; arah kamera berbeda dari arah benda di layar. Drift/jitter vertikal kecil bukan subtle tilt-up/down; tilt nyata harus jelas dan berkelanjutan, berbeda dari perubahan tinggi. Pertahankan kronologi sumber; jangan menerapkan reverse atau durasi produksi 4/6 detik.
+
+Pilih satu frame asli area-overview.jpg per shot: biasanya awal untuk IN, akhir untuk OUT. Untuk gerakan gabungan, pilih cakupan area terbaik dengan alasan. Catat posisi, arah pandang, sudut serong/frontal/samping, foreground, kedalaman, komposisi awal/akhir dan peran overview sebagai acuan prompt gambar. Jangan memaksa semua pandangan frontal.
+
+Tulis analysis.md 1.1 lengkap dengan narasi profil DNA/palet, ikhtisar dan uraian shot, serta tabel teknis terlipat mengikuti template, kemudian bangun kandidat dengan perintah draft. Simpan sumber, MD utama, audit-info dan extras di luar folder kandidat. Baca kembali storyboard dan frame kandidat. Perbaiki kesalahan struktur/waktu/hash dengan alat, tanpa mengarang fakta agar lolos validasi.
+
+Jalankan helper review dan tampilkan storyboard serta kartu semua shot dari snapshot MD yang sama: gambar area, ikhtisar/pembeda, posisi/arah pandang, awal/akhir sumber, notasi kamera lengkap, fase/ritme, dasar dan ketidakpastian. Tampilkan sumber waktu dan waktu relatif shot. Sediakan analysis.md lengkap yang nyaman dibaca; saya tidak perlu membaca seluruh tabel teknis untuk mengoreksi. Periksa kesesuaian narasi/fakta/kartu sebelum ditampilkan. Jangan mengurangi isi MD demi kartu ringkas. Tunggu koreksi atau pernyataan saya bahwa isinya sesuai sebelum ekspor ZIP final.
+
+Audit ini mengumpulkan pengetahuan dari sumber. Tidak ada tugas membuat konsep/gambar baru atau benchmark manfaat pustaka.

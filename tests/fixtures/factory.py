@@ -138,3 +138,42 @@ def copy_fixture(parent, rid, template, revision=1, supersedes=None, source_byte
         text = text.replace("raised tub platform", layout)
     (folder / "analysis.md").write_text(text)
     return folder
+
+
+def modernize(folder):
+    """Upgrade a synthetic fixture to 1.1; never an audit of a real reference."""
+    import re
+    from homeku.exporter import frame_times, selected_indices
+    from homeku.markdown import PROFILE, PROFILE_ASPECTS, parse
+    document = folder / "analysis.md"
+    text = document.read_text()
+    old = parse(text)
+    profile = []
+    samples = {"primary-style": ("american cattage", "uncertain"), "apparent-scale": ("tiny", "uncertain"),
+               "massing": ("bentuk l", "observed"), "distinctive-features": ("fixture-feature-new-label", "observed")}
+    for i, aspect in enumerate(PROFILE_ASPECTS, 1):
+        value, state = samples.get(aspect, ("unknown", "unknown"))
+        profile.append((f"dna-{i:02d}", aspect, value, state, "medium" if state != "unknown" else "unknown",
+                        "[area](media/shot-01/area-overview.jpg)" if state != "unknown" else "-"))
+    text = text.replace("| format_version | 1.0 |", "| format_version | 1.1 |")
+    text = text.replace("## Cakupan", "## Profil DNA\n\nInterpretasi profil fixture; bukan audit video nyata.\n\n" +
+                        table(PROFILE, profile) + "\n\n## Palet dan suasana\n\nWarna fixture untuk menguji pelestarian narasi.\n\n## Cakupan", 1)
+    text = text.replace("## Timeline\n", "## Timeline\n\nDua area fixture berurutan tanpa klaim adjacency.\n", 1)
+    text = text.replace("### Desain dan konfigurasi", "### Ikhtisar\n\nIkhtisar pembeda fixture untuk kartu.\n\n### Desain dan konfigurasi")
+    text = text.replace("### Komposisi\n", "### Komposisi\n\nPandangan awal fixture serong; bukan default frontal.\n")
+    text = text.replace("### Kamera\n", "### Kamera\n\nRitme fixture sintetis, bukan pengukuran video rumah.\n")
+    text = re.sub(r"(^\|[^\n]*\n(?:\|[^\n]*(?:\n|$))+)",
+                  lambda m: "<details>\n<summary>Data fixture</summary>\n\n" + m[1] + "\n</details>\n", text, flags=re.M)
+    document.write_text(text)
+    manifest = json.loads((folder / "manifest.json").read_text())
+    manifest["contract_version"] = "1.1"
+    times = frame_times(folder / "source.mp4")
+    reviews = []
+    for shot in old["shots"]:
+        indices = selected_indices(times, shot["start_s"], shot["end_s"], source_fps=10)
+        reviews.append({"shot_id": shot["shot"], "start_s": shot["start_s"], "end_s": shot["end_s"],
+                        "mode": "sampling", "sampling_fps": 10, "selected_frame_indices": indices,
+                        "viewed_frame_indices": indices, "reason": "Synthetic declaration for isolated tests, not an actual audit."})
+    manifest["audit"]["frame_reviews"] = reviews
+    (folder / "manifest.json").write_text(dumps(manifest))
+    return folder

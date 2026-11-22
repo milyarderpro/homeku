@@ -316,10 +316,10 @@ class LibraryTests(unittest.TestCase):
         ingest(self.root)
         cache = self.root / "data/projections/sample.json"
         value = read_json(cache)
-        value["model"]["title"] = "cache corruption"
+        value["reference"]["title"] = "cache corruption"
         cache.write_text(dumps(value))
         build(self.root)
-        self.assertNotEqual(read_json(cache)["model"]["title"], "cache corruption")
+        self.assertNotEqual(read_json(cache)["reference"]["title"], "cache corruption")
         path = self.root / "references/sample/analysis.md"
         path.write_text(path.read_text() + "\nUnapproved edit\n")
         with self.assertRaisesRegex(LibraryError, "Unapproved edits"):

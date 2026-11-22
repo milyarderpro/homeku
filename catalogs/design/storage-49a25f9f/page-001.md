@@ -1,0 +1,14 @@
+# storage — 1
+
+| Sumber / fakta | Subjek | Atribut | Nilai tercatat | Status | Confidence | Bukti |
+| --- | --- | --- | --- | --- | --- | --- |
+| [edh001 / shot-02](../../../references/edh001/analysis.md#shot-02) / f-11 | media-console | configuration | Konsol kayu rendah terbuka dengan kompartemen buku dan dekorasi berada di bawah media wall. | observed | high | [frame](../../../references/edh001/media/shot-02/start.jpg) |
+| [edh001 / shot-03](../../../references/edh001/analysis.md#shot-03) / f-08 | cabinet | type | Kabinet putih berpanel dengan handle batang hitam pada pintu/laci. | observed | high | [frame](../../../references/edh001/media/shot-03/start.jpg) |
+| [edh001 / shot-03](../../../references/edh001/analysis.md#shot-03) / f-09 | cabinet | configuration | Kabinet bawah berisi laci/pintu; kabinet tinggi/atas mengapit zona refrigerator dan niche. | observed | high | [frame](../../../references/edh001/media/shot-03/end.jpg) |
+| [edh001 / shot-03](../../../references/edh001/analysis.md#shot-03) / f-10 | niche | configuration | Rak terbuka bertingkat di samping refrigerator berisi wadah, buku/objek dan tanaman. | observed | high | [frame](../../../references/edh001/media/shot-03/end.jpg) |
+| [edh001 / shot-03](../../../references/edh001/analysis.md#shot-03) / f-13 | wall-shelf | configuration | Beberapa rak dinding horizontal gelap di kanan atas menampung piring, wadah dan tanaman. | observed | high | [frame](../../../references/edh001/media/shot-03/start.jpg) |
+| [edh001 / shot-04](../../../references/edh001/analysis.md#shot-04) / f-09 | niche | configuration | Niche display bertingkat terbuka di sisi kiri headwall, dengan kotak, buku/objek kecil dan tanaman. | observed | high | [frame](../../../references/edh001/media/shot-04/start.jpg) |
+| [edh001 / shot-04](../../../references/edh001/analysis.md#shot-04) / f-10 | wardrobe | configuration | Hanging bay terbuka dengan pakaian dan rak atas menyatu di sisi kanan headwall. | observed | high | [frame](../../../references/edh001/media/shot-04/start.jpg) |
+| [edh001 / shot-04](../../../references/edh001/analysis.md#shot-04) / f-12 | upper-shelf | configuration | Linen lipat, kotak dan keranjang menempati rak atas headwall. | observed | high | [frame](../../../references/edh001/media/shot-04/start.jpg) |
+| [edh001 / shot-05](../../../references/edh001/analysis.md#shot-05) / f-09 | shower-niche | configuration | Niche horizontal berisi botol/perlengkapan berada di bawah porthole. | observed | high | [frame](../../../references/edh001/media/shot-05/start.jpg) |
+| [edh001 / shot-05](../../../references/edh001/analysis.md#shot-05) / f-24 | laundry-shelf | configuration | Shelf kayu terbuka di atas tower menyimpan linen/handuk lipat. | observed | high | [frame](../../../references/edh001/media/shot-05/start.jpg) |

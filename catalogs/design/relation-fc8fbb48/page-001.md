@@ -1,0 +1,17 @@
+# relation — 1
+
+| Sumber / fakta | Subjek | Atribut | Nilai tercatat | Status | Confidence | Bukti |
+| --- | --- | --- | --- | --- | --- | --- |
+| [edh001 / shot-01](../../../references/edh001/analysis.md#shot-01) / f-07 | entry | position | Entrance berada di kanan bay window menurut layar awal dan dicapai melalui landing bertangga. | observed | high | [frame](../../../references/edh001/media/shot-01/start.jpg) |
+| [edh001 / shot-02](../../../references/edh001/analysis.md#shot-02) / f-05 | sofa | position | Sofa berada di kanan dan foreground, dengan ujung chaise dekat jendela menurut pandangan sumber. | observed | high | [frame](../../../references/edh001/media/shot-02/end.jpg) |
+| [edh001 / shot-02](../../../references/edh001/analysis.md#shot-02) / f-07 | coffee-table | position | Meja berada di tengah area karpet di depan sofa. | observed | high | [frame](../../../references/edh001/media/shot-02/end.jpg) |
+| [edh001 / shot-03](../../../references/edh001/analysis.md#shot-03) / f-05 | range | position | Range berada di tengah deret kabinet, langsung di bawah window horizontal. | observed | high | [frame](../../../references/edh001/media/shot-03/start.jpg) |
+| [edh001 / shot-03](../../../references/edh001/analysis.md#shot-03) / f-07 | refrigerator | position | Refrigerator berada di ujung kiri deret kabinet menurut layar awal; kabinet tertutup berada di atasnya. | observed | high | [frame](../../../references/edh001/media/shot-03/end.jpg) |
+| [edh001 / shot-03](../../../references/edh001/analysis.md#shot-03) / f-11 | niche | position | Niche kopi berada di antara refrigerator/kabinet tinggi kiri dan window di kanan. | observed | high | [frame](../../../references/edh001/media/shot-03/end.jpg) |
+| [edh001 / shot-04](../../../references/edh001/analysis.md#shot-04) / f-11 | headwall-storage | position | Niche kiri dan hanging bay kanan dipisahkan pier putih dengan dua artwork bertumpuk. | observed | high | [frame](../../../references/edh001/media/shot-04/start.jpg) |
+| [edh001 / shot-04](../../../references/edh001/analysis.md#shot-04) / f-23 | bedroom-bathroom | adjacency-visible | unknown | unknown | unknown | — |
+| [edh001 / shot-05](../../../references/edh001/analysis.md#shot-05) / f-07 | shower | position | Shower berada di antara toilet kiri dan tower laundry kanan menurut frame awal. | observed | high | [frame](../../../references/edh001/media/shot-05/start.jpg) |
+| [edh001 / shot-05](../../../references/edh001/analysis.md#shot-05) / f-10 | shower-niche | alignment | Niche berada lebih rendah dari porthole pada dinding wet zone. | observed | high | [frame](../../../references/edh001/media/shot-05/start.jpg) |
+| [edh001 / shot-05](../../../references/edh001/analysis.md#shot-05) / f-16 | toilet | position | Toilet berada di bawah/dekat window persegi panjang dan di belakang vanity menurut pandangan awal. | observed | high | [frame](../../../references/edh001/media/shot-05/start.jpg) |
+| [edh001 / shot-05](../../../references/edh001/analysis.md#shot-05) / f-18 | vanity | position | Vanity berada di sisi kiri dekat kamera; bagian kabinet/mirror di atasnya tidak tampak utuh. | observed | high | [frame](../../../references/edh001/media/shot-05/start.jpg) |
+| [edh001 / shot-05](../../../references/edh001/analysis.md#shot-05) / f-22 | laundry-tower | position | Tower berada tepat di kanan shower dalam bay dinding. | observed | high | [frame](../../../references/edh001/media/shot-05/start.jpg) |

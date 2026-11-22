@@ -17,6 +17,10 @@ FACTS = ("id", "domain", "subject", "attribute", "value", "state", "confidence",
 PHASES = ("phase", "start_s", "end_s", "components", "anchor", "tempo", "speed_change", "basis",
           "evidence", "confidence", "uncertainty")
 RELATIONS = ("from", "to", "relation", "description", "state", "confidence", "evidence")
+PROFILE = ("id", "aspect", "value", "state", "confidence", "evidence")
+PROFILE_ASPECTS = ("primary-style", "style-influence", "apparent-scale", "levels-visible", "massing", "roof",
+                   "entrance", "porch", "openings", "material-hierarchy", "palette", "lighting", "environment",
+                   "spatial-configuration", "distinctive-features", "continuity")
 STATES = {"observed", "uncertain", "not-visible", "not-present", "unknown"}
 CONFIDENCE = {"high", "medium", "low", "unknown"}
 TEMPOS = {"slow", "moderate", "fast", "variable", "unknown"}
@@ -73,6 +77,13 @@ def fields(text, keys, label):
     return {r["field"]: r["value"] for r in rows}
 
 
+def prose(text):
+    """Keep authored prose while omitting parser tables and presentation wrappers."""
+    return "\n".join(line for line in text.splitlines()
+                     if not line.startswith("|") and not re.fullmatch(r"</?details>|<summary>.*</summary>", line.strip())
+                     and not re.fullmatch(r'<a id="[^"]+"></a>', line.strip())).strip()
+
+
 def sections(text, level):
     # Headings inside fenced camera summaries are not document headings.
     result, key, lines, fenced = {}, None, [], False
@@ -112,7 +123,7 @@ def component(value):
     names = ("Dolly-In", "Dolly-Out", "Orbit Left", "Orbit Right", "Pan Left", "Pan Right",
              "Tilt Up", "Tilt Down", "Truck Left", "Truck Right", "Pedestal Up", "Pedestal Down",
              "Zoom-In", "Zoom-Out", "Tracking", "Static", "Uncertain")
-    found = [name for name in names if re.search(r"\b" + re.escape(name) + r"\b", value, re.I)]
+    found = [name for name in names if re.search(r"\b" + re.escape(name).replace(r"\ ", "[ -]") + r"\b", value, re.I)]
     require(len(found) <= 1, "Use '+' between simultaneous camera components")
     name = found[0] if found else "other"
     direction = next((d for d in ("Left", "Right", "Up", "Down", "In", "Out")
@@ -125,12 +136,29 @@ def component(value):
 
 def parse(text):
     require("\x00" not in text, "NUL in Markdown")
+    require(text.count("<details>") == text.count("</details>"), "Unbalanced details blocks")
     top = sections(text, 2)
     names = ["Identitas", "Ringkasan", "Cakupan", "Timeline", "Hubungan antarshot", "Keterbatasan"]
     require(all(name in top and top[name] for name in names), f"Missing required H2 section: {names}")
     identity = fields(top["Identitas"], IDENTITY, "Identitas")
     require(identity["revision"].isdigit(), "revision must be an integer")
     identity["revision"] = int(identity["revision"])
+    require(identity["format_version"] in {"1.0", "1.1"}, "Unsupported Markdown format_version")
+    modern = identity["format_version"] == "1.1"
+    profile = []
+    if modern:
+        names += ["Profil DNA", "Palet dan suasana"]
+        require(all(name in top and top[name] for name in names), "Missing readable DNA/palette sections")
+        profile = table(top["Profil DNA"], PROFILE, "Profil DNA")
+        require(set(PROFILE_ASPECTS) <= {r["aspect"] for r in profile}, "DNA profile must cover all required aspects; use unknown explicitly")
+        ids_seen = set()
+        for claim in profile:
+            require(re.fullmatch(r"dna-[0-9]{2,}", claim["id"]) and claim["id"] not in ids_seen, "Invalid/duplicate DNA claim ID")
+            ids_seen.add(claim["id"])
+            require(claim["state"] in STATES and claim["confidence"] in CONFIDENCE, "Invalid DNA state/confidence")
+            claim["evidence"] = evidence(claim["evidence"])
+            require(claim["evidence"] or claim["state"] == "unknown", "DNA claim needs evidence")
+        require(prose(top["Profil DNA"]), "Write a readable DNA narrative")
     coverage = fields(top["Cakupan"], COVERAGE, "Cakupan")
     timeline = table(top["Timeline"], TIMELINE, "Timeline")
     require(timeline, "Timeline must have at least one shot")
@@ -143,6 +171,8 @@ def parse(text):
         require(f'<a id="{sid}"></a>' in text, f"Missing explicit shot anchor: {sid}")
         subs = sections(top[f"Shot {sid}"], 3)
         required = {"Desain dan konfigurasi", "Fakta", "Komposisi", "Kamera", "Ketidakpastian"}
+        if modern:
+            required.add("Ikhtisar")
         require(set(subs) == required and all(subs.values()), f"{sid}: required H3 sections: {sorted(required)}")
         start, end = number(row["start_s"], sid), number(row["end_s"], sid)
         require(0 <= start < end, f"{sid}: invalid interval")
@@ -190,7 +220,10 @@ def parse(text):
             require(comp["overview_exception"] != "-", f"{sid}: explain IN/OUT overview exception")
         shots.append({**row, "start_s": start, "end_s": end, "areas": areas, "composition": comp,
                       "facts": facts, "camera_summary": summary, "phases": phases,
-                      "design": subs["Desain dan konfigurasi"], "uncertainty": subs["Ketidakpastian"]})
+                      "design": subs["Desain dan konfigurasi"], "uncertainty": subs["Ketidakpastian"],
+                      "review_summary": subs.get("Ikhtisar", subs["Desain dan konfigurasi"]),
+                      "composition_notes": prose(subs["Komposisi"]),
+                      "camera_notes": prose(re.sub(r"```text\n.*?\n```", "", subs["Kamera"], flags=re.S))})
     relations = table(top["Hubungan antarshot"], RELATIONS, "Hubungan antarshot")
     for relation in relations:
         require(relation["from"] in ids and relation["to"] in ids, "Relation has unknown shot")
@@ -198,4 +231,34 @@ def parse(text):
         relation["evidence"] = evidence(relation["evidence"])
         require(relation["evidence"] or relation["state"] == "unknown", "Relation needs evidence")
     return {**identity, "summary": top["Ringkasan"], "coverage": coverage, "shots": shots,
+            "profile": profile, "profile_notes": prose(top.get("Profil DNA", "")),
+            "palette_notes": top.get("Palet dan suasana", ""), "timeline_notes": prose(top["Timeline"]),
             "relations": relations, "limitations": top["Keterbatasan"], "links": LINK.findall(text)}
+
+
+def review_cards(model, analysis_sha256, *, media_prefix=""):
+    """A deterministic review view of the same MD snapshot, with no new claims."""
+    def media(path):
+        return media_prefix.rstrip("/") + "/" + path if media_prefix else path
+    lines = [f"# Tinjauan {model['id']} — revisi {model['revision']}", "",
+             f"Snapshot analysis.md SHA-256: `{analysis_sha256}`", "", model["summary"], "",
+             model.get("profile_notes", ""), "", model.get("palette_notes", ""), "",
+             f"![Storyboard]({media('media/storyboard.jpg')})", ""]
+    for shot in model["shots"]:
+        comp = shot["composition"]
+        lines += [f"## {shot['shot']} · {' / '.join(shot['areas'])} · {shot['start_s']:g}–{shot['end_s']:g} s", "",
+                  f"![Gambaran area]({media('media/' + shot['shot'] + '/area-overview.jpg')})", "",
+                  shot["review_summary"], "", "**Posisi dan pandangan:** " + comp["camera_position"] + " " + comp["camera_direction"] +
+                  " Sudut: " + comp["view_angle"], "", "**Awal sumber:** " + comp["start_composition"], "",
+                  "**Akhir sumber:** " + comp["end_composition"], "",
+                  "**Peran gambar area:** " + comp["overview_role"] + " — " + comp["overview_reason"], "",
+                  "**Kecocokan gerak:** " + comp["motion_compatibility"], "", "```text", shot["camera_summary"], "```", ""]
+        for phase in shot["phases"]:
+            lines += [f"- {phase['start_s']:g}–{phase['end_s']:g} s sumber "
+                      f"({phase['start_s']-shot['start_s']:g}–{phase['end_s']-shot['start_s']:g} s dalam shot): "
+                      f"{phase['components']}; tempo {phase['tempo']}; perubahan {phase['speed_change']}. "
+                      f"Dasar: {phase['basis']} Batas: {phase['uncertainty']}"]
+        lines += ["", "**Belum pasti:** " + shot["uncertainty"], ""]
+    lines += ["## Batas keseluruhan", "", model["limitations"], "",
+              "Laporan lengkap tetap tersedia pada analysis.md. Tinjauan ini tidak menyatakan persetujuan pengguna.", ""]
+    return "\n".join(lines)

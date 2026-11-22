@@ -1,6 +1,8 @@
-# Kontrak paket HOMEKU 1.0 — provisional
+# Kontrak paket HOMEKU 1.1 — provisional
 
-Format ini adalah kontrak teknis awal Phase 1. Pengalaman tujuh pilot pada Phase 2 dapat menghasilkan revisi berversi; parser tidak menebak atau menerima versi baru secara diam-diam.
+Paket baru memakai 1.1. Parser tetap menerima 1.0 sebagai format lama secara eksplisit; isi dan cakupannya tidak dianggap telah memenuhi audit 1.1.
+
+Format 1.1 menyempurnakan kontrak teknis awal Phase 1. Pengalaman tujuh pilot pada Phase 2 dapat menghasilkan revisi berversi; parser tidak menebak atau menerima versi baru secara diam-diam.
 
 ## Identitas dan ZIP
 
@@ -32,7 +34,7 @@ Tidak ada motion/, klip per shot, seluruh frame video, executable atau file tamb
 
 | Field | Isi |
 | --- | --- |
-| contract_version | String `1.0` |
+| contract_version | String `1.1` untuk audit baru; `1.0` masih dibaca sebagai legacy |
 | purpose | `reference` untuk paket nyata; `fixture` hanya untuk tes terisolasi |
 | id, revision | Identitas yang sama dengan ZIP, folder dan tabel identitas MD |
 | supersedes | null pada revisi 1; berikutnya objek revision dan content_sha256 versi aktif yang diganti |
@@ -71,3 +73,22 @@ Audit/koreksi isi selesai di chat sebelum ZIP dibangun dari keseluruhan revisi f
 Replay ZIP identik menghasilkan unchanged tanpa commit baru. ZIP yang dikompresi ulang dengan isi revisi aktif identik juga unchanged. Perubahan isi dengan ID/revisi aktif yang sama ditolak. Revisi baru menyebut supersedes yang benar. Sumber aktif identik pada ID lain ditolak berdasarkan hash; kesamaan rumah pada video berbeda tidak disimpulkan.
 
 Paket fixture ditolak di repo produksi. Tes memerlukan root berbeda dari repo tooling dan marker .homeku-fixture-root.
+
+
+## Log pemeriksaan frame pada 1.1
+
+`audit.frame_reviews` wajib dan berisi satu atau beberapa lintasan per shot. Gabungan lintasan harus mencakup seluruh shot tanpa gap pada minimal 10 FPS, atau seluruh frame native. Shot panjang boleh diperiksa dalam rentang terbatas; setiap rentang menyertakan frame asli pertama/terakhirnya. Helper selalu menyertakan frame asli pertama/terakhir dalam interval. Rentang pendalaman boleh tumpang tindih baseline; semuanya harus benar-benar diperiksa.
+
+| Field record | Makna |
+| --- | --- |
+| shot_id | Shot yang diperiksa |
+| start_s / end_s | Interval waktu sumber [start, end), dalam batas shot |
+| mode | sampling atau frame-by-frame |
+| sampling_fps | FPS target sampling (minimal 10); null pada mode frame-by-frame |
+| selected_frame_indices | Indeks asli berbasis 0, berurutan, yang dipilih dari PTS sumber |
+| viewed_frame_indices | Indeks yang benar-benar dilihat; seluruh pilihan harus selesai diperiksa sebelum paket diekspor |
+| reason | Tujuan baseline atau alasan pendalaman, misalnya orbit/pan belum terpisah |
+
+Jumlah frame adalah panjang daftar indeks, bukan estimasi durasi × FPS. FPS sumber ada dalam source.fps; timestamp tepat diperoleh dari PTS sumber. Mode native tidak membatasi ke 30 FPS. Sampel di atas FPS sumber menggunakan semua frame tersedia, tanpa duplikasi/interpolasi. Reviewed_ranges tetap mencatat cakupan metode keseluruhan, selaras dengan frame_reviews dan method/limitations.
+
+Validasi memeriksa indeks terhadap video dan kelengkapan deklarasi, bukan membuktikan AI sungguh melihat atau benar menafsirkan frame. Helper sample mengisi viewed_frame_indices kosong; AI mengisinya hanya setelah melihat. Frame/log kerja sementara tidak disertakan sebagai file tambahan ZIP. Log ringkas masuk manifest, tanpa seluruh JPEG pemeriksaan.

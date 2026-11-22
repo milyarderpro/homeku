@@ -23,7 +23,7 @@ class GitPublicationTests(unittest.TestCase):
             remote = work / "remote.git"
             subprocess.run(["git", "init", "--bare", "--initial-branch=main", str(remote)], check=True, capture_output=True)
             root = isolated_root(work / "runner")
-            for directory in ("tools", "docs/contracts"):
+            for directory in ("tools", "docs/contracts", "sources"):
                 shutil.copytree(CODE_ROOT / directory, root / directory, ignore=shutil.ignore_patterns("__pycache__"))
             shutil.copyfile(CODE_ROOT / ".gitignore", root / ".gitignore")
             (root / "references").mkdir()

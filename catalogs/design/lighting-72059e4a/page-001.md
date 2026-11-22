@@ -1,0 +1,17 @@
+# lighting — 1
+
+| Sumber / fakta | Subjek | Atribut | Nilai tercatat | Status | Confidence | Bukti |
+| --- | --- | --- | --- | --- | --- | --- |
+| [edh001 / shot-01](../../../references/edh001/analysis.md#shot-01) / f-13 | wall-light | type | Lampu dinding vertikal gelap memancarkan cahaya hangat ke atas dan bawah pada tekstur fasad. | observed | high | [frame](../../../references/edh001/media/shot-01/start.jpg) |
+| [edh001 / shot-01](../../../references/edh001/analysis.md#shot-01) / f-14 | ceiling-light | placement | Downlight tertanam pada soffit entrance terlihat lebih jelas di akhir pendekatan. | observed | high | [frame](../../../references/edh001/media/shot-01/end.jpg) |
+| [edh001 / shot-01](../../../references/edh001/analysis.md#shot-01) / f-20 | interior-light | light-character | Cahaya interior hangat terlihat melalui bay dan glazing entrance. | observed | high | [frame](../../../references/edh001/media/shot-01/start.jpg) |
+| [edh001 / shot-02](../../../references/edh001/analysis.md#shot-02) / f-19 | ceiling-light | placement | Downlight tersebar pada bidang plafon. | observed | high | [frame](../../../references/edh001/media/shot-02/start.jpg) |
+| [edh001 / shot-02](../../../references/edh001/analysis.md#shot-02) / f-20 | cove-light | placement | Cahaya tidak langsung hangat mengikuti tepi lengkung plafon. | observed | high | [frame](../../../references/edh001/media/shot-02/end.jpg) |
+| [edh001 / shot-02](../../../references/edh001/analysis.md#shot-02) / f-21 | wall-light | placement | Sconce gelap dengan cahaya hangat terlihat di sisi bidang media wall. | observed | high | [frame](../../../references/edh001/media/shot-02/start.jpg) |
+| [edh001 / shot-03](../../../references/edh001/analysis.md#shot-03) / f-19 | niche-light | placement | Cahaya hangat menerangi setiap tingkat niche dan area kopi. | observed | high | [frame](../../../references/edh001/media/shot-03/end.jpg) |
+| [edh001 / shot-03](../../../references/edh001/analysis.md#shot-03) / f-20 | wall-light | type | Lampu exposed-bulb beraksen logam berada di atas window. | observed | high | [frame](../../../references/edh001/media/shot-03/start.jpg) |
+| [edh001 / shot-03](../../../references/edh001/analysis.md#shot-03) / f-21 | ceiling-light | type | Downlight bundar tertanam pada plafon putih. | observed | high | [frame](../../../references/edh001/media/shot-03/start.jpg) |
+| [edh001 / shot-04](../../../references/edh001/analysis.md#shot-04) / f-07 | task-light | type | Lampu meja hitam berkap kerucut dengan lengan siku berada pada meja barrel. | observed | high | [frame](../../../references/edh001/media/shot-04/start.jpg) |
+| [edh001 / shot-04](../../../references/edh001/analysis.md#shot-04) / f-13 | niche-light | placement | LED/cahaya hangat berada di bawah rak niche dan area gantung pakaian. | observed | high | [frame](../../../references/edh001/media/shot-04/start.jpg) |
+| [edh001 / shot-04](../../../references/edh001/analysis.md#shot-04) / f-24 | bedside-light | placement | Lampu berkap gelap kedua terlihat parsial di sisi kanan ranjang dekat window pada frame akhir. | observed | medium | [frame](../../../references/edh001/media/shot-04/end.jpg) |
+| [edh001 / shot-05](../../../references/edh001/analysis.md#shot-05) / f-28 | ceiling-light | light-character | Cahaya hangat dari downlight dan tepi atas wet zone melengkapi daylight dari kedua bukaan. | observed | high | [frame](../../../references/edh001/media/shot-05/start.jpg) |

@@ -1,5 +1,11 @@
 # Operasi pustaka HOMEKU
 
+## Menyiapkan audit di chat
+
+Gunakan [panduan audit](../audit/README.md), MP4 terpisah dan kit input berulang. Prompt audit/koreksi/ekspor mengatur tinjauan isi di chat; helper menyiapkan media dan memvalidasi ZIP sebelum download. Satu ZIP hasil final diunggah ke incoming/ tanpa menata file satu per satu.
+
+`tools/audit.py` adalah helper workspace chat, bukan jalur publikasi ke references/. Input MD dan video disimpan di luar folder kandidat, sampling memakai folder baru per pass, dan regenerasi menolak file pengguna yang tidak dimilikinya. Lihat [hasil verifikasi Phase 2](phase-2-verification.md) untuk batas pengujian nyata.
+
 ## Alur dan status
 
 `incoming ZIP → validasi → staging → proyeksi → katalog/knowledge → pemeriksaan → publikasi`.
@@ -8,7 +14,7 @@ CLI `python tools/library.py ingest` memindai semua ZIP langsung dalam incoming/
 
 Registry dalam data/registry.json menyimpan revisi dan fingerprint sumber/isi/paket. data/ingest.json mengikat hasil dengan hash ZIP; tanggal eksekusi tidak dimasukkan agar replay identik tidak mengubah repo. Paket gagal dapat dicoba ulang setelah sumber/tooling diperbaiki. Revisi yang sudah berhasil tetap tercatat meskipun telah diganti oleh revisi berikutnya.
 
-Berkas JSON dalam data/projections/ dihasilkan dari MD dan dapat dibangun ulang. Jangan edit manual. Fingerprint mengikat seluruh byte referensi serta versi generator/schema/taksonomi. Alias hanya berlaku untuk label eksplisit; label baru tetap dicari dari katalog, dan konflik/negasi/unknown tetap tersimpan.
+Berkas JSON dalam data/projections/ dihasilkan dari MD dan dapat dibangun ulang. Jangan edit manual. Kontrak pembaca tidak berisi metadata cache. Fingerprint dan hash proyeksi disimpan di data/build.json, mengikat seluruh byte referensi serta versi generator/schema/taksonomi/prinsip terkurasi. Alias hanya berlaku untuk label eksplisit; label baru tetap dicari dari katalog, dan konflik/negasi/unknown tetap tersimpan.
 
 ## Rebuild dan pemulihan
 
@@ -49,3 +55,6 @@ Rujukan implementasi: [concurrency GitHub](https://docs.github.com/en/actions/ho
 ## Batas pembuktian
 
 Validasi teknis tidak membuktikan kebenaran visual kamera, isi desain, sudut fisik atau hasil video generatif. Seluruh koreksi isi terjadi di chat sebelum ZIP final. Phase 2 menguji perangkat audit dan tujuh pilot nyata; data sintetis tidak menjadi knowledge produksi.
+
+
+Sumber prinsip umum berada di sources/design-principles.json, terpisah dari knowledge/ hasil generator. Perubahan sumber ini memerlukan build/check serta regenerasi kit bila panduan audit ikut berubah. Prinsip diterbitkan verbatim, tanpa sintesis AI. docs/contracts/ai-reader-v1.md menjelaskan indeks dan proyeksi. Pengujian manfaat melalui pembuatan konsep/gambar tidak termasuk pekerjaan ini.

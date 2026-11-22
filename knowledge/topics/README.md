@@ -1,5 +1,7 @@
 # Daftar perbandingan
 
-0 entri tercatat; rincian dan ketidakpastian mengikuti sumber.
+107 entri tercatat; rincian dan ketidakpastian mengikuti sumber.
 
-Belum ada entri aktif.
+- [Halaman 1](page-001.md)
+- [Halaman 2](page-002.md)
+- [Halaman 3](page-003.md)
