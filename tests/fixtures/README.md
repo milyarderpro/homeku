@@ -14,3 +14,8 @@ Pemeriksaan tanpa publikasi: `python tools/library.py validate tests/fixtures/fi
 make_v2_inputs menghasilkan MP4 test-pattern nyata dan audit JSON sintetis di root sementara. Normal: satu area bathroom dengan fungsi laundry, tiga panel. Multi: living/kitchen dengan visibilitas bertumpang tindih, rute terpisah dari visibilitas, satu fase lintas area dan tempo moderate → fast. Tes memperluas kasus reentry, kamera tidak berpindah antararea, fase/ruang berulang, input tidak valid, revisi serta kapasitas 300 model. Log viewed pada fixture adalah deklarasi sintetis untuk validator; bukan bukti audit video rumah nyata. Tidak boleh masuk registry produksi.
 
 Sumber fixture baru memakai `make_v2_inputs(..., version="2.1")`; default 2.0 dipertahankan untuk regresi renderer lama. Arah dan paragraf Overview sintetis bukan hasil audit video rumah. Tes 2.1 menjalankan media N+2, lokasi berulang, block crop tanpa MP4 dan pipeline draft/review/export/ingest pada root bertanda fixture.
+
+
+Fixture kualitas2.2 memakai version=2.2 dengan motion_observations dan fact_coverage sintetis. Snapshot MD lengkap normal/multi berada di reports/*-2.2.1.md. ZIP2.2 tanpa video; MP4 test-pattern ditempatkan terpisah di root fixture. Ini pengujian tooling, bukan audit/penerimaan pilot nyata.
+
+Fixture metode2.3 memakai version="2.3", camera_checks tiga sumbu, scale_measurement dan facet_roles sintetis. Golden normal/multi reports/method-*-2.2.2.md dibuat renderer. Native log test-pattern10FPS untuk semua bukti; tes sampling6FPS/VFR/low-FPS/shot pendek terpisah. 300model diuji pada root terisolasi, tanpa mengubah registry produksi.

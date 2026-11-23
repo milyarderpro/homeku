@@ -6,8 +6,8 @@
 
 - **Nama desain:** {{NAMA_DESAIN_DESKRIPTIF}}.
 - **Gaya utama:** **{{NAMA_GAYA_UTAMA_ENGLISH}}**.
-- **Pengaruh gaya:** {{GAYA_PENDUKUNG_ENGLISH_DAN_ALASAN_SINGKAT}}.
-- **Gaya interior:** {{NAMA_GAYA_INTERIOR_ENGLISH_DAN_KARAKTER}}.
+- **Pengaruh gaya:** {{NAMA_PENGARUH_GAYA_ENGLISH_DIPISAH_TITIK_KOMA}}.
+- **Gaya interior:** {{NAMA_GAYA_INTERIOR_ENGLISH}}.
 - **Ciri khas:** {{CIRI_PEMBEDA}}.
 - **Warna & material:** {{WARNA_DAN_MATERIAL_TAMPAK}}.
 - **Suasana dan lingkungan:** {{SUASANA_CAHAYA_DAN_LINGKUNGAN}}.

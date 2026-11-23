@@ -57,3 +57,33 @@ Tampilan 2.1.2 mengembalikan label dan timestamp ke bawah tiap foto; timestamp r
 [Kontrak 2.1](contracts/package-v2-1.md). Camera Start tetap shots[].composition.
 
 Penerapan sumber2.1 telah aktif pada edh001 r0003 melalui ZIP revisi yang disetujui. [Bukti penerapan](overview-storyboard-verification.md) mencatat snapshot, ekspor/ingest dan hasil reader; mapping tidak diisi dari MD hasil render.
+
+
+## Tambahan sumber2.2 / laporan2.2.1 / reader2.2
+
+| Sumber | Pemeriksaan dan penggunaan |
+| --- | --- |
+| size.scale + profile apparent-scale | Nilai baku, kesamaan eksplisit; tidak menebak skala dari kalimat |
+| identity gaya + profile | Primary/interior cocok; influence satu nama per klaim dan urutan eksplisit |
+| shots[].design[].fact_coverage | architecture/furnishings/environment → state/fact_ids/basis; pointer fakta/area valid |
+| shots[].phases[].motion_observations | Komponen → beberapa frame viewed + basis + estimate_basis + alternatives |
+| manifest.audit.frame_reviews | Baseline10FPS/native, cakupan, bukti benar-benar tercatat viewed |
+| analysis.md | Renderer2.2.1 + validator struktur enam bagian; bukan sumber fakta kedua |
+| manifest.render | report2.2.1, media2.2.0; hash template/font/layout |
+| ZIP | JSON/MD/manifest + N+2 JPEG; video dilarang |
+
+Reader2.2 mempertahankan cabang sumber lama dan menambahkan source2.2 beserta pointer coverage/observasi. Generator5 menghasilkan turunan; tidak mengubah audit diterima atau mengisi fakta dari prosa. Template tampilan tetap enam bagian; basis/coverage/pemeriksaan tidak menambah tabel proses ke MD manusia.
+
+## Tambahan sumber2.3 / laporan2.2.2 / reader2.3
+
+| Sumber | Pemeriksaan dan penggunaan |
+| --- | --- |
+| phases[].camera_checks | depth/translation/rotation → evidence/basis, termasuk komponen yang tidak dipilih; keputusan kanonis tetap depth_direction/components |
+| motion_observations[].scale_measurement | Anchor/dimensi/piksel/evidence kronologis; IN=akhir/awal, OUT=awal/akhir; pointer penuh pada reader |
+| motion_observations[].estimate_basis | Dasar sudut atau alasan khusus keterbatasan; tidak memaksa angka pada gerak tanpa satuan relevan |
+| facts[].facet_roles | Peran discovery eksplisit; atribut/value/state/negasi asli tetap |
+| sources/fact-facets.json | Mapping atribut lama → peran, provenance rule/version; bukan fakta manual kedua |
+| manifest.audit.frame_reviews | Baseline6FPS/native; sumber≤6FPS/shot<1s native; pendalaman10FPS/native, evidence viewed |
+| analysis.md | Renderer/template2.2.2, tampilan enam bagian identik; proses/pengukuran tetap JSON |
+
+Reader/index2.3 dan generator6 mempertahankan semua cabang lama, termasuk aturan10FPS sumber2.2. Indeks hanya facet/pointer tanpa log/ukuran/basis lengkap. Diagnostik atribut belum dipetakan di dependencies; seluruh label tetap knowledge/topics/proyeksi. Template authoring enam bagian tidak perlu berubah.

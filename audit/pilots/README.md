@@ -5,7 +5,7 @@ Urutan pelaksanaan mengikuti instruksi terbaru: asisten mengaudit edh001 di chat
 | Video | Pelaksana/lingkungan | Status nyata | Fokus |
 | --- | --- | --- | --- |
 | [edh001](../../video/edh001.mp4) | Codex, chat implementasi ini | r0003/2.1 disetujui, diekspor dan aktif melalui ingest (1 referensi/5 shot); r0001/r0002 tetap riwayat | Lima shot, arah kamera, tempo berfase, bathroom–laundry |
-| [edh058](../../video/edh058.mp4) | Pengguna / ChatGPT | Belum ada run terverifikasi dalam catatan ini | Alur dasar lengkap dan wardrobe |
+| [edh058](../../video/edh058.mp4) | Pengguna / ChatGPT dan Gemini | Dua hasil tersedia dan sudah dibandingkan; belum disetujui/di-ingest. [Catatan](edh058-comparison.md) | Alur dasar lengkap dan wardrobe |
 | [edh013](../../video/edh013.mp4) | Pengguna / Gemini | Belum ada run terverifikasi dalam catatan ini | Bentuk organik, platform bathroom, durasi stream/container |
 | [edh033](../../video/edh033.mp4) | Pengguna / ChatGPT | Belum ada run terverifikasi dalam catatan ini | Open-plan, sleeping loft dan beberapa fungsi dalam satu shot |
 | [edh049](../../video/edh049.mp4) | Pengguna / Gemini | Belum ada run terverifikasi dalam catatan ini | Perspektif bangunan/kitchen lengkung dan pembedaan pan/orbit |
@@ -30,7 +30,7 @@ Gunakan [panduan audit](../README.md) dan kit yang sama untuk masing-masing sumb
 Kriteria tiap pilot: Overview, Storyboard dan kolase semua shot terlihat di chat, MD lengkap tersedia, koreksi masuk ke snapshot final, ZIP terbuka ulang dan valid, media/overview benar, serta ingest di repo memperbarui katalog/knowledge tanpa edit manual. Validasi teknis tidak menggantikan penilaian visual di chat. Hanya paket final yang diunggah pengguna menjadi penyerahan audit aktif.
 
 
-Perangkat terbaru memakai sumber audit.json2.1, laporan/media 2.2.0 dan audit adaptif 10 FPS dengan pendalaman native. Riwayat edh001 r0001 di atas diaudit ulang, diterima pengguna dan diekspor final dalam format 1.1; lihat [kartu tinjauan](edh001-review.md) dan [catatan audit ulang](../../docs/edh001-re-audit.md). Koreksi gerakan dan riwayat penerimaan dicatat pada calibration.md; penerimaan r0001 mencakup seluruh snapshot audit, setelah persetujuan khusus shot 02 sebelumnya. Gunakan kit terbaru saat mengerjakan pilot berikutnya.
+Perangkat terbaru memakai sumber audit.json2.3, laporan2.2.2/media2.2.0 dan baseline6FPS dengan pendalaman10FPS/native. Riwayat2.2 tetap10FPS. Riwayat edh001 r0001 di atas diaudit ulang, diterima pengguna dan diekspor final dalam format 1.1; lihat [kartu tinjauan](edh001-review.md) dan [catatan audit ulang](../../docs/edh001-re-audit.md). Koreksi gerakan dan riwayat penerimaan dicatat pada calibration.md; penerimaan r0001 mencakup seluruh snapshot audit, setelah persetujuan khusus shot 02 sebelumnya. Gunakan kit terbaru saat mengerjakan pilot berikutnya.
 
 ## Riwayat edh001 V2 r0002 — disetujui dan di-ingest saat itu
 
@@ -49,3 +49,20 @@ Pengguna menyetujui keseluruhan snapshot V2 di chat dengan “ya saya setuju”.
 Kit terbaru menggunakan format2.1/report 2.2.0 dan empat file input, dengan33 runtime. edh001 r0003 tersedia sebagai [laporan aktif](../../references/edh001/analysis.md); kandidat/receipt lokal tetap tersimpan di `.homeku/overview-storyboard-stage2/`. Tambahan: lima paragraf Overview, enam klasifikasi arah fase, serta format kamera satu paragraf; fakta/gerak/tempo/selection sumber diterima dipertahankan. Lima frame Overview diperiksa kembali; log audit r0002 dipertahankan. Tidak ada audit penuh ulang.
 
 Pengguna menyetujui seluruh snapshot r0003 dengan “ya saya setuju”. [ZIP final r0003](packages/edh001-r0003.zip) dan [penyerahan incoming](../../incoming/edh001-r0003.zip) berisi byte kandidat yang sama; validasi roundtrip, ingest eksplisit, replay unchanged dan check berhasil. [Status dan bukti](../../docs/overview-storyboard-verification.md). ZIP yang berada di audit/result/ tidak dipakai sebagai bukti run selesai dan tidak di-ingest pada pekerjaan ini. Enam pilot berikutnya tetap dikerjakan pengguna, satu chat per video, dengan kit terbaru dan status/provider berdasarkan run nyata.
+
+
+## Status sesudah hasil edh058 tersedia
+
+Edh058 sudah memiliki dua hasil pengguna dari ChatGPT/Gemini, belum diterima sebagai referensi aktif; lihat [pembandingan](edh058-comparison.md). Lima pilot lain belum memiliki hasil tercatat. Dua hasil terbaru2.2 tersedia dan dibandingkan. Kit2.3 siap diuji, tetapi implementasi tooling dan fixture bukan run ulang atau persetujuan edh058. Catatan historis belum dijalankan pada bagian terdahulu berlaku pada waktu pencatatan itu.
+
+## Pilot metode2.3 — disiapkan, belum dijalankan
+
+Pembagian tetap: pengguna menjalankan enam pilot tersisa di chat provider; asisten menyiapkan workflow/tooling dan membandingkan hasil yang dikembalikan. Implementasi tooling tidak menjalankan akun ChatGPT/Gemini pengguna.
+
+1. Mulai chat baru masing-masing ChatGPT/Gemini untuk edh058. Lampirkan video/edh058.mp4 dan audit/homeku-audit-kit.zip terbaru, kirim audit/prompts/01-audit.md.
+2. Nilai hasil kamera lengkap/sederhana, ~×/~°, tempo, desain dan enam bagian MD beserta seluruh gambar. Koreksi lewat prompt02; jangan menyalin gerak/angka dari pembanding sebagai hasil pengamatan baru.
+3. Setelah keseluruhan sesuai, gunakan prompt03. Unduh ZIP tanpa MP4. Simpan run terpisah, misalnya audit/result/gemini/v2.3/run-01/edh058-r0001.zip dan audit/result/gpt/v2.3/run-01/edh058-r0001.zip, agar hasil2.2 tidak tertimpa.
+4. Catat provider/model yang diketahui, versi sumber/report, hash MP4/ZIP, frame unik benar-benar dilihat, pertanyaan pendalaman, perbedaan keputusan dan status review/export. Bedakan kesiapan tooling, run nyata, persetujuan, ekspor dan ingest.
+5. Setelah hasil memadai, lanjutkan edh013,edh033,edh049,edh056,dreamshome01 sesuai pembagian. Tidak wajib menggandakan seluruh video di dua provider.
+
+Kedua run edh058 harus memakai sumber kanonis hash823be3ce9ee96fc07a6ab263010a09a3d60e72cfcf334ef2fbe5a38e7a550731. Pembanding Gemini2.2 dan koreksi pengguna dipakai menilai keputusan, bukan template jawaban. Semua moderate boleh. Ukur kecukupan bukti/keterbacaan/beban pemeriksaan; lebih sedikit frame bukan otomatis lebih akurat. Persetujuan/ingest menunggu hasil nyata, tidak diisi dari tes sintetis.

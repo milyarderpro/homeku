@@ -38,3 +38,14 @@ Notasi kamera: Dolly-In/Out, Orbit Left/Right, Pan Left/Right, Truck Left/Right,
 Depth_direction fase: IN, OUT, NO IN/OUT atau null ambigu. Pola per shot/video hasil helper, bukan field manual audit. Arah berubah dalam satu shot memakai →; antarshot memakai – dan pola campuran dikurung. Misalnya IN – (OUT → IN) – NO IN/OUT. Pan/orbit/zoom sendiri tidak menentukan kedalaman; ~× bukan tempo.
 
 Overview adalah gabungan frame wide terpilih satu baris; Storyboard adalah seluruh kolase shot vertikal. Camera Start adalah awal sumber, composition_summary adalah paragraf pada frame Overview. Gunakan istilah Profil desain, Ukuran & proporsi, Shot Timeline, Overview, Storyboard, Shot Details, Framing & Lighting, Camera Movement, Tempo, Alur visual, Movement Timeline. Notasi English satu paragraf; nama area/gaya teknis English, uraian Indonesia.
+
+
+## Format 2.2
+
+Skala mesin: tiny, small, medium, large, unknown. Nama gaya tetap English; satu nama per klaim, nama baru diperbolehkan. fact_coverage: mapped/not-visible/unknown. Tempo fase: label tempo_profile yang overlap, variable jika berubah. Status unknown tidak disamakan dengan tidak ada.
+
+## Format2.3 / metode6FPS
+
+camera_checks menyimpan bukti depth/translation/rotation sebelum simpulan; bukan daftar verdict kedua. scale_measurement memakai anchor/dimensi utuh yang sama, piksel resolusi sumber dan evidence awal/akhir; IN=akhir/awal, OUT=awal/akhir, notasi satu desimal atau rentang. ~× bukan faktor tempo. estimate_basis menjelaskan dasar sudut atau batas angka. facet_roles peran pencarian eksplisit, label asli tetap utuh.
+
+Baseline6FPS; sumber≤6FPS dan shot<1detik native. Pendalaman10FPS/native sesuai pertanyaan visual. Semua shot moderate sah. Metode pembeda tunggal di visual-audit.md. Format2.2 lama tetap baseline10FPS/report2.2.1.

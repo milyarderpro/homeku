@@ -1,6 +1,7 @@
 """Chat-side candidates/ZIPs: legacy Markdown or authored V2 JSON by explicit version."""
 
 from __future__ import annotations
+from .versions import JSON_CONTRACTS, OVERVIEW_CONTRACTS
 
 import bisect
 import hashlib
@@ -23,8 +24,11 @@ from .validation import CODE_ROOT, extract_package, validate_folder
 from .video import probe_video, frame_times, nearest, extract_frame, selected_indices
 
 
-def sample(source, output, fps=10.0, start=0.0, end=None, *, native=False, shot_id=None, reason=None):
+def sample(source, output, fps=None, start=0.0, end=None, *, native=False, shot_id=None, reason=None, contract_version="2.3"):
     """Temporary audit evidence only. The selected frames are not yet viewed."""
+    from .versions import BASELINE_FPS
+    require(contract_version in BASELINE_FPS, "Sampling policy requires contract 2.2 or 2.3")
+    fps = BASELINE_FPS[contract_version] if fps is None else fps
     require(math.isfinite(fps) and 0 < fps <= 240, "Sampling fps must be in (0, 240]")
     require(not output.exists() or (output.is_dir() and not any(output.iterdir())),
             "Use a fresh sampling output directory for each audit pass; old evidence is not merged")
@@ -33,6 +37,8 @@ def sample(source, output, fps=10.0, start=0.0, end=None, *, native=False, shot_
     end = info["duration_s"] if end is None else end
     require(0 <= start < end <= info["duration_s"] + 0.001, "Sampling interval outside video")
     source_fps = info["fps"]["numerator"] / info["fps"]["denominator"]
+    # A bounded --shot-id interval represents a whole shot for the short-take rule.
+    native = native or (contract_version == "2.3" and shot_id is not None and end-start < 1)
     indices = selected_indices(times, start, end, fps, native=native, source_fps=source_fps)
     require(len(indices) <= 1000, "Use bounded audit intervals rather than thousands of images at once")
     output.mkdir(parents=True, exist_ok=True)
@@ -72,7 +78,7 @@ def sample(source, output, fps=10.0, start=0.0, end=None, *, native=False, shot_
               "review_record_template": {"shot_id": shot_id or "unknown", "start_s": start, "end_s": end,
                                          "mode": "frame-by-frame" if native else "sampling", "sampling_fps": None if native else fps,
                                          "selected_frame_indices": indices, "viewed_frame_indices": [],
-                                         "reason": reason or "Baseline 10 FPS; fill only frames actually viewed."},
+                                         "reason": reason or f"Pass {contract_version}: {fps:g} FPS/native; fill only frames actually viewed."},
               "note": "Extracted frames are not a declaration that an AI viewed them."}
     (output / "sampling.json").write_text(dumps(report))
     return report
@@ -243,6 +249,7 @@ def assemble_v2(source, audit_path, audit_info, output_root, *, supersedes=None,
     require(isinstance(audit,dict),"Audit JSON must be an object")
     info={"path":f"video/{audit.get('id','')}.mp4","sha256":sha256(source),**probe_video(source)}
     validate_audit(audit,info["duration_s"],frame_times(source))
+    require(audit["schema_version"] not in {"2.2", "2.3"} or not include_source, "Package 2.2+ forbids --include-source; attach/reference MP4 separately")
     rid=audit["id"]
     require(source.stem==rid and source.suffix.casefold()==".mp4","ID must match original MP4 stem")
     require(isinstance(audit_info,dict),"Actual audit metadata required")
@@ -252,18 +259,20 @@ def assemble_v2(source, audit_path, audit_info, output_root, *, supersedes=None,
     if destination.exists():
         require(destination.is_dir() and not destination.is_symlink(),"Invalid existing candidate")
         old=read_json(destination/"manifest.json") if (destination/"manifest.json").is_file() else {}
-        require(old.get("contract_version") in {"2.0", "2.1"} and old.get("id")==rid,"Refusing to replace unmanaged candidate")
+        require(old.get("contract_version") in JSON_CONTRACTS and old.get("id")==rid,"Refusing to replace unmanaged candidate")
         owned={"audit.json","analysis.md","manifest.json","source.mp4"}|{m["path"] for m in old["media"]}
         require(all(not f.is_symlink() and (not f.is_file() or f.relative_to(destination).as_posix() in owned) for f in destination.rglob("*")),"Unmanaged files in candidate folder")
     with tempfile.TemporaryDirectory(prefix=".v2-draft-",dir=output_root) as work_name:
         folder=Path(work_name)/rid;folder.mkdir()
         (folder/"audit.json").write_bytes(authored)
         kwargs={}
-        if audit["schema_version"] == "2.1":
-            require(version in {None,"2.2.0"},"Source 2.1 requires renderer 2.2.0")
-            kwargs.update(version="2.2.0",overview_scale=overview_scale,storyboard_scale=storyboard_scale)
+        if audit["schema_version"] in OVERVIEW_CONTRACTS:
+            from .versions import DEFAULT_REPORT
+            wanted = DEFAULT_REPORT[audit["schema_version"]]
+            require(version in {None, wanted}, f"Source {audit['schema_version']} requires renderer {wanted}")
+            kwargs.update(version=wanted,overview_scale=overview_scale,storyboard_scale=storyboard_scale)
         else:
-            require(version != "2.2.0", "Renderer 2.2.0 requires source 2.1")
+            require(version not in {"2.2.0", "2.2.1", "2.2.2"}, "Renderer 2.2.0+ requires source 2.1+")
             require(overview_scale==1.0 and storyboard_scale==1.0,"Combined media scales require source 2.1")
             if version is not None:kwargs["version"]=version
         config=render_config(quality=quality,scale=scale,columns=columns,**kwargs)
@@ -296,7 +305,7 @@ def review_v2(candidate, output, source=None):
     digest=snapshot_hash(candidate)
     overrides={candidate.name:source} if source else None
     manifest,_,_=validate_folder(candidate,candidate.parent,source_overrides=overrides)
-    require(manifest["contract_version"] in {"2.0", "2.1"},"Use the explicit legacy workflow for this contract")
+    require(manifest["contract_version"] in JSON_CONTRACTS,"Use the explicit legacy workflow for this contract")
     require(not output.resolve().is_relative_to(candidate.resolve()),"Receipt/cards must remain outside candidate")
     audit=read_json(candidate/"audit.json")
     output.parent.mkdir(parents=True,exist_ok=True)
@@ -313,7 +322,7 @@ def export_v2(candidate, output_root, reviewed_sha256, source=None):
     require(snapshot_hash(candidate)==reviewed_sha256,"Candidate changed since whole-snapshot review")
     overrides={candidate.name:source} if source else None
     manifest,_,_=validate_folder(candidate,candidate.parent,source_overrides=overrides)
-    require(manifest["contract_version"] in {"2.0", "2.1"},"Use the explicit legacy workflow for this contract")
+    require(manifest["contract_version"] in JSON_CONTRACTS,"Use the explicit legacy workflow for this contract")
     output_root.mkdir(parents=True,exist_ok=True)
     require(not output_root.resolve().is_relative_to(candidate.resolve()),"ZIP output must stay outside candidate")
     filename=f"{manifest['id']}-r{manifest['revision']:04d}.zip"

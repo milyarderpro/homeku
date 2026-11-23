@@ -148,11 +148,12 @@ class AuditHelperTests(unittest.TestCase):
             self.assertFalse(any(name.endswith((".mp4", ".wav", ".mp3")) for name in archive.namelist()))
             self.assertIn(b"--receipt", archive.read("README.md"))
             self.assertIn(b"tools/audit.py", archive.read("README.md"))
-            self.assertIn(b"<!-- Source: tools/assets/templates/analysis-2.2.0.md -->", archive.read("README.md"))
+            self.assertIn(b"audit/visual-audit.md", archive.read("README.md"))
+            self.assertNotIn(b"# Panduan pengisian", archive.read("README.md"))
             self.assertNotIn(b"Draf Overview dan Storyboard", archive.read("README.md"))
-            self.assertIn(b"<!-- Source: docs/contracts/package-v2-1.md -->", archive.read("README.md"))
+            self.assertIn(b"docs/contracts/package-v2-3.md", archive.read("README.md"))
             template=json.loads(archive.read("template-audit.json"))
-            self.assertEqual(template["schema_version"],"2.1")
+            self.assertEqual(template["schema_version"],"2.3")
             self.assertIn("composition_summary",template["shots"][0]["overviews"][0])
             self.assertIn("depth_direction",template["shots"][0]["phases"][0])
             self.assertIsNone(template["shots"][0]["phases"][0]["depth_direction"])
@@ -165,7 +166,7 @@ class AuditHelperTests(unittest.TestCase):
         for _ in range(2):
             result=subprocess.run(command,capture_output=True,text=True)
             self.assertEqual(result.returncode,0,result.stdout+result.stderr)
-        for name in kit_builder.RUNTIME:
+        for name in kit_builder.BUNDLED:
             self.assertEqual((isolated/name).read_bytes(),(CODE_ROOT/name).read_bytes())
         (isolated/"tools/audit.py").write_text("local change")
         result=subprocess.run(command,capture_output=True,text=True)

@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 from jsonschema import Draft202012Validator, FormatChecker
 from .common import LibraryError, read_json, require
+from .versions import JSON_CONTRACTS, OVERVIEW_CONTRACTS, schema_name
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -27,7 +28,7 @@ def selections(audit):
 
 
 def validate_audit(audit, duration=None, times=None):
-    schema_check(audit, "audit-v2-1.schema.json" if audit.get("schema_version") == "2.1" else "audit-v2.schema.json")
+    schema_check(audit, schema_name("audit", audit.get("schema_version")))
     def filled(value):
         if isinstance(value,str):return "{{" not in value and "}}" not in value
         if isinstance(value,dict):return all(filled(v) for v in value.values())
@@ -99,7 +100,7 @@ def validate_audit(audit, duration=None, times=None):
                     require(any(v["start_s"] <= p["timestamp_s"] < v["end_s"] for v in areas[aid]["visible_intervals"]), "Panel area not visible at selection time")
                 if times is not None:
                     require(p["frame_index"] < len(times) and abs(times[p["frame_index"]]-p["timestamp_s"]) < 1e-6, "Panel frame index/PTS mismatch")
-        if audit["schema_version"] == "2.1":
+        if audit["schema_version"] in OVERVIEW_CONTRACTS:
             require("\n" not in s["camera_summary"] and "\r" not in s["camera_summary"], "Camera notation must be one paragraph")
             for p in s["overviews"]:
                 require(p["composition_summary"].strip() and "\n" not in p["composition_summary"] and "\r" not in p["composition_summary"] and not p["composition_summary"].lstrip().startswith(">"), "Overview composition must be a plain paragraph")
@@ -133,7 +134,7 @@ def validate_audit(audit, duration=None, times=None):
         require(normalized(s["camera_summary"]) == normalized(" → ".join(p["components"] for p in s["phases"])), "Camera summary differs from ordered phase components")
         require([p["phase"] for p in s["phases"]]==[f"phase-{i:02d}" for i in range(1,len(s["phases"])+1)],"Phase IDs must be sequential")
         for p in s["phases"]:
-            if audit["schema_version"] == "2.1":
+            if audit["schema_version"] in OVERVIEW_CONTRACTS:
                 from .camera_pattern import validate_direction
                 validate_direction(p)
                 require("\n" not in p["components"] and "\r" not in p["components"], "Phase camera notation must be one paragraph")
@@ -165,6 +166,9 @@ def validate_audit(audit, duration=None, times=None):
         evidence(r)
     require(any(c["aspect"] == "primary-style" and c["value"] == audit["identity"]["primary_style"] for c in audit["profile"]), "Primary style must match explicit DNA claim")
     require(any(c["aspect"] == "apparent-scale" and c["value"] == audit["size"]["scale"] for c in audit["profile"]), "Scale must match explicit DNA claim")
+    if audit["schema_version"] in {"2.2", "2.3"}:
+        from .audit_quality import validate_quality
+        validate_quality(audit, times)
     return audit
 
 
@@ -175,12 +179,12 @@ def v2_model(audit, manifest, digest, times=None):
              media=manifest["media"], audit=manifest["audit"], render=manifest["render"], content_sha256=digest)
     labels = {a["id"]: a["label"] for a in m["areas"]}
     for index, s in enumerate(m["shots"]):
-        if audit["schema_version"] == "2.1":
+        if audit["schema_version"] in OVERVIEW_CONTRACTS:
             from .camera_pattern import shot_pattern, provenance
             s["camera_pattern"] = shot_pattern(s)
             s["camera_pattern_provenance"] = provenance(s, index)
         s["areas"] = [labels[a] for a in s["area_ids"]]
-    if audit["schema_version"] == "2.1":
+    if audit["schema_version"] in OVERVIEW_CONTRACTS:
         from .camera_pattern import video_pattern
         m["camera_pattern"] = video_pattern(m["shots"])
     if times is not None:
@@ -199,7 +203,7 @@ def legacy_model(model):
 
 def evidence_inventory(model):
     """Each proof is stored once. Claims retain stable IDs, including native-only frames."""
-    if model["format_version"] not in {"2.0", "2.1"}:
+    if model["format_version"] not in JSON_CONTRACTS:
         return {m["path"]:dict(m) for m in model["media"]}
     result={}
     for m in model["media"]:

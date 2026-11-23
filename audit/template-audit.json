@@ -1,11 +1,11 @@
 {
-  "schema_version": "2.1",
+  "schema_version": "2.3",
   "id": "{{ID}}",
   "revision": 1,
   "identity": {
     "name": "{{NAME}}",
     "primary_style": "{{PRIMARY_STYLE}}",
-    "influences": "{{INFLUENCES}}",
+    "influences": "{{ORDERED_STYLE_INFLUENCE_NAMES_OR_UNKNOWN}}",
     "interior_style": "{{INTERIOR_STYLE}}",
     "palette": "{{PALETTE}}",
     "mood_environment": "{{MOOD_ENVIRONMENT}}",
@@ -217,6 +217,17 @@
       "basis": "{{BASIS}}",
       "uncertainty": "{{UNCERTAINTY}}",
       "aspect": "interior-style"
+    },
+    {
+      "id": "dna-interior",
+      "aspect": "interior-style",
+      "value": "{{INTERIOR_STYLE_OR_UNKNOWN}}",
+      "state": "unknown",
+      "confidence": "unknown",
+      "evidence": [],
+      "area_ids": [],
+      "basis": "{{BASIS}}",
+      "uncertainty": "{{UNCERTAINTY}}"
     }
   ],
   "areas": [
@@ -253,7 +264,24 @@
           ],
           "architecture": "{{ARCHITECTURE}}",
           "furnishings": "{{FURNISHINGS}}",
-          "environment": "{{ENVIRONMENT}}"
+          "environment": "{{ENVIRONMENT}}",
+          "fact_coverage": {
+            "architecture": {
+              "state": "unknown",
+              "fact_ids": [],
+              "basis": "{{COVERAGE_BASIS}}"
+            },
+            "furnishings": {
+              "state": "unknown",
+              "fact_ids": [],
+              "basis": "{{COVERAGE_BASIS}}"
+            },
+            "environment": {
+              "state": "unknown",
+              "fact_ids": [],
+              "basis": "{{COVERAGE_BASIS}}"
+            }
+          }
         }
       ],
       "facts": [],
@@ -313,7 +341,34 @@
           ],
           "confidence": "unknown",
           "uncertainty": "{{UNCERTAINTY}}",
-          "depth_direction": null
+          "depth_direction": null,
+          "motion_observations": [
+            {
+              "component_index": 0,
+              "evidence": [
+                "{{FIRST_VIEWED_EVIDENCE}}",
+                "{{SECOND_VIEWED_EVIDENCE}}"
+              ],
+              "basis": "{{PERSPECTIVE_PARALLAX_OCCLUSION_ANCHOR}}",
+              "estimate_basis": "{{BASIS_FOR_NUMERIC_ESTIMATES_OR_NULL}}",
+              "alternatives": "{{ALTERNATIVE_IF_AMBIGUOUS_OR_NULL}}",
+              "scale_measurement": null
+            }
+          ],
+          "camera_checks": {
+            "depth": {
+              "evidence": [],
+              "basis": "{{PENGAMATAN_DEPTH}}"
+            },
+            "translation": {
+              "evidence": [],
+              "basis": "{{PENGAMATAN_TRANSLATION}}"
+            },
+            "rotation": {
+              "evidence": [],
+              "basis": "{{PENGAMATAN_ROTATION}}"
+            }
+          }
         }
       ],
       "panels": [

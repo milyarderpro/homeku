@@ -1,6 +1,7 @@
 """Batch ingest, revision checks, derived output publication, and consistency checks."""
 
 from __future__ import annotations
+from .versions import JSON_CONTRACTS
 
 import hashlib
 import re
@@ -25,8 +26,8 @@ def registry_at(root):
         require(rid.casefold() not in folded, "Case collision in registry")
         folded.add(rid.casefold())
         require(isinstance(entry.get("revision"), int) and 1 <= entry["revision"] <= 9999, f"Invalid registry revision: {rid}")
-        require(entry.get("contract_version") in {None,"1.0","1.1","2.0","2.1"},f"Unsupported registry contract version: {rid}")
-        if entry.get("contract_version") in {"2.0", "2.1"}:
+        require(entry.get("contract_version") in {None,"1.0","1.1",*JSON_CONTRACTS},f"Unsupported registry contract version: {rid}")
+        if entry.get("contract_version") in JSON_CONTRACTS:
             require(re.fullmatch(r"[a-f0-9]{64}",entry.get("audit_sha256","")),f"Invalid registry audit_sha256: {rid}")
         for key in ("content_sha256", "source_sha256", "package_sha256", "analysis_sha256", "manifest_sha256"):
             require(re.fullmatch(r"[a-f0-9]{64}", entry.get(key, "")), f"Invalid registry {key}: {rid}")
@@ -107,7 +108,7 @@ def ingest(root: Path, packages=None):
                     entry = {"revision": revision, "content_sha256": model["content_sha256"],
                         "source_sha256": manifest["source"]["sha256"], "package_sha256": package_hash,
                         "analysis_sha256": sha256(folder / "analysis.md"), "manifest_sha256": sha256(folder / "manifest.json")}
-                    if manifest["contract_version"] in {"2.0", "2.1"}:
+                    if manifest["contract_version"] in JSON_CONTRACTS:
                         entry.update(contract_version=manifest["contract_version"],audit_sha256=sha256(folder/"audit.json"))
                     result = {"package": package.name, "status": "imported", "id": rid, "revision": revision}
                     # Mutate state only after every copy and fingerprint succeeds.

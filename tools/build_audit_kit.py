@@ -5,7 +5,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import io
-import re
 import sys
 import zipfile
 from pathlib import Path
@@ -24,10 +23,19 @@ RUNTIME += ["tools/homeku/reporting_v2_legacy.py", "tools/homeku/media_v2_1_2.py
             "tools/homeku/camera_pattern.py", "tools/homeku/media_v2_2.py", "tools/homeku/reporting_v2_2.py",
             "docs/contracts/audit-v2-1.schema.json", "docs/contracts/manifest-v2-1.schema.json",
             "tools/assets/templates/analysis-2.2.0.md", "tools/assets/layouts/media-2.2.0.json"]
-# The authoring document can be a draft; the active kit uses its implemented renderer template.
-GUIDES = ["audit/README.md", "audit/json-guide.md", "audit/protocol.md", "audit/rubric.md", "audit/vocabulary.md", "audit/providers.md", "audit/calibration.md",
+RUNTIME += ["tools/homeku/versions.py", "tools/homeku/audit_quality.py", "tools/homeku/report_validation.py",
+            "tools/homeku/reporting_v2_2_1.py", "docs/contracts/audit-v2-2.schema.json",
+            "docs/contracts/manifest-v2-2.schema.json", "tools/assets/templates/analysis-2.2.1.md"]
+RUNTIME += ["tools/homeku/reporting_v2_2_2.py", "docs/contracts/audit-v2-3.schema.json",
+            "docs/contracts/manifest-v2-3.schema.json", "tools/assets/templates/analysis-2.2.2.md"]
+# Guides are local, hash-inventoried resources; read only the current stage.
+GUIDES = ["audit/README.md", "audit/visual-audit.md", "audit/protocol.md", "audit/rubric.md",
+          "audit/json-guide.md", "audit/vocabulary.md", "audit/providers.md", "audit/calibration.md",
           "audit/prompts/01-audit.md", "audit/prompts/02-correct.md", "audit/prompts/03-export.md",
-          "docs/contracts/package-v2-1.md", "docs/contracts/analysis-v2-2.md", "tools/assets/templates/analysis-2.2.0.md"]
+          "docs/contracts/package-v2-3.md", "docs/contracts/analysis-v2-2-2.md",
+          "docs/contracts/package-v2-2.md", "docs/contracts/package-v2-1.md", "docs/contracts/package-v2.md",
+          "docs/contracts/analysis-v2-2-1.md"]
+BUNDLED = RUNTIME + GUIDES
 OUTER_FILES = {"README.md", "homeku_runtime.py", "template-audit.json", "template-audit-info.json"}
 
 
@@ -44,7 +52,8 @@ def zip_bytes(files):
 
 def bootstrap_source():
     import base64, json
-    files = {name: (ROOT / name).read_bytes() for name in RUNTIME}
+    files = {name: (ROOT / name).read_bytes() for name in BUNDLED}
+    require(len(BUNDLED) == len(set(BUNDLED)), "Duplicate bundled resource path")
     payload = zip_bytes(files)
     inventory = {name: hashlib.sha256(content).hexdigest() for name, content in files.items()}
     # This standard-library bootstrap restores the complete, versioned runtime.
@@ -97,17 +106,20 @@ if __name__=="__main__":
 
 
 def build_bytes():
-    parts = ["# HOMEKU — kit audit V2\n\nInput: satu ZIP ini dan satu MP4 terpisah.\n\n"
-             "Ekstrak empat file input, lalu jalankan `python homeku_runtime.py --output .`. "
-             "Bootstrap memulihkan seluruh runtime/schema/font/lisensi dari payload lokal yang diinventarisasi; tidak mengunduh kode. "
-             "Dependensi runtime: Python 3.11+, Pillow, jsonschema, FFmpeg/ffprobe. "
-             "Baca seluruh panduan berikut. Placeholder template wajib diganti dengan hasil audit nyata. "
-             "Versi sumber/paket 2.1; renderer/media/template 2.2.0. Jangan mengubah renderer versi lama.\n"]
-    for name in GUIDES:
-        body = (ROOT / name).read_text(encoding="utf-8")
-        body = re.sub(r"\[([^\]]+)\]\((?!https?://)[^)]+\)", r"\1", body)
-        parts.append(f"\n---\n\n<!-- Source: {name} -->\n\n{body}")
-    parts.append("\n## Inventaris runtime terpulihkan\n\n| File | SHA-256 |\n| --- | --- |\n" + "".join(f"| {name} | {sha256(ROOT / name)} |\n" for name in RUNTIME))
+    parts = ["""# HOMEKU — kit audit 2.3
+
+Input: MP4 asli terpisah + ZIP ini. Hasil audit kelak satu ZIP tanpa video.
+
+1. Ekstrak empat file ini. Jalankan python homeku_runtime.py --output . untuk memulihkan runtime dan panduan lokal berhash, tanpa jaringan. Python3.11+, Pillow, jsonschema, FFmpeg/ffprobe diperlukan.
+2. Jalankan python tools/audit.py inspect /path/<id>.mp4. Baca audit/visual-audit.md; kerjakan pengamatan shot/kamera/desain terlebih dahulu. Baseline6FPS/native, pendalaman10FPS/native sesuai pertanyaan. Jangan menganggap ekstraksi sebagai viewed.
+3. Setelah simpulan visual diperiksa silang, baca audit/json-guide.md, audit/protocol.md, audit/rubric.md dan docs/contracts/package-v2-3.md. Isi template-audit.json dan template-audit-info.json di work/. Placeholder bukan hasil audit.
+4. Baca audit/README.md untuk perintah draft-v2/review. Sumber2.3 → report2.2.2/media2.2.0. MD enam bagian dihasilkan renderer; media/font diterima tetap. Tampilkan seluruh kandidat untuk koreksi pengguna.
+5. Setelah persetujuan keseluruhan terbaru, baca audit/prompts/03-export.md. export-v2 --source /path/<id>.mp4 --receipt work/review.md.json membungkus byte snapshot yang sama. Contoh teks persetujuan di dokumen bukan persetujuan nyata.
+
+Panduan lingkungan: audit/providers.md; koreksi: audit/prompts/02-correct.md. Tidak ada konfirmasi tambahan antarputaran internal. Semua shot moderate boleh. ZIP final tanpa MP4, frame kerja atau receipt. Kontrak lama tetap menurut versi masing-masing.
+"""]
+    parts.append("\n## Inventaris resource lokal\n\n| File | SHA-256 |\n| --- | --- |\n" +
+                 "".join(f"| {name} | {sha256(ROOT / name)} |\n" for name in BUNDLED))
     files = {"README.md": "\n".join(parts).encode(), "homeku_runtime.py": bootstrap_source(),
              "template-audit.json": (ROOT / "audit/template-audit.json").read_bytes(),
              "template-audit-info.json": (ROOT / "audit/template-audit-info.json").read_bytes()}
@@ -125,7 +137,7 @@ def main():
         require(target.is_file() and target.read_bytes() == expected, "Chat kit is stale; run tools/build_audit_kit.py")
     else:
         target.write_bytes(expected)
-    print(f"Chat kit: {len(OUTER_FILES)} input files, {len(RUNTIME)} runtime files, {len(expected)} bytes, SHA-256 {hashlib.sha256(expected).hexdigest()}")
+    print(f"Chat kit: {len(OUTER_FILES)} input files, {len(BUNDLED)} bundled resources, {len(expected)} bytes, SHA-256 {hashlib.sha256(expected).hexdigest()}")
 
 
 if __name__ == "__main__":

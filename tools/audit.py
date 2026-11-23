@@ -7,6 +7,7 @@ import json
 import sys
 from pathlib import Path
 
+from homeku.versions import JSON_CONTRACTS
 from homeku.common import LibraryError, read_json, sha256
 from homeku.exporter import assemble, assemble_v2, export_v2, review_v2, frame_times, sample
 from homeku.validation import probe_video, validate_folder
@@ -21,7 +22,8 @@ def main():
     sampling = commands.add_parser("sample")
     sampling.add_argument("source", type=Path)
     sampling.add_argument("--output", required=True, type=Path)
-    sampling.add_argument("--fps", type=float, default=10)
+    sampling.add_argument("--fps", type=float)
+    sampling.add_argument("--contract-version", choices=["2.2", "2.3"], default="2.3")
     sampling.add_argument("--start", type=float, default=0)
     sampling.add_argument("--end", type=float)
     sampling.add_argument("--native", action="store_true", help="All original frames in the interval, no forced 30 FPS")
@@ -52,7 +54,7 @@ def main():
     v2draft.add_argument("--quality",type=int,default=91)
     v2draft.add_argument("--scale",type=float,default=1.0)
     v2draft.add_argument("--columns",type=int,default=4)
-    v2draft.add_argument("--renderer-version",choices=["2.0.0","2.1.0","2.1.1","2.1.2","2.2.0"])
+    v2draft.add_argument("--renderer-version",choices=["2.0.0","2.1.0","2.1.1","2.1.2","2.2.0","2.2.1","2.2.2"])
     v2draft.add_argument("--overview-scale",type=float,default=1.0)
     v2draft.add_argument("--storyboard-scale",type=float,default=1.0)
     v2export=commands.add_parser("export-v2",help="Package an accepted whole-snapshot candidate unchanged")
@@ -85,7 +87,7 @@ def main():
             print(json.dumps(result,ensure_ascii=False,indent=2));return 0
         if args.command == "review":
             candidate = args.candidate.resolve()
-            if read_json(candidate / "manifest.json").get("contract_version") in {"2.0", "2.1"}:
+            if read_json(candidate / "manifest.json").get("contract_version") in JSON_CONTRACTS:
                 result=review_v2(candidate,args.output.resolve(),args.source.resolve() if args.source else None)
                 print(json.dumps(result,ensure_ascii=False,indent=2));return 0
             override = {candidate.name: args.source.resolve()} if args.source else None
@@ -105,7 +107,7 @@ def main():
             times = frame_times(source)
             result = {"source_sha256": sha256(source), "source": probe_video(source), "frame_count": len(times), "frame_timestamps_s": times}
         elif args.command == "sample":
-            result = sample(source, args.output.resolve(), args.fps, args.start, args.end, native=args.native, shot_id=args.shot_id, reason=args.reason)
+            result = sample(source, args.output.resolve(), args.fps, args.start, args.end, native=args.native, shot_id=args.shot_id, reason=args.reason, contract_version=args.contract_version)
         else:
             result = assemble(source, args.analysis.resolve(), read_json(args.audit_info), args.output.resolve(),
                               extras=read_json(args.extras) if args.extras else None,

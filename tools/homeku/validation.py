@@ -1,6 +1,7 @@
 """Untrusted ZIP validation, source binding, and MD/media consistency."""
 
 from __future__ import annotations
+from .versions import JSON_CONTRACTS
 
 import re
 import stat
@@ -97,7 +98,7 @@ def validate_folder(folder: Path, root: Path, package_name=None, source_override
     require(manifest_path.is_file(), "manifest.json is missing")
     manifest = read_json(manifest_path)
     require(isinstance(manifest, dict), "Manifest must be an object")
-    if manifest.get("contract_version") in {"2.0", "2.1"}:
+    if manifest.get("contract_version") in JSON_CONTRACTS:
         return validate_v2_folder(folder, root, manifest, package_name, source_overrides)
     validator = Draft202012Validator(read_json(SCHEMA), format_checker=FormatChecker())
     errors = sorted(validator.iter_errors(manifest), key=lambda e: str(list(e.path)))
@@ -248,9 +249,12 @@ def validate_folder(folder: Path, root: Path, package_name=None, source_override
     return manifest, legacy_model(model), source
 
 
-def validate_frame_reviews(reviews, shots, source, info):
+def validate_frame_reviews(reviews, shots, source, info, *, strict=False, contract_version=None):
     """Check declarations against native PTS; cannot prove an AI actually looked."""
     from .video import frame_times, selected_indices
+    from .versions import BASELINE_FPS
+    baseline = BASELINE_FPS.get(contract_version, 10)
+    strict = strict or contract_version in BASELINE_FPS
     times = frame_times(source)
     source_fps = info["fps"]["numerator"] / info["fps"]["denominator"]
     by_shot = {s["shot"]: s for s in shots}
@@ -267,14 +271,21 @@ def validate_frame_reviews(reviews, shots, source, info):
         expected = selected_indices(times, start, end, fps or 10, native=native, source_fps=source_fps)
         require(review["selected_frame_indices"] == expected, "Selected frame indices differ from native PTS selection")
         require(sorted(review["viewed_frame_indices"]) == expected, "Frame review incomplete: declare only frames actually viewed; finish the pass before export")
-        coverage[sid].append((start, end))
+        require(review["reason"].strip(), "Frame review reason required")
+        qualified = native or fps >= min(baseline, source_fps)
+        needs_native = strict and (source_fps <= baseline or
+                                  (contract_version == "2.3" and shot["end_s"] - shot["start_s"] < 1))
+        if needs_native:
+            qualified = expected == selected_indices(times, start, end, native=True, source_fps=source_fps)
+        if not strict or qualified:
+            coverage[sid].append((start, end))
     for sid, shot in by_shot.items():
         cursor = shot["start_s"]
         for start, end in sorted(coverage[sid]):
-            require(start <= cursor + 0.000001, f"Every shot requires a complete 10 FPS (or native) viewed baseline; gap in {sid}")
+            require(start <= cursor + 0.000001, f"Every shot requires a complete {baseline} FPS (or native) viewed baseline; gap in {sid}")
             cursor = max(cursor, end)
         require(abs(cursor - shot["end_s"]) <= 0.000001,
-                f"Every shot requires a complete 10 FPS (or native) viewed baseline including boundary frames: {sid}")
+                f"Every shot requires a complete {baseline} FPS (or native) viewed baseline including boundary frames: {sid}")
     return times
 
 
@@ -283,7 +294,8 @@ def validate_v2_folder(folder, root, manifest, package_name=None, source_overrid
     from .media import expected_media
     from .reporting import render_report, verify_renderer
     from .video import frame_times
-    schema_check(manifest, "manifest-v2-1.schema.json" if manifest["contract_version"] == "2.1" else "manifest-v2.schema.json")
+    from .versions import schema_name
+    schema_check(manifest, schema_name("manifest", manifest["contract_version"]))
     rid = manifest["id"]
     require(folder.name == rid, "Manifest ID differs from package folder")
     if package_name:
@@ -292,6 +304,7 @@ def validate_v2_folder(folder, root, manifest, package_name=None, source_overrid
     require(info["path"]==f"video/{rid}.mp4", "Source must be video/<id>.mp4")
     if (root / "video").is_dir():
         require(all(p.name.casefold()!=f"{rid}.mp4".casefold() or p.name==f"{rid}.mp4" for p in (root/"video").iterdir()), "Source filename case collision")
+    require(manifest["contract_version"] not in {"2.2", "2.3"} or not any(p.suffix.casefold() in {".mp4", ".mov", ".mkv", ".webm", ".avi", ".m4v"} for p in folder.rglob("*")), "Package 2.2+ forbids video files; keep the reference MP4 separate")
     source=folder/"source.mp4"
     if not source.exists():source=(source_overrides or {}).get(rid,root/info["path"])
     require(source.is_file() and not source.is_symlink(), "Source unavailable")
@@ -310,7 +323,10 @@ def validate_v2_folder(folder, root, manifest, package_name=None, source_overrid
     validate_audit(audit,info["duration_s"],times)
     require(audit["id"]==rid and audit["revision"]==manifest["revision"],"Audit identity/revision differs from manifest")
     logs=manifest["audit"]
-    validate_frame_reviews(logs["frame_reviews"],audit["shots"],source,info)
+    validate_frame_reviews(logs["frame_reviews"],audit["shots"],source,info, contract_version=manifest["contract_version"])
+    if manifest["contract_version"] in {"2.2", "2.3"}:
+        from .audit_quality import validate_viewed_evidence
+        validate_viewed_evidence(audit, logs["frame_reviews"], times)
     ranges=sorted(logs["reviewed_ranges"],key=lambda r:r["start_s"])
     cursor=0
     for r in ranges:

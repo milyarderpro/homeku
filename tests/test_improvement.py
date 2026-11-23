@@ -183,7 +183,12 @@ class ImprovementTests(unittest.TestCase):
         native = sample(source, self.work / "native", start=cut, end=.3, native=True)
         indices = [r["frame_index"] for r in first["frames"]]
         self.assertEqual((indices[0], indices[-1]), (1,17))
-        self.assertEqual(first["selection"]["sampling_fps"], 10)
+        self.assertIsNone(first["selection"]["sampling_fps"])
+        self.assertEqual(indices,list(range(1,18)))
+        legacy = sample(source, self.work / "legacy-ten", start=cut, end=.3,
+                        shot_id="shot-01", contract_version="2.2")
+        self.assertEqual(legacy["selection"]["sampling_fps"],10)
+        self.assertEqual((legacy["frames"][0]["frame_index"],legacy["frames"][-1]["frame_index"]),(1,17))
         self.assertEqual(first["review_record_template"]["viewed_frame_indices"], [])
         self.assertEqual([r["frame_index"] for r in native["frames"]], list(range(1,18)))
         self.assertIsNone(native["selection"]["sampling_fps"])

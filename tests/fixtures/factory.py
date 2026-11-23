@@ -231,14 +231,47 @@ def make_v2_inputs(parent, rid="v2-fixture", *, multi=False, revision=1, base=No
                        "style_relations":[{"from":"american cattage","to":"cottage","relation":"family","state":"uncertain","confidence":"medium","evidence":[evidence],"basis":"Hubungan eksplisit fixture, bukan alias."}]},
            "size":{"scale":"small","massing":"l-shaped","vertical":"Satu tingkat pada fixture","footprint":"Kompak","proportions":"Lebar lebih dominan daripada tinggi","floor_area_m2":{"min":60,"max":90,"basis":"Rentang sintetis untuk tes.","uncertainty":"Bukan estimasi rumah nyata."}},
            "timeline_notes":"Durasi 1,2 detik, satu shot berkelanjutan tanpa cut; data sintetis.","profile":profile,"areas":areas,"shots":[shot],"relations":[],"limitations":"Seluruh isi merupakan data uji, bukan audit video referensi."}
-    if version == "2.1":
+    if version in {"2.1", "2.2", "2.3"}:
         audit["schema_version"] = version
         for overview in shot["overviews"]:
             overview["composition_summary"] = "Kamera berada dekat bukaan kiri, menghadap serong ke dinding belakang pada ketinggian mata dengan kemiringan datar. Cakupan wide memperlihatkan kabinet rendah di kiri dan ceruk di kanan, dengan kedalaman menuju jendela dan cahaya samping hangat."
         for phase in shot["phases"]:
             phase["depth_direction"] = "IN"
+    if version in {"2.2", "2.3"}:
+        audit["identity"]["influences"] = "unknown"
+        audit["profile"].append({**claim("dna-interior", audit["identity"]["interior_style"], "uncertain", proof=[evidence]), "aspect": "interior-style"})
+        phase["evidence"] = ["p-start", "p-end"]
+        phase["motion_observations"] = [
+            {"component_index": i, "evidence": ["p-start", "p-end"],
+             "basis": "Pengamatan sintetis dua frame; bukan gerak rumah nyata.",
+             "estimate_basis": "Angka sintaks sintetis, bukan pengukuran.",
+             "alternatives": "Seluruh motion merupakan data fixture."}
+            for i in range(len(phase["components_parsed"]))]
+        for i, d in enumerate(shot["design"]):
+            fid = f"f-furniture-{i}"
+            facts.append({**claim(fid, "kabinet fixture", ids=d["area_ids"],
+                                  proof=["p-start" if i == 0 else "p-end"]),
+                          "domain": "furnishing", "subject": "cabinet", "attribute": "configuration"})
+            d["fact_coverage"] = {
+                "architecture": {"state": "mapped", "fact_ids": [f"f-{i+1:02d}"], "basis": "Konfigurasi sintetis."},
+                "furnishings": {"state": "mapped", "fact_ids": [fid], "basis": "Properti sintetis."},
+                "environment": {"state": "not-visible", "fact_ids": [], "basis": "Tidak dinyatakan pada fixture."}}
+    if version == "2.3":
+        for fact in facts:
+            fact["facet_roles"] = ["layout"] if fact["attribute"] == "layout" else []
+        phase["camera_checks"] = {axis: {"evidence":["p-start","p-end"],
+            "basis":"Pengamatan sumbu sintetis untuk tes, bukan audit rumah."}
+            for axis in ("depth","translation","rotation")}
+        for observation in phase["motion_observations"]:
+            observation["scale_measurement"] = None
+        phase["motion_observations"][0]["scale_measurement"] = {
+            "anchor":"Jangkar test-pattern sintetis","dimension":"width",
+            "start_evidence":"p-start","end_evidence":"p-end","start_px":100,"end_px":130}
     indices=selected_indices(times,0,end,10,source_fps=10)
     info={"method":"synthetic-fixture","limitations":"Pernyataan pemeriksaan sintetis untuk tes validator; bukan audit visual.","created_at":"2026-11-22T00:00:00Z","ai":{"provider":"synthetic","model":"not-an-audit","model_build":None},"reviewed_ranges":[{"start_s":0,"end_s":end,"mode":"sampling"}],
           "frame_reviews":[{"shot_id":"shot-01","start_s":0,"end_s":end,"mode":"sampling","sampling_fps":10,"selected_frame_indices":list(indices),"viewed_frame_indices":list(indices),"reason":"Log sintetis untuk menguji cakupan."}]}
+    if version == "2.3":
+        info["frame_reviews"][0].update(mode="frame-by-frame", sampling_fps=None)
+        info["reviewed_ranges"][0]["mode"] = "frame-by-frame"
     path=parent/"audit.json";path.write_text(dumps(audit),encoding="utf-8")
     return source,path,info
