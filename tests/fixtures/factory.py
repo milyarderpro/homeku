@@ -179,7 +179,7 @@ def modernize(folder):
     return folder
 
 
-def make_v2_inputs(parent, rid="v2-fixture", *, multi=False, revision=1, base=None):
+def make_v2_inputs(parent, rid="v2-fixture", *, multi=False, revision=1, base=None, version="2.0"):
     """Synthetic declarations only: real test-pattern MP4, no claimed visual audit."""
     from homeku.video import frame_times, selected_indices
     from homeku.markdown import PROFILE_ASPECTS, component
@@ -231,6 +231,12 @@ def make_v2_inputs(parent, rid="v2-fixture", *, multi=False, revision=1, base=No
                        "style_relations":[{"from":"american cattage","to":"cottage","relation":"family","state":"uncertain","confidence":"medium","evidence":[evidence],"basis":"Hubungan eksplisit fixture, bukan alias."}]},
            "size":{"scale":"small","massing":"l-shaped","vertical":"Satu tingkat pada fixture","footprint":"Kompak","proportions":"Lebar lebih dominan daripada tinggi","floor_area_m2":{"min":60,"max":90,"basis":"Rentang sintetis untuk tes.","uncertainty":"Bukan estimasi rumah nyata."}},
            "timeline_notes":"Durasi 1,2 detik, satu shot berkelanjutan tanpa cut; data sintetis.","profile":profile,"areas":areas,"shots":[shot],"relations":[],"limitations":"Seluruh isi merupakan data uji, bukan audit video referensi."}
+    if version == "2.1":
+        audit["schema_version"] = version
+        for overview in shot["overviews"]:
+            overview["composition_summary"] = "Kamera berada dekat bukaan kiri, menghadap serong ke dinding belakang pada ketinggian mata dengan kemiringan datar. Cakupan wide memperlihatkan kabinet rendah di kiri dan ceruk di kanan, dengan kedalaman menuju jendela dan cahaya samping hangat."
+        for phase in shot["phases"]:
+            phase["depth_direction"] = "IN"
     indices=selected_indices(times,0,end,10,source_fps=10)
     info={"method":"synthetic-fixture","limitations":"Pernyataan pemeriksaan sintetis untuk tes validator; bukan audit visual.","created_at":"2026-11-22T00:00:00Z","ai":{"provider":"synthetic","model":"not-an-audit","model_build":None},"reviewed_ranges":[{"start_s":0,"end_s":end,"mode":"sampling"}],
           "frame_reviews":[{"shot_id":"shot-01","start_s":0,"end_s":end,"mode":"sampling","sampling_fps":10,"selected_frame_indices":list(indices),"viewed_frame_indices":list(indices),"reason":"Log sintetis untuk menguji cakupan."}]}

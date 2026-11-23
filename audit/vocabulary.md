@@ -32,3 +32,9 @@ Notasi kamera: Dolly-In/Out, Orbit Left/Right, Pan Left/Right, Truck Left/Right,
 ## Area dan kontinuitas V2
 
 `area_ids` menunjuk area fisik; `functions` boleh lebih dari satu (bathroom + laundry tetap satu area bila satu ruang). `visible_intervals` dapat tumpang tindih; `route` hanya perjalanan yang benar-benar dilalui. Fase gerak bukan batas area, dan cut memulai shot baru. Tidak menyimpulkan koneksi denah dari urutan shot. Gunakan `style_names_language: "en"`, primary-style/interior-style serta klaim influence terpisah agar label dapat ditemukan tanpa sintesis AI.
+
+## Camera Pattern dan tampilan2.2.0
+
+Depth_direction fase: IN, OUT, NO IN/OUT atau null ambigu. Pola per shot/video hasil helper, bukan field manual audit. Arah berubah dalam satu shot memakai →; antarshot memakai – dan pola campuran dikurung. Misalnya IN – (OUT → IN) – NO IN/OUT. Pan/orbit/zoom sendiri tidak menentukan kedalaman; ~× bukan tempo.
+
+Overview adalah gabungan frame wide terpilih satu baris; Storyboard adalah seluruh kolase shot vertikal. Camera Start adalah awal sumber, composition_summary adalah paragraf pada frame Overview. Gunakan istilah Profil desain, Ukuran & proporsi, Shot Timeline, Overview, Storyboard, Shot Details, Framing & Lighting, Camera Movement, Tempo, Alur visual, Movement Timeline. Notasi English satu paragraf; nama area/gaya teknis English, uraian Indonesia.

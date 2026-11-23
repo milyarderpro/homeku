@@ -1,8 +1,8 @@
 # Alur AI Membuat Konsep Desain dengan Pustaka V2
 
-Tanggal: 22 November 2026.
+Diperbarui: 23 November 2026.
 
-Panduan penggunaan [pustaka V2](improvement-v2-plan.md), termasuk pembacaan ringan dan pemilihan variasi referensi. Fondasi reader/ingest Tahap 1 tersedia; audit ulang dan workflow chat V2 tetap Tahap 2. Dokumen ini menyimpan alur penggunaan oleh AI, bukan klaim pengujian konsep atau implementasi plugin produksi.
+Panduan penggunaan [pustaka V2](improvement-v2-plan.md), termasuk pembacaan ringan dan pemilihan variasi referensi. Reader/index 2.1 mendukung sumber legacy dan audit 2.0/2.1; sumber 2.1 memakai laporan/media 2.2.0. Referensi aktif mengikuti registry, bukan kandidat yang belum diterima. Dokumen ini menyimpan alur penggunaan oleh AI, bukan klaim pengujian konsep atau implementasi plugin produksi.
 
 **Permintaan pengguna → mencari referensi → membaca DNA dan gambar → membuat pilihan konsep → mengunci desain terpilih → menyiapkan gambar dan gerakan video.**
 
@@ -77,7 +77,7 @@ Adaptasi arah, lintasan, besaran atau ritme terhadap konsep baru dijelaskan; kro
 
 ## 7. Melanjutkan ke produksi gambar dan video
 
-Konsep serta identitas yang sudah dikunci menjadi dasar prompt gambar awal setiap shot beserta gambar pendukung bila diperlukan. Posisi kamera awal dan framing mengikuti rencana shot agar gambar sesuai dengan gerakan video yang dituju.
+Konsep serta identitas yang sudah dikunci menjadi dasar prompt gambar awal setiap shot beserta gambar pendukung bila diperlukan. Posisi kamera wide mengikuti pilihan Overview, paragraf composition_summary dan gambar terkait. Camera Start tetap awal shot sumber; keduanya dapat berbeda pada OUT. Prompt gambar menyebut posisi/arah/sudut/tinggi/kemiringan, cakupan wide, susunan elemen, kedalaman dan cahaya secara ringkas. Pilih posisi serong atau sudut ruang sesuai foto, tanpa menjadikan setiap gambar frontal.
 
 Gerakan yang dipilih menjadi acuan prompt video. Notasi mempertahankan hubungan simultan/berurutan, besaran perkiraan dan ritme; perubahan untuk produksi dicatat sebagai adaptasi. AI atau plugin produksi menjalankan pembuatan serta pemeriksaan gambar/video sesuai alur produksinya.
 
@@ -94,3 +94,24 @@ Pustaka V2 menyediakan pengetahuan dan bukti. Metadata media tersimpan bersama d
 | Produksi | Prompt serta hasil gambar/video sesuai konsep terpilih |
 
 Alur ini merupakan panduan penggunaan pustaka, bukan tambahan benchmark manfaat atau tugas produksi yang wajib dijalankan selama implementasi V2. Enam audit pilot yang tersisa tetap mengikuti pembagian pada plan.
+
+## Membaca file dan gambar secara ringan
+
+1. data/search-index.json untuk seleksi; identitas kandidat lewat `python tools/library.py read <id>`. Jangan membuka ratusan MD atau JSON lengkap sekaligus.
+2. `read <id> --part shot --shot shot-NN` atau `--part area --shot shot-NN --area <area-id>` untuk desain/komposisi/kamera terpilih. Satu area pada continuous take tetap membawa seluruh rute/fase/tempo shot. Proyeksi di data/projections/ adalah representasi untuk AI; analysis.md laporan manusia.
+3. Lihat Overview untuk komposisi wide dan Storyboard untuk semua perjalanan. Sumber 2.1 menyimpan media/overview.jpg dan storyboard seluruh kolase vertikal; sumber 2.0 menyimpan overview pada storyboard satu baris menurut versi asal.
+4. Ambil panel terpilih lewat `panel <id> <selection-id> --output /tmp/panel.png`; kolase lewat `shot-image <id> shot-NN --output /tmp/shot.jpg`; blok lengkap lewat `shot-image <id> shot-NN --from-storyboard --output /tmp/block.png`. Foto/blok tersimpan tidak memerlukan MP4. --native hanya jika secara khusus ingin memeriksa sumber asli.
+
+Nama gaya membantu discovery; bentuk, konfigurasi, fungsi, penyimpanan, bukaan dan framing menentukan variasi nyata. Fakta observed/uncertain, negasi dan sumber tetap dipisahkan dari keputusan konsep baru. Knowledge/prinsip dibuka hanya yang relevan. Pustaka tidak membuat keputusan kreatif otomatis saat ingest.
+
+## Jika pengguna meminta cloning referensi
+
+Untuk permintaan “buat video home tour cloning seperti referensi edh001”, pakai ID aktif itu sebagai acuan desain, susunan furnitur, elemen, pencahayaan, framing, urutan shot dan kamera/tempo. Jangan menawarkan variasi kreatif kecuali diminta.
+
+**ID aktif → Overview/Storyboard → JSON shot terpilih → gambar wide tiap shot → prompt video sesuai gerakan sumber → susunan akhir sesuai timeline.**
+
+AI melihat foto Overview/panel/kolase untuk meniru susunan visual, membaca composition_summary bila tersedia untuk posisi wide, serta composition untuk Camera Start sumber. Gerakan disalin dari camera_summary beserta phases dan tempo_profile. Kamera gambar harus mendukung target gerak dan menjaga elemen orientasi. Single take multi area tetap satu shot: pertahankan penghubung, reveal, urutan fase dan tempo seluruh perjalanan; jangan mengarang koneksi ruang dari cut.
+
+Untuk IN, Overview awal biasanya menjadi gambar awal produksi IN. Untuk OUT, gunakan Overview akhir yang wide sebagai gambar awal, buat perjalanan **kebalikan sumber** dengan IN, kemudian reverse seluruh hasil menjadi OUT. Balik juga arah rotasi, urutan fase, tujuan lintasan dan perkembangan tempo; mengganti Out menjadi In saja tidak cukup. Ringkasan kamera pustaka tetap gerak sumber asli, sedangkan prompt produksi dicatat terpisah.
+
+Overview tengah, arah campuran atau area akhir dalam continuous take hanya mendukung bagian lintasan yang terlihat; sesuaikan gambar/lintasan produksi terhadap cakupan itu. Kamera tidak wajib frontal. Membaca foto yang sudah tersimpan untuk cloning/inspirasi tidak mewajibkan audit ulang MP4.

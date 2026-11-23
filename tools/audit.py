@@ -52,6 +52,9 @@ def main():
     v2draft.add_argument("--quality",type=int,default=91)
     v2draft.add_argument("--scale",type=float,default=1.0)
     v2draft.add_argument("--columns",type=int,default=4)
+    v2draft.add_argument("--renderer-version",choices=["2.0.0","2.1.0","2.1.1","2.1.2","2.2.0"])
+    v2draft.add_argument("--overview-scale",type=float,default=1.0)
+    v2draft.add_argument("--storyboard-scale",type=float,default=1.0)
     v2export=commands.add_parser("export-v2",help="Package an accepted whole-snapshot candidate unchanged")
     v2export.add_argument("candidate",type=Path)
     v2export.add_argument("--output",type=Path,required=True)
@@ -64,7 +67,7 @@ def main():
         if args.command == "draft-v2":
             result=assemble_v2(args.source.resolve(),args.audit.resolve(),read_json(args.audit_info),args.output.resolve(),
                  include_source=args.include_source,supersedes=read_json(args.supersedes) if args.supersedes else None,
-                 quality=args.quality,scale=args.scale,columns=args.columns)
+                 quality=args.quality,scale=args.scale,columns=args.columns,version=args.renderer_version,overview_scale=args.overview_scale,storyboard_scale=args.storyboard_scale)
             print(json.dumps(result,ensure_ascii=False,indent=2));return 0
         if args.command == "export-v2":
             digest=args.reviewed_sha256
@@ -82,7 +85,7 @@ def main():
             print(json.dumps(result,ensure_ascii=False,indent=2));return 0
         if args.command == "review":
             candidate = args.candidate.resolve()
-            if read_json(candidate / "manifest.json").get("contract_version") == "2.0":
+            if read_json(candidate / "manifest.json").get("contract_version") in {"2.0", "2.1"}:
                 result=review_v2(candidate,args.output.resolve(),args.source.resolve() if args.source else None)
                 print(json.dumps(result,ensure_ascii=False,indent=2));return 0
             override = {candidate.name: args.source.resolve()} if args.source else None

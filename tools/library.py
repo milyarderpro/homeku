@@ -11,7 +11,7 @@ from pathlib import Path
 from homeku.common import LibraryError
 from homeku.engine import build, check, ingest, validate_package
 from homeku.storage import locked
-from homeku.reader import search, read_reference, extract_panel
+from homeku.reader import search, read_reference, extract_panel, extract_shot_image
 
 
 def main():
@@ -48,6 +48,11 @@ def main():
     panel.add_argument("selection_id")
     panel.add_argument("--output",type=Path,required=True)
     panel.add_argument("--native",action="store_true")
+    shot_image=commands.add_parser("shot-image",help="Extract a stored shot collage or full Storyboard block without MP4")
+    shot_image.add_argument("id")
+    shot_image.add_argument("shot")
+    shot_image.add_argument("--output",type=Path,required=True)
+    shot_image.add_argument("--from-storyboard",action="store_true")
     args = parser.parse_args()
     root = args.root.resolve()
     try:
@@ -61,6 +66,9 @@ def main():
         elif args.command == "panel":
             with locked(root,recovery=False):
                 result=extract_panel(root,args.id,args.selection_id,args.output.resolve(),native=args.native)
+        elif args.command == "shot-image":
+            with locked(root,recovery=False):
+                result=extract_shot_image(root,args.id,args.shot,args.output.resolve(),from_storyboard=args.from_storyboard)
         elif args.command == "validate":
             result = validate_package(root, args.package.resolve())
         elif args.command == "ingest":

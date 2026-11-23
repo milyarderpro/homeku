@@ -717,8 +717,8 @@
       "uncertainty": "Terbatas pada bagian yang terlihat pada frame bukti; tidak memastikan material fisik atau bagian tersembunyi."
     }
   ],
-  "revision": 2,
-  "schema_version": "2.0",
+  "revision": 3,
+  "schema_version": "2.1",
   "shots": [
     {
       "area_ids": [
@@ -727,7 +727,7 @@
       "area_relations": [],
       "camera_notes": "Orbit kanan dominan sekitar 0–2,2 s, lalu pendekatan ke entrance. Segmentasi praktis 2,2 s mempertahankan transisi halus, bukan berhenti. Tidak menambahkan pan atau tilt tanpa bukti mandiri.",
       "camera_simple": "Kamera mengitari fasad ke kanan, lalu maju semakin cepat menuju pintu masuk.",
-      "camera_summary": "Orbit Right (~15°–20°) →\nAccelerating Dolly-In (~2×) toward entrance door.",
+      "camera_summary": "Orbit Right (~15°–20°) → Accelerating Dolly-In (~2×) toward entrance door.",
       "composition": {
         "camera_direction": "Menghadap fasad dengan bay di kiri dan pintu di kanan",
         "camera_height": "Estimasi visual sekitar level mata; tinggi meter tidak diketahui.",
@@ -1136,6 +1136,7 @@
           "area_ids": [
             "exterior-01"
           ],
+          "composition_summary": "Kamera berada di jalur pejalan kaki di depan tangga, sedikit serong terhadap fasad, dengan posisi sekitar tinggi mata dan pandangan hampir datar. Cakupan wide memuat bay window lengkung di kiri, pintu masuk hitam dan kanopi membulat di kanan, serta volume lebih tinggi di tengah-belakang. Jalur dan tangga mengisi foreground, fasad menjadi lapisan tengah, dan pepohonan tanpa daun berada di belakang. Salju putih membingkai rumah, dengan daylight mendung yang dingin dipadukan cahaya hangat dari jendela, sconce dan lampu kanopi.",
           "frame_index": 0,
           "id": "s01-overview",
           "label": "Exterior",
@@ -1204,6 +1205,7 @@
             }
           ],
           "confidence": "medium",
+          "depth_direction": "NO IN/OUT",
           "end_s": 2.2,
           "evidence": [
             "frame:shot-01:0",
@@ -1238,6 +1240,7 @@
             }
           ],
           "confidence": "medium",
+          "depth_direction": "IN",
           "end_s": 4.733333333,
           "evidence": [
             "frame:shot-01:66",
@@ -1713,6 +1716,7 @@
           "area_ids": [
             "living-01"
           ],
+          "composition_summary": "Kamera berada di tepi jalur masuk living, di belakang ujung sofa kanan, memandang serong ke pertemuan media wall kiri dan bay window belakang. Posisi sekitar tinggi mata dengan kemiringan hampir datar menghasilkan cakupan wide: sectional krem memanjang dari foreground kanan ke jendela, coffee table kayu berada di tengah karpet, dan TV serta konsol menempati sisi kiri. Kedalaman terbaca dari sofa terdekat, meja di tengah, lalu tanaman dan bidang kaca lengkung di belakang. Daylight dingin dari bay window berpadu dengan downlight, cahaya plafon lengkung dan sconce hangat.",
           "frame_index": 248,
           "id": "s02-overview",
           "label": "Living Room",
@@ -1797,6 +1801,7 @@
             }
           ],
           "confidence": "medium",
+          "depth_direction": "OUT",
           "end_s": 8.3,
           "evidence": [
             "frame:shot-02:142",
@@ -2362,6 +2367,7 @@
           "area_ids": [
             "kitchen-01"
           ],
+          "composition_summary": "Kamera berada di jalur depan kitchen dekat ujung counter kanan, memandang serong sepanjang deret kabinet pada posisi sekitar tinggi mata dengan pandangan sedikit ke bawah agar countertop dan lantai terbaca. Framing wide menempatkan sudut counter di foreground kanan, range di tengah, refrigerator serta coffee niche di kiri-belakang, dan rak gelap di kanan atas. Jendela persegi panjang berada di atas area memasak, sedangkan bukaan bundar terlihat di kiri refrigerator. Kedalaman mengikuti counter menuju niche, dengan daylight dingin dari kedua bukaan dan lapisan cahaya hangat pada niche, rak serta lampu atas jendela.",
           "frame_index": 249,
           "id": "s03-overview",
           "label": "Kitchen",
@@ -2442,6 +2448,7 @@
             }
           ],
           "confidence": "medium",
+          "depth_direction": "IN",
           "end_s": 11.566666667,
           "evidence": [
             "frame:shot-03:249",
@@ -2928,6 +2935,7 @@
           "area_ids": [
             "bedroom-01"
           ],
+          "composition_summary": "Kamera berada dekat akses bedroom pada sisi depan-kiri ranjang, memandang serong ke headwall dan bukaan besar di kanan, sekitar tinggi mata dengan pandangan sedikit ke bawah. Cakupan wide memuat ranjang beserta platform dan karpet hampir utuh, storage display di kiri headwall, hanging bay di belakang ranjang, serta jendela beroutline membulat di kanan. Kusen kiri dan sebagian tempat duduk abu-abu menjadi foreground, ranjang lapisan tengah, dan headwall serta pemandangan bersalju menjadi latar. Daylight dari kanan berpadu dengan downlight, lampu samping ranjang dan cahaya rak yang hangat.",
           "frame_index": 449,
           "id": "s04-overview",
           "label": "Bedroom",
@@ -3016,6 +3024,7 @@
             }
           ],
           "confidence": "medium",
+          "depth_direction": "OUT",
           "end_s": 15.0,
           "evidence": [
             "frame:shot-04:347",
@@ -3598,6 +3607,7 @@
           "area_ids": [
             "bathroom-laundry-01"
           ],
+          "composition_summary": "Kamera berada di akses depan bathroom dekat vanity, memandang serong ke shower dan laundry pada posisi sekitar tinggi mata dengan arah sedikit ke bawah sehingga lantai dan tray tetap terlihat. Framing wide menempatkan vanity di foreground kiri, toilet dan jendela persegi panjang di kiri-tengah, enclosure shower lengkung di tengah, serta laundry tower di kanan. Kedalaman bergerak dari counter terdekat menuju kaca shower, niche dan porthole pada dinding belakang. Cahaya luar dingin dari kedua bukaan berpadu dengan downlight dan cahaya hangat di bagian atas wet zone.",
           "frame_index": 450,
           "id": "s05-overview",
           "label": "Bathroom & Laundry",
@@ -3678,6 +3688,7 @@
             }
           ],
           "confidence": "medium",
+          "depth_direction": "IN",
           "end_s": 18.4,
           "evidence": [
             "frame:shot-05:450",

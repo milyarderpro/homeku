@@ -1,5 +1,7 @@
 # Plan Improvement V2 — MD untuk Manusia, JSON sebagai Sumber Audit
 
+**Kelanjutan Overview/Storyboard (23 November 2026):** format2.1/report2.2.0 dan reader2.1 tersedia; workflow/kit terbaru telah diselaraskan. edh001 r0003 telah disetujui, diekspor dan di-ingest; implementasi Overview/Storyboard selesai. Enam pilot pengguna tetap belum dinyatakan selesai. Lihat [plan berurutan](implementation-plan-overview-storyboard.md) dan [hasil/status terbaru](overview-storyboard-verification.md). Uraian versi sebelumnya di bawah dipertahankan sebagai riwayat.
+
 Tanggal: 22 November 2026.
 
 Status: **Tahap 1 (1.1–1.12) dan Tahap 2 langkah 2.1–2.10 telah selesai**; lihat [verifikasi fondasi](v2-stage-1-verification.md) dan [hasil Tahap 2](v2-stage-2-verification.md). Workflow/kit V2 siap; audit ulang edh001 telah disetujui pengguna lalu di-ingest sebagai r0002/2.0. Enam pilot pengguna (2.11) belum dijalankan dan kalibrasi lintas pilot (2.12) masih terbuka, sehingga keseluruhan Tahap 2 belum selesai. Template dan dua contoh laporan yang disetujui tetap menjadi acuan renderer 2.1.2; versi terdahulu didukung. [Verifikasi tampilan](v2-stage-1-media-verification.md) mencatat penyempurnaan sebelumnya. ZIP r0001 dipertahankan sebagai riwayat; perubahan referensi dilakukan melalui revisi eksplisit.

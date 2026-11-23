@@ -35,3 +35,5 @@ Read identity tidak mengirim seluruh log/media/shot. Read shot mengembalikan sat
 Indeks tidak membawa narasi desain, seluruh fakta, frame_reviews atau inventaris gambar. Facet konfigurasi memuat domain/subjek/atribut/nilai/status/pointer; profil tetap mempertahankan state/confidence. Tidak ada ekstraksi semantik dari MD V2, sintesis AI saat ingest, database atau embedding wajib.
 
 Legacy dibaca eksplisit tanpa membuat estimasi luas/gaya/area baru. Generator membangun ulang koleksi campuran, sementara semua dokumen dan media paket yang diterima tetap byte-asli. Katalog/knowledge mempertahankan negasi, uncertainty dan label baru; denominator memakai pasangan referensi/shot unik yang mencatat atribut, bukan jumlah area/fase atau rumah independen.
+
+Versi baru: [ai-reader-v2-1.md](ai-reader-v2-1.md); dokumen ini tetap kontrak versi asal.

@@ -20,9 +20,14 @@ RUNTIME = ["tools/audit.py", "tools/homeku/__init__.py", "tools/homeku/common.py
            "docs/contracts/audit-v2.schema.json", "docs/contracts/manifest-v2.schema.json",
            "tools/homeku/media_v2_0.py", "tools/homeku/media_v2_1.py", "tools/homeku/media_v2_1_1.py", "tools/assets/templates/analysis-2.1.2.md", "tools/assets/templates/analysis-2.1.1.md", "tools/assets/fonts/DejaVuSans-Bold.ttf", "tools/assets/templates/analysis-2.1.0.md",
            "tools/assets/fonts/DejaVuSans.ttf", "tools/assets/fonts/LICENSE.txt", "tools/assets/templates/analysis-2.0.0.md"]
+RUNTIME += ["tools/homeku/reporting_v2_legacy.py", "tools/homeku/media_v2_1_2.py",
+            "tools/homeku/camera_pattern.py", "tools/homeku/media_v2_2.py", "tools/homeku/reporting_v2_2.py",
+            "docs/contracts/audit-v2-1.schema.json", "docs/contracts/manifest-v2-1.schema.json",
+            "tools/assets/templates/analysis-2.2.0.md", "tools/assets/layouts/media-2.2.0.json"]
+# The authoring document can be a draft; the active kit uses its implemented renderer template.
 GUIDES = ["audit/README.md", "audit/json-guide.md", "audit/protocol.md", "audit/rubric.md", "audit/vocabulary.md", "audit/providers.md", "audit/calibration.md",
           "audit/prompts/01-audit.md", "audit/prompts/02-correct.md", "audit/prompts/03-export.md",
-          "docs/contracts/package-v2.md", "docs/contracts/analysis-v2.md", "docs/template-analysis-v2.md"]
+          "docs/contracts/package-v2-1.md", "docs/contracts/analysis-v2-2.md", "tools/assets/templates/analysis-2.2.0.md"]
 OUTER_FILES = {"README.md", "homeku_runtime.py", "template-audit.json", "template-audit-info.json"}
 
 
@@ -97,7 +102,7 @@ def build_bytes():
              "Bootstrap memulihkan seluruh runtime/schema/font/lisensi dari payload lokal yang diinventarisasi; tidak mengunduh kode. "
              "Dependensi runtime: Python 3.11+, Pillow, jsonschema, FFmpeg/ffprobe. "
              "Baca seluruh panduan berikut. Placeholder template wajib diganti dengan hasil audit nyata. "
-             "Versi sumber 2.0; renderer/template 2.1.2. Jangan mengubah renderer versi lama.\n"]
+             "Versi sumber/paket 2.1; renderer/media/template 2.2.0. Jangan mengubah renderer versi lama.\n"]
     for name in GUIDES:
         body = (ROOT / name).read_text(encoding="utf-8")
         body = re.sub(r"\[([^\]]+)\]\((?!https?://)[^)]+\)", r"\1", body)

@@ -62,3 +62,5 @@ Renderer/report dan media profile terbaru `2.1.2`; pasangan `2.0.0`, `2.1.0`, da
 ZIP dibuka ulang, divalidasi lalu dibandingkan digest. Ekstraksi mempertahankan aturan anti traversal, symlink, duplikat, executable dan batas ZIP legacy: 2.000 file, 95 MiB/file, 256 MiB total, teks 2 MiB/file. File/media yang diizinkan diputuskan kembali oleh kontrak versi; keberadaan audit.json saja bukan deteksi V2.
 
 Pengguna mengoreksi sebelum download ZIP. Ingest lokal `python tools/library.py ingest` melakukan validasi teknis dan memperbarui turunan; tidak ada review isi kedua atau watcher otomatis.
+
+Versi baru: [package-v2-1.md](package-v2-1.md); dokumen ini tetap kontrak versi asal.

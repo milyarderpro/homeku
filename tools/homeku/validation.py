@@ -63,7 +63,7 @@ def extract_package(package: Path, destination: Path) -> Path:
             for info, name in files:
                 relative = name[len(reference_id) + 1:]
                 require(relative in {"analysis.md", "audit.json", "manifest.json", "source.mp4"} or
-                        re.fullmatch(r"media/(?:shot-[0-9]{2,}\.jpg|storyboard\.jpg|shot-[0-9]{2,}/(?:area-overview|start|middle|end|reveal-[0-9]{2,}|detail-[0-9]{2,})\.jpg)", relative),
+                        re.fullmatch(r"media/(?:shot-[0-9]{2,}\.jpg|overview\.jpg|storyboard\.jpg|shot-[0-9]{2,}/(?:area-overview|start|middle|end|reveal-[0-9]{2,}|detail-[0-9]{2,})\.jpg)", relative),
                         f"Unsupported file in package: {name}")
                 if relative in {"analysis.md", "audit.json", "manifest.json"}:
                     require(info.file_size <= 2 * 1024 * 1024, f"Text file exceeds 2 MiB: {name}")
@@ -97,7 +97,7 @@ def validate_folder(folder: Path, root: Path, package_name=None, source_override
     require(manifest_path.is_file(), "manifest.json is missing")
     manifest = read_json(manifest_path)
     require(isinstance(manifest, dict), "Manifest must be an object")
-    if manifest.get("contract_version") == "2.0":
+    if manifest.get("contract_version") in {"2.0", "2.1"}:
         return validate_v2_folder(folder, root, manifest, package_name, source_overrides)
     validator = Draft202012Validator(read_json(SCHEMA), format_checker=FormatChecker())
     errors = sorted(validator.iter_errors(manifest), key=lambda e: str(list(e.path)))
@@ -283,7 +283,7 @@ def validate_v2_folder(folder, root, manifest, package_name=None, source_overrid
     from .media import expected_media
     from .reporting import render_report, verify_renderer
     from .video import frame_times
-    schema_check(manifest, "manifest-v2.schema.json")
+    schema_check(manifest, "manifest-v2-1.schema.json" if manifest["contract_version"] == "2.1" else "manifest-v2.schema.json")
     rid = manifest["id"]
     require(folder.name == rid, "Manifest ID differs from package folder")
     if package_name:
@@ -306,6 +306,7 @@ def validate_v2_folder(folder, root, manifest, package_name=None, source_overrid
     require(audit_path.is_file() and not audit_path.is_symlink(),"audit.json is missing")
     require(sha256(audit_path)==manifest["audit_sha256"],"Audit JSON hash mismatch")
     audit=read_json(audit_path);times=frame_times(source)
+    require(audit.get("schema_version")==manifest["contract_version"],"Audit source/manifest contract versions differ")
     validate_audit(audit,info["duration_s"],times)
     require(audit["id"]==rid and audit["revision"]==manifest["revision"],"Audit identity/revision differs from manifest")
     logs=manifest["audit"]
@@ -326,7 +327,7 @@ def validate_v2_folder(folder, root, manifest, package_name=None, source_overrid
     require(created.utcoffset() is not None,"Audit timestamp needs timezone")
     verify_renderer(manifest["render"])
     expected=[m for m,*_ in expected_media(audit,info,manifest["render"])]
-    require(len(manifest["media"])==len(expected),"Exactly one collage per shot plus storyboard required")
+    require(len(manifest["media"])==len(expected),"Media inventory count differs from versioned layout")
     paths=set()
     for item,wanted in zip(manifest["media"],expected):
         name=safe_relative(item["path"])
@@ -345,4 +346,11 @@ def validate_v2_folder(folder, root, manifest, package_name=None, source_overrid
         require(not p.is_symlink(),"Symlink not allowed")
         if p.is_file():actual_files.add(p.relative_to(folder).as_posix())
     require(actual_files==allowed,"Unexpected/unlisted V2 files")
+    require(len(actual_files)<=MAX_FILES,"Too many V2 files")
+    total=0
+    for name in actual_files:
+        size=(folder/name).stat().st_size;total+=size
+        require(size<=MAX_FILE,f"File exceeds 95 MiB: {name}")
+        if name in {"audit.json","analysis.md","manifest.json"}:require(size<=2*1024*1024,f"Text file exceeds 2 MiB: {name}")
+    require(total<=MAX_TOTAL,"Uncompressed candidate exceeds 256 MiB")
     return manifest,v2_model(audit,manifest,content_hash(folder),times),source

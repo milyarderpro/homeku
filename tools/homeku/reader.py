@@ -57,7 +57,7 @@ def search(root,*,style=None,style_role="primary-style",style_relation=None,scal
                 if not s["multi_area"] or not any(actual[i:i+len(wanted_route)]==wanted_route for i in range(len(actual)-len(wanted_route)+1)):continue
             selected.append(s)
         if selected:matches.append({**{k:r[k] for k in ("id","title","revision","json","profile_facets")},"shots":selected})
-    return {"schema_version":"2.0","total":len(matches),"offset":offset,"limit":limit,"results":matches[offset:offset+limit],
+    return {"schema_version":"2.1","total":len(matches),"offset":offset,"limit":limit,"results":matches[offset:offset+limit],
             "next_offset":offset+limit if offset+limit<len(matches) else None}
 
 
@@ -65,7 +65,7 @@ def load_reader(root,rid):
     registry=_registry(root)["references"]
     require(rid in registry,"Reference is not active in registry")
     payload=_generated(root,f"data/projections/{rid}.json")
-    schema_check(payload,"reference-reader-v2.schema.json")
+    schema_check(payload,"reference-reader-v2-1.schema.json")
     require(payload["reference"]["content_sha256"]==registry[rid]["content_sha256"]==content_hash(root/"references"/rid),"Reference changed outside ZIP revision")
     return payload
 
@@ -76,23 +76,23 @@ def read_reference(root,rid,*,part="identity",shot=None,area=None):
     if part=="full":return payload
     if part=="identity":
         return {**context,"identity":m.get("identity"),"size":m.get("size"),"profile":m.get("profile",[]),
-                "profile_notes":m.get("profile_notes"),"palette_notes":m.get("palette_notes")}
+                "camera_pattern":m.get("camera_pattern"), "profile_notes":m.get("profile_notes"),"palette_notes":m.get("palette_notes")}
     require(part in {"shot","area"},"Unknown reader part")
     require(shot is not None,"A shot ID is required for shot/area reads")
     found=next((s for s in m["shots"] if s["shot"]==shot),None)
     require(found is not None,"Unknown shot")
     selected=copy.deepcopy(found)
     if part=="area":
-        require(m["format_version"]=="2.0" and area in found["area_ids"],"Area reads require an explicit V2 area ID in this shot")
+        require(m["format_version"] in {"2.0", "2.1"} and area in found["area_ids"],"Area reads require an explicit V2 area ID in this shot")
         selected["design"]=[d for d in found["design"] if area in d["area_ids"]]
         selected["facts"]=[f for f in found["facts"] if area in f["area_ids"]]
         selected["area"]=next(a for a in m["areas"] if a["id"]==area)
         # Keep complete camera phases/route so a crop does not imply a new shot.
-    keys={key for group in (selected["facts"],selected["phases"]) for c in group for key in c["evidence"]}
-    if m["format_version"]=="2.0":keys|={p["id"] for p in selected["panels"]+selected["overviews"]}
+    keys={key for group in (selected["facts"],selected["phases"],selected.get("area_relations",[])) for c in group for key in c["evidence"]}
+    if m["format_version"] in {"2.0", "2.1"}:keys|={p["id"] for p in selected["panels"]+selected["overviews"]}
     else:keys|={k for k,v in payload["evidence_inventory"].items() if v.get("shot_id")==shot}
     return {**context,"shot":selected,"evidence_inventory":{k:payload["evidence_inventory"][k] for k in sorted(keys)},
-            "provenance":{k:v for k,v in payload["provenance"].items() if v.get("md","").endswith("#"+shot)}}
+            "provenance":{k:v for k,v in payload["provenance"].items() if v.get("md","").endswith("#"+shot) or v.get("source_pointer","").startswith(f"/shots/{m['shots'].index(found)}/")}}
 
 
 def extract_panel(root,rid,panel,output,*,native=False):
@@ -109,5 +109,27 @@ def extract_panel(root,rid,panel,output,*,native=False):
         output.parent.mkdir(parents=True,exist_ok=True)
         output.write_bytes(extract_frame(source,item["frame_index"],m["source"]["video_stream_index"]))
         return {"output":str(output),"frame_index":item["frame_index"],"timestamp_s":item["timestamp_s"]}
-    require(m["format_version"]=="2.0","Use legacy source media directly")
+    require(m["format_version"] in {"2.0", "2.1"},"Use legacy source media directly")
     return crop_panel(root/"references"/rid,{"media":m["media"]},panel,output)
+
+
+def extract_shot_image(root,rid,shot,output,*,from_storyboard=False):
+    """Read accepted media only; never open the MP4 for a stored collage/block."""
+    import shutil
+    from PIL import Image
+    payload=load_reader(root,rid);model=payload["reference"]
+    require(not output.resolve().is_relative_to(root.resolve()),"Use a temporary output outside repository")
+    require(any(s["shot"]==shot for s in model["shots"]),"Unknown shot")
+    folder=root/"references"/rid
+    if from_storyboard:
+        board=next((m for m in model["media"] if m["kind"]=="storyboard"),None)
+        block=next((b for b in (board or {}).get("blocks",[]) if b["shot_id"]==shot),None)
+        require(block is not None,"This media version has no full shot block in Storyboard")
+        x,y,w,h=block["bbox"]
+        with Image.open(folder/board["path"]) as picture:result=picture.crop((x,y,x+w,y+h))
+        output.parent.mkdir(parents=True,exist_ok=True);result.save(output,'PNG');result.close()
+        return {"output":str(output),"width":w,"height":h,"source":board["path"],"block":block}
+    item=next((m for m in model["media"] if m["kind"]=="shot-collage" and m["shot_id"]==shot),None)
+    require(item is not None,"This source version has no shot collage")
+    output.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(folder/item["path"],output)
+    return {"output":str(output),"width":item["width"],"height":item["height"],"source":item["path"]}

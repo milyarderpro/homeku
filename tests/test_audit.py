@@ -148,6 +148,17 @@ class AuditHelperTests(unittest.TestCase):
             self.assertFalse(any(name.endswith((".mp4", ".wav", ".mp3")) for name in archive.namelist()))
             self.assertIn(b"--receipt", archive.read("README.md"))
             self.assertIn(b"tools/audit.py", archive.read("README.md"))
+            self.assertIn(b"<!-- Source: tools/assets/templates/analysis-2.2.0.md -->", archive.read("README.md"))
+            self.assertNotIn(b"Draf Overview dan Storyboard", archive.read("README.md"))
+            self.assertIn(b"<!-- Source: docs/contracts/package-v2-1.md -->", archive.read("README.md"))
+            template=json.loads(archive.read("template-audit.json"))
+            self.assertEqual(template["schema_version"],"2.1")
+            self.assertIn("composition_summary",template["shots"][0]["overviews"][0])
+            self.assertIn("depth_direction",template["shots"][0]["phases"][0])
+            self.assertIsNone(template["shots"][0]["phases"][0]["depth_direction"])
+        self.assertEqual(len(kit_builder.RUNTIME),len(set(kit_builder.RUNTIME)))
+        for name in ["tools/homeku/media_v2_1_2.py", "tools/homeku/reporting_v2_legacy.py", "tools/homeku/media_v2_2.py", "tools/homeku/reporting_v2_2.py", "tools/homeku/camera_pattern.py", "docs/contracts/audit-v2-1.schema.json", "docs/contracts/manifest-v2-1.schema.json", "tools/assets/layouts/media-2.2.0.json"]:
+            self.assertIn(name,kit_builder.RUNTIME)
         isolated=self.work/"inventory-workspace"
         with zipfile.ZipFile(target) as archive:archive.extractall(isolated)
         command=[sys.executable,str(isolated/"homeku_runtime.py"),"--output",str(isolated)]

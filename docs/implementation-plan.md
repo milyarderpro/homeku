@@ -1,5 +1,7 @@
 # Rencana Implementasi Pustaka HOMEKU
 
+**Kelanjutan Overview/Storyboard (23 November 2026):** format2.1/report2.2.0 dan reader2.1 tersedia; workflow/kit terbaru telah diselaraskan. edh001 r0003 telah disetujui, diekspor dan di-ingest; implementasi Overview/Storyboard selesai. Enam pilot pengguna tetap belum dinyatakan selesai. Lihat [plan berurutan](implementation-plan-overview-storyboard.md) dan [hasil/status terbaru](overview-storyboard-verification.md). Uraian versi sebelumnya di bawah dipertahankan sebagai riwayat.
+
 Dibuat: 21 November 2026
 
 Diperbarui: 22 November 2026

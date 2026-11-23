@@ -12,3 +12,5 @@ Pemeriksaan tanpa publikasi: `python tools/library.py validate tests/fixtures/fi
 ## Fixture V2
 
 make_v2_inputs menghasilkan MP4 test-pattern nyata dan audit JSON sintetis di root sementara. Normal: satu area bathroom dengan fungsi laundry, tiga panel. Multi: living/kitchen dengan visibilitas bertumpang tindih, rute terpisah dari visibilitas, satu fase lintas area dan tempo moderate → fast. Tes memperluas kasus reentry, kamera tidak berpindah antararea, fase/ruang berulang, input tidak valid, revisi serta kapasitas 300 model. Log viewed pada fixture adalah deklarasi sintetis untuk validator; bukan bukti audit video rumah nyata. Tidak boleh masuk registry produksi.
+
+Sumber fixture baru memakai `make_v2_inputs(..., version="2.1")`; default 2.0 dipertahankan untuk regresi renderer lama. Arah dan paragraf Overview sintetis bukan hasil audit video rumah. Tes 2.1 menjalankan media N+2, lokasi berulang, block crop tanpa MP4 dan pipeline draft/review/export/ingest pada root bertanda fixture.

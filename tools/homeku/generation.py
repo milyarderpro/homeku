@@ -44,8 +44,8 @@ def load_models(root: Path, registry, full=False):
                 f"Registry document hash mismatch: {reference_id}")
         manifest = read_json(folder / "manifest.json")
         require(entry.get("contract_version",manifest["contract_version"])==manifest["contract_version"],f"Registry source version differs: {reference_id}")
-        if manifest["contract_version"] == "2.0":
-            require(entry.get("contract_version")=="2.0" and sha256(folder/"audit.json")==entry.get("audit_sha256"),f"Registry audit JSON hash mismatch: {reference_id}")
+        if manifest["contract_version"] in {"2.0", "2.1"}:
+            require(entry.get("contract_version")==manifest["contract_version"] and sha256(folder/"audit.json")==entry.get("audit_sha256"),f"Registry audit JSON hash mismatch: {reference_id}")
         require(manifest["id"] == reference_id and manifest["revision"] == entry["revision"], f"Registry identity mismatch: {reference_id}")
         require(manifest["source"]["path"] == f"video/{reference_id}.mp4", f"Invalid registered source path: {reference_id}")
         source = root / manifest["source"]["path"]
@@ -62,7 +62,7 @@ def load_models(root: Path, registry, full=False):
             # Cache is disposable. It cannot be used if its own payload was edited.
             if (previous_build.get("projections", {}).get(reference_id) == expected and
                     previous_build.get("projection_sha256", {}).get(reference_id) == sha256(cache) and
-                    cached.get("schema_version") == "2.0" and cached.get("kind") == "homeku.reference"):
+                    cached.get("schema_version") == "2.1" and cached.get("kind") == "homeku.reference"):
                 models[reference_id] = cached["reference"]
                 continue
         _, model, _ = validate_folder(folder, root)
@@ -107,8 +107,8 @@ def render(root: Path, models):
         return link(page, f"references/{rid}/analysis.md#{sid}", f"{rid} / {sid}")
 
     def media_link(page, rid, sid):
-        path=f"media/{sid}.jpg" if models[rid]["format_version"]=="2.0" else f"media/{sid}/area-overview.jpg"
-        return link(page, f"references/{rid}/{path}", "kolase shot" if models[rid]["format_version"]=="2.0" else "gambar area")
+        path=f"media/{sid}.jpg" if models[rid]["format_version"] in {"2.0", "2.1"} else f"media/{sid}/area-overview.jpg"
+        return link(page, f"references/{rid}/{path}", "kolase shot" if models[rid]["format_version"] in {"2.0", "2.1"} else "gambar area")
 
     def proof_path(rid, key):
         item=inventories[rid][key]
@@ -149,7 +149,7 @@ def render(root: Path, models):
         for shot in model["shots"]:
             shots.append((rid, shot))
             room_labels=set(shot["areas"])
-            if model["format_version"]=="2.0":
+            if model["format_version"] in {"2.0", "2.1"}:
                 room_labels|={f for a in model["areas"] if a["id"] in shot["area_ids"] for f in a["functions"]}
             for area in sorted({aliases.get(a.casefold(), a) for a in room_labels}):
                 rooms[area].append((rid, shot))
@@ -282,13 +282,15 @@ def render(root: Path, models):
         inventory=inventories[rid]
         def proof_ids(paths):
             return list(paths)
-        audit_path=f"references/{rid}/audit.json" if model["format_version"]=="2.0" else None
+        audit_path=f"references/{rid}/audit.json" if model["format_version"] in {"2.0", "2.1"} else None
         pointers = {"/reference": {"md": md_path, "manifest": f"references/{rid}/manifest.json", "json": audit_path, "source_pointer":""}}
         for i, claim in enumerate(model.get("profile", [])):
             pointers[f"/reference/profile/{i}"] = {"md": md_path + "#profil-dna", "json":audit_path,"source_pointer":f"/profile/{i}","claim_id": claim["id"], "evidence_ids": proof_ids(claim["evidence"])}
         if audit_path:
             for section in ("identity","size","areas","limitations","timeline_notes"):
                 pointers[f"/reference/{section}"]={"md":md_path,"json":audit_path,"source_pointer":f"/{section}"}
+        if model["format_version"] == "2.1":
+            pointers["/reference/camera_pattern"]={"md":md_path,"json":audit_path,"source_pointer":"/shots", "derivation":"one depth pattern per shot"}
         indexed_shots = []
         for i, shot in enumerate(model["shots"]):
             pointer = f"/reference/shots/{i}"
@@ -300,7 +302,11 @@ def render(root: Path, models):
             if audit_path:
                 for section in ("design","composition","route","area_relations","tempo_profile","panels","overviews","camera_simple","journey_dna"):
                     pointers[f"{pointer}/{section}"]={"md":shot_md,"json":audit_path,"source_pointer":f"/shots/{i}/{section}"}
-            is_v2=model["format_version"]=="2.0"
+            if model["format_version"] == "2.1":
+                pointers[f"{pointer}/camera_pattern"]={"md":shot_md,"json":audit_path,"source_pointer":f"/shots/{i}/phases", "derivation":"depth_direction sequence", "evidence_ids":list(dict.fromkeys(key for phase in shot["phases"] for key in phase["evidence"]))}
+                for j,overview in enumerate(shot["overviews"]):
+                    pointers[f"{pointer}/overviews/{j}/composition_summary"]={"md":md_path,"json":audit_path,"source_pointer":f"/shots/{i}/overviews/{j}/composition_summary","evidence_ids":[overview["id"]]}
+            is_v2=model["format_version"] in {"2.0", "2.1"}
             labels=list(shot["areas"])
             if is_v2:
                 labels=sorted(set(labels)|{f for a in model["areas"] if a["id"] in shot["area_ids"] for f in a["functions"]})
@@ -320,15 +326,19 @@ def render(root: Path, models):
                                                      "area_ids":f.get("area_ids",[]),"pointer": pointer + f"/facts/{j}"} for j, f in enumerate(shot["facts"])
                                                      if f["attribute"] in {"layout", "room-shape", "combined-functions", "configuration", "shape", "opening", "circulation", "floor-level"}],
                                   "path": shot_md, "json_pointer": pointer,
-                                  "overview": f"references/{rid}/media/{shot['shot']}.jpg" if is_v2 else f"references/{rid}/media/{shot['shot']}/area-overview.jpg"})
+                                  "overview": f"references/{rid}/media/overview.jpg" if model["format_version"]=="2.1" else f"references/{rid}/media/storyboard.jpg" if is_v2 else f"references/{rid}/media/{shot['shot']}/area-overview.jpg",
+                                  "overview_selection_ids": [p["id"] for p in shot["overviews"]] if is_v2 else [],
+                                  "collage": f"references/{rid}/media/{shot['shot']}.jpg" if is_v2 else f"references/{rid}/media/{shot['shot']}/area-overview.jpg",
+                                  "storyboard": f"references/{rid}/media/storyboard.jpg",
+                                  "camera_pattern": shot.get("camera_pattern")})
         for i, relation in enumerate(model["relations"]):
             pointers[f"/reference/relations/{i}"] = {"md": md_path if audit_path else md_path+"#hubungan-antarshot","json":audit_path,"source_pointer":f"/relations/{i}","evidence_ids":proof_ids(relation["evidence"])}
-        reader = {"schema_version": "2.0", "kind": "homeku.reference", "reference": model,
+        reader = {"schema_version": "2.1", "kind": "homeku.reference", "reference": model,
                   "paths": {"analysis": md_path, "manifest": f"references/{rid}/manifest.json", "source": model["source"]["path"],"audit":audit_path},
                   "provenance": pointers}
         # Inventory is shared once; no full media objects on every fact/phase pointer.
         reader["evidence_inventory"]=inventory
-        validate_reader(reader, "reference-reader-v2.schema.json")
+        validate_reader(reader, "reference-reader-v2-1.schema.json")
         fp = hashlib.sha256((model["content_sha256"] + fingerprint).encode()).hexdigest()
         projection_fingerprints[rid] = fp
         emit(json_path, dumps(reader), [rid])
@@ -338,12 +348,12 @@ def render(root: Path, models):
                                           else "scales" if c["aspect"] == "apparent-scale" else c["aspect"], c["value"]),
                    "pointer": f"/reference/profile/{i}"} for i, c in enumerate(model.get("profile", []))]
         search.append({"id": rid, "title": model["title"], "revision": model["revision"], "json": json_path,
-                       "format_version":model["format_version"],"floor_area_m2":{k:model["size"]["floor_area_m2"][k] for k in ("min","max")} if model["format_version"]=="2.0" else None,
+                       "camera_pattern":model.get("camera_pattern"), "format_version":model["format_version"],"floor_area_m2":{k:model["size"]["floor_area_m2"][k] for k in ("min","max")} if model["format_version"] in {"2.0", "2.1"} else None,
                        "style_relations":[{k:r[k] for k in ("from","to","relation","state","confidence")} for r in model.get("identity",{}).get("style_relations",[])],
                        "profile_available": bool(model.get("profile")), "profile_facets": facets, "shots": indexed_shots})
-    index = {"schema_version": "2.0", "kind": "homeku.search-index", "taxonomy": "data/taxonomy.json",
+    index = {"schema_version": "2.1", "kind": "homeku.search-index", "taxonomy": "data/taxonomy.json",
              "principles": "knowledge/principles.json", "knowledge": "knowledge/topics/index.json", "references": search}
-    validate_reader(index, "search-index-v2.schema.json")
+    validate_reader(index, "search-index-v2-1.schema.json")
     emit("data/search-index.json", dumps(index), all_ids)
     emit("data/dependencies.json", dumps({"generator_fingerprint": fingerprint,
                                          "source_files": ["data/taxonomy.json", "sources/design-principles.json", "docs/template-analysis-v2.md", "tools/assets/"],

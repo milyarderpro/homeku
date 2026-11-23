@@ -232,7 +232,7 @@ def assemble(source, analysis, audit_info, output_root, *, extras=None, include_
 
 
 def assemble_v2(source, audit_path, audit_info, output_root, *, supersedes=None, purpose="reference",
-                include_source=False, quality=91, scale=1.0, columns=4):
+                include_source=False, quality=91, scale=1.0, columns=4, version=None, overview_scale=1.0, storyboard_scale=1.0):
     """Create a candidate only. No ZIP or acceptance is inferred from drafting."""
     from .models import validate_audit
     from .media import build_media
@@ -252,18 +252,26 @@ def assemble_v2(source, audit_path, audit_info, output_root, *, supersedes=None,
     if destination.exists():
         require(destination.is_dir() and not destination.is_symlink(),"Invalid existing candidate")
         old=read_json(destination/"manifest.json") if (destination/"manifest.json").is_file() else {}
-        require(old.get("contract_version")=="2.0" and old.get("id")==rid,"Refusing to replace unmanaged candidate")
+        require(old.get("contract_version") in {"2.0", "2.1"} and old.get("id")==rid,"Refusing to replace unmanaged candidate")
         owned={"audit.json","analysis.md","manifest.json","source.mp4"}|{m["path"] for m in old["media"]}
         require(all(not f.is_symlink() and (not f.is_file() or f.relative_to(destination).as_posix() in owned) for f in destination.rglob("*")),"Unmanaged files in candidate folder")
     with tempfile.TemporaryDirectory(prefix=".v2-draft-",dir=output_root) as work_name:
         folder=Path(work_name)/rid;folder.mkdir()
         (folder/"audit.json").write_bytes(authored)
-        config=render_config(quality=quality,scale=scale,columns=columns)
+        kwargs={}
+        if audit["schema_version"] == "2.1":
+            require(version in {None,"2.2.0"},"Source 2.1 requires renderer 2.2.0")
+            kwargs.update(version="2.2.0",overview_scale=overview_scale,storyboard_scale=storyboard_scale)
+        else:
+            require(version != "2.2.0", "Renderer 2.2.0 requires source 2.1")
+            require(overview_scale==1.0 and storyboard_scale==1.0,"Combined media scales require source 2.1")
+            if version is not None:kwargs["version"]=version
+        config=render_config(quality=quality,scale=scale,columns=columns,**kwargs)
         media=build_media(folder,audit,source,info,config)
         (folder/"analysis.md").write_text(render_report(audit,config),encoding="utf-8",newline="\n")
         logs=dict(audit_info)
         logs.setdefault("created_at",datetime.now(timezone.utc).isoformat())
-        manifest={"contract_version":"2.0","id":rid,"revision":audit["revision"],"supersedes":supersedes,
+        manifest={"contract_version":audit["schema_version"],"id":rid,"revision":audit["revision"],"supersedes":supersedes,
                   "purpose":purpose,"source":info,"audit":logs,"audit_sha256":sha256(folder/"audit.json"),"render":config,"media":media}
         (folder/"manifest.json").write_text(dumps(manifest),encoding="utf-8")
         if include_source:shutil.copyfile(source,folder/"source.mp4")
@@ -288,7 +296,7 @@ def review_v2(candidate, output, source=None):
     digest=snapshot_hash(candidate)
     overrides={candidate.name:source} if source else None
     manifest,_,_=validate_folder(candidate,candidate.parent,source_overrides=overrides)
-    require(manifest["contract_version"]=="2.0","Use the explicit legacy workflow for this contract")
+    require(manifest["contract_version"] in {"2.0", "2.1"},"Use the explicit legacy workflow for this contract")
     require(not output.resolve().is_relative_to(candidate.resolve()),"Receipt/cards must remain outside candidate")
     audit=read_json(candidate/"audit.json")
     output.parent.mkdir(parents=True,exist_ok=True)
@@ -305,7 +313,7 @@ def export_v2(candidate, output_root, reviewed_sha256, source=None):
     require(snapshot_hash(candidate)==reviewed_sha256,"Candidate changed since whole-snapshot review")
     overrides={candidate.name:source} if source else None
     manifest,_,_=validate_folder(candidate,candidate.parent,source_overrides=overrides)
-    require(manifest["contract_version"]=="2.0","Use the explicit legacy workflow for this contract")
+    require(manifest["contract_version"] in {"2.0", "2.1"},"Use the explicit legacy workflow for this contract")
     output_root.mkdir(parents=True,exist_ok=True)
     require(not output_root.resolve().is_relative_to(candidate.resolve()),"ZIP output must stay outside candidate")
     filename=f"{manifest['id']}-r{manifest['revision']:04d}.zip"

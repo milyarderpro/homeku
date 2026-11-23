@@ -1,30 +1,28 @@
 # Operasi pustaka HOMEKU
 
-## Fondasi V2 dan batas workflow
+## Format dan workflow aktif
 
-V2 menerima audit.json sebagai sumber, MD hasil renderer dan satu kolase/shot plus storyboard. Legacy 1.0/1.1 tetap memakai MD menurut kontraknya. [Kontrak V2](contracts/package-v2.md) dan [pemetaan field](v2-field-map.md) adalah acuan teknis; workflow/prompt chat V2 tersedia pada audit/README.md. edh001 r0002/2.0 telah disetujui dan di-ingest; ZIP r0001 dipertahankan sebagai riwayat. Lihat [status Tahap 2](v2-stage-2-verification.md).
+Audit/paket 2.1 memakai audit.json sebagai sumber, MD enam bagian/report 2.2.0, satu kolase per take, Overview satu baris dan Storyboard seluruh kolase vertikal. Reader/index 2.1 dan generator 4 mendukung sumber 1.0/1.1/2.0/2.1. [Paket 2.1](contracts/package-v2-1.md), [laporan](contracts/analysis-v2-2.md), [reader](contracts/ai-reader-v2-1.md), [field map](v2-field-map.md).
 
-Renderer terbaru 2.1.2 memperkecil judul/nama area sekitar 15% dari 2.1.0. Header kolase cukup judul serta rentang/durasi. Di bawah foto terdapat Start/Middle/End atau momen, diikuti timestamp regular 75% ukuran label bold pada baseline yang sama. Header storyboard tetap memakai gaya utama. Nama gaya utama/pengaruh/interior memakai istilah bahasa Inggris dengan deklarasi identity.style_names_language=en; penjelasan tetap bahasa Indonesia. Renderer 2.0.0/2.1.0/2.1.1, template dan font lamanya tetap didukung. Tidak ada penerjemahan atau perubahan isi referensi aktif otomatis.
-
-Alur helper V2 berikut telah diuji secara terisolasi dan digunakan pada edh001 r0002:
+Paket 2.0 tetap renderer asalnya, termasuk2.1.2 dan storyboard overview satu baris; legacy tetap kontrak MD asal. Tidak ada penerjemahan nama gaya, penambahan fakta atau konversi paket diterima otomatis. Referensi aktif edh001 sudah r0003/2.1, disetujui pengguna, diekspor dan di-ingest; [status nyata](overview-storyboard-verification.md).
 
 ```sh
 python tools/audit.py draft-v2 /path/<id>.mp4 /work/audit.json --audit-info /work/audit-info.json --output /work/candidate
 python tools/audit.py review /work/candidate/<id> --source /path/<id>.mp4 --output /work/review.md
-python tools/audit.py export-v2 /work/candidate/<id> --source /path/<id>.mp4 --output /work/packages --reviewed-sha256 <DIGEST_SNAPSHOT>
+python tools/audit.py export-v2 /work/candidate/<id> --source /path/<id>.mp4 --output /work/packages --receipt /work/review.md.json
 ```
 
-Tambahkan --include-source saat draft bila sumber kanonis belum terverifikasi. --quality/--scale/--columns mengatur media secara eksplisit. Receipt review berada di luar kandidat dan bukan persetujuan otomatis. Sesudah pengguna menyetujui keseluruhan kandidat, export mengemas byte yang sama; setiap koreksi dilakukan pada JSON/log aktual lalu draft/review ulang. Tidak ada regenerasi JPEG/created_at pada export. Aset renderer/font/template versi diterima tidak ditimpa; versi baru harus didaftarkan agar paket lama tetap dapat diperiksa.
+Default renderer mengikuti sumber:2.0→2.1.2,2.1→2.2.0. --include-source hanya bila MP4 kanonis belum terverifikasi tersedia dengan hash sama. --quality/--scale/--columns/--overview-scale/--storyboard-scale mengatur media eksplisit; koreksi config/JSON/log diikuti draft/review seluruh kandidat. Receipt di luar kandidat bukan persetujuan otomatis. Setelah pengguna menerima keseluruhan snapshot terbaru, export membungkus byte yang sama tanpa regenerasi JPEG/MD/created_at. Aset versi diterima tidak ditimpa.
 
-Registry tetap version 1; entri V2 menambah contract_version/audit_sha256. Taksonomi version 3 membedakan alias dari hubungan gaya. Reader/index memakai 2.0 untuk semua format sumber. Fingerprint meliputi runtime, schema, template penulisan, template beku, font/lisensi dan prinsip/taksonomi; cache tidak menjadi sumber fakta.
+Registry tetap version1, V2 menyimpan contract_version/audit_sha256. Source2.1 wajib paragraf Overview dan klasifikasi depth_direction fase. Pola turunan mempertahankan ambigu/urutan, bukan inferensi narasi. Fingerprint mencakup runtime/schema/template/font/layout/prinsip/taksonomi. Turunan dibangun generator; cache bukan sumber fakta.
 
-Menyalin ZIP ke incoming/ lokal tidak otomatis mengolahnya. Jalankan `python tools/library.py ingest`; tidak ada review isi kedua setelah ingest. Perbaikan referensi yang sudah aktif memerlukan ZIP revisi berikutnya dengan supersedes yang benar.
+## Audit di chat dan pembacaan media
 
-## Menyiapkan audit V2 di chat
+Gunakan [panduan audit](../audit/README.md) dan kit input 4 file dengan MP4 terpisah. Bootstrap memulihkan 33 runtime/schema/template/font/lisensi dari payload lokal. Inspect/sample tidak otomatis berarti frame dilihat; log viewed hanya pemeriksaan nyata. Baseline10 FPS+awal/akhir native dan pendalaman native berlaku. Tampilkan Overview, Storyboard, kolase semua shot dan MD enam bagian sebelum persetujuan keseluruhan. Uji fixture portable bukan run nyata pada akun GPT/Gemini.
 
-Gunakan [panduan audit V2](../audit/README.md), MP4 terpisah dan kit input berulang. ZIP input berisi empat file; AI menjalankan bootstrap untuk memulihkan 24 file runtime lengkap dengan schema/font/lisensi, lalu inspect/sample/draft-v2/review. Setelah keseluruhan kandidat disetujui, export-v2 memakai --receipt yang dibuat helper; receipt bukan persetujuan otomatis. Prompt audit/koreksi/ekspor mengatur tinjauan isi di chat; helper menyiapkan media dan memvalidasi ZIP sebelum download. Satu ZIP hasil final diunggah ke incoming/ tanpa menata file satu per satu.
+Input JSON/log/video dan receipt disimpan di luar folder kandidat. Kandidat diregenerasi di workspace chat, references/ berubah melalui ingest ZIP final. Setelah ZIP ditempel ke incoming/ lokal, jalankan ingest; tidak ada watcher atau review isi kedua. Untuk penyerahan tertentu gunakan `python tools/library.py ingest incoming/<id>-rNNNN.zip` agar ZIP lain tidak ikut diproses.
 
-`tools/audit.py` adalah helper workspace chat, bukan jalur publikasi ke references/. Input MD dan video disimpan di luar folder kandidat, sampling memakai folder baru per pass, dan regenerasi menolak file pengguna yang tidak dimilikinya. Lihat [hasil verifikasi Phase 2](phase-2-verification.md) untuk batas pengujian nyata.
+AI memakai indeks → identity → shot/area → gambar yang diperlukan. Panel/kolase/blok Storyboard tersimpan dapat diambil ke /tmp tanpa MP4; --native meminta sumber asli. Camera Start awal sumber terpisah dari Overview, biasanya akhir OUT. Adaptasi produksi IN lalu reverse membalik seluruh fase/rotasi/tempo dan tidak mengubah audit. [Panduan konsep/DNA/cloning](alur-konsep-desain-v2.md). Dokumen bekerja/ tetap terpisah.
 
 ## Alur dan status
 
@@ -77,4 +75,4 @@ Rujukan implementasi: [concurrency GitHub](https://docs.github.com/en/actions/ho
 Validasi teknis tidak membuktikan kebenaran visual kamera, isi desain, sudut fisik atau hasil video generatif. Seluruh koreksi isi terjadi di chat sebelum ZIP final. Phase 2 menguji perangkat audit dan tujuh pilot nyata; data sintetis tidak menjadi knowledge produksi.
 
 
-Sumber prinsip umum berada di sources/design-principles.json, terpisah dari knowledge/ hasil generator. Perubahan sumber ini memerlukan build/check serta regenerasi kit bila panduan audit ikut berubah. Prinsip diterbitkan verbatim, tanpa sintesis AI. docs/contracts/ai-reader-v1.md menjelaskan indeks dan proyeksi. Pengujian manfaat melalui pembuatan konsep/gambar tidak termasuk pekerjaan ini.
+Sumber prinsip umum berada di sources/design-principles.json, terpisah dari knowledge/ hasil generator. Perubahan sumber ini memerlukan build/check serta regenerasi kit bila panduan audit ikut berubah. Prinsip diterbitkan verbatim, tanpa sintesis AI. docs/contracts/ai-reader-v2-1.md menjelaskan indeks dan proyeksi terbaru. Pengujian manfaat melalui pembuatan konsep/gambar tidak termasuk pekerjaan ini.

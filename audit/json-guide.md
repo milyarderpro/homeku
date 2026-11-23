@@ -1,6 +1,6 @@
-# Panduan pengisian audit.json V2
+# Panduan pengisian audit.json 2.1
 
-Gunakan template-audit.json untuk isi dan template-audit-info.json untuk metadata proses. Semua null numerik dan {{penanda}} pada template harus diganti sebelum draft final. Setelah kit diekstrak, `template-audit.json` dan `template-audit-info.json` berada di root workspace; salin sebagai work/audit.json dan work/audit-info.json, lalu isi. Template bukan audit valid; jangan mengisinya dengan fakta contoh Willow Cottage atau nilai default ruangan.
+Gunakan template-audit.json untuk isi dan template-audit-info.json untuk metadata proses. Semua placeholder waktu/indeks/luas dan {{penanda}} harus diisi sebelum draft. Null yang sah (depth_direction ambigu, model_build tidak diketahui, atau metadata komponen yang tidak berlaku) dipertahankan sesuai bukti; jangan mengarang nilai untuk menghapus null. Setelah kit diekstrak, `template-audit.json` dan `template-audit-info.json` berada di root workspace; salin sebagai work/audit.json dan work/audit-info.json, lalu isi. Template bukan audit valid; jangan mengisinya dengan fakta contoh Willow Cottage atau nilai default ruangan.
 
 ## Siapa menulis apa
 
@@ -8,7 +8,7 @@ AI auditor menulis identitas/gaya, estimasi ukuran, narasi, klaim/status/bukti, 
 
 | Bidang sumber | Cara mengisi |
 | --- | --- |
-| schema_version/id/revision | 2.0; ID mengikuti stem MP4; r1 untuk sumber baru, +1 dengan supersedes yang benar untuk revisi aktif |
+| schema_version/id/revision | 2.1; ID mengikuti stem MP4; r1 untuk sumber baru, +1 dengan supersedes yang benar untuk revisi aktif |
 | identity | Nama rumah deskriptif; primary_style, nama influences dan interior_style bahasa Inggris. style_names_language=en; penjelasan boleh Indonesia. Ciri, palet, suasana/lingkungan konkret. style_relations hanya family/blend/influence yang dinyatakan, bukan alias rekaan |
 | size | scale/massing/vertical/footprint/proportions dan floor_area_m2 min/max positif berurutan. Estimasi luas lantai total rumah wajib diisi; basis/uncertainty hanya JSON, tampilan cukup 60–90 m² sebagai contoh format |
 | profile | Seluruh aspek DNA kontrak ditulis eksplisit dengan id/aspect/value/state/confidence/evidence/area_ids/basis/uncertainty. Tambahkan interior-style dan nilai pengaruh diskret agar mudah dicari. Unknown bila belum diketahui; jangan menebak material fisik |
@@ -22,9 +22,19 @@ AI auditor menulis identitas/gaya, estimasi ukuran, narasi, klaim/status/bukti, 
 | camera_simple/rhythm | Narasi Indonesia lengkap tetapi singkat untuk semua arah, kebersamaan/urutan, target dan ritme. Ditulis auditor; renderer tidak menerjemahkan notasi |
 | tempo_profile | Interval tempo aktual sepanjang shot, misalnya moderate lalu fast. Perubahan tempo tidak otomatis fase kamera baru; ~2× adalah perubahan skala, bukan kecepatan |
 | journey_dna | Wajib untuk multi area: lintasan, penghubung, peralihan fokus/reveal dan ritme. Normal boleh kosong bila tidak menambah penjelasan |
-| panels/overviews | ID unik global, shot/area_ids, frame_index/PTS tepat dari inspect, role/label/reason. Normal tiga panel start/middle/end; tengah native terdekat titik tengah. Multi dinamis, awal/akhir dan momen penting. Overview tiap area biasanya awal IN/akhir OUT, boleh bukan panel kolase, tidak menjadi file terpisah |
+| panels/overviews | ID unik global, shot/area_ids, frame_index/PTS tepat dari inspect, role/label/reason. Normal tiga panel start/middle/end; tengah native terdekat titik tengah. Multi dinamis, awal/akhir dan momen penting. Overview tiap area biasanya awal IN/akhir OUT, boleh bukan panel kolase, tersusun dalam media/overview.jpg, satu baris. Isi composition_summary wajib pada setiap pilihan overview |
 | uncertainty/review_summary/composition_notes/camera_notes | Pertahankan batas pengamatan serta penjelasan terkait, jangan menyelipkan status draf/final ke narasi manusia |
 | relations/limitations | Hubungan antarshot dan batas keseluruhan yang benar-benar didukung; urutan edit bukan bukti denah atau satu rumah fisik |
+
+## Overview dan arah fase
+
+`shots[].overviews[].composition_summary` adalah satu paragraf biasa tanpa `>` atau Enter. Setelah melihat frame terpilih, jelaskan posisi kamera, arah pandang, sudut, ketinggian/kemiringan, cakupan wide, penempatan elemen, kedalaman dan pencahayaan. Ringkas dan konkret, bukan inventaris furnitur berulang. Judul Shot/Area/waktu dan blockquote ditambahkan renderer. Ini menjelaskan frame overview terpilih; `shots[].composition` selalu menjelaskan **awal shot sumber**, sehingga overview akhir OUT dapat berbeda.
+
+`shots[].phases[].depth_direction` wajib: IN (maju), OUT (mundur), NO IN/OUT (tidak ada maju/mundur), atau null bila belum jelas. Gunakan bukti temporal dan komponen translasi yang eksplisit. Pan/orbit/zoom atau skala saja tidak menentukan klasifikasi. Fase Dolly-In eksplisit tidak boleh diberi OUT/NO IN/OUT; fase berlawanan arah harus dipisah. Bila ambigu, perdalam native dan catat batasnya; null bukan NO IN/OUT.
+
+Helper menurunkan Camera Pattern dari fase: arah sama berurutan digabung, arah berubah dipertahankan, fase netral tidak menambah arah bila sudah ada IN/OUT. Orbit netral lalu Dolly-In menghasilkan IN. Fase ambigu membuat pola shot null (tampilan —). Antarshot memakai ` – `; pola campuran diberi kurung, misalnya IN – (OUT → IN) – NO IN/OUT. Jangan menambahkan camera_pattern manual ke audit.json.
+
+Camera summary, components fase dan notasi raw ditulis satu paragraf; tidak ada Enter setelah → atau +. ~× adalah perubahan skala, bukan kecepatan. Native PTS tetap presisi penuh; tampilan memakai dua desimal.
 
 ## Status dan bukti
 
@@ -37,3 +47,11 @@ Evidence menunjuk ID pilihan panel/overview, atau `frame:shot-01:42` untuk frame
 Audit-info berisi method, limitations cakupan, ai provider/model/model_build yang diketahui, reviewed_ranges dan frame_reviews. created_at opsional dihitung helper saat draft. Model/build tidak diketahui tidak dikarang; model_build null. Gunakan sampling.json sebagai template record; isi viewed_frame_indices hanya setelah frame benar-benar dilihat. Baseline 10 FPS seluruh shot wajib selesai; pendalaman native ditambah sebagai record baru. Ekstraksi otomatis tidak boleh dianggap pemeriksaan otomatis.
 
 Simpan sumber audit JSON, MP4 dan metadata kerja di luar kandidat. Koreksi JSON/log lalu draft dan review ulang. MD/media/manifest adalah hasil; jangan merawat fakta manual kedua atau memodifikasi hasil sesudah persetujuan. Receipt review mengikat seluruh kandidat, bukan hanya MD.
+
+## Render dan pemeriksaan final
+
+Sumber/paket2.1 → report/media2.2.0. Helper menghasilkan laporan enam bagian: Profil desain, Ukuran & proporsi, Shot Timeline, Overview, Storyboard, Shot Details. Timeline lima kolom memakai Camera Movement teknis; Tempo tetap di detail. A/B/C dan subjudul multi area bold; Overview dan kategori desain A memakai blockquote. Kamera regular satu paragraf. Nama gaya utama dan luas bold, tanpa catatan dasar/kepastian pada MD.
+
+Inventaris tepat N+2 JPEG: media/shot-NN.jpg per take kontinu, media/overview.jpg satu baris, media/storyboard.jpg seluruh kolase vertikal. Kolase normal tiga panel, multi area dinamis dan kronologis. Semua foto native mempertahankan konteks/rasio; hanya camera: bold pada baris kamera, caption regular. Tidak ada JPEG overview lepas per shot atau motion/.
+
+Default quality91, scale1, columns4. Bila batas media dilampaui, pilih --quality (60–98), --scale, --overview-scale, --storyboard-scale (0,1], --columns (1–6) secara eksplisit, lalu draft/review ulang lengkap. Jangan mengecilkan font/membuang panel/membagi file diam-diam. Tampilkan Overview, Storyboard, seluruh kolase dan MD sebelum pengguna menyetujui snapshot terakhir. Export memakai receipt di luar kandidat dan tidak merender ulang.

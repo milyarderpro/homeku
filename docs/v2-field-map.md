@@ -43,3 +43,17 @@ Legacy tidak dikonversi atau dilengkapi field V2 otomatis. Model bersama mempert
 identity.style_names_language=en menandai nama gaya utama/pengaruh/interior berbahasa Inggris; wajib untuk renderer 2.1.x. Prosa tetap bahasa Indonesia. Header storyboard mengambil identity.primary_style. Caption hanya memformat role/label/waktu sumber; Start/Middle/End tidak mengulang label bebas normal, multi memakai nama momen. Metadata baru bold_font_sha256 mengikat font bold; template dan implementasi media 2.0.0/2.1.0 dibekukan. Kontrak sumber/reader tetap 2.0 dan data diterima tidak dikonversi.
 
 Tampilan 2.1.2 mengembalikan label dan timestamp ke bawah tiap foto; timestamp regular sekitar 75% ukuran label bold. Header kolase hanya judul/rentang/durasi. Ukuran judul tetap 15% lebih kecil daripada 2.1.0. Presisi dan pointer JSON tidak berubah.
+
+## Tambahan sumber 2.1 / laporan 2.2.0
+
+| Sumber | Laporan / pembaca |
+| --- | --- |
+| shots[].overviews[].composition_summary | Paragraf Overview blockquote / reader verbatim |
+| shots[].phases[].depth_direction | Camera Pattern turunan, provenance fase |
+| manifest.media[].panels[].selection_id + bbox | Bukti tunggal dengan banyak locations |
+| manifest.media[].blocks[] | Crop blok Storyboard tanpa MP4 |
+| render.overview_scale / storyboard_scale / layout_sha256 | Konfigurasi eksplisit dan snapshot |
+
+[Kontrak 2.1](contracts/package-v2-1.md). Camera Start tetap shots[].composition.
+
+Penerapan sumber2.1 telah aktif pada edh001 r0003 melalui ZIP revisi yang disetujui. [Bukti penerapan](overview-storyboard-verification.md) mencatat snapshot, ekspor/ingest dan hasil reader; mapping tidak diisi dari MD hasil render.
