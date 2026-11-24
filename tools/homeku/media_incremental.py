@@ -1,7 +1,8 @@
 """Byte-compatible subset executor; registered media2.2.0 stays immutable."""
 import io
 from PIL import Image, ImageDraw
-from .media_v2_2 import expected_media, MAX_BYTES
+from .media import expected_media
+from .media_v2_2 import MAX_BYTES
 from .video import extract_frame
 from .common import require, sha256
 

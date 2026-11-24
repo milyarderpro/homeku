@@ -1,4 +1,4 @@
-# Audit HOMEKU2.4 di ChatGPT/Gemini
+# Audit HOMEKU2.5 di ChatGPT/Gemini
 
 Lampirkan **MP4 asli + homeku-audit-kit.zip**, satu video per chat, lalu gunakan [prompt mulai](prompts/01-audit.md). AI menjalankan helper di chat; pengguna meninjau isi dan mengunduh satu ZIP final.
 
@@ -13,6 +13,14 @@ Estimasi visual kamera sah: Dolly-In (~2×) + Pan Right (~15–20°). Tidak perl
 
 [Authoring](authoring.md) berisi perintah prepare/mark-viewed/complete/check-input/draft/review/export yang diuji. [Panduan JSON](json-guide.md) dibaca sesuai field yang diperlukan; tidak perlu memuat semua kontrak sekaligus sebelum mengamati. Contoh normal/multi di examples/ hanya sintetik, bukan isi referensi.
 
-Sumber2.4 → report2.2.3/media2.2.0/reader2.4; layout/font/caption tetap. Format2.3 tetap pengukuran wajib untuk ~×,2.2 tetap10FPS; sumber diterima tidak dikonversi. JSON satu sumber final, MD hanya renderer. Cache/session/performance/receipt di luar kandidat dan ZIP.
+Sumber2.5 → report2.2.4/media2.2.1/reader2.5; caption Start/Middle/End tebal dan waktu lebih kecil. Format2.4 tetap angka pada gerak jelas/report2.2.3/media2.2.0;2.3 tetap pengukuran wajib untuk ~×,2.2 tetap10FPS; sumber diterima tidak dikonversi. JSON satu sumber final, MD hanya renderer. Cache/session/performance/receipt di luar kandidat dan ZIP.
 
-[Provider](providers.md), [koreksi](prompts/02-correct.md), [ekspor](prompts/03-export.md), [kontrak](../docs/contracts/package-v2-4.md), [pilot](pilots/README.md). Kelulusan tooling bukan persetujuan isi atau penyelesaian pilot nyata.
+[Provider](providers.md), [koreksi](prompts/02-correct.md), [ekspor](prompts/03-export.md), [kontrak](../docs/contracts/package-v2-5.md), [pilot](pilots/README.md). Kelulusan tooling bukan persetujuan isi atau penyelesaian pilot nyata.
+
+## Kamera fleksibel dan helper opsional2.5
+
+Angka opsional per komponen, tanpa mengubah confidence. Angka tunggal default, rentang boleh; estimate_basis boleh null tanpa angka. Contoh: Dolly-Out (~1.6×) + Orbit Left + Subtle Pan Right (Ease-Out). Lihat camera-cases.md.
+
+Jika interval gabungan belum jelas: python tools/audit.py motion-hints work/audit/session.json --shot-id shot-02. Helper memakai cache, maksimal32frame default/640px batas, tanpa verdict dan tidak mengisi viewed. OpenCV/NumPy opsional; bila tidak tersedia lanjutkan visual. Jangan memasang paket jaringan rutin di chat. Semua output helper/inventory kerja di luar ZIP.
+
+Untuk melanjutkan session2.4 gunakan prepare --contract-version 2.4 --resume; sumber/session harus versi sama. Review2.5 memberi ringkasan fakta kerja terpisah; AI mencocokkan narasi/fakta sebelum persetujuan, tanpa review ulang sesudah ingest.

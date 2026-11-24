@@ -95,3 +95,7 @@ Reader/index2.3 dan generator6 mempertahankan semua cabang lama, termasuk aturan
 - frame_reviews selected/mode/FPS berasal dari pass helper. viewed deklarasi eksplisit setelah melihat; cache tidak otomatis viewed.
 - Reader2.4 mempertahankan semua cabang lama dan provenance, termasuk measurement null. Generator7 tidak menambahkan cache/session/performance ke referensi, indeks atau knowledge.
 - analysis.md tetap enam bagian/A-B-C; font/layout/media2.2.0 dan snapshot export byte-identik.
+
+## Default audit kamera2.5
+
+Sumber2.5/report2.2.4/media2.2.1/reader2.5/generator8. Angka kamera opsional per komponen, termasuk medium/high; tidak perlu alasan khusus saat angka tidak ditulis. Estimate_basis cukup singkat bila berangka, boleh null bila tanpa angka. Baseline6FPS tetap; helper flow opsional/cache lokal, tanpa AI API. Kompatibilitas2.4 dan sebelumnya tetap kontrak asal, bukan default baru. Caption versi baru Start/Middle/End tebal dan waktu lebih kecil. Cache/session/flow/inventory kerja tidak masuk ZIP/knowledge; export byte sama tanpa render. Lihat docs/audit-camera-implementation-plan.md dan audit/authoring.md.

@@ -141,7 +141,10 @@ def validate_audit(audit, duration=None, times=None):
             scope(p["area_ids"], s["area_ids"], "phase area", True)
             from .markdown import component
             for c in p["components_parsed"]:
-                require(c==component(c["raw"]), "Parsed component metadata differs from raw notation")
+                require(c==component(c["raw"], audit["schema_version"]), "Parsed component metadata differs from raw notation")
+                if audit["schema_version"]=="2.5":
+                    from .camera_notation import validate_component
+                    validate_component(c,p)
                 if "accelerating" in {q.casefold() for q in c["qualifiers"]}:
                     require(p["speed_change"] in {"accelerating","variable"}, "Accelerating notation conflicts with speed_change")
             require(normalized(p["components"]) == normalized(" + ".join(c["raw"] for c in p["components_parsed"])), "Parsed components differ from technical notation")
@@ -166,7 +169,7 @@ def validate_audit(audit, duration=None, times=None):
         evidence(r)
     require(any(c["aspect"] == "primary-style" and c["value"] == audit["identity"]["primary_style"] for c in audit["profile"]), "Primary style must match explicit DNA claim")
     require(any(c["aspect"] == "apparent-scale" and c["value"] == audit["size"]["scale"] for c in audit["profile"]), "Scale must match explicit DNA claim")
-    if audit["schema_version"] in {"2.2", "2.3", "2.4"}:
+    if audit["schema_version"] in {"2.2", "2.3", "2.4", "2.5"}:
         from .audit_quality import validate_quality
         validate_quality(audit, times)
     return audit

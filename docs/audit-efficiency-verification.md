@@ -77,3 +77,7 @@ Helper source2.4 dapat merender kandidat dari pengamatan baru; memasang tooling 
 Gunakan kit2.4 dan prompt01 pada chat baru masing-masing provider untuk edh058. Simpan run terpisah audit/result/<provider>/v2.4/run-NN/ agar hasil2.3 tetap utuh. Tinjau estimasi sudut/skala, arah/fase/tempo, detail desain/fakta, Camera Start/Overview, MD dan seluruh media. Koreksi di chat sebelum persetujuan keseluruhan dan ekspor. Semua moderate sah.
 
 Catat waktu kandidat siap, error/retry dan durasi alat; pisahkan jeda persetujuan. Target pengurangan waktu keseluruhan sekitar30% masih perlu dibuktikan di lingkungan provider yang sebanding. Lebih cepat dengan detail hilang atau sudut dihapus kembali bukan hasil yang memenuhi tujuan. Lanjutkan lima pilot lain setelah alur memadai. Tidak ada pengujian manfaat melalui produksi konsep/gambar/video pada pekerjaan ini.
+
+## Lanjutan kamera2.5 — 24 November 2026
+
+Dua hasil edh058 sumber2.4 kini tersedia/diperiksa, MD serta8JPEG sesuai renderer; belum disetujui/di-ingest. Pemeriksaan visual tambahan hanya18frame, bukan audit seluruh baseline. Laporan waktu provider bukan benchmark terkontrol. Implementasi kamera2.5 melanjutkan plan audit-camera-implementation-plan.md; run2.5 pengguna belum dijalankan. Status historis di atas berlaku pada saat dicatat.

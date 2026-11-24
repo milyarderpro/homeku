@@ -33,6 +33,11 @@ RUNTIME += ["tools/homeku/reporting_v2_2_3.py", "docs/contracts/audit-v2-4.schem
             "tools/homeku/authoring.py", "tools/homeku/preflight.py", "tools/homeku/audit_session.py",
             "tools/homeku/video_cache.py", "tools/homeku/audit_performance.py", "tools/homeku/media_incremental.py",
             "audit/template-audit.json", "audit/template-audit-info.json"]
+RUNTIME += ["tools/homeku/reporting_v2_2_4.py","tools/homeku/media_v2_2_1.py",
+            "tools/homeku/camera_notation.py","tools/homeku/motion_analysis.py",
+            "tools/assets/templates/analysis-2.2.4.md","tools/assets/layouts/media-2.2.1.json",
+            "docs/contracts/audit-v2-5.schema.json","docs/contracts/manifest-v2-5.schema.json",
+            "requirements-audit-motion.txt"]
 # Guides are local, hash-inventoried resources; read only the current stage.
 GUIDES = ["audit/README.md", "audit/visual-audit.md", "audit/protocol.md", "audit/rubric.md",
           "audit/json-guide.md", "audit/vocabulary.md", "audit/providers.md", "audit/calibration.md",
@@ -42,6 +47,7 @@ GUIDES = ["audit/README.md", "audit/visual-audit.md", "audit/protocol.md", "audi
           "docs/contracts/analysis-v2-2-1.md", "audit/authoring.md",
           "docs/contracts/package-v2-4.md", "docs/contracts/analysis-v2-2-3.md",
           "audit/examples/normal/audit.json", "audit/examples/multi/audit.json"]
+GUIDES += ["audit/camera-cases.md","docs/contracts/package-v2-5.md","docs/contracts/analysis-v2-2-4.md"]
 BUNDLED = RUNTIME + GUIDES
 OUTER_FILES = {"README.md", "homeku_runtime.py", "template-audit.json", "template-audit-info.json"}
 
@@ -113,17 +119,17 @@ if __name__=="__main__":
 
 
 def build_bytes():
-    parts = ["""# HOMEKU — kit audit2.4
+    parts = ["""# HOMEKU — kit audit2.5
 
 Input: MP4 asli terpisah + ZIP ini. Hasil akhir satu ZIP tanpa video.
 
 1. Ekstrak4file dan jalankan python homeku_runtime.py --output . untuk memulihkan seluruh resource lokal berhash. Python3.11+, Pillow, jsonschema dan FFmpeg/ffprobe diperlukan; tanpa unduhan kode.
 2. Baca audit/visual-audit.md dan audit/authoring.md. Inspect dan periksa cut nyata; prepare menghitung PTS/panel serta baseline6FPS. Amati kamera/desain sebelum menulis isi.
-3. Isi work/audit/audit.json dan metadata provider. Estimasi visual ~×/~° dengan asumsi wajar sah; piksel opsional. Deklarasikan viewed hanya sesudah melihat. complete menghitung metadata mekanis, check-input/draft memeriksa sebelum render.
+3. Isi work/audit/audit.json dan metadata provider. Angka ~×/~° opsional per komponen; angka tunggal default, rentang sah; confidence tidak tergantung angka. Piksel/helper flow opsional. Deklarasikan viewed hanya sesudah melihat. complete menghitung metadata mekanis, check-input/draft memeriksa sebelum render.
 4. Tampilkan MD enam bagian, Overview, Storyboard dan semua kolase. Koreksi memakai pekerjaan/cache yang cocok; satu persetujuan keseluruhan kandidat terbaru.
 5. Sesudah persetujuan, export-v2 --source /path/<id>.mp4 --receipt work/review.md.json membungkus byte snapshot sama. ZIP tanpa MP4/cache/log/receipt.
 
-Sumber2.4/report2.2.3/media2.2.0. Detail desain, estimasi luas, gaya English/prosa Indonesia tetap lengkap. Semua moderate boleh. Pendalaman10FPS/native terarah; bukan mengulang semua shot secara rutin. Panduan JSON dibaca sesuai kebutuhan; contoh normal/multi hanya sintetik. Jangan menyalin contoh atau menganggap ekstraksi sebagai viewed. Kontrak lama tidak dilonggarkan.
+Sumber2.5/report2.2.4/media2.2.1. Detail desain, estimasi luas, gaya English/prosa Indonesia tetap lengkap. Semua moderate boleh. Pendalaman10FPS/native terarah; bukan mengulang semua shot secara rutin. Panduan JSON dibaca sesuai kebutuhan; contoh normal/multi hanya sintetik. Jangan menyalin contoh atau menganggap ekstraksi sebagai viewed. Kontrak lama tidak dilonggarkan.
 """]
     parts.append("\n## Inventaris resource lokal\n\n| File | SHA-256 |\n| --- | --- |\n" +
                  "".join(f"| {name} | {sha256(ROOT / name)} |\n" for name in BUNDLED))

@@ -85,3 +85,9 @@ Metode inti sekarang visual-audit.md: depth dahulu, tiga tes pembanding untuk ge
 Hasil edh058 terbaru sumber2.3/report2.2.2 tersedia dan valid menurut kontraknya; hash/status diperbarui pada pilots/edh058-comparison.md. Pengguna menerima estimasi sudut berbasis asumsi wajar. Laporan waktu menunjukkan penulisan data dan pengulangan validasi sebagai beban utama Gemini, bukan pengukuran piksel semata.
 
 Sumber2.4 mengizinkan estimasi visual ~×/~° tanpa kalibrasi; scale_measurement opsional. Bagian jelas tetap punya perkiraan angka, bagian ambigu mempunyai alasan khusus. Metadata PTS/parser/summary/log dibantu prepare/complete, viewed eksplisit. Pendalaman tetap terarah dan preflight sebelum render. Tooling/fixture/benchmark tidak menjadi run atau persetujuan audit2.4.
+
+## Lanjutan kamera2.5 — 24 November 2026
+
+Dua hasil edh058 sumber2.4 kini tersedia/diperiksa, MD serta8JPEG sesuai renderer; belum disetujui/di-ingest. Pemeriksaan visual tambahan hanya18frame, bukan audit seluruh baseline. Laporan waktu provider bukan benchmark terkontrol. Implementasi kamera2.5 melanjutkan plan audit-camera-implementation-plan.md; run2.5 pengguna belum dijalankan. Status historis di atas berlaku pada saat dicatat.
+
+Tooling2.5 kini selesai:214tes lulus tanpa skip, kit4file/90resource, caption baru dan parser angka opsional. Lihat docs/audit-camera-verification.md. Run provider2.5 tetap belum dijalankan.

@@ -118,7 +118,10 @@ def normalized(value):
     return re.sub(r"\s+", " ", value).strip().rstrip(".")
 
 
-def component(value):
+def component(value, version=None):
+    if version == "2.5":
+        from .camera_notation import component as current
+        return current(value)
     """Preserve the literal clause, while projecting explicit camera tokens only."""
     names = ("Dolly-In", "Dolly-Out", "Orbit Left", "Orbit Right", "Pan Left", "Pan Right",
              "Tilt Up", "Tilt Down", "Truck Left", "Truck Right", "Pedestal Up", "Pedestal Down",

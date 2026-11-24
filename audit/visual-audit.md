@@ -1,5 +1,22 @@
 # Metode inti audit visual HOMEKU
 
+## Default 2.5 — aturan kamera yang disepakati
+
+Format: [Komponen Utama] ([Skala]) [+ / →] [Komponen Sekunder] ([Intensitas / Kurva]).
+Bagian dalam kurung opsional. Gerak jelas tanpa angka tetap sah pada medium/high; tidak perlu alasan khusus atau menurunkan confidence. Angka tunggal default, rentang boleh. Estimate_basis cukup satu kalimat bila angka ada, boleh null bila tidak ada. Piksel opsional; ketidakpastian gerakan yang nyata tetap dipertahankan.
+
+Contoh: Dolly-Out (~1.6×) + Orbit Left + Subtle Pan Right (Ease-Out).
+Straight/Diagonal/Pure/Mild/Subtle/Moderate/Strong dan easing dipertahankan. Intensitas Pan bukan tempo; easing berlaku pada komponen yang diberi label. + simultan, → berurutan, satu paragraf. x/koma desimal hanya dinormalisasi pada sumber kerja baru; paket lama utuh.
+
+Baca perjalanan utuh dan baseline 6 FPS berurutan; bandingkan per interval dengan jangkar utama, benda dekat dan jauh yang benar-benar terlihat. Periksa depth → translation → rotation serta perubahan sisi/perspektif. Pergeseran layar atau oklusi saja tidak membuktikan Pan/Orbit. Ringkasan 6–10 momen bukan pengganti baseline; sumber ≤6 FPS dan shot <1s native, pendalaman 10/native sesuai pertanyaan. Cut memakai PTS native, bukan selalu30FPS.
+
+Helper motion-hints opsional memakai frame cache dan statistik ringan, tanpa verdict otomatis, panggilan AI berbayar atau instalasi jaringan rutin. Bila tidak tersedia, pemeriksaan visual tetap dapat dilanjutkan. Rumus/ambang eksperimen adalah petunjuk; bukan hukum universal. Lihat camera-cases.md.
+
+Inventaris temuan penting sebagai fakta lalu cocokkan narasi arsitektur/furnitur/lingkungan dan facet_roles. Tidak ada kuota enam fakta atau jumlah minimal baru. Validator memeriksa struktur, bukan membuktikan kelengkapan makna prosa. MD tetap enam bagian/A-B-C; statistik kerja tidak masuk MD/ZIP.
+
+Sumber2.5/report2.2.4/media2.2.1. Aturan versi2.4 dan sebelumnya di bawah berlaku untuk kompatibilitas, bukan default baru.
+
+
 Baca panduan ini sebelum mengisi JSON. Pengamatan dilakukan per take kontinu, bukan per ruangan. Lihat perjalanan utuh lalu frame terpilih berurutan. Catatan kerja bersifat sementara; hanya audit.json menjadi sumber final.
 
 ## Urutan keputusan per fase
@@ -32,13 +49,13 @@ Tilt memerlukan rotasi vertikal jelas dan berkelanjutan. Drift/jitter tipis buka
 
 ## Pengamatan adaptif
 
-Sumber2.3: baseline6FPS setiap shot ditambah batas native pertama/terakhir. Sumber≤6FPS seluruh native; shot<1detik native. Tidak ada interpolasi. Perdalam bagian yang belum jelas pada10FPS atau langsung native, lalu perluas jika pertanyaan belum terjawab. Alasan menyebut pertanyaan visual dan interval, bukan otomatis rentang tengah. Sumber2.2 tetap10FPS/native sesuai kontrak asal.
+Sumber2.3–2.5: baseline6FPS setiap shot ditambah batas native pertama/terakhir. Sumber≤6FPS seluruh native; shot<1detik native. Tidak ada interpolasi. Perdalam bagian yang belum jelas pada10FPS atau langsung native, lalu perluas jika pertanyaan belum terjawab. Alasan menyebut pertanyaan visual dan interval, bukan otomatis rentang tengah. Sumber2.2 tetap10FPS/native sesuai kontrak asal.
 
 Ekstraksi bukan pemeriksaan. Hanya frame yang benar-benar dilihat dicatat viewed. Semua evidence, panel dan Overview harus termasuk viewed. Simpan frame kerja di workspace sementara, bukan ZIP.
 
 ## Estimasi dan tempo
 
-~× adalah besaran perubahan skala gambar: IN=ukuran akhir/awal; OUT=ukuran awal/akhir. Gunakan objek/bagian yang sama, dimensi width/height yang sama, terlihat utuh pada kedua frame native. Bila memilih pengukuran piksel, catat koordinat resolusi sumber (bukan ukuran thumbnail), anchor serta evidence awal/akhir. Pengukuran ini opsional pada sumber2.4; estimasi visual dengan asumsi wajar tetap sah. Hindari objek terpotong; pilih anchor lain. Angka tampil satu desimal atau rentang yang mencakup hasil ukur. Ini bukan faktor kecepatan/jarak fisik.
+~× adalah besaran perubahan skala gambar: IN=ukuran akhir/awal; OUT=ukuran awal/akhir. Gunakan objek/bagian yang sama, dimensi width/height yang sama, terlihat utuh pada kedua frame native. Bila memilih pengukuran piksel, catat koordinat resolusi sumber (bukan ukuran thumbnail), anchor serta evidence awal/akhir. Pengukuran ini opsional pada sumber2.4; estimasi visual dengan asumsi wajar tetap sah. Hindari objek terpotong; pilih anchor lain. Angka ditulis ringkas, tunggal atau rentang; sumber2.5 juga menerima ~1.75×. Ini bukan faktor kecepatan/jarak fisik.
 
 Pan/Orbit: usahakan ~° melalui orientasi/jangkar. Bila tidak dapat dipisahkan dari gerak lain, estimate_basis menjelaskan kendala khusus; jangan memberi presisi palsu. Dolly+Zoom yang tidak terpisahkan tidak boleh diberi rasio total yang sama pada keduanya. Pertahankan batas atribusi dan komponen yang jelas.
 
@@ -51,10 +68,6 @@ Interior: (1) bentuk/volume/bukaan, (2) layout dan hubungan terlihat, (3) furnit
 
 Catat detail yang benar-benar terlihat, termasuk konfigurasi bathroom/kitchen yang berbeda. Hindari daftar furnitur generik. Pisahkan terlihat, uncertain, not-visible, not-present dan unknown. Urutan edit tidak membuktikan denah/adjacency. Nama gaya English; uraian Indonesia. Luas lantai wajib estimasi rentang. Ketentuan produksi reverse/4–6detik/lima shot tidak berlaku di audit pustaka.
 
-## Audit efisien sumber2.4
+## Kompatibilitas
 
-Estimasi visual ~×/~° boleh memakai asumsi yang wajar; pengukuran piksel opsional. Pan/Orbit yang jelas tetap diberi perkiraan sudut, Dolly/Zoom perkiraan skala. Contoh: Dolly-In (~1.8–2.2×) + Pan Right (~15–20°). Tidak perlu focal length, kalibrasi3D atau sumber eksternal. Ketiadaan kalibrasi saja bukan alasan menghapus angka. estimate_basis cukup satu kalimat mengenai jangkar/pengamatan/asumsi; kendala nyata dijelaskan khusus pada bagian ambigu, bukan alasan umum yang disalin ke semua shot.
-
-Jika scale_measurement diisi, pengukuran nyata tetap diperiksa. Format2.3 mempertahankan kewajiban pengukuran asal. camera_checks tetap tiga sumbu dengan uraian singkat, bukan esai pembuktian. Semua moderate boleh; estimasi ~× bukan tempo.
-
-Baseline6FPS satu putaran; pendalaman10/native pada rentang pertanyaan. Calon midpoint tambahan cukup frame yang diperlukan, bukan otomatis lima frame setiap shot. Pemeriksaan seluruh shot boleh bila memang perlu. SIFT/RANSAC/pose3D bukan langkah rutin. Helper menghitung PTS, parser komponen dan log selected; hanya AI yang menyatakan frame benar-benar viewed. Isi desain dan posisi awal tetap diperiksa lengkap.
+Sumber2.4 tetap angka pada gerak jelas/report2.2.3/media2.2.0; sumber2.3 tetap pengukuran ~×, sumber2.2 baseline10FPS. Tidak mengubah paket lama. Default2.5 mengikuti aturan opsional di awal panduan.

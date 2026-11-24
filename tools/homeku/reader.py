@@ -30,7 +30,7 @@ def _aliases(root,group,value):
     return value.casefold()
 
 
-def search(root,*,style=None,style_role="primary-style",style_relation=None,scale=None,area=None,configuration=None,tempo=None,route=None,limit=10,offset=0,include_uncertain=True):
+def search(root,*,style=None,style_role="primary-style",style_relation=None,scale=None,area=None,configuration=None,tempo=None,movement=None,camera_qualifier=None,route=None,limit=10,offset=0,include_uncertain=True):
     require(1<=limit<=50 and offset>=0,"Search limit must be 1–50 and offset nonnegative")
     index=_generated(root,"data/search-index.json");registry=_registry(root)["references"]
     require({r["id"] for r in index["references"]}==set(registry),"Registry/index differ; run build")
@@ -51,6 +51,8 @@ def search(root,*,style=None,style_role="primary-style",style_relation=None,scal
         for s in r["shots"]:
             if areas and not set(areas)<=set(a.casefold() for a in s["areas_canonical"]):continue
             if tempo and tempo not in s["tempos"]:continue
+            if movement and _aliases(root,"movements",movement) not in {v.casefold() for v in s["movements"]}:continue
+            if camera_qualifier and camera_qualifier.casefold() not in {v.casefold() for v in s["camera_qualifiers"]}:continue
             if configuration and not any(f["state"] in allowed and f["value"].casefold()==configuration.casefold() for f in s["design_facets"]):continue
             if wanted_route:
                 actual=[_aliases(root,"areas",v) for v in s["route"]]
@@ -58,7 +60,7 @@ def search(root,*,style=None,style_role="primary-style",style_relation=None,scal
                 if not s["multi_area"] or not any(actual[i:i+len(wanted_route)]==wanted_route for i in range(len(actual)-len(wanted_route)+1)):continue
             selected.append(s)
         if selected:matches.append({**{k:r[k] for k in ("id","title","revision","json","profile_facets")},"shots":selected})
-    return {"schema_version":"2.4","total":len(matches),"offset":offset,"limit":limit,"results":matches[offset:offset+limit],
+    return {"schema_version":"2.5","total":len(matches),"offset":offset,"limit":limit,"results":matches[offset:offset+limit],
             "next_offset":offset+limit if offset+limit<len(matches) else None}
 
 
@@ -66,7 +68,7 @@ def load_reader(root,rid):
     registry=_registry(root)["references"]
     require(rid in registry,"Reference is not active in registry")
     payload=_generated(root,f"data/projections/{rid}.json")
-    schema_check(payload,"reference-reader-v2-4.schema.json")
+    schema_check(payload,"reference-reader-v2-5.schema.json")
     require(payload["reference"]["content_sha256"]==registry[rid]["content_sha256"]==content_hash(root/"references"/rid),"Reference changed outside ZIP revision")
     return payload
 

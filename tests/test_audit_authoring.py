@@ -7,7 +7,11 @@ from pathlib import Path
 from unittest.mock import patch
 from tests.fixtures.factory import make_v2_inputs
 from homeku.common import LibraryError,read_json,dumps
-from homeku.authoring import prepare,complete
+from homeku.authoring import prepare as current_prepare,complete
+
+def prepare(*args,**kwargs):
+    kwargs.setdefault("contract_version","2.4")
+    return current_prepare(*args,**kwargs)
 from homeku.audit_session import mark_viewed,add_pass,workspace
 from homeku.preflight import check_inputs
 

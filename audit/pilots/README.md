@@ -76,3 +76,9 @@ Pengguna menjalankan edh058 di chat baru ChatGPT/Gemini memakai MP4 kanonis dan 
 Simpan run baru di audit/result/<provider>/v2.4/run-NN/<id>-rNNNN.zip agar hasil2.3 tidak ditimpa. Catat versi/model/hash kit/sumber/paket, waktu kandidat siap, retry dan log alat; pisahkan jeda persetujuan/ekspor. Periksa seluruh desain/fakta/estimasi/arah/tempo/Camera Start/Overview/MD/media. Semua moderate boleh; target efisiensi tidak mengurangi detail. Setelah memadai lanjutkan lima pilot lain.
 
 Benchmark lokal hanya pengukuran helper dan kandidat fixture, bukan menit yang dijanjikan pada AI provider. Tooling siap, run nyata, persetujuan, ekspor dan ingest dicatat terpisah; pembagian enam pilot pengguna tetap.
+
+## Lanjutan kamera2.5 — 24 November 2026
+
+Dua hasil edh058 sumber2.4 kini tersedia/diperiksa, MD serta8JPEG sesuai renderer; belum disetujui/di-ingest. Pemeriksaan visual tambahan hanya18frame, bukan audit seluruh baseline. Laporan waktu provider bukan benchmark terkontrol. Implementasi kamera2.5 melanjutkan plan audit-camera-implementation-plan.md; run2.5 pengguna belum dijalankan. Status historis di atas berlaku pada saat dicatat.
+
+Tooling2.5 kini selesai:214tes lulus tanpa skip, kit4file/90resource, caption baru dan parser angka opsional. Lihat docs/audit-camera-verification.md. Run provider2.5 tetap belum dijalankan.

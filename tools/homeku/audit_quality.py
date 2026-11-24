@@ -20,6 +20,8 @@ def resolve(key, audit, times=None):
 
 def validate_quality(audit, times=None):
     display_audit(audit)
+    if audit["schema_version"]=="2.5":
+        validate_fact_inventory(audit)
     profile = audit["profile"]
     for c in profile:
         if c["aspect"] in {"primary-style", "style-influence", "interior-style"}:
@@ -106,7 +108,7 @@ def validate_quality(audit, times=None):
             expected = next(iter(labels)) if len(labels) == 1 else "variable"
             require(phase["tempo"] == expected,
                     label + ": tempo conflicts with overlapping tempo_profile")
-    if audit["schema_version"] in {"2.3", "2.4"}:
+    if audit["schema_version"] in {"2.3", "2.4", "2.5"}:
         validate_method(audit, times)
     return audit
 
@@ -118,7 +120,7 @@ def validate_viewed_evidence(audit, reviews, times):
     for s in audit["shots"]:
         claims += s["facts"] + s["phases"] + s["area_relations"]
         claims += [o for p in s["phases"] for o in p["motion_observations"]]
-    if audit["schema_version"] in {"2.3", "2.4"}:
+    if audit["schema_version"] in {"2.3", "2.4", "2.5"}:
         for s in audit["shots"]:
             for p in s["phases"]:
                 claims += list(p["camera_checks"].values())
@@ -165,7 +167,7 @@ def validate_method(audit, times=None):
                 c = phase["components_parsed"][obs["component_index"]]
                 movement = c["movement"]
                 expected = movement.startswith(("Dolly-", "Zoom-", "Pan ", "Orbit "))
-                if expected:
+                if expected and audit["schema_version"] != "2.5":
                     require(obs["estimate_basis"] is not None and obs["estimate_basis"].strip(),
                             label + ": estimate_basis required for angle/scale or a specific limitation")
                 ratios = [e for e in c["estimates"] if e.endswith("×")]
@@ -195,7 +197,7 @@ def validate_method(audit, times=None):
                     continue
                 require(len(ratios) == 1 and movement in {"Dolly-In", "Dolly-Out", "Zoom-In", "Zoom-Out"},
                         label + ": scale estimate requires an IN/OUT Dolly or Zoom component")
-                if measure is None and audit["schema_version"] == "2.4":
+                if measure is None and audit["schema_version"] in {"2.4", "2.5"}:
                     continue
                 require(measure is not None, label + ": numeric scale requires scale_measurement")
                 require(measure["anchor"].strip(), label + ": scale anchor required")
@@ -207,9 +209,15 @@ def validate_method(audit, times=None):
                 require(all(math.isfinite(v) and v > 0 for v in (start, end)), label + ": pixel sizes must be finite and positive")
                 ratio = end / start if movement.endswith("In") else start / end
                 require(ratio > 1, label + ": IN/OUT scale ratio must exceed one")
-                match = re.fullmatch(r"~([0-9]+(?:\.[0-9])?)(?:[–−-]([0-9]+(?:\.[0-9])?))?×", ratios[0])
+                if audit["schema_version"]=="2.5":
+                    from .camera_notation import bounds
+                    lower,upper=bounds(ratios[0],"×")
+                    match=True
+                else:
+                    match = re.fullmatch(r"~([0-9]+(?:\.[0-9])?)(?:[–−-]([0-9]+(?:\.[0-9])?))?×", ratios[0])
                 require(match is not None, label + ": scale notation uses one decimal or an ordered range")
-                lower = float(match[1]); upper = float(match[2] or match[1])
+                if audit["schema_version"]!="2.5":
+                    lower = float(match[1]); upper = float(match[2] or match[1])
                 require(1 <= lower <= upper and lower-.050000001 <= ratio <= upper+.050000001,
                         label + ": scale notation conflicts with measured IN/OUT ratio")
                 scales.append((movement, measure))
@@ -229,3 +237,26 @@ def validate_method(audit, times=None):
                 if phase["speed_change"] == "decelerating":
                     require(all(a >= b for a, b in zip(values, values[1:])),
                             label + ": decelerating conflicts with increasing tempo_profile")
+
+
+def fact_inventory(audit):
+    """Working review aid only. Does not claim semantic narrative coverage."""
+    rows=[]
+    for shot in audit["shots"]:
+        mapped={k for d in shot["design"] for cov in d["fact_coverage"].values() for k in cov["fact_ids"]}
+        rows.append({"shot":shot["shot"],"facts":len(shot["facts"]),
+                     "domains":sorted({f["domain"] for f in shot["facts"]}),
+                     "subjects":sorted({f["subject"] for f in shot["facts"]}),
+                     "unmapped_fact_ids":[f["id"] for f in shot["facts"] if f["id"] not in mapped],
+                     "coverage":[{"areas":d["area_ids"],"categories":{
+                         k:{"state":v["state"],"facts":len(v["fact_ids"])} for k,v in d["fact_coverage"].items()}}
+                         for d in shot["design"]]})
+    return {"semantic_completeness":"Requires auditor comparison with observed details; no quota","shots":rows}
+
+def validate_fact_inventory(audit):
+    for shot in audit["shots"]:
+        seen=set()
+        for fact in shot["facts"]:
+            key=(tuple(sorted(fact["area_ids"])),fact["domain"],fact["subject"],fact["attribute"],fact["value"],fact["state"])
+            require(key not in seen,shot["shot"]+": duplicate fact content; consolidate explicit evidence")
+            seen.add(key)

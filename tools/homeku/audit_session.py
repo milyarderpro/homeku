@@ -21,7 +21,7 @@ def workspace(path):
 def load_session(path):
     path=workspace(path)
     value=read_json(path)
-    require(isinstance(value,dict) and value.get("version")=="1.0" and value.get("contract_version")=="2.4",
+    require(isinstance(value,dict) and value.get("version")=="1.0" and value.get("contract_version") in {"2.4","2.5"},
             "Invalid audit session")
     require(isinstance(value.get("source"),dict) and isinstance(value["source"].get("path"),str) and isinstance(value["source"].get("sha256"),str),"Invalid session source")
     require(isinstance(value.get("passes"),list) and isinstance(value.get("shots"),list),"Invalid session passes/shots")

@@ -55,3 +55,9 @@ Kedua paket lulus validasi dan seluruh8JPEG identik renderer saat pemeriksaan re
 Pengguna menerima asumsi wajar pada estimasi sudut; estimasi visual tidak perlu kalibrasi. Ini menjadi kontrak2.4 untuk audit berikutnya, bukan perubahan terhadap paket2.3. Dua hasil tersedia/dibandingkan; penyerahan untuk evaluasi tidak dipakai sebagai instruksi ingest atau persetujuan kandidat lain.
 
 Benchmark tooling2.4 memakai salinan kerja kontrak2.3 yang sama dalam /tmp dengan purpose=fixture dan revisi sintetis untuk uji cache. Bukan audit visual baru, tidak menulis ZIP asli atau sumber aktif. Angka/hasil di docs/audit-efficiency-verification.md. Run2.4 ChatGPT/Gemini belum dijalankan pada implementasi ini.
+
+## Lanjutan kamera2.5 — 24 November 2026
+
+Dua hasil edh058 sumber2.4 kini tersedia/diperiksa, MD serta8JPEG sesuai renderer; belum disetujui/di-ingest. Pemeriksaan visual tambahan hanya18frame, bukan audit seluruh baseline. Laporan waktu provider bukan benchmark terkontrol. Implementasi kamera2.5 melanjutkan plan audit-camera-implementation-plan.md; run2.5 pengguna belum dijalankan. Status historis di atas berlaku pada saat dicatat.
+
+Tooling2.5 kini selesai:214tes lulus tanpa skip, kit4file/90resource, caption baru dan parser angka opsional. Lihat docs/audit-camera-verification.md. Run provider2.5 tetap belum dijalankan.

@@ -1,4 +1,4 @@
-# Authoring HOMEKU2.4
+# Authoring HOMEKU2.5
 
 Baca visual-audit.md sebelum menyimpulkan isi. Helper menghitung metadata; AI menulis pengamatan. audit.json satu sumber final. Semua perintah berjalan di workspace chat; tidak ada pekerjaan teknis tambahan untuk pengguna.
 
@@ -13,7 +13,7 @@ python tools/audit.py prepare /path/<id>.mp4 --cuts-file work/cuts.json --output
 
 Hasil: audit.json kerangka, audit-info.json, session.json, pass/sheets dan performance.jsonl. PTS, frame awal/akhir, midpoint dan selected dihitung otomatis. Kerangka belum audit valid: area/Overview/fakta/gaya dan narasi harus diisi AI setelah melihat.
 
-prepare membuat baseline6FPS seluruh shot dalam satu batch dan tambahan midpoint jika belum tercakup. Sumber≤6FPS/shot<1s native. Lihat semua sheet sebelum menyatakan viewed. Gunakan prepare dengan --resume untuk session yang sama; isi pengamatan tidak ditimpa. Sumber/cut berbeda memerlukan workspace baru; frame cache tetap hanya alat kerja.
+prepare membuat baseline6FPS seluruh shot melalui batch kecil otomatis dan tambahan midpoint jika belum tercakup. Sumber≤6FPS/shot<1s native. Lihat semua sheet sebelum menyatakan viewed. Gunakan prepare dengan --resume untuk session yang sama; isi pengamatan tidak ditimpa. Sumber/cut berbeda memerlukan workspace baru; frame cache tetap hanya alat kerja.
 
 ## 2. Isi pengamatan dan nyatakan viewed
 
@@ -60,3 +60,11 @@ python tools/audit.py export-v2 work/candidate/<id> --source /path/<id>.mp4 --re
 ~~~
 
 Export tidak merender ulang. ZIP tanpa video, cache, log, sheet atau receipt. MP4 kanonis lokal terpisah. performance.jsonl mencatat durasi alat/cache/retry; selang percakapan dan jeda persetujuan bukan durasi komputasi.
+
+## Kamera fleksibel dan helper opsional2.5
+
+Angka opsional per komponen, tanpa mengubah confidence. Angka tunggal default, rentang boleh; estimate_basis boleh null tanpa angka. Contoh: Dolly-Out (~1.6×) + Orbit Left + Subtle Pan Right (Ease-Out). Lihat camera-cases.md.
+
+Jika interval gabungan belum jelas: python tools/audit.py motion-hints work/audit/session.json --shot-id shot-02. Helper memakai cache, maksimal32frame default/640px batas, tanpa verdict dan tidak mengisi viewed. OpenCV/NumPy opsional; bila tidak tersedia lanjutkan visual. Jangan memasang paket jaringan rutin di chat. Semua output helper/inventory kerja di luar ZIP.
+
+Untuk melanjutkan session2.4 gunakan prepare --contract-version 2.4 --resume; sumber/session harus versi sama. Review2.5 memberi ringkasan fakta kerja terpisah; AI mencocokkan narasi/fakta sebelum persetujuan, tanpa review ulang sesudah ingest.

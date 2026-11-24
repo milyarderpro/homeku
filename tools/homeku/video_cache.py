@@ -40,7 +40,7 @@ class FrameCache:
         self.log = log
         version = subprocess.run(["ffmpeg","-version"], capture_output=True, text=True, check=True, timeout=15).stdout.splitlines()[0]
         signature = "".join(sha256(Path(__file__).with_name(name)) for name in
-                            ("video.py","video_cache.py","media.py","media_incremental.py","media_v2_2.py")) + version
+                            ("video.py","video_cache.py","media.py","media_incremental.py","media_v2_2.py","media_v2_2_1.py","camera_notation.py")) + version
         self.signature = hashlib.sha256(signature.encode()).hexdigest()
         self.bucket = safe_path(self.root/self.source_hash/self.signature)
         self.bucket.mkdir(parents=True, exist_ok=True)
@@ -51,7 +51,7 @@ class FrameCache:
                     isinstance(self.index.get("blobs"),dict), "Invalid cache inventory")
         except (LibraryError, OSError, ValueError, TypeError):
             self.index = {"source_sha256":self.source_hash, "signature":self.signature, "blobs":{}}
-        self.stats = {"hits":0, "misses":0, "canonical_decodes":0, "batch_passes":0, "batch_frames":0, "batch_equal":0}
+        self.stats = {"hits":0, "misses":0, "canonical_decodes":0, "batch_passes":0, "batch_frames":0, "batch_equal":0, "ffmpeg_calls":0, "batch_retries":0}
         data = self._get("metadata.json")
         try:
             meta = json.loads(data) if data else None
@@ -130,13 +130,24 @@ class FrameCache:
             data=self._get(f"canonical-{i:06d}.jpg") or self._get(f"analysis-{i:06d}.jpg")
             if data is None:missing.append(i)
             else:result[i]=data
-        if missing:
-            expression="+".join(f"eq(n\\,{i})" for i in missing)
+        def decode(batch, depth=0):
+            expression="+".join(f"eq(n\\,{i})" for i in batch)
+            self.stats["ffmpeg_calls"]+=1
             try:
                 completed=subprocess.run(["ffmpeg","-hide_banner","-loglevel","error","-protocol_whitelist","file,pipe",
                     "-i",str(self.source),"-map",f"0:{self.info['video_stream_index']}","-vf","select="+expression,
-                    "-vsync","0","-frames:v",str(len(missing)),"-f","image2pipe","-vcodec","mjpeg","-q:v","2","-threads","1","-"],
+                    "-vsync","0","-frames:v",str(len(batch)),"-f","image2pipe","-vcodec","mjpeg","-q:v","2","-threads","1","-"],
                     capture_output=True,check=True,timeout=120)
+            except subprocess.CalledProcessError as exc:
+                detail=(exc.stderr or b"").decode("utf-8","replace") if isinstance(exc.stderr,bytes) else str(exc.stderr or "")
+                message=detail.lower()
+                expression_error=("select" in message or "expression" in message) and any(v in message for v in ("evaluating","parsing","expression","cannot allocate memory"))
+                if expression_error and len(batch)>1 and depth<5:
+                    self.stats["batch_retries"]+=1
+                    event(self.log,"batch-retry",frames=len(batch),depth=depth)
+                    middle=len(batch)//2;decode(batch[:middle],depth+1);decode(batch[middle:],depth+1)
+                    return
+                raise LibraryError("Cannot batch-extract native frames: "+detail[-700:]) from exc
             except (OSError,subprocess.SubprocessError) as exc:
                 raise LibraryError(f"Cannot batch-extract native frames: {exc}") from exc
             self.ensure_source()
@@ -147,10 +158,13 @@ class FrameCache:
                 chunk=data[offset:end]
                 with Image.open(io.BytesIO(chunk)) as im:im.load()
                 chunks.append(chunk);offset=end
-            require(len(chunks)==len(missing),"Batch frame count differs from native selection")
-            self.stats["batch_passes"]+=1;self.stats["batch_frames"]+=len(missing)
-            for i,data in zip(missing,chunks):
+            require(len(chunks)==len(batch),"Batch frame count differs from native selection")
+            self.stats["batch_passes"]+=1;self.stats["batch_frames"]+=len(batch)
+            for i,data in zip(batch,chunks):
                 self._put(f"analysis-{i:06d}.jpg",data);result[i]=data
+        # Bound expression size before FFmpeg 5.x's recursive parser is reached.
+        for offset in range(0,len(missing),32):
+            decode(missing[offset:offset+32])
         event(self.log,"extract-batch",requested=len(ids),new=len(missing),**self.stats)
         return result
 
@@ -164,7 +178,11 @@ class FrameCache:
 
 def _cached_media(folder, audit, source_path, source, config):
     """Cache individual media dependencies without editing registered media engines."""
-    from .media_v2_2 import expected_media, build_media
+    from .media import expected_media
+    if config["media"]=="2.2.1":
+        from .media_v2_2_1 import build_media
+    else:
+        from .media_v2_2 import build_media
     from .common import sha256
     cache=ACTIVE.get()
     if cache is None:

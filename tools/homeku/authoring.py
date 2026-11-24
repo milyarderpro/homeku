@@ -11,12 +11,14 @@ from .markdown import component
 
 ROOT=Path(__file__).resolve().parents[2]
 
-def prepare(source,cuts,output,*,resume=False):
+def prepare(source,cuts,output,*,resume=False,contract_version="2.5"):
+    require(contract_version in {"2.4","2.5"},"Unsupported working authoring contract")
     output=workspace(output);output.mkdir(parents=True,exist_ok=True)
     session_path=output/"session.json";audit_path=output/"audit.json";info_path=output/"audit-info.json"
     if session_path.exists():
         require(resume,"Workspace already prepared; use --resume to preserve observations")
         path,session,cache=load_session(session_path)
+        require(contract_version==session["contract_version"],"Session contract differs; select its original version")
         require(Path(source).resolve()==cache.source and cuts==session["cuts"],"Source/cuts differ; use a new workspace")
         records=[]
         for shot in session["shots"]:
@@ -33,10 +35,10 @@ def prepare(source,cuts,output,*,resume=False):
         cache=FrameCache(source,output/".cache"/"frames",log=output/"performance.jsonl")
         rid=cache.source.stem
         require(re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,79}",rid) and cache.source.suffix.casefold()==".mp4","Use the canonical MP4 filename")
-        session={"version":"1.0","contract_version":"2.4","source":{"path":str(cache.source),"sha256":cache.source_hash},
+        session={"version":"1.0","contract_version":contract_version,"source":{"path":str(cache.source),"sha256":cache.source_hash},
                  "cuts":cuts,"shots":make_shots(cache,cuts),"passes":[]}
         # A template is an incomplete working source, not an audit claim.
-        audit=read_json(ROOT/"audit/template-audit.json");audit["schema_version"]="2.4";audit["id"]=rid
+        audit=read_json(ROOT/"audit/template-audit.json");audit["schema_version"]=contract_version;audit["id"]=rid
         base=copy.deepcopy(audit["shots"][0]);audit["shots"]=[]
         audit["areas"]=[] # Physical area identities are assigned after viewing.
         for row in session["shots"]:
@@ -70,12 +72,15 @@ def prepare(source,cuts,output,*,resume=False):
             "shots":session["shots"],"passes":session["passes"],"cache":cache.stats,
             "next":"Inspect sheets, fill observations/areas/Overview; declare viewed explicitly; complete then draft."}
 
-def notation(text):
+def notation(text,version="2.4"):
     require(isinstance(text,str) and "{{" not in text and "→" not in text,"Fill one phase notation before complete")
+    if version=="2.5":
+        from .camera_notation import normalize
+        text=normalize(text)
     clauses=[]
     for raw in text.strip().rstrip(".").split("+"):
         raw=raw.strip()
-        for estimate in component(raw)["estimates"]:
+        for estimate in component(raw,version)["estimates"]:
             if not re.search(r"\([^)]*"+re.escape(estimate)+r"[^)]*\)",raw):
                 raw=raw.replace(estimate,"("+estimate+")",1)
         clauses.append(raw)
@@ -83,11 +88,12 @@ def notation(text):
 
 def complete(audit_path,*,session_path=None,info_path=None):
     audit_path=workspace(audit_path);original=read_json(audit_path);a=copy.deepcopy(original)
-    require(a.get("schema_version")=="2.4","complete only edits working source2.4; never converts old audits")
+    require(a.get("schema_version") in {"2.4","2.5"},"complete only edits working source2.4/2.5; never converts old audits")
     require(session_path is not None,"Complete requires the source-bound session")
     path,session,cache=load_session(session_path)
     require(a.get("id")==cache.source.stem and [s["shot"] for s in a["shots"]]==[s["shot"] for s in session["shots"]],
             "Audit/session ID or shots differ")
+    require(a["schema_version"]==session["contract_version"],"Audit/session contracts differ; never converts old audits")
     changes=[]
     def assign(obj,key,value,pointer):
         if obj.get(key)!=value:
@@ -109,8 +115,8 @@ def complete(audit_path,*,session_path=None,info_path=None):
                 loc=label+f"/phases/{pi}"
                 if len(s["phases"])==1:
                     assign(p,"start_s",row["start_s"],loc);assign(p,"end_s",row["end_s"],loc)
-                text=notation(p["components"]);assign(p,"components",text,loc)
-                parsed=[component(c.strip()) for c in text.split("+")]
+                text=notation(p["components"],a["schema_version"]);assign(p,"components",text,loc)
+                parsed=[component(c.strip(),a["schema_version"]) for c in text.split("+")]
                 assign(p,"components_parsed",parsed,loc)
                 observations=p["motion_observations"]
                 indices=[o["component_index"] for o in observations]
@@ -119,7 +125,7 @@ def complete(audit_path,*,session_path=None,info_path=None):
                 if set(indices)!=set(range(len(parsed))):
                     by_index={o["component_index"]:o for o in observations}
                     filled=[by_index.get(i,{"component_index":i,"evidence":list(p["evidence"]),
-                        "basis":"{{OBSERVATION_BASIS}}","estimate_basis":"{{VISUAL_ESTIMATE_BASIS}}",
+                        "basis":"{{OBSERVATION_BASIS}}","estimate_basis":"{{VISUAL_ESTIMATE_BASIS}}" if parsed[i]["estimates"] else None,
                         "alternatives":None,"scale_measurement":None}) for i in range(len(parsed))]
                     assign(p,"motion_observations",filled,loc)
 

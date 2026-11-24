@@ -1,6 +1,8 @@
 # Audit di ChatGPT/Gemini
 
-Satu MP4 dan homeku-audit-kit.zip per chat. Kit aktif memakai sumber/paket2.4, report2.2.3/media2.2.0 dan empat file input: README.md, homeku_runtime.py, template-audit.json, template-audit-info.json. Video tetap lampiran terpisah. Jalankan bootstrap untuk memulihkan seluruh runtime/schema/template/font/lisensi dari payload lokal yang berinventaris/hash; tidak mengunduh kode.
+Default sumber2.5/report2.2.4/media2.2.1. Aturan kamera di [visual-audit.md](visual-audit.md), contoh di [camera-cases.md](camera-cases.md). Angka opsional per komponen tanpa mengubah confidence; label intensitas bukan tempo.
+
+Satu MP4 dan homeku-audit-kit.zip per chat. Kit aktif memakai sumber/paket2.5, report2.2.4/media2.2.1 dan empat file input: README.md, homeku_runtime.py, template-audit.json, template-audit-info.json. Video tetap lampiran terpisah. Jalankan bootstrap untuk memulihkan seluruh runtime/schema/template/font/lisensi dari payload lokal yang berinventaris/hash; tidak mengunduh kode.
 
 AI menjalankan inspect/sample, melihat gambar yang benar-benar dipilih, mengisi JSON/log aktual, kemudian draft/review. Baseline6FPS+awal/akhir native dan pendalaman10FPS/native mengikuti protokol yang sama pada kedua lingkungan. Nama provider/model yang diketahui dicatat; build tidak diketahui null. Jangan menyatakan tool tersedia atau frame telah dilihat hanya karena nama model atau proses ekstraksi berhasil.
 

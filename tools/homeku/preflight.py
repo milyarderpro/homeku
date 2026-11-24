@@ -68,7 +68,7 @@ def check_inputs(source,audit,audit_info,*,config=None,limit=100,supersedes=None
                 f"Middle panel must be nearest native midpoint F{want}"),"Jalankan complete; lihat frame midpoint yang diusulkan jika belum viewed.")
         for j,p in enumerate(s["phases"]):
             capture(f"/shots/{i}/phases/{j}/components_parsed","notation",
-                lambda p=p:require(p["components_parsed"]==[component(c.strip()) for c in p["components"].split("+")],
+                lambda p=p:require(p["components_parsed"]==[component(c.strip(),version) for c in p["components"].split("+")],
                                   "Parsed component metadata differs from raw notation"),"Jalankan complete; metadata parser tidak perlu diketik ulang.")
     for i,r in enumerate(logs["frame_reviews"]):
         capture(f"/audit-info/frame_reviews/{i}","frames",

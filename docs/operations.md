@@ -101,3 +101,7 @@ Batch dipakai untuk sampling, sedangkan frame media final diperoleh dari extract
 performance.jsonl mencatat durasi alat, cache hit/miss, decode dan retry, bukan durasi aktif berpikir AI. Pilihan --resume tidak mengganti sumber/cut atau menimpa fakta. Tidak ada watcher, auto-viewed, auto-persetujuan atau auto-ingest.
 
 Benchmark terisolasi: python tools/benchmark_audit.py /path/<id>.mp4 /work/audit.json --audit-info /work/audit-info.json --output /tmp/benchmark-baru. Hanya kandidat purpose=fixture dan revisi sintetis dalam root kerja kosong; bukan audit baru atau produksi. Bandingkan baseline/cold/warm/koreksi dan kesamaan byte. [Hasil nyata](audit-efficiency-verification.md).
+
+## Default audit kamera2.5
+
+Sumber2.5/report2.2.4/media2.2.1/reader2.5/generator8. Angka kamera opsional per komponen, termasuk medium/high; tidak perlu alasan khusus saat angka tidak ditulis. Estimate_basis cukup singkat bila berangka, boleh null bila tanpa angka. Baseline6FPS tetap; helper flow opsional/cache lokal, tanpa AI API. Kompatibilitas2.4 dan sebelumnya tetap kontrak asal, bukan default baru. Caption versi baru Start/Middle/End tebal dan waktu lebih kecil. Cache/session/flow/inventory kerja tidak masuk ZIP/knowledge; export byte sama tanpa render. Lihat docs/audit-camera-implementation-plan.md dan audit/authoring.md.

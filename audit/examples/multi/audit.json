@@ -27,7 +27,7 @@
       ]
     }
   ],
-  "id": "efficiency-multi",
+  "id": "camera-multi",
   "identity": {
     "distinctive_features": [
       "Kabinet ceruk",
@@ -256,7 +256,7 @@
   ],
   "relations": [],
   "revision": 1,
-  "schema_version": "2.4",
+  "schema_version": "2.5",
   "shots": [
     {
       "area_ids": [
@@ -310,7 +310,10 @@
             "architecture": {
               "basis": "Konfigurasi sintetis.",
               "fact_ids": [
-                "f-01"
+                "f-01",
+                "extra-0-0",
+                "extra-0-1",
+                "extra-0-2"
               ],
               "state": "mapped"
             },
@@ -339,7 +342,10 @@
             "architecture": {
               "basis": "Konfigurasi sintetis.",
               "fact_ids": [
-                "f-02"
+                "f-02",
+                "extra-1-0",
+                "extra-1-1",
+                "extra-1-2"
               ],
               "state": "mapped"
             },
@@ -470,6 +476,118 @@
           "subject": "cabinet",
           "uncertainty": "Bukan pengamatan rumah nyata.",
           "value": "kabinet fixture"
+        },
+        {
+          "area_ids": [
+            "living-1"
+          ],
+          "attribute": "appearance",
+          "basis": "Fixture kontrak sintetis.",
+          "confidence": "medium",
+          "domain": "architecture",
+          "evidence": [
+            "p-start"
+          ],
+          "facet_roles": [],
+          "id": "extra-0-0",
+          "state": "observed",
+          "subject": "wall",
+          "uncertainty": "Bukan pengamatan rumah nyata.",
+          "value": "Dinding berpanel sintetis"
+        },
+        {
+          "area_ids": [
+            "living-1"
+          ],
+          "attribute": "appearance",
+          "basis": "Fixture kontrak sintetis.",
+          "confidence": "medium",
+          "domain": "architecture",
+          "evidence": [
+            "p-start"
+          ],
+          "facet_roles": [
+            "opening"
+          ],
+          "id": "extra-0-1",
+          "state": "observed",
+          "subject": "window",
+          "uncertainty": "Bukan pengamatan rumah nyata.",
+          "value": "Bukaan tinggi di sisi kabinet sintetis"
+        },
+        {
+          "area_ids": [
+            "living-1"
+          ],
+          "attribute": "appearance",
+          "basis": "Fixture kontrak sintetis.",
+          "confidence": "medium",
+          "domain": "architecture",
+          "evidence": [
+            "p-start"
+          ],
+          "facet_roles": [],
+          "id": "extra-0-2",
+          "state": "observed",
+          "subject": "floor",
+          "uncertainty": "Bukan pengamatan rumah nyata.",
+          "value": "Lantai papan tampak kayu sintetis"
+        },
+        {
+          "area_ids": [
+            "kitchen-1"
+          ],
+          "attribute": "appearance",
+          "basis": "Fixture kontrak sintetis.",
+          "confidence": "medium",
+          "domain": "architecture",
+          "evidence": [
+            "p-start"
+          ],
+          "facet_roles": [],
+          "id": "extra-1-0",
+          "state": "observed",
+          "subject": "wall",
+          "uncertainty": "Bukan pengamatan rumah nyata.",
+          "value": "Dinding berpanel sintetis"
+        },
+        {
+          "area_ids": [
+            "kitchen-1"
+          ],
+          "attribute": "appearance",
+          "basis": "Fixture kontrak sintetis.",
+          "confidence": "medium",
+          "domain": "architecture",
+          "evidence": [
+            "p-start"
+          ],
+          "facet_roles": [
+            "opening"
+          ],
+          "id": "extra-1-1",
+          "state": "observed",
+          "subject": "window",
+          "uncertainty": "Bukan pengamatan rumah nyata.",
+          "value": "Bukaan tinggi di sisi kabinet sintetis"
+        },
+        {
+          "area_ids": [
+            "kitchen-1"
+          ],
+          "attribute": "appearance",
+          "basis": "Fixture kontrak sintetis.",
+          "confidence": "medium",
+          "domain": "architecture",
+          "evidence": [
+            "p-start"
+          ],
+          "facet_roles": [],
+          "id": "extra-1-2",
+          "state": "observed",
+          "subject": "floor",
+          "uncertainty": "Bukan pengamatan rumah nyata.",
+          "value": "Lantai papan tampak kayu sintetis"
         }
       ],
       "journey_dna": "Awal living → penghubung terbuka → kitchen; tempo sedang menjadi cepat.",

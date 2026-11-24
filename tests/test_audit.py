@@ -153,7 +153,7 @@ class AuditHelperTests(unittest.TestCase):
             self.assertNotIn(b"Draf Overview dan Storyboard", archive.read("README.md"))
             self.assertIn(b"docs/contracts/package-v2-3.md", archive.read("README.md"))
             template=json.loads(archive.read("template-audit.json"))
-            self.assertEqual(template["schema_version"],"2.4")
+            self.assertEqual(template["schema_version"],"2.5")
             self.assertIn("composition_summary",template["shots"][0]["overviews"][0])
             self.assertIn("depth_direction",template["shots"][0]["phases"][0])
             self.assertIsNone(template["shots"][0]["phases"][0]["depth_direction"])

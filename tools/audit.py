@@ -22,7 +22,8 @@ def main():
     preparing.add_argument("--cuts-file",type=Path,required=True,help="JSON array of confirmed native cut indices; [] for one take")
     preparing.add_argument("--output",type=Path,required=True)
     preparing.add_argument("--resume",action="store_true")
-    completing=commands.add_parser("complete",help="Fill only mechanical metadata on working source2.4")
+    preparing.add_argument("--contract-version",choices=["2.4","2.5"],default="2.5")
+    completing=commands.add_parser("complete",help="Fill only mechanical metadata on working source2.4/2.5")
     completing.add_argument("audit",type=Path)
     completing.add_argument("--session",type=Path,required=True)
     completing.add_argument("--audit-info",type=Path)
@@ -38,6 +39,13 @@ def main():
     checking.add_argument("source",type=Path)
     checking.add_argument("audit",type=Path)
     checking.add_argument("--audit-info",type=Path,required=True)
+    hints=commands.add_parser("motion-hints",help="Optional bounded 2D statistics; no verdict or viewed changes")
+    hints.add_argument("session",type=Path)
+    hints.add_argument("--shot-id",required=True)
+    hints.add_argument("--start",type=float)
+    hints.add_argument("--end",type=float)
+    hints.add_argument("--max-frames",type=int,default=32)
+    hints.add_argument("--width",type=int,default=320)
     inspecting = commands.add_parser("inspect")
     inspecting.add_argument("source", type=Path)
     sampling = commands.add_parser("sample")
@@ -46,7 +54,7 @@ def main():
     sampling.add_argument("--frames",type=int,nargs="+",help="Exact extra native selections with --session")
     sampling.add_argument("--output", type=Path)
     sampling.add_argument("--fps", type=float)
-    sampling.add_argument("--contract-version", choices=["2.2", "2.3", "2.4"], default="2.4")
+    sampling.add_argument("--contract-version", choices=["2.2", "2.3", "2.4","2.5"], default="2.5")
     sampling.add_argument("--start", type=float)
     sampling.add_argument("--end", type=float)
     sampling.add_argument("--native", action="store_true", help="All original frames in the interval, no forced 30 FPS")
@@ -78,7 +86,7 @@ def main():
     v2draft.add_argument("--quality",type=int,default=91)
     v2draft.add_argument("--scale",type=float,default=1.0)
     v2draft.add_argument("--columns",type=int,default=4)
-    v2draft.add_argument("--renderer-version",choices=["2.0.0","2.1.0","2.1.1","2.1.2","2.2.0","2.2.1","2.2.2","2.2.3"])
+    v2draft.add_argument("--renderer-version",choices=["2.0.0","2.1.0","2.1.1","2.1.2","2.2.0","2.2.1","2.2.2","2.2.3","2.2.4"])
     v2draft.add_argument("--overview-scale",type=float,default=1.0)
     v2draft.add_argument("--storyboard-scale",type=float,default=1.0)
     v2export=commands.add_parser("export-v2",help="Package an accepted whole-snapshot candidate unchanged")
@@ -90,10 +98,14 @@ def main():
     v2export.add_argument("--source",type=Path)
     args = parser.parse_args()
     try:
+        if args.command=="motion-hints":
+            from homeku.motion_analysis import motion_hints
+            result=motion_hints(args.session,args.shot_id,start=args.start,end=args.end,max_frames=args.max_frames,width=args.width)
+            print(json.dumps(result,ensure_ascii=False,indent=2));return 0
         if args.command in {"prepare","complete","mark-viewed","check-input"} or (args.command=="sample" and args.session):
             if args.command=="prepare":
                 from homeku.authoring import prepare
-                result=prepare(args.source,read_json(args.cuts_file),args.output,resume=args.resume)
+                result=prepare(args.source,read_json(args.cuts_file),args.output,resume=args.resume,contract_version=args.contract_version)
             elif args.command=="complete":
                 from homeku.authoring import complete
                 result=complete(args.audit,session_path=args.session,info_path=args.audit_info)

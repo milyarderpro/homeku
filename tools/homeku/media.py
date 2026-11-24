@@ -6,7 +6,7 @@ from .common import require
 FONT=legacy.FONT
 BOLD_FONT=legacy.BOLD_FONT
 MAX_PIXELS=legacy.MAX_PIXELS
-SUPPORTED_MEDIA=(*legacy.SUPPORTED_MEDIA,'2.2.0')
+SUPPORTED_MEDIA=(*legacy.SUPPORTED_MEDIA,'2.2.0','2.2.1')
 wrap=legacy.wrap
 seconds=legacy.seconds
 panel_label=legacy.panel_label
@@ -15,6 +15,9 @@ titles=legacy.titles
 
 
 def layout(*args,version='2.1.2',**kwargs):
+    if version=='2.2.1':
+        from .media_v2_2_1 import layout as new_layout
+        return new_layout(*args,**kwargs)
     if version=='2.2.0':
         from .media_v2_2 import layout as new_layout
         return new_layout(*args,**kwargs)
@@ -22,19 +25,24 @@ def layout(*args,version='2.1.2',**kwargs):
 
 
 def expected_media(audit,source,config):
-    if config['media']=='2.2.0':
+    if config['media']=='2.2.1':
+        from .media_v2_2_1 import expected_media as implementation
+    elif config['media']=='2.2.0':
         from .media_v2_2 import expected_media as implementation
     else:implementation=legacy.expected_media
     yield from implementation(audit,source,config)
 
 
 def build_media(folder,audit,source_path,source,config):
-    if config['media']=='2.2.0':
+    if config['media'] in {'2.2.0','2.2.1'}:
         from .video_cache import ACTIVE
         if ACTIVE.get() is not None:
             from .video_cache import cached_media
             return cached_media(folder,audit,source_path,source,config)
-        from .media_v2_2 import build_media as implementation
+        if config['media']=='2.2.1':
+            from .media_v2_2_1 import build_media as implementation
+        else:
+            from .media_v2_2 import build_media as implementation
     else:implementation=legacy.build_media
     return implementation(folder,audit,source_path,source,config)
 

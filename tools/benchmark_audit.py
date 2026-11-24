@@ -43,7 +43,7 @@ def benchmark(source,audit_path,audit_info,output):
     revised=run("metadata",metadata,cache=True)
     camera=copy.deepcopy(a);p=camera["shots"][0]["phases"][0]
     p["components"]+=" toward benchmark-only target"
-    p["components_parsed"]=[component(c.strip()) for c in p["components"].split("+")]
+    p["components_parsed"]=[component(c.strip(),a["schema_version"]) for c in p["components"].split("+")]
     camera["shots"][0]["camera_summary"]=" → ".join(v["components"] for v in camera["shots"][0]["phases"])+"."
     run("camera",camera,cache=True)
     invalid=copy.deepcopy(info);invalid["frame_reviews"][0]["mode"]="native"
@@ -58,9 +58,41 @@ def benchmark(source,audit_path,audit_info,output):
     (output/"benchmark.json").write_text(dumps(result))
     return result
 
+
+
+def benchmark_session(source,cuts,output,*,motion_shot=None):
+    """Sampling/recovery timing only; no frame is declared viewed."""
+    from homeku.authoring import prepare
+    from homeku.motion_analysis import motion_hints
+    output=workspace(output)
+    rows=[]
+    for resume in (False,True):
+        start=time.perf_counter()
+        prepared=prepare(source,cuts,output,resume=resume)
+        rows.append({"case":"resume" if resume else "prepare","seconds":round(time.perf_counter()-start,6),
+                     "cache":prepared["cache"]})
+    session=read_json(output/"session.json")
+    result={"kind":"homeku.sampling-benchmark","new_visual_audit":False,"cases":rows,
+            "selected":len({i for p in session["passes"] for i in p["record"]["selected_frame_indices"]}),
+            "viewed":len({i for p in session["passes"] for i in p["record"]["viewed_frame_indices"]}),
+            "helper_off":{"invoked":False}}
+    if motion_shot:
+        result["helper_on"]=[]
+        for label in ("cold","warm"):
+            start=time.perf_counter();r=motion_hints(output/"session.json",motion_shot)
+            result["helper_on"].append({"case":label,"seconds":round(time.perf_counter()-start,6),
+                                       "status":r["status"],"reused":r["reused"]})
+    (output/"sampling-benchmark.json").write_text(dumps(result))
+    return result
+
 if __name__=="__main__":
     parser=argparse.ArgumentParser()
     parser.add_argument("source",type=Path);parser.add_argument("audit",type=Path)
     parser.add_argument("--audit-info",type=Path,required=True);parser.add_argument("--output",type=Path,required=True)
+    parser.add_argument("--cuts-file",type=Path)
+    parser.add_argument("--motion-shot")
     args=parser.parse_args()
-    print(json.dumps(benchmark(args.source.resolve(),args.audit.resolve(),read_json(args.audit_info),args.output.resolve()),ensure_ascii=False,indent=2))
+    result=benchmark(args.source.resolve(),args.audit.resolve(),read_json(args.audit_info),args.output.resolve())
+    if args.cuts_file:
+        result["sampling"]=benchmark_session(args.source.resolve(),read_json(args.cuts_file),args.output.resolve()/"sampling",motion_shot=args.motion_shot)
+    print(json.dumps(result,ensure_ascii=False,indent=2))

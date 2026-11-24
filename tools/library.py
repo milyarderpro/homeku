@@ -33,6 +33,8 @@ def main():
     finding.add_argument("--scale")
     finding.add_argument("--area",action="append")
     finding.add_argument("--configuration")
+    finding.add_argument("--movement")
+    finding.add_argument("--camera-qualifier")
     finding.add_argument("--tempo",choices=["slow","moderate","fast","unknown"])
     finding.add_argument("--route",nargs="+")
     finding.add_argument("--limit",type=int,default=10)
@@ -59,7 +61,7 @@ def main():
         if args.command == "search":
             with locked(root,recovery=False):
                 result=search(root,style=args.style,style_role=args.style_role,style_relation=args.style_relation,scale=args.scale,
-                    area=args.area,configuration=args.configuration,tempo=args.tempo,route=args.route,limit=args.limit,offset=args.offset,include_uncertain=not args.observed_only)
+                    area=args.area,configuration=args.configuration,movement=args.movement,camera_qualifier=args.camera_qualifier,tempo=args.tempo,route=args.route,limit=args.limit,offset=args.offset,include_uncertain=not args.observed_only)
         elif args.command == "read":
             with locked(root,recovery=False):
                 result=read_reference(root,args.id,part=args.part,shot=args.shot,area=args.area)

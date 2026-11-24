@@ -24,7 +24,7 @@ from .validation import CODE_ROOT, extract_package, validate_folder
 from .video import probe_video, frame_times, nearest, extract_frame, selected_indices
 
 
-def sample(source, output, fps=None, start=0.0, end=None, *, native=False, shot_id=None, reason=None, contract_version="2.4"):
+def sample(source, output, fps=None, start=0.0, end=None, *, native=False, shot_id=None, reason=None, contract_version="2.5"):
     """Temporary audit evidence only. The selected frames are not yet viewed."""
     from .versions import BASELINE_FPS
     require(contract_version in BASELINE_FPS, "Sampling policy requires contract 2.2 or 2.3")
@@ -38,7 +38,7 @@ def sample(source, output, fps=None, start=0.0, end=None, *, native=False, shot_
     require(0 <= start < end <= info["duration_s"] + 0.001, "Sampling interval outside video")
     source_fps = info["fps"]["numerator"] / info["fps"]["denominator"]
     # A bounded --shot-id interval represents a whole shot for the short-take rule.
-    native = native or (contract_version in {"2.3", "2.4"} and shot_id is not None and end-start < 1)
+    native = native or (contract_version in {"2.3", "2.4", "2.5"} and shot_id is not None and end-start < 1)
     indices = selected_indices(times, start, end, fps, native=native, source_fps=source_fps)
     require(len(indices) <= 1000, "Use bounded audit intervals rather than thousands of images at once")
     output.mkdir(parents=True, exist_ok=True)
@@ -249,7 +249,7 @@ def _assemble_v2(source, audit_path, audit_info, output_root, *, supersedes=None
     require(isinstance(audit,dict),"Audit JSON must be an object")
     info={"path":f"video/{audit.get('id','')}.mp4","sha256":sha256(source),**probe_video(source)}
     require(audit.get("schema_version") in JSON_CONTRACTS, "Unsupported JSON contract")
-    require(audit["schema_version"] not in {"2.2", "2.3", "2.4"} or not include_source, "Package 2.2+ forbids --include-source; attach/reference MP4 separately")
+    require(audit["schema_version"] not in {"2.2", "2.3", "2.4", "2.5"} or not include_source, "Package 2.2+ forbids --include-source; attach/reference MP4 separately")
     rid=audit["id"]
     require(source.stem==rid and source.suffix.casefold()==".mp4","ID must match original MP4 stem")
     require(isinstance(audit_info,dict),"Actual audit metadata required")
@@ -269,7 +269,7 @@ def _assemble_v2(source, audit_path, audit_info, output_root, *, supersedes=None
         require(version in {None, wanted}, f"Source {audit['schema_version']} requires renderer {wanted}")
         kwargs.update(version=wanted,overview_scale=overview_scale,storyboard_scale=storyboard_scale)
     else:
-        require(version not in {"2.2.0", "2.2.1", "2.2.2", "2.2.3"}, "Renderer 2.2.0+ requires source 2.1+")
+        require(version not in {"2.2.0", "2.2.1", "2.2.2", "2.2.3", "2.2.4"}, "Renderer 2.2.0+ requires source 2.1+")
         require(overview_scale==1.0 and storyboard_scale==1.0,"Combined media scales require source 2.1")
         if version is not None:kwargs["version"]=version
     config=render_config(quality=quality,scale=scale,columns=columns,**kwargs)
@@ -318,7 +318,13 @@ def _review_v2(candidate, output, source=None):
     require(snapshot_hash(candidate)==digest,"Candidate changed during review generation")
     receipt=output.with_suffix(output.suffix+".json")
     receipt.write_text(dumps({"candidate":str(candidate),"snapshot_sha256":digest,"report":str(output)}),encoding="utf-8")
-    return {"review":str(output),"receipt":str(receipt),"snapshot_sha256":digest}
+    result={"review":str(output),"receipt":str(receipt),"snapshot_sha256":digest}
+    if audit["schema_version"]=="2.5":
+        from .audit_quality import fact_inventory
+        facts_path=output.with_suffix(output.suffix+".facts.json")
+        facts_path.write_text(dumps(fact_inventory(audit)),encoding="utf-8")
+        result["fact_inventory"]=str(facts_path)
+    return result
 
 
 def _export_v2(candidate, output_root, reviewed_sha256, source=None):
@@ -352,7 +358,7 @@ def assemble_v2(source,audit_path,audit_info,output_root,*,cache_dir=None,**kwar
     from .video_cache import FrameCache
     from .audit_performance import timed
     audit=read_json(audit_path)
-    if not isinstance(audit,dict) or (audit.get("schema_version")!="2.4" and cache_dir is None):
+    if not isinstance(audit,dict) or (audit.get("schema_version") not in {"2.4","2.5"} and cache_dir is None):
         return _assemble_v2(source,audit_path,audit_info,output_root,**kwargs)
     from .audit_session import workspace
     cache_root=workspace(cache_dir or

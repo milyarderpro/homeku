@@ -274,7 +274,7 @@ def validate_frame_reviews(reviews, shots, source, info, *, strict=False, contra
         require(review["reason"].strip(), "Frame review reason required")
         qualified = native or fps >= min(baseline, source_fps)
         needs_native = strict and (source_fps <= baseline or
-                                  (contract_version in {"2.3", "2.4"} and shot["end_s"] - shot["start_s"] < 1))
+                                  (contract_version in {"2.3", "2.4", "2.5"} and shot["end_s"] - shot["start_s"] < 1))
         if needs_native:
             qualified = expected == selected_indices(times, start, end, native=True, source_fps=source_fps)
         if not strict or qualified:
@@ -305,7 +305,7 @@ def validate_v2_folder(folder, root, manifest, package_name=None, source_overrid
     require(info["path"]==f"video/{rid}.mp4", "Source must be video/<id>.mp4")
     if (root / "video").is_dir():
         require(all(p.name.casefold()!=f"{rid}.mp4".casefold() or p.name==f"{rid}.mp4" for p in (root/"video").iterdir()), "Source filename case collision")
-    require(manifest["contract_version"] not in {"2.2", "2.3", "2.4"} or not any(p.suffix.casefold() in {".mp4", ".mov", ".mkv", ".webm", ".avi", ".m4v"} for p in folder.rglob("*")), "Package 2.2+ forbids video files; keep the reference MP4 separate")
+    require(manifest["contract_version"] not in {"2.2", "2.3", "2.4", "2.5"} or not any(p.suffix.casefold() in {".mp4", ".mov", ".mkv", ".webm", ".avi", ".m4v"} for p in folder.rglob("*")), "Package 2.2+ forbids video files; keep the reference MP4 separate")
     source=folder/"source.mp4"
     if not source.exists():source=(source_overrides or {}).get(rid,root/info["path"])
     require(source.is_file() and not source.is_symlink(), "Source unavailable")
@@ -359,7 +359,7 @@ def validate_audit_logs(logs,audit,source,info,*,times=None):
     from .video import frame_times
     times=frame_times(source) if times is None else times
     validate_frame_reviews(logs["frame_reviews"],audit["shots"],source,info, contract_version=audit["schema_version"], times=times)
-    if audit["schema_version"] in {"2.2", "2.3", "2.4"}:
+    if audit["schema_version"] in {"2.2", "2.3", "2.4", "2.5"}:
         from .audit_quality import validate_viewed_evidence
         validate_viewed_evidence(audit, logs["frame_reviews"], times)
     ranges=sorted(logs["reviewed_ranges"],key=lambda r:r["start_s"])

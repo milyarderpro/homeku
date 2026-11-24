@@ -1,5 +1,7 @@
 # Kosakata pencatatan
 
+Default sumber2.5/report2.2.4/media2.2.1. Aturan kamera di [visual-audit.md](visual-audit.md), contoh di [camera-cases.md](camera-cases.md). Angka opsional per komponen tanpa mengubah confidence; label intensitas bukan tempo.
+
 Gunakan label domain/subject/attribute yang konsisten untuk konsep yang sama. Nama gaya utama, pengaruh dan interior memakai bahasa Inggris; nilai penjelasan tetap bahasa Indonesia. Daftar berikut pedoman awal, bukan whitelist; label baru tetap boleh dicatat bila maknanya berbeda.
 
 | Domain | Subject contoh | Attribute yang dianjurkan |

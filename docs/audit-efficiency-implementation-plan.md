@@ -270,3 +270,7 @@ Lapisan tools/homeku/media_incremental.py ditambahkan sebagai executor subset by
 |8 provider|Run2.4 ChatGPT/Gemini belum dilaksanakan; tidak ada persetujuan/ekspor/ingest baru |
 
 engine.py sudah memakai JSON_CONTRACTS terpusat sehingga tidak perlu edit tambahan. report_validation.py sudah memakai DEFAULT_REPORT sehingga dapat memilih2.2.3 tanpa mengubah checker. Template authoring MD, sources/fact-facets.json dan workflow CI tetap karena tidak memerlukan perubahan. Media terdaftar/font/layout/renderer lama tidak ditimpa. Rincian benchmark dan pengaman berada di docs/audit-efficiency-verification.md.
+
+## Lanjutan kamera2.5 — 24 November 2026
+
+Dua hasil edh058 sumber2.4 kini tersedia/diperiksa, MD serta8JPEG sesuai renderer; belum disetujui/di-ingest. Pemeriksaan visual tambahan hanya18frame, bukan audit seluruh baseline. Laporan waktu provider bukan benchmark terkontrol. Implementasi kamera2.5 melanjutkan plan audit-camera-implementation-plan.md; run2.5 pengguna belum dijalankan. Status historis di atas berlaku pada saat dicatat.

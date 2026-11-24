@@ -12,7 +12,8 @@ from unittest.mock import patch
 from jsonschema import Draft202012Validator
 from tests.test_audit_authoring import EfficiencyCase
 from tests.fixtures.factory import isolated_root
-from homeku.authoring import prepare,complete
+from homeku.authoring import complete
+from tests.test_audit_authoring import prepare
 from homeku.audit_session import mark_viewed,add_frames
 from homeku.common import LibraryError,read_json,dumps,snapshot_hash,sha256
 from homeku.exporter import assemble_v2,review_v2,export_v2
@@ -60,7 +61,7 @@ class AuditEfficiencyTests(EfficiencyCase):
         self.assertEqual(ingest(root,[Path(package["package"])])["changed"],[])
         self.assertEqual(check(root)["status"],"ok")
         payload=read_reference(root,self.audit["id"],part="full")
-        self.assertEqual(payload["schema_version"],"2.4")
+        self.assertEqual(payload["schema_version"],"2.5")
         self.assertEqual(payload["reference"]["format_version"],"2.4")
         self.assertTrue(any("camera_checks" in p for p in payload["provenance"]))
         for pointer,proof in payload["provenance"].items():
@@ -99,7 +100,7 @@ class AuditEfficiencyTests(EfficiencyCase):
             self.assertEqual(p.returncode,0 if ok else 1,p.stdout+p.stderr);return json.loads(p.stdout)
         run(chat/"homeku_runtime.py","--output",chat)
         cuts=chat/"cuts.json";cuts.write_text("[]")
-        prep=run(chat/"tools/audit.py","prepare",self.source,"--cuts-file",cuts,"--output",chat/"work")
+        prep=run(chat/"tools/audit.py","prepare",self.source,"--cuts-file",cuts,"--contract-version","2.4","--output",chat/"work")
         self.assertNotIn("frames",prep["passes"][0]);self.assertIn("sheets",prep["passes"][0])
         path=Path(prep["audit"]);path.write_text(dumps(self.audit));Path(prep["audit_info"]).write_text(dumps(self.info))
         run(chat/"tools/audit.py","mark-viewed",prep["session"],"--all-passes","--all")
