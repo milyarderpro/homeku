@@ -6,8 +6,8 @@ Gunakan workspace yang dapat menjalankan Python dan FFmpeg, membuka frame hasil 
 
 1. Ekstrak kit dan jalankan `python homeku_runtime.py --output .`. Baca [metode visual](visual-audit.md) dan [authoring](authoring.md).
 2. Tentukan cut nyata, lalu jalankan prepare untuk baseline 6 FPS beserta batas native. Gunakan seluruh native untuk sumber ≤6 FPS atau shot <1 detik. Periksa lebih rapat hanya pada bagian yang masih menyisakan pertanyaan.
-3. Lihat frame lalu isi desain, komposisi, kamera, tempo, dan bukti di [audit.json](json-guide.md). Angka kamera opsional per komponen. Deklarasikan viewed setelah gambar diperiksa.
-4. Jalankan complete dan check-input atau draft. Tampilkan laporan enam bagian, Overview satu baris, Storyboard vertikal, dan seluruh kolase.
+3. Lihat frame lalu isi desain, komposisi, kamera, tempo, dan bukti di [audit.json](json-guide.md). Nilai besaran setiap komponen gerak dan cantumkan estimasi yang wajar dari petunjuk visual. Deklarasikan viewed setelah gambar diperiksa.
+4. Ikuti [checklist isi](authoring.md#periksa-isi-sebelum-memperlihatkan-kandidat), lalu jalankan complete dan check-input atau draft. Tampilkan laporan enam bagian, Overview satu baris, Storyboard vertikal, dan seluruh kolase.
 5. Terapkan koreksi pada sumber kerja, lalu tinjau kembali seluruh snapshot terbaru. Ekspor setelah persetujuan keseluruhan.
 6. Unduh satu ZIP final tanpa video. Taruh di `incoming/`, simpan MP4 kanonis di `video/<id>.mp4`, dan jalankan `python tools/library.py ingest`.
 

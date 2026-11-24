@@ -23,15 +23,15 @@ Baca visual-audit.md sebelum menyimpulkan gerak. Satu audit.json ringkas adalah 
 
 Klaim minimal: value, state, evidence. State eksplisit observed, uncertain, not-visible, not-present, unknown. Evidence berupa daftar indeks frame native global sumber, misalnya [142,195,248]. Confidence/note opsional, tidak ada default observed/high. Unknown dapat tanpa bukti; klaim lain perlu bukti sesuai scope. Tidak terlihat bukan tidak ada.
 
-Fakta menambahkan subject dan attribute; facet_roles eksplisit untuk struktur seperti opening, roof, massing, layout, configuration, circulation. Domain khusus dan area_ids override dipertahankan bila diperlukan. Kategori/area kontainer mengikat scope; override tidak boleh keluar dari kontainer. Bukti satu kategori tidak otomatis membuktikan seluruh fakta.
+Fakta menambahkan subject dan attribute; facet_roles eksplisit untuk struktur seperti opening, roof, massing, layout, configuration, circulation. Domain khusus dan area_ids override dipertahankan bila diperlukan. Kategori/area kontainer mengikat scope; override tidak boleh keluar dari kontainer. Bukti satu kategori tidak otomatis membuktikan seluruh fakta. Gunakan state terpisah bila objek terlihat tetapi tipe atau hubungannya belum jelas. Lihat [contoh gaya dan layout](visual-audit.md#detail-desain-dan-framing).
 
-Text manusia tetap lengkap; facts menyimpan informasi yang diperlukan discovery. Tidak ada kuota jumlah fakta, fact_coverage paralel atau generator yang menebak fakta dari paragraf.
+Tulis text manusia secara ringkas dengan ciri pembeda di awal. Gunakan `composition_summary` untuk posisi kamera, arah pandang dan cakupan wide. Uraikan detail arsitektur, furnitur dan lingkungan di `shots.design`. Facts menyimpan informasi yang diperlukan discovery. Tidak ada kuota jumlah fakta, fact_coverage paralel atau generator yang menebak fakta dari paragraf.
 
 ## Kamera
 
 Fase memiliki start_s/end_s, notation, depth_direction, focus, evidence temporal dan observations depth/translation/rotation. Tulis pengamatan singkat spesifik interval; evidence bersama tidak disalin tiga kali. Overrides per komponen hanya bila berbeda bukti/ambiguitas.
 
-Notation memakai + simultan; → hanya pada summary turunan antar fase. Angka opsional per komponen, angka tunggal/rentang sama-sama sah; asumsi visual diterima tanpa kalibrasi atau pengukuran piksel wajib. Contoh: Dolly-Out (~1.6×) + Orbit Left + Subtle Pan Right (Ease-Out).
+Notation memakai + simultan; → hanya pada summary turunan antar fase. Nilai besaran tiap komponen dan tulis estimasi ~× atau ~° yang dapat dibuat secara wajar dari frame. Angka tunggal dan rentang sama-sama sah. Estimasi tetap di `notation`. Lihat [panduan visual](visual-audit.md#arah-notasi-dan-tempo).
 
 Depth_direction IN/OUT/NO IN/OUT/null ambigu adalah keputusan auditor, bukan hasil tebak dari zoom/skala global. ~× adalah perubahan skala gambar, bukan tempo. Semua moderate sah.
 

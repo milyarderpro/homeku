@@ -11,6 +11,8 @@ analysis.md hanya dihasilkan renderer dari audit.json dan metadata manifest; tid
 
 Nama gaya teknis memakai bahasa Inggris; penjelasan bahasa Indonesia. Luas cukup **60–90 m²**, tanpa dasar perkiraan atau label kepastian tambahan wajib. Narasi sumber dipertahankan utuh dan di-escape untuk keamanan tampilan; renderer tidak mengarang, menerjemahkan ulang atau menyimpulkan isi.
 
+Paragraf Overview menjelaskan posisi kamera, arah pandang dan bagian area yang masuk dalam frame wide. Rincian bahan tampak, susunan furnitur dan ciri desain dijelaskan di bagian A. Gunakan paragraf singkat dengan ciri pembeda di awal.
+
 A memuat arsitektur, furnitur/dekorasi dan lingkungan per area. B memuat fokus, posisi/arah/sudut/ketinggian/kemiringan Camera Start, framing awal→akhir, pencahayaan, foreground, kedalaman, reveal dan kesesuaian gerak. Multi area juga menampilkan rute, penghubung, visibilitas/peralihan dan orientasi ruang yang dinyatakan. C memuat gerakan Indonesia singkat-lengkap, tempo, alur visual bila diperlukan, timeline fase dan notasi teknis satu paragraf.
 
 Camera Start selalu awal sumber; Overview dapat berada di akhir OUT. Kamera teknis berasal dari urutan notation fase, bukan field summary manual. Jika tempo berubah, tampilkan interval, label dan deskripsi tiap segmen. Tempo fase diturunkan dari segmen yang bertumpang tindih. Tidak ada tabel parser, log atau esai teknis pemeriksaan dalam laporan manusia.

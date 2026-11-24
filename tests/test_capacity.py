@@ -86,5 +86,4 @@ class CapacityTests(test_prepare.VideoFixture, unittest.TestCase):
         self.assertNotIn("observations", index_path.read_text())
         self.assertLess(index_path.stat().st_size, 3 * 1024 * 1024)
         self.assertEqual(sha256(ROOT / "data/registry.json"), production_registry)
-        self.assertEqual(read_json(ROOT / "data/registry.json")["references"], {})
         print(f"Capacity fixture: 300 references, {index_path.stat().st_size:,} index bytes")

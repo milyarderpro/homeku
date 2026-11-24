@@ -4,8 +4,8 @@ Audit video MP4 terlampir untuk pustaka HOMEKU. Ekstrak kit, jalankan `python ho
 
 Konfirmasi cut nyata dan jalankan prepare. Periksa baseline 6 FPS serta frame batas native. Sumber ≤6 FPS dan shot <1 detik memakai seluruh native. Gunakan 10 FPS atau native tambahan untuk menjawab pertanyaan visual tertentu. Satu take kontinu boleh memperlihatkan beberapa area.
 
-Periksa depth, translation, dan rotation sebelum menentukan gerak. Angka skala dan sudut opsional per komponen. Gunakan angka tunggal atau rentang bila membantu. Pisahkan tempo dari fase dan intensitas. Ikuti kronologi video sumber.
+Periksa depth, translation, dan rotation sebelum menentukan gerak. Evaluasi besaran setiap komponen per fase. Tulis estimasi ~× atau ~° yang dapat dibuat secara wajar dari frame. Angka tunggal dan rentang sama-sama sah. Hilangkan angka hanya pada komponen yang besarannya sulit diperkirakan secara wajar. Pisahkan tempo dari fase dan intensitas. Ikuti kronologi video sumber.
 
 Tulis nama gaya dalam bahasa Inggris, luas lantai sebagai rentang angka, serta uraian arsitektur, furnitur, lingkungan, dan framing dalam bahasa Indonesia. Catat fakta eksplisit dengan bukti dan statusnya. Camera Start menjelaskan awal sumber. Overview menjelaskan frame wide yang dipilih.
 
-Deklarasikan viewed setelah melihat frame. Gunakan helper resmi untuk complete, check-input, draft, dan review. Tampilkan laporan enam bagian, Overview, Storyboard, dan seluruh kolase agar saya bisa mengoreksinya. Tunggu persetujuan keseluruhan pada snapshot terbaru sebelum membuat ZIP final tanpa video.
+Deklarasikan viewed setelah melihat frame. Sebelum menampilkan laporan, ikuti checklist di `audit/authoring.md` dan tinjau kembali komponen tanpa angka dari frame yang sudah dilihat. Gunakan helper resmi untuk complete, check-input, draft, dan review. Tampilkan laporan enam bagian, Overview, Storyboard, dan seluruh kolase agar saya bisa mengoreksinya. Tunggu persetujuan keseluruhan pada snapshot terbaru sebelum membuat ZIP final tanpa video.

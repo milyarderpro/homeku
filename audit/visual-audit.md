@@ -14,7 +14,7 @@ Cut memakai indeks dan PTS native. Pergantian area tanpa cut tetap satu shot; ru
 2. **Translation:** periksa gerak badan kamera lateral/vertikal melalui paralaks, perubahan sisi dan hubungan foreground/background.
 3. **Rotation:** periksa putaran arah pandang terhadap jangkar. Jangan hanya mencatat komponen paling menonjol; translasi dan rotasi dapat simultan.
 4. **Fase:** pisahkan ketika komponen mulai/berhenti/berubah, bukan semata area atau tempo berubah. + simultan; → antar fase, satu paragraf.
-5. **Besaran/tempo:** angka dapat diperkirakan visual; nilai tempo dari perubahan per waktu setara, bukan kesan smooth.
+5. **Besaran dan tempo:** nilai besaran setiap komponen dari perubahan visual sepanjang fase. Nilai tempo dari perubahan per waktu setara, secara terpisah.
 
 Simpan observations depth/translation/rotation spesifik pada fase, dengan bukti temporal bersama. Override komponen hanya jika bukti/ambiguitas berbeda. Minimal dua frame temporal berbeda pada fase/toleransi satu batas native yang dinyatakan; jangan mengarang evidence agar lolos.
 
@@ -36,9 +36,12 @@ Goyangan/drift vertikal tipis akibat berjalan atau proyeksi wide bukan Tilt. Cat
 
 Depth_direction auditor: IN, OUT, NO IN/OUT atau null ambigu. Pan/Static/Zoom bisa tidak mempunyai translasi depth. Zoom atau pembesaran skala saja tidak membuktikan Dolly. Camera Pattern dihitung dari arah fase, bukan dari narasi atau default produksi.
 
-Format: [Komponen Utama] ([Skala]) [+ / →] [Komponen Sekunder] ([Intensitas / Kurva]). Angka opsional per komponen; angka tunggal/rentang sah. Gerak tanpa angka tidak memerlukan alasan khusus atau penurunan confidence. Asumsi visual wajar diterima tanpa kewajiban piksel/kalibrasi. Lihat camera-cases.md.
+Format: [Komponen Utama] ([Skala]) [+ / →] [Komponen Sekunder] ([Intensitas / Kurva]).
 
-~× adalah rasio skala gambar IN=akhir/awal, OUT=awal/akhir; bukan faktor kecepatan/jarak fisik. Gunakan jangkar yang sebanding; jangan memberi rasio gabungan yang sama pada Dolly dan Zoom bila kontribusinya tidak terpisahkan. ~° dapat diperkirakan dari perubahan orientasi; jangan menyatakan estimasi sebagai pose fisik terukur.
+Evaluasi besaran setiap komponen gerak sesuai jenisnya. Cantumkan estimasi skala (~×) atau sudut (~°) jika petunjuk visual cukup untuk membuat perkiraan yang wajar. Angka tunggal dan rentang sama-sama sah. Hilangkan angka hanya pada komponen yang besarannya sulit diperkirakan secara wajar. Asumsi visual wajar diterima tanpa pengukuran piksel atau kalibrasi wajib. Lihat [contoh kamera](camera-cases.md).
+
+- **Skala (~×).** Bandingkan dimensi yang sama dari jangkar yang sama pada awal dan akhir fase, misalnya tinggi pintu yang terlihat utuh. Untuk pembesaran, gunakan akhir/awal. Untuk pengecilan, gunakan awal/akhir. Rasio ini menyatakan perubahan skala gambar. Jika Dolly dan Zoom tidak dapat dipisahkan, hindari pemberian rasio gabungan pada masing-masing komponen.
+- **Sudut (~°).** Perkirakan Pan atau Tilt dari perubahan arah pandang terhadap jangkar. Untuk Orbit, bandingkan perubahan sisi yang terlihat sepanjang lintasan mengitari subjek. Pergeseran jangkar di layar saja belum cukup untuk menaksir sudut masing-masing ketika Pan mengompensasi Orbit.
 
 Semua shot moderate sah. Smooth bukan slow; pembesaran perspektif tidak sendirian membuktikan accelerating. Easing/intensitas berlaku pada komponennya, tidak otomatis menjadi tempo seluruh shot. Simpan tempo sekali, seragam atau segments; batasnya tidak harus sama dengan fase gerak.
 
@@ -48,9 +51,13 @@ Eksterior: gaya/massa, ukuran/proporsi, atap, fasad/bukaan, akses/teras, materia
 
 Catat detail konkret, bukan daftar furnitur generik. Cocokkan text arsitektur/furnitur/lingkungan dengan fakta berkategori dan facet_roles. Tidak ada kuota fakta; validator struktural tidak membuktikan kelengkapan makna narasi.
 
+Pilih gaya utama dari ciri arsitektur dominan yang konsisten, misalnya fasad berplester, genteng lengkung, dan bukaan lengkung berulang dapat mengarah ke `Spanish Colonial Revival`. Catat ciri dari gaya lain sebagai pengaruh bila terlihat. Jika petunjuk untuk label spesifik belum cukup, gunakan label yang lebih luas atau state `uncertain`.
+
+Pisahkan bentuk yang terlihat dari tipe layout yang belum jelas. Contoh dapur: catat meja di sisi kiri dengan dua bangku sebagai fakta `observed`. Jika bagian yang memperlihatkan sambungan ke dinding atau kabinet berada di luar bingkai, catat tipe `island` atau `peninsula` sebagai `uncertain` bila perlu. Periksa hubungan meja dengan kabinet dari frame yang menunjukkan keduanya.
+
 Nama gaya Inggris, penjelasan Indonesia, estimasi luas min–max wajib. Bedakan observed/uncertain/not-visible/not-present/unknown. Urutan edit bukan bukti denah atau satu rumah fisik. Jangan menegaskan material fisik dari tampilan saja.
 
-Camera Start menjelaskan awal sumber. Overview menjelaskan frame wide yang dipilih, biasanya awal IN atau akhir OUT; posisi/arah/angle dan cakupannya harus jelas. Default produksi reverse/durasi/lima shot tidak mengubah kronologi, tempo atau pilihan audit sumber.
+Camera Start menjelaskan awal sumber. Untuk Overview, tulis paragraf singkat tentang posisi, arah pandang, dan bagian area yang terlihat pada frame wide, biasanya awal IN atau akhir OUT. Simpan perincian arsitektur, furnitur, dan lingkungan di uraian shot. Utamakan ciri yang membedakan area. Default produksi reverse/durasi/lima shot tidak mengubah kronologi, tempo atau pilihan audit sumber.
 
 ## Bantuan statistik gerak 2D
 

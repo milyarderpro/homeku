@@ -1,6 +1,6 @@
 # Kosakata pencatatan
 
-Aturan kamera di [visual-audit.md](visual-audit.md), contoh di [camera-cases.md](camera-cases.md). Angka opsional per komponen tanpa mengubah confidence; label intensitas bukan tempo.
+Aturan kamera di [visual-audit.md](visual-audit.md), contoh di [camera-cases.md](camera-cases.md). Tulis estimasi untuk setiap komponen yang besarannya dapat diperkirakan secara wajar. Label intensitas menjelaskan komponen gerak.
 
 Gunakan label domain/subject/attribute yang konsisten untuk konsep yang sama. Nama gaya utama, pengaruh dan interior memakai bahasa Inggris; nilai penjelasan tetap bahasa Indonesia. Daftar berikut pedoman awal, bukan whitelist; label baru tetap boleh dicatat bila maknanya berbeda.
 

@@ -9,13 +9,13 @@ Adaptasi dokumen eksperimen pengguna; sepuluh kasus belum diaudit ulang di imple
 | 3 | Straight Dolly-In → Dolly-In + Strong Pan Right (~25°–30°) | Periksa kapan sapuan kanan mulai; jangan memaksakan + sejak awal. |
 | 4 | Accelerating Dolly-In (~2.2×) + Accelerating Pan Left (~25°–30°) | Pisahkan perubahan laju komponen dari pembesaran perspektif saat mendekat. |
 | 5 | Dolly-In (~2.0×) + Subtle Pan Right (~15°) | Drift vertikal ringan bukan otomatis Tilt. |
-| 6 | Dolly-Out (~1.6×) + Orbit Left + Subtle Pan Right (Ease-Out) | Pan bisa mengompensasi arah Orbit; derajat tidak wajib pada kedua komponen. |
+| 6 | Dolly-Out (~1.6×) + Orbit Left + Subtle Pan Right (Ease-Out) | Pan bisa mengompensasi arah Orbit. Tulis skala bila jangkar sebanding, dan biarkan sudut kosong jika putaran kedua komponen sulit ditaksir secara wajar. |
 | 7 | Dolly-Out (~1.75×) + Orbit Right + Strong Pan Left (Ease-Out) | Periksa perubahan sisi meja/dinding, bukan hanya posisi jangkar. |
 | 8 | Mild Dolly-Out (~1.3×) + Orbit Left + Strong Pan Right (~35°, Ease-Out) | Dua aliran sama-sama ke kiri masih dapat memiliki selisih paralaks; konfirmasi secara visual. |
 | 9 | Diagonal Dolly-Out (~2.5×) + Moderate Pan Right (Ease-Out) | Mundur diagonal tidak otomatis Orbit; periksa perubahan sudut pandang. |
 | 10 | Diagonal Dolly-Out (~1.75×) + Subtle Pan Left (Ease-Out) | Tinjau orientasi bidang dan lapisan dekat/jauh pada setiap interval. |
 
-Semua komponen boleh tanpa estimasi. Angka tunggal default; rentang sah. Baseline tetap 6 FPS. Flow 2D hanyalah pendamping; bawah/atas gambar bukan kedalaman pasti. Skala global bukan bukti Dolly, oklusi bukan bukti Orbit tunggal. Tilt berkelanjutan tidak harus ekstrem dan berbeda dari Crane/Pedestal.
+Nilai besaran setiap komponen. Misalnya, `Dolly-Out (~1.6×) + Orbit Left + Pan Right` cocok ketika ukuran jangkar memberi skala mundur yang wajar dan arah kedua komponen lain terlihat, tetapi sudutnya sulit dipisahkan. Angka tunggal dan rentang sama-sama sah. Baseline tetap 6 FPS. Flow 2D hanyalah pendamping; bawah/atas gambar bukan kedalaman pasti. Skala global bukan bukti Dolly, oklusi bukan bukti Orbit tunggal. Tilt berkelanjutan tidak harus ekstrem dan berbeda dari Crane/Pedestal.
 
 ## Pembanding saat tafsir masih ambigu
 

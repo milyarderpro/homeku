@@ -40,7 +40,7 @@ Audit.json adalah satu sumber keputusan isi; analysis.md hasil renderer dan mani
 | Hubungan antarshot / batas | relations / notes | Reader dengan provenance eksplisit |
 | Bukti klaim | evidence indeks native | Frame map manifest dan pointer sumber |
 | Pemeriksaan viewed | Workspace session dan audit-info | Provenance pemeriksaan teknis manifest |
-| Skala/sudut kamera | notation dengan angka opsional | Bukan tempo atau pengukuran pose fisik |
+| Skala/sudut kamera | notation dengan estimasi visual yang dapat dibuat secara wajar | Parser memeriksa sintaks dan nilai angka yang ditulis |
 | Pengukuran/flow/cache | Workspace saja | Tidak menjadi fakta kedua atau isi ZIP |
 
 Setiap klaim memiliki satu lokasi sumber; renderer dan generator merujuk lokasi tersebut. State/negasi/evidence tetap eksplisit. Confidence yang tidak diisi berarti tidak dinilai. Narasi manusia dan fakta atomik tetap diperlukan untuk fungsi berbeda; generator tidak mengekstrak fakta dari prosa.

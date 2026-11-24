@@ -43,6 +43,21 @@ class LibraryTests(test_prepare.VideoFixture, unittest.TestCase):
         self.assertEqual(sha256(source), initial_source)
         self.assertEqual(search(self.root, area=["kamar mandi"])["total"], 1)
 
+    def test_search_resolves_hyphenated_area_labels(self):
+        def label_areas(audit):
+            for area, label in zip(audit["areas"], ("living-room", "walk-in-closet"), strict=True):
+                area.update(label=label, functions=[label])
+
+        package = self.package("area-aliases", multi=True, edit=label_areas)
+        self.assertEqual(ingest(self.root, [package])["results"][0]["status"], "imported")
+        for spelling in ("living", "living room", "living-room", "walk-in closet", "walk-in-closet"):
+            with self.subTest(spelling=spelling):
+                references = search(self.root, area=[spelling])["results"]
+                self.assertEqual([reference["id"] for reference in references], ["area-aliases"])
+                shots = references[0]["shots"]
+                self.assertEqual([shot["shot"] for shot in shots], ["shot-01"])
+                self.assertEqual(shots[0]["areas"], ["living-room", "walk-in-closet"])
+
     def test_bad_supersedes_blocks_revision_and_correct_revision_clears_old_fact(self):
         first = self.package("rev")
         self.assertEqual(ingest(self.root, [first])["results"][0]["status"], "imported")
