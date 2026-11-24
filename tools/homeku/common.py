@@ -45,6 +45,21 @@ def read_json(path: Path):
         raise LibraryError(f"{path}: invalid UTF-8/JSON: {error}") from error
 
 
+def schema_check(value, name):
+    from jsonschema import Draft202012Validator, FormatChecker
+
+    root = Path(__file__).resolve().parents[2]
+    path = root / "schemas" / name
+    require(path.parent == root / "schemas" and path.is_file(), "Unknown active schema: " + name)
+    errors = sorted(Draft202012Validator(read_json(path), format_checker=FormatChecker()).iter_errors(value),
+                    key=lambda e: str(list(e.path)))
+    if errors:
+        e = errors[0]
+        pointer = "/" + "/".join(str(p).replace("~", "~0").replace("/", "~1") for p in e.path)
+        raise LibraryError(f"{name}{pointer}: {e.message}")
+    return value
+
+
 def safe_relative(value: str) -> str:
     require(isinstance(value, str) and value, "Empty path")
     require("\\" not in value and not any(ord(c) < 32 for c in value), f"Unsafe path: {value!r}")
@@ -65,16 +80,6 @@ def atomic_text(path: Path, content: str):
     os.replace(temporary, path)
 
 
-def content_hash(folder: Path) -> str:
-    """Canonical revision identity ignores ZIP compression and optional source copy."""
-    rows = []
-    for path in sorted(folder.rglob("*")):
-        require(not path.is_symlink(), f"Symlink not allowed: {path}")
-        if path.is_file() and path.name != "source.mp4":
-            rows.append([path.relative_to(folder).as_posix(), sha256(path)])
-    return hashlib.sha256(dumps(rows).encode()).hexdigest()
-
-
 def cell(value) -> str:
     """Escape generated table cells without dropping qualifiers or uncertainty."""
     return str(value).replace("\\", "\\\\").replace("|", "\\|").replace("\n", "<br>")
@@ -87,7 +92,7 @@ def slug(value: str) -> str:
 
 
 def snapshot_hash(folder):
-    """Bind every candidate payload byte, including an optional source copy."""
+    """Bind every file in the candidate snapshot."""
     require(folder.is_dir() and not folder.is_symlink(), "Invalid candidate folder")
     rows=[]
     for p in sorted(folder.rglob("*")):

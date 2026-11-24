@@ -6,13 +6,12 @@ import os
 import subprocess
 import uuid
 from contextlib import contextmanager
-from contextvars import ContextVar
 from pathlib import Path
-from PIL import Image
+from PIL import Image, __version__ as pillow_version
 from .common import LibraryError, dumps, read_json, require, sha256
 from .audit_performance import safe_path, event, timed
 
-ACTIVE = ContextVar("homeku_video_cache", default=None)
+from .video import ACTIVE
 
 def atomic(path, data):
     path = safe_path(path)
@@ -40,7 +39,9 @@ class FrameCache:
         self.log = log
         version = subprocess.run(["ffmpeg","-version"], capture_output=True, text=True, check=True, timeout=15).stdout.splitlines()[0]
         signature = "".join(sha256(Path(__file__).with_name(name)) for name in
-                            ("video.py","video_cache.py","media.py","media_incremental.py","media_v2_2.py","media_v2_2_1.py","camera_notation.py")) + version
+                            ("video.py", "video_cache.py", "media.py", "media_incremental.py",
+                             "render_assets.py", "derivations.py", "camera_notation.py", "camera_pattern.py"))
+        signature += version + pillow_version
         self.signature = hashlib.sha256(signature.encode()).hexdigest()
         self.bucket = safe_path(self.root/self.source_hash/self.signature)
         self.bucket.mkdir(parents=True, exist_ok=True)
@@ -59,7 +60,8 @@ class FrameCache:
                     isinstance(meta.get("info"),dict) and all(a<b for a,b in zip(meta["times"],meta["times"][1:])),
                     "Invalid cached metadata")
         except (LibraryError, ValueError, TypeError):
-            meta = {"info":video._probe_video_uncached(self.source), "times":video._frame_times_uncached(self.source)}
+            info = video._probe_video_uncached(self.source)
+            meta = {"info": info, "times": video._frame_times_uncached(self.source, info=info)}
             self._put("metadata.json", dumps(meta).encode())
         self.info, self.times = meta["info"], meta["times"]
         self.ensure_source()
@@ -81,6 +83,9 @@ class FrameCache:
         if not path.is_file() or digest is None:
             self.stats["misses"] += 1
             return None
+        if path.stat().st_size > self.max_bytes:
+            self.stats["misses"] += 1
+            return None
         data = path.read_bytes()
         if hashlib.sha256(data).hexdigest()!=digest:
             self.stats["misses"] += 1
@@ -93,10 +98,14 @@ class FrameCache:
         path = safe_path(self.bucket/name)
         used = sum(safe_path(p).stat().st_size for p in self.bucket.rglob("*") if p.is_file())
         previous = path.stat().st_size if path.is_file() else 0
-        require(used-previous+len(data) <= self.max_bytes, "Cache size limit exceeded; use bounded audit intervals")
-        atomic(path,data)
-        self.index["blobs"][name]=hashlib.sha256(data).hexdigest()
-        atomic(self.index_path,dumps(self.index).encode())
+        index = {**self.index, "blobs": {**self.index["blobs"], name: hashlib.sha256(data).hexdigest()}}
+        encoded = dumps(index).encode()
+        previous_index = self.index_path.stat().st_size if self.index_path.is_file() else 0
+        require(used - previous - previous_index + len(data) + len(encoded) <= self.max_bytes,
+                "Cache size limit exceeded; use bounded audit intervals")
+        atomic(path, data)
+        atomic(self.index_path, encoded)
+        self.index = index
 
     def matches(self, source, stream=None):
         self.ensure_source()
@@ -131,12 +140,13 @@ class FrameCache:
             if data is None:missing.append(i)
             else:result[i]=data
         def decode(batch, depth=0):
+            # Preserve the input time base: VFR PTS must not collapse to the encoder's nominal FPS.
             expression="+".join(f"eq(n\\,{i})" for i in batch)
             self.stats["ffmpeg_calls"]+=1
             try:
                 completed=subprocess.run(["ffmpeg","-hide_banner","-loglevel","error","-protocol_whitelist","file,pipe",
                     "-i",str(self.source),"-map",f"0:{self.info['video_stream_index']}","-vf","select="+expression,
-                    "-vsync","0","-frames:v",str(len(batch)),"-f","image2pipe","-vcodec","mjpeg","-q:v","2","-threads","1","-"],
+                    "-enc_time_base","-1","-vsync","0","-frames:v",str(len(batch)),"-f","image2pipe","-vcodec","mjpeg","-q:v","2","-threads","1","-"],
                     capture_output=True,check=True,timeout=120)
             except subprocess.CalledProcessError as exc:
                 detail=(exc.stderr or b"").decode("utf-8","replace") if isinstance(exc.stderr,bytes) else str(exc.stderr or "")
@@ -176,62 +186,36 @@ class FrameCache:
         finally:
             ACTIVE.reset(token)
 
-def _cached_media(folder, audit, source_path, source, config):
-    """Cache individual media dependencies without editing registered media engines."""
-    from .media import expected_media
-    if config["media"]=="2.2.1":
-        from .media_v2_2_1 import build_media
-    else:
-        from .media_v2_2 import build_media
-    from .common import sha256
-    cache=ACTIVE.get()
+def cached_media(folder, audit, source_path, source, config, frames, *, plan=None):
+    """Only render missing JPEGs. The same renderer handles full and subset builds."""
+    from .media import build_media, expected_media
+    from .media_incremental import render_missing_media
+    cache = ACTIVE.get()
     if cache is None:
-        return build_media(folder,audit,source_path,source,config)
-    root=cache.bucket/"media"
-    safe_path(root).mkdir(parents=True,exist_ok=True)
-    # Geometry and text already contain every visible dependency of the
-    # immutable layout. Storyboard additionally binds its child collage keys.
-    def key(meta, design, children):
-        fonts=design.get("fonts",{})
-        value={"source":cache.source_hash,"extractor":cache.signature,"config":config,
-               "dimensions":[source["width"],source["height"]],"meta":meta,"texts":design.get("texts",[]),
-               "spec":design["spec"],"header_lines":design.get("header_lines",[]),
-               "margin":design.get("margin"),"line_height":design.get("line_height"),
-               "font_sizes":{name:font.size for name,font in fonts.items()},
-               "header_font":design["font"].size if "font" in design else None,
-               "children":children}
-        return hashlib.sha256(dumps(value).encode()).hexdigest()
-    wanted=list(expected_media(audit,source,config))
-    keys={}
-    reused=0
-    for meta,_,design,_ in wanted:
-        children=[keys[b["derived_from"]] for b in meta.get("blocks",[])] if meta["kind"]=="storyboard" else []
-        digest=key(meta,design,children);keys[meta["path"]]=digest
-        item=root/(digest+".jpg");receipt=root/(digest+".sha256")
-        safe_path(item);safe_path(receipt)
-        if item.is_file() and receipt.is_file() and sha256(item)==receipt.read_text().strip():
-            dest=safe_path(folder/meta["path"]);dest.parent.mkdir(parents=True,exist_ok=True)
-            dest.write_bytes(item.read_bytes());reused+=1
-    if reused==len(wanted):
-        event(cache.log,"media",reused=reused,rendered=0)
-        return [{**meta,"sha256":sha256(folder/meta["path"])} for meta,*_ in wanted]
-    # The immutable engine can render a subset via an isolated expected-media
-    # iterator wrapper implemented by the dispatcher (no global monkeypatch).
-    from .media import render_missing_media
-    rendered=render_missing_media(folder,audit,source_path,source,config,
-                                  {meta["path"] for meta,*_ in wanted if not (folder/meta["path"]).is_file()})
-    for meta in rendered:
-        digest=keys[meta["path"]]
-        data=(folder/meta["path"]).read_bytes()
-        used=sum(safe_path(p).stat().st_size for p in cache.bucket.rglob("*") if p.is_file())
-        require(used+len(data)<=cache.max_bytes,"Cache size limit exceeded; start a fresh bounded workspace")
-        atomic(root/(digest+".jpg"),data)
-        atomic(root/(digest+".sha256"),(meta["sha256"]+"\n").encode())
-    event(cache.log,"media",reused=reused,rendered=len(rendered),**cache.stats)
-    return [{**meta,"sha256":sha256(folder/meta["path"])} for meta,*_ in wanted]
-
-
-def cached_media(folder,audit,source_path,source,config):
-    cache=ACTIVE.get()
-    with timed(cache.log if cache else None,"render-media"):
-        return _cached_media(folder,audit,source_path,source,config)
+        return build_media(folder, audit, source_path, source, config, frames, plan=plan)
+    require(cache.matches(source_path, source["video_stream_index"]), "Media cache source differs")
+    wanted = list(expected_media(audit, source, config, frames)) if plan is None else plan
+    keys = {}
+    missing = set()
+    hits = 0
+    with timed(cache.log, "render-media"):
+        for meta, selected, design in wanted:
+            value = {"meta": meta, "source": cache.source_hash, "runtime": cache.signature, "config": config,
+                     "frame_indices": [p["frame_index"] for p in selected],
+                     "texts": design.get("texts", []), "header_lines": design.get("header_lines", []),
+                     "children": [keys[b["derived_from"]] for b in meta.get("blocks", [])],
+                     "font_sizes": {name: font.size for name, font in design.get("fonts", {}).items()},
+                     "margin": design.get("margin"), "line_height": design.get("line_height")}
+            name = "media-" + hashlib.sha256(dumps(value).encode()).hexdigest() + ".jpg"
+            keys[meta["path"]] = name
+            data = cache._get(name)
+            if data is None:
+                missing.add(meta["path"])
+            else:
+                atomic(folder / meta["path"], data)
+                hits += 1
+        rendered = render_missing_media(folder, wanted, missing, source_path, source, config) if missing else []
+        for item in rendered:
+            cache._put(keys[item["path"]], (folder / item["path"]).read_bytes())
+        event(cache.log, "media", reused=hits, rendered=len(rendered), **cache.stats)
+    return [{**meta, "sha256": sha256(folder / meta["path"])} for meta, _, _ in wanted]

@@ -1,5 +1,5 @@
 # Posisi kamera dan komposisi
 
-0 entri tercatat; rincian dan ketidakpastian mengikuti sumber.
+0 entri tercatat.
 
 Belum ada entri aktif.

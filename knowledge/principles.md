@@ -1,7 +1,5 @@
 # Prinsip desain terkurasi
 
-Prinsip umum, bukan pengamatan video atau keputusan konsep baru.
-
 ## DNA sebagai hubungan desain
 
 Pilih hubungan massa, atap, entrance, porch, keluarga bukaan, hierarki material dan lingkungan yang menjelaskan identitas referensi. Pada konsep baru, nyatakan unsur yang dipertahankan serta unsur yang dikembangkan. Label gaya dan warna saja belum menjelaskan DNA.

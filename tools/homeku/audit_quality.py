@@ -1,262 +1,116 @@
-"""Deterministic source-quality checks; no visual inference or prose synthesis."""
+"""Temporal/source quality checks; these never invent visual observations."""
 import bisect
-import re
-import math
-from .common import require
-from .report_validation import display_audit, CATEGORIES
+from .common import require, schema_check
+from .camera_notation import parse
+from .camera_pattern import validate_direction
+from .derivations import claims, referenced_frames
+from .video import selected_indices, frame_times
 
 
-def resolve(key, audit, times=None):
-    selections = {p["id"]: p for s in audit["shots"] for group in ("panels", "overviews") for p in s[group]}
-    if key in selections:
-        p = selections[key]
-        return p["shot_id"], p["frame_index"], p["timestamp_s"]
-    m = re.fullmatch(r"frame:(shot-[0-9]{2,}):([0-9]+)", key)
-    require(m is not None, f"Unknown evidence: {key}")
-    index = int(m[2])
-    require(times is None or index < len(times), f"Evidence index outside video: {key}")
-    return m[1], index, times[index] if times is not None else None
-
-
-def validate_quality(audit, times=None):
-    display_audit(audit)
-    if audit["schema_version"]=="2.5":
-        validate_fact_inventory(audit)
-    profile = audit["profile"]
-    for c in profile:
-        if c["aspect"] in {"primary-style", "style-influence", "interior-style"}:
-            require(not re.search(r"[;,|\r\n]", c["value"]),
-                    f"/profile/{c['id']}: one English style name per claim")
-    for aspect, value in [("primary-style", audit["identity"]["primary_style"]),
-                          ("interior-style", audit["identity"]["interior_style"])]:
-        claims = [c for c in profile if c["aspect"] == aspect]
-        require(len(claims) == 1 and claims[0]["value"] == value,
-                f"/identity: {aspect} requires one matching profile claim")
-    influences = [c["value"] for c in profile if c["aspect"] == "style-influence" and c["state"] in {"observed", "uncertain"}]
-    require(len(influences) == len(set(influences)), "/profile: duplicate style influence")
-    require(audit["identity"]["influences"] == ("; ".join(influences) if influences else "unknown"),
-            "/identity/influences: use ordered individual profile style-influence names or unknown")
-    scale = audit["size"]["scale"]
-    scales = [c for c in profile if c["aspect"] == "apparent-scale"]
-    require(len(scales) == 1 and all(c["value"] == scale for c in scales), "/size/scale: contradictory scale profile")
-    if scale == "unknown":
-        require(all(c["state"] == "unknown" for c in scales), "/size/scale: unknown requires unknown state")
-    for si, shot in enumerate(audit["shots"]):
-        path = f"/shots/{si}"
-        facts = {f["id"]: f for f in shot["facts"]}
-        for di, d in enumerate(shot["design"]):
-            for category in CATEGORIES:
-                cov = d["fact_coverage"][category]
-                label = path + f"/design/{di}/fact_coverage/{category}"
-                require(cov["basis"].strip(), label + ": basis required")
-                if cov["state"] == "mapped":
-                    require(cov["fact_ids"] and set(cov["fact_ids"]) <= set(facts), label + ": missing/unknown fact IDs")
-                    selected = [facts[k] for k in cov["fact_ids"]]
-                    require(all(set(f["area_ids"]) & set(d["area_ids"]) for f in selected),
-                            label + ": fact outside design area")
-                    require(set(d["area_ids"]) <= {aid for f in selected for aid in f["area_ids"]},
-                            label + ": facts must cover every design area")
-                else:
-                    require(not cov["fact_ids"], label + ": unresolved coverage cannot claim mapped facts")
-        for pi, phase in enumerate(shot["phases"]):
-            label = path + f"/phases/{pi}"
-            components = phase["components_parsed"]
-            observations = phase["motion_observations"]
-            require(sorted(o["component_index"] for o in observations) == list(range(len(components))),
-                    label + ": exactly one observation per camera component required")
-            def phase_proof(keys, moving):
-                frames = set()
-                inside = False
-                for key in keys:
-                    sid, index, pts = resolve(key, audit, times)
-                    require(sid == shot["shot"], label + ": proof belongs to another shot")
-                    frames.add(index)
-                    if pts is not None:
-                        lo, hi = phase["start_s"], phase["end_s"]
-                        if times is None:
-                            require(lo <= pts < hi, label + ": proof outside phase")
-                        else:
-                            first = bisect.bisect_left(times, shot["start_s"])
-                            last = bisect.bisect_left(times, shot["end_s"]) - 1
-                            left = max(first, bisect.bisect_left(times, lo) - 1)
-                            right = min(last, bisect.bisect_left(times, hi))
-                            require(left <= index <= right, label + ": proof outside phase boundary tolerance")
-                        inside = inside or lo <= pts < hi
-                require(not moving or len(frames) >= 2, label + ": movement requires two distinct frames")
-                require(not moving or inside or (times is None and any(resolve(k, audit)[2] is None for k in keys)),
-                        label + ": movement needs an in-phase frame")
-                return frames
-            known = any(c["movement"] != "Uncertain" for c in components)
-            phase_proof(phase["evidence"], known)
-            for obs in observations:
-                component = components[obs["component_index"]]
-                require(set(obs["evidence"]) <= set(phase["evidence"]), label + ": observation proof must be listed in phase evidence")
-                phase_proof(obs["evidence"], component["movement"] != "Uncertain")
-                require(obs["basis"].strip(), label + ": motion observation basis required")
-                qualifiers = {q.casefold() for q in component["qualifiers"]}
-                if "decelerating" in qualifiers:
-                    require(phase["speed_change"] in {"decelerating", "variable"},
-                            label + ": Decelerating notation conflicts with speed_change")
-                if component["estimates"]:
-                    require(obs["estimate_basis"] is not None and obs["estimate_basis"].strip(),
-                            label + ": numeric camera estimate requires estimate_basis")
-                if component["movement"] == "Uncertain" or phase["confidence"] in {"low", "unknown"}:
-                    require(obs["alternatives"] is not None and obs["alternatives"].strip(),
-                            label + ": ambiguous motion requires alternatives")
-            labels = {t["tempo"] for t in shot["tempo_profile"] if
-                      t["start_s"] < phase["end_s"] and t["end_s"] > phase["start_s"]}
-            expected = next(iter(labels)) if len(labels) == 1 else "variable"
-            require(phase["tempo"] == expected,
-                    label + ": tempo conflicts with overlapping tempo_profile")
-    if audit["schema_version"] in {"2.3", "2.4", "2.5"}:
-        validate_method(audit, times)
-    return audit
-
-
-def validate_viewed_evidence(audit, reviews, times):
-    viewed = {(r["shot_id"], index) for r in reviews for index in r["viewed_frame_indices"]}
-    keys = {p["id"] for s in audit["shots"] for group in ("panels", "overviews") for p in s[group]}
-    claims = list(audit["profile"]) + list(audit["relations"]) + list(audit["identity"]["style_relations"])
-    for s in audit["shots"]:
-        claims += s["facts"] + s["phases"] + s["area_relations"]
-        claims += [o for p in s["phases"] for o in p["motion_observations"]]
-    if audit["schema_version"] in {"2.3", "2.4", "2.5"}:
-        for s in audit["shots"]:
-            for p in s["phases"]:
-                claims += list(p["camera_checks"].values())
-                for o in p["motion_observations"]:
-                    if o["scale_measurement"]:
-                        m = o["scale_measurement"]
-                        keys |= {m["start_evidence"], m["end_evidence"]}
-    keys |= {k for c in claims for k in c["evidence"]}
-    for key in keys:
-        sid, index, _ = resolve(key, audit, times)
-        require((sid, index) in viewed, f"Evidence {key}: frame not declared viewed; finish inspection before review")
-
-
-def validate_method(audit, times=None):
-    """2.3 declarations are internally checkable; image semantics remain visual."""
+def validate_motion(audit, times=None):
     for shot in audit["shots"]:
-        for phase in shot["phases"]:
-            label = shot["shot"] + "/" + phase["phase"]
-            def proof(keys):
-                require(set(keys) <= set(phase["evidence"]), label + ": checks/measurement evidence must be listed in phase")
-                rows = [resolve(k, audit, times) for k in keys]
-                require(all(sid == shot["shot"] for sid, _, _ in rows), label + ": check outside shot")
-                require(len({i for _, i, _ in rows}) >= 2, label + ": checks need two distinct frames")
-                inside = False
-                for _, index, pts in rows:
-                    if times is not None:
-                        lo = max(bisect.bisect_left(times, shot["start_s"]),
-                                 bisect.bisect_left(times, phase["start_s"]) - 1)
-                        hi = min(bisect.bisect_left(times, shot["end_s"]) - 1,
-                                 bisect.bisect_left(times, phase["end_s"]))
-                        require(lo <= index <= hi, label + ": check outside phase boundary tolerance")
-                    if pts is not None:
-                        inside |= phase["start_s"] <= pts < phase["end_s"]
-                        if times is None:
-                            require(phase["start_s"] <= pts < phase["end_s"], label + ": check outside phase")
-                require(inside or (times is None and any(t is None for _, _, t in rows)),
-                        label + ": check needs an in-phase frame")
-                return rows
-            for check in phase["camera_checks"].values():
-                require(check["basis"].strip(), label + ": camera check basis required")
-                proof(check["evidence"])
-            scales = []
-            for obs in phase["motion_observations"]:
-                c = phase["components_parsed"][obs["component_index"]]
-                movement = c["movement"]
-                expected = movement.startswith(("Dolly-", "Zoom-", "Pan ", "Orbit "))
-                if expected and audit["schema_version"] != "2.5":
-                    require(obs["estimate_basis"] is not None and obs["estimate_basis"].strip(),
-                            label + ": estimate_basis required for angle/scale or a specific limitation")
-                ratios = [e for e in c["estimates"] if e.endswith("×")]
-                angles = [e for e in c["estimates"] if e.endswith("°")]
-                require(not angles or movement.startswith(("Pan ", "Orbit ", "Tilt ")),
-                        label + ": angle estimate is not applicable to this component")
-                if audit["schema_version"] == "2.4":
-                    required_unit = "°" if movement.startswith(("Pan ", "Orbit ")) else "×" if movement.startswith(("Dolly-", "Zoom-")) else None
-                    if required_unit and phase["confidence"] in {"high", "medium"}:
-                        require(any(e.endswith(required_unit) for e in c["estimates"]),
-                                label + ": clear camera movement requires a visual ~" + required_unit + " estimate; calibration is not required")
-                    for estimate in c["estimates"]:
-                        require(re.search(r"\([^)]*" + re.escape(estimate) + r"[^)]*\)", c["raw"]) is not None,
-                                label + ": write numeric camera estimates inside parentheses")
-                if audit["schema_version"] == "2.4":
-                    for value in ratios:
-                        match=re.fullmatch(r"~([0-9]+(?:\.[0-9])?)(?:[–−-]([0-9]+(?:\.[0-9])?))?×",value)
-                        require(match is not None and 1<=float(match[1])<=float(match[2] or match[1]),
-                                label + ": visual scale uses a positive ordered IN/OUT magnitude, at most one decimal")
-                    for value in angles:
-                        match=re.fullmatch(r"~([0-9]+(?:\.[0-9]+)?)(?:°?[–−-]([0-9]+(?:\.[0-9]+)?))?°",value)
-                        require(match is not None and 0<float(match[1])<=float(match[2] or match[1]),
-                                label + ": visual angle uses a positive ordered estimate/range")
-                measure = obs["scale_measurement"]
-                if not ratios:
-                    require(measure is None, label + ": scale_measurement needs a stated scale estimate")
-                    continue
-                require(len(ratios) == 1 and movement in {"Dolly-In", "Dolly-Out", "Zoom-In", "Zoom-Out"},
-                        label + ": scale estimate requires an IN/OUT Dolly or Zoom component")
-                if measure is None and audit["schema_version"] in {"2.4", "2.5"}:
-                    continue
-                require(measure is not None, label + ": numeric scale requires scale_measurement")
-                require(measure["anchor"].strip(), label + ": scale anchor required")
-                keys = [measure["start_evidence"], measure["end_evidence"]]
-                require(set(keys) <= set(obs["evidence"]), label + ": measurement evidence outside observation")
-                rows = proof(keys)
-                require(rows[0][1] < rows[1][1], label + ": measurement frames must be chronological and distinct")
-                start, end = measure["start_px"], measure["end_px"]
-                require(all(math.isfinite(v) and v > 0 for v in (start, end)), label + ": pixel sizes must be finite and positive")
-                ratio = end / start if movement.endswith("In") else start / end
-                require(ratio > 1, label + ": IN/OUT scale ratio must exceed one")
-                if audit["schema_version"]=="2.5":
-                    from .camera_notation import bounds
-                    lower,upper=bounds(ratios[0],"×")
-                    match=True
-                else:
-                    match = re.fullmatch(r"~([0-9]+(?:\.[0-9])?)(?:[–−-]([0-9]+(?:\.[0-9])?))?×", ratios[0])
-                require(match is not None, label + ": scale notation uses one decimal or an ordered range")
-                if audit["schema_version"]!="2.5":
-                    lower = float(match[1]); upper = float(match[2] or match[1])
-                require(1 <= lower <= upper and lower-.050000001 <= ratio <= upper+.050000001,
-                        label + ": scale notation conflicts with measured IN/OUT ratio")
-                scales.append((movement, measure))
-            # Same total scale must not be attributed twice to an inseparable Dolly+Zoom.
-            for m1, x in scales:
-                for m2, y in scales:
-                    if m1.startswith("Dolly") and m2.startswith("Zoom"):
-                        require(x != y, label + ": Dolly+Zoom cannot share the total scale measurement")
-            ranks = {"slow": 0, "moderate": 1, "fast": 2}
-            seq = [t["tempo"] for t in shot["tempo_profile"]
-                   if t["start_s"] < phase["end_s"] and t["end_s"] > phase["start_s"]]
-            values = [ranks[t] for t in seq if t in ranks]
-            if len(values) > 1 and len(values) == len(seq):
-                if phase["speed_change"] == "accelerating":
-                    require(all(a <= b for a, b in zip(values, values[1:])),
-                            label + ": accelerating conflicts with decreasing tempo_profile")
-                if phase["speed_change"] == "decelerating":
-                    require(all(a >= b for a, b in zip(values, values[1:])),
-                            label + ": decelerating conflicts with increasing tempo_profile")
+        for phase in shot["camera"]["phases"]:
+            parsed = parse(phase["notation"])
+            validate_direction(phase)
+            overrides = phase.get("overrides", [])
+            indices = [o["component_index"] for o in overrides]
+            require(len(indices) == len(set(indices)) and
+                    all(i < len(parsed) for i in indices), "Invalid/duplicate component override")
+            if times is None:
+                continue
+
+            def temporal(evidence, required=True):
+                unique = set(evidence)
+                require(not required or len(unique) >= 2,
+                        "Movement requires at least two distinct temporal native frames")
+                lo = bisect.bisect_left(times, phase["start_s"])
+                hi = bisect.bisect_left(times, phase["end_s"])
+                shot_lo = bisect.bisect_left(times, shot["start_s"])
+                shot_hi = bisect.bisect_left(times, shot["end_s"])
+                require(all(type(i) is int and shot_lo <= i < shot_hi and
+                            max(shot_lo, lo - 1) <= i <= min(shot_hi - 1, hi)
+                            for i in unique), "Camera evidence outside phase/native-boundary tolerance")
+                require(not unique or any(lo <= i < hi for i in unique),
+                        "At least one camera evidence frame must be within the phase")
+
+            temporal(phase["evidence"], any(c["movement"] != "Uncertain" for c in parsed))
+            for override in overrides:
+                temporal(override.get("evidence", phase["evidence"]),
+                         parsed[override["component_index"]]["movement"] != "Uncertain")
+
+
+def _cover(intervals, start, end, message):
+    cursor = start
+    for left, right in sorted(intervals):
+        if right <= cursor:
+            continue
+        require(left <= cursor + 1e-6, message)
+        cursor = max(cursor, right)
+        if cursor >= end - 1e-6:
+            return
+    require(cursor >= end - 1e-6, message)
+
+
+def validate_frame_reviews(reviews, shots, source, info, *, times=None, check_coverage=True):
+    """Declarations are checked against native PTS; actual viewing remains explicit."""
+    times = frame_times(source) if times is None else times
+    fps = info["fps"]["numerator"] / info["fps"]["denominator"]
+    shot_map = {s["shot"]: s for s in shots}
+    coverage = {sid: [] for sid in shot_map}
+    for review in reviews:
+        sid = review["shot_id"]
+        require(sid in shot_map, "Frame review has unknown shot")
+        shot = shot_map[sid]
+        start, end = review["start_s"], review["end_s"]
+        require(shot["start_s"] <= start < end <= shot["end_s"], "Frame review outside shot")
+        native = review["mode"] == "frame-by-frame"
+        rate = review["sampling_fps"]
+        require((native and rate is None) or (not native and rate is not None),
+                "Native review requires null sampling FPS; sampling declares FPS")
+        expected = selected_indices(times, start, end, rate or 6, native=native, source_fps=fps)
+        require(review["selected_frame_indices"] == expected, "Selected indices differ from native PTS")
+        require(review["viewed_frame_indices"] == expected,
+                "Frame review incomplete: only declare frames actually viewed")
+        require(review["reason"].strip(), "Frame review needs a visual question/reason")
+        qualified = native or rate >= min(6, fps)
+        if fps <= 6 or shot["end_s"] - shot["start_s"] < 1:
+            qualified = expected == selected_indices(times, start, end, native=True)
+        if qualified:
+            coverage[sid].append((start, end))
+    if check_coverage:
+        for sid, shot in shot_map.items():
+            _cover(coverage[sid], shot["start_s"], shot["end_s"],
+                   f"Every shot requires complete 6 FPS/native viewed coverage: {sid}")
+    return times
+
+
+def validate_audit_logs(logs, audit, source, info, *, times=None):
+    schema_check(logs, "audit-info.schema.json")
+    times = validate_frame_reviews(logs["frame_reviews"], audit["shots"], source, info, times=times)
+    ranges = []
+    for row in logs["reviewed_ranges"]:
+        require(0 <= row["start_s"] < row["end_s"] <= info["duration_s"],
+                "Invalid declared reviewed range")
+        if row["mode"] == "frame-by-frame":
+            _cover([(p["start_s"], p["end_s"]) for p in logs["frame_reviews"]
+                    if p["mode"] == "frame-by-frame"], row["start_s"], row["end_s"],
+                   "Native coverage claim lacks native viewed records")
+        ranges.append((row["start_s"], row["end_s"]))
+    _cover(ranges, 0, info["duration_s"], "Declared reviewed ranges do not cover source")
+    viewed = {i for r in logs["frame_reviews"] for i in r["viewed_frame_indices"]}
+    require(set(referenced_frames(audit)) <= viewed, "Evidence/panel/Overview not actually declared viewed")
+    return times
 
 
 def fact_inventory(audit):
-    """Working review aid only. Does not claim semantic narrative coverage."""
-    rows=[]
-    for shot in audit["shots"]:
-        mapped={k for d in shot["design"] for cov in d["fact_coverage"].values() for k in cov["fact_ids"]}
-        rows.append({"shot":shot["shot"],"facts":len(shot["facts"]),
-                     "domains":sorted({f["domain"] for f in shot["facts"]}),
-                     "subjects":sorted({f["subject"] for f in shot["facts"]}),
-                     "unmapped_fact_ids":[f["id"] for f in shot["facts"] if f["id"] not in mapped],
-                     "coverage":[{"areas":d["area_ids"],"categories":{
-                         k:{"state":v["state"],"facts":len(v["fact_ids"])} for k,v in d["fact_coverage"].items()}}
-                         for d in shot["design"]]})
-    return {"semantic_completeness":"Requires auditor comparison with observed details; no quota","shots":rows}
-
-def validate_fact_inventory(audit):
-    for shot in audit["shots"]:
-        seen=set()
-        for fact in shot["facts"]:
-            key=(tuple(sorted(fact["area_ids"])),fact["domain"],fact["subject"],fact["attribute"],fact["value"],fact["state"])
-            require(key not in seen,shot["shot"]+": duplicate fact content; consolidate explicit evidence")
-            seen.add(key)
+    """Workspace review aid with source pointers; not a second source or ZIP member."""
+    rows = []
+    for pointer, claim, areas, shot, category in claims(audit):
+        if category == "camera":
+            continue
+        row = {"source_pointer": pointer, "category": category, "area_ids": areas,
+               "shot": shot, "state": claim["state"], "evidence": claim["evidence"]}
+        row.update({k: claim[k] for k in ("subject", "attribute", "value", "confidence", "note")
+                    if k in claim})
+        rows.append(row)
+    return rows

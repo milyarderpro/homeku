@@ -5,10 +5,13 @@ import io
 import json
 import math
 import subprocess
+from contextvars import ContextVar
 from fractions import Fraction
 from pathlib import Path
 from PIL import Image
 from .common import LibraryError, require
+
+ACTIVE = ContextVar("homeku_video_cache", default=None)
 
 def _probe_video_uncached(path: Path):
     try:
@@ -34,10 +37,10 @@ def _probe_video_uncached(path: Path):
         raise LibraryError(f"ffprobe cannot read {path.name}: {error}") from error
 
 
-def _frame_times_uncached(source):
+def _frame_times_uncached(source, *, info=None):
     """Presentation timestamps in decoder order, relative to the first video frame."""
     try:
-        stream_index = probe_video(source)["video_stream_index"]
+        stream_index = (info if info is not None else probe_video(source))["video_stream_index"]
         result = subprocess.run(["ffprobe", "-v", "error", "-protocol_whitelist", "file,pipe", "-select_streams", str(stream_index),
                                  "-show_frames", "-show_streams", "-show_entries", "frame=best_effort_timestamp:stream=time_base", "-of", "json", str(source)],
                                 capture_output=True, text=True, check=True, timeout=120)
@@ -94,17 +97,14 @@ def selected_indices(times, start, end, fps=10.0, *, native=False, source_fps=No
 
 
 def probe_video(path):
-    from .video_cache import ACTIVE
     cache=ACTIVE.get()
     return dict(cache.info) if cache is not None and cache.matches(path) else _probe_video_uncached(Path(path))
 
-def frame_times(source):
-    from .video_cache import ACTIVE
+def frame_times(source, *, info=None):
     cache=ACTIVE.get()
-    return list(cache.times) if cache is not None and cache.matches(source) else _frame_times_uncached(source)
+    return list(cache.times) if cache is not None and cache.matches(source) else _frame_times_uncached(source, info=info)
 
 def extract_frame(source,index,stream_index=None):
-    from .video_cache import ACTIVE
     cache=ACTIVE.get()
     if cache is not None and cache.matches(source,stream_index):
         return cache.frame(index,stream_index)

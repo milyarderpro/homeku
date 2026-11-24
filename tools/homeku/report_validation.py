@@ -1,8 +1,8 @@
 """Independent contract checks for the human report, not a second source of facts."""
-import copy
 import re
-from pathlib import Path
 from .common import require
+from .derivations import camera_summary, selections
+from .render_assets import TEMPLATE
 
 HEADINGS = ["## 1. Profil desain", "## 2. Ukuran & proporsi", "## 3. Shot Timeline",
             "## 4. Overview", "## 5. Storyboard", "## 6. Shot Details"]
@@ -21,49 +21,22 @@ def inline(value):
     return re.sub(r"([\\\x60*_[\]<>])", r"\\\1", value)
 
 
-def display_audit(audit, escape=False):
-    """Visit only displayed text; never escape identifiers, evidence or source JSON."""
-    a = copy.deepcopy(audit)
-    def field(obj, key, path, optional=False):
-        plain(obj[key], path + "/" + key, optional)
-        if escape:
-            obj[key] = inline(obj[key])
-    for key in ("name", "primary_style", "influences", "interior_style", "palette", "mood_environment"):
-        field(a["identity"], key, "/identity")
-    for n, value in enumerate(a["identity"]["distinctive_features"]):
-        plain(value, f"/identity/distinctive_features/{n}")
-        if escape:
-            a["identity"]["distinctive_features"][n] = inline(value)
-    for key in ("scale", "massing", "vertical", "footprint", "proportions"):
-        field(a["size"], key, "/size")
-    field(a, "timeline_notes", "")
-    for i, area in enumerate(a["areas"]):
-        field(area, "label", f"/areas/{i}")
-    for i, s in enumerate(a["shots"]):
-        path = f"/shots/{i}"
-        for key in ("camera_summary", "camera_simple", "rhythm", "continuity", "journey_dna"):
-            field(s, key, path, key == "journey_dna")
-        for key in s["composition"]:
-            field(s["composition"], key, path + "/composition")
-        for j, d in enumerate(s["design"]):
-            for key in CATEGORIES:
-                field(d, key, path + f"/design/{j}")
-        for j, o in enumerate(s["overviews"]):
-            field(o, "composition_summary", path + f"/overviews/{j}")
-        for j, r in enumerate(s["route"]):
-            for key in ("connector", "focus"):
-                field(r, key, path + f"/route/{j}")
-        for j, r in enumerate(s["area_relations"]):
-            field(r, "description", path + f"/area_relations/{j}")
-        for j, phase in enumerate(s["phases"]):
-            for key in ("focus", "components"):
-                field(phase, key, path + f"/phases/{j}")
-        for j, tempo in enumerate(s["tempo_profile"]):
-            field(tempo, "description", path + f"/tempo_profile/{j}")
-    return a
+def display(value):
+    plain(value, "Report text")
+    return inline(value)
 
 
-def validate_report(text, audit):
+def lines(rows):
+    return "\n".join(f"- **{title}:** {value}" for title, value in rows)
+
+
+def table(columns, rows):
+    def row(values):
+        return "| " + " | ".join(str(value).replace("|", r"\|") for value in values) + " |"
+    return "\n".join([row(columns), row(["---"] * len(columns)), *(row(values) for values in rows)])
+
+
+def validate_report(text, audit, frames):
     require(re.findall(r"^## .+$", text, re.M) == HEADINGS,
             "analysis.md: exactly six ordered template sections required")
     require(len(re.findall(r"^# ", text, re.M)) == 1, "analysis.md: one title required")
@@ -86,17 +59,14 @@ def validate_report(text, audit):
     overview = text.split(HEADINGS[3], 1)[1].split(HEADINGS[4], 1)[0]
     labels = {v["id"]: inline(v["label"]) for v in audit["areas"]}
     expected_overviews = [
-        f"**Shot {s['shot'][5:]} · {' / '.join(labels[k] for k in p['area_ids'])} · {p['timestamp_s']:.2f}s**"
-        for s in audit["shots"] for p in s["overviews"]]
+        f"**Shot {p['shot_id'][5:]} · {' / '.join(labels[k] for k in p['area_ids'])} · {p['timestamp_s']:.2f}s**"
+        for p in selections(audit, frames) if p["role"] == "overview"]
     require(re.findall(r"^\*\*Shot .+$", overview, re.M) == expected_overviews,
             "analysis.md: Overview selection order/count mismatch")
     details = text.split(HEADINGS[5], 1)[1]
     chunks = re.split(r'^<a id="shot-[0-9]+"></a>\n\n', details, flags=re.M)[1:]
     require(len(chunks) == len(audit["shots"]), "analysis.md: shot anchors mismatch")
-    from .versions import DEFAULT_REPORT
-    version = DEFAULT_REPORT[audit["schema_version"]]
-    template = (Path(__file__).resolve().parents[1] /
-                f"assets/templates/analysis-{version}.md").read_text()
+    template = TEMPLATE.read_text(encoding="utf-8")
     groups = re.findall(r"^#### .+$", template, re.M)
     require(len(groups) == 3, "Invalid report section contract")
     for s, chunk in zip(audit["shots"], chunks):
@@ -109,10 +79,10 @@ def validate_report(text, audit):
         for label in ("Arsitektur", "Furnitur & dekorasi", "Lingkungan"):
             require(chunk.count(f"**{label}**\n\n> ") == len(s["design"]),
                     f"{s['shot']}: missing design category {label}")
-        require("**Camera:** " + inline(s["camera_summary"]) + "\n" in chunk + "\n",
+        require("**Camera:** " + inline(camera_summary(s)) + "\n" in chunk + "\n",
                 f"{s['shot']}: camera literal mismatch")
         require(("**Movement Timeline**" in chunk) ==
-                (len(s["area_ids"]) > 1 or len(s["phases"]) > 1),
+                (len(s["area_ids"]) > 1 or len(s["camera"]["phases"]) > 1),
                 f"{s['shot']}: conditional movement timeline mismatch")
     require(len(re.findall(r"^#{1,6} ", text, re.M)) ==
             7 + sum(4 + (len(s["design"]) if len(s["area_ids"]) > 1 else 0)

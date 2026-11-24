@@ -1,4 +1,4 @@
-# Kasus pembacaan kamera
+# Kasus pembacaan kamera HOMEKU 3.0
 
 Adaptasi dokumen eksperimen pengguna; sepuluh kasus belum diaudit ulang di implementasi ini. Bukan jawaban untuk sumber lain atau referensi aktif. Angka adalah contoh, bukan target.
 
@@ -15,4 +15,11 @@ Adaptasi dokumen eksperimen pengguna; sepuluh kasus belum diaudit ulang di imple
 | 9 | Diagonal Dolly-Out (~2.5×) + Moderate Pan Right (Ease-Out) | Mundur diagonal tidak otomatis Orbit; periksa perubahan sudut pandang. |
 | 10 | Diagonal Dolly-Out (~1.75×) + Subtle Pan Left (Ease-Out) | Tinjau orientasi bidang dan lapisan dekat/jauh pada setiap interval. |
 
-Semua komponen boleh tanpa estimasi. Angka tunggal default; rentang sah. Baseline tetap6FPS. Flow 2D hanyalah pendamping; bawah/atas gambar bukan kedalaman pasti. Skala global bukan bukti Dolly, oklusi bukan bukti Orbit tunggal. Tilt berkelanjutan tidak harus ekstrem dan berbeda dari Crane/Pedestal.
+Semua komponen boleh tanpa estimasi. Angka tunggal default; rentang sah. Baseline tetap 6 FPS. Flow 2D hanyalah pendamping; bawah/atas gambar bukan kedalaman pasti. Skala global bukan bukti Dolly, oklusi bukan bukti Orbit tunggal. Tilt berkelanjutan tidak harus ekstrem dan berbeda dari Crane/Pedestal.
+
+## Pembanding saat tafsir masih ambigu
+
+- Perubahan framing setara yang berlangsung 2 detik dan 6 detik memberi tempo berbeda walaupun keduanya smooth.
+- Bila ukuran berubah dan paralaks tidak jelas, catat temuan skala dan batas pemisahan antara Dolly dan Zoom.
+- Pilih jangkar utuh yang sama ketika membandingkan skala. Periksa bukaan, posisi lampu, bangku dan footboard pada frame yang memperlihatkan bentuknya dengan jelas.
+- Untuk lintasan tanpa cut melalui exterior, entry, living dan kitchen, catat rute dan kemunculan area dalam satu shot.

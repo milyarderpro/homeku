@@ -1,26 +1,28 @@
-# Tujuh pilot nyata
+# Tujuh pilot HOMEKU 3.0
 
-Pustaka aktif kosong setelah reset edh001. Hasil edh058 tetap tersimpan untuk perbandingan dan belum di-ingest. Status berikut membedakan hasil nyata dari rencana pengujian.
+Kit 3.0 telah lulus uji teknis dengan fixture. Registry produksi berisi nol referensi. Tujuh video di bawah siap digunakan sebagai sumber pilot. Audit 3.0, persetujuan, ekspor dan ingest untuk tiap video masih menunggu pelaksanaan.
 
-| Video | Pelaksana/lingkungan | Status nyata | Fokus |
-| --- | --- | --- | --- |
-| [edh001](../../video/edh001.mp4) | Audit ulang dari awal | Data audit lama, kandidat, ZIP, cache dan riwayat ingest telah dihapus atas permintaan pengguna; belum ada audit baru | Gunakan video asli dan kit terbaru |
-| [edh058](../../video/edh058.mp4) | Pengguna / ChatGPT dan Gemini | Dua hasil tersedia dan sudah dibandingkan; belum disetujui/di-ingest. [Catatan](edh058-comparison.md) | Alur dasar lengkap dan wardrobe |
-| [edh013](../../video/edh013.mp4) | Pengguna / Gemini | Belum ada run terverifikasi dalam catatan ini | Bentuk organik, platform bathroom, durasi stream/container |
-| [edh033](../../video/edh033.mp4) | Pengguna / ChatGPT | Belum ada run terverifikasi dalam catatan ini | Open-plan, sleeping loft dan beberapa fungsi dalam satu shot |
-| [edh049](../../video/edh049.mp4) | Pengguna / Gemini | Belum ada run terverifikasi dalam catatan ini | Perspektif bangunan/kitchen lengkung dan pembedaan pan/orbit |
-| [edh056](../../video/edh056.mp4) | Pengguna / ChatGPT | Belum ada run terverifikasi dalam catatan ini | Lintasan exterior–interior, cut versus segmen fungsi |
-| [dreamshome01](../../video/dreamshome01.mp4) | Pengguna / Gemini | Belum ada run terverifikasi dalam catatan ini | Pembanding arah, ritme dan perkembangan komposisi |
-## Memulai audit berikutnya
+| Video sumber | Fokus pilot | Riwayat |
+| --- | --- | --- |
+| [edh001](../../video/edh001.mp4) | Alur lengkap dari awal, arah kamera, dan framing tiap shot | Data audit lama dibersihkan atas permintaan pengguna. Mulai dari r0001 dengan `supersedes: null`. |
+| [edh058](../../video/edh058.mp4) | Alur dasar, wardrobe, kombinasi kamera dan tempo | Hasil ChatGPT dan Gemini terdahulu tersedia sebagai pembanding. [Catatan riwayat](edh058-comparison.md) |
+| [edh013](../../video/edh013.mp4) | Bentuk organik, platform bathroom, dan durasi stream | Gunakan MP4 asli dengan kit 3.0. |
+| [edh033](../../video/edh033.mp4) | Open plan, sleeping loft, dan fungsi area yang bertumpang tindih | Gunakan MP4 asli dengan kit 3.0. |
+| [edh049](../../video/edh049.mp4) | Perspektif bangunan dan kitchen lengkung, serta pembedaan pan dan orbit | Gunakan MP4 asli dengan kit 3.0. |
+| [edh056](../../video/edh056.mp4) | Lintasan exterior–interior, cut dan pergantian area | Gunakan MP4 asli dengan kit 3.0. |
+| [dreamshome01](../../video/dreamshome01.mp4) | Pembanding arah, ritme, dan perkembangan komposisi | Gunakan MP4 asli dengan kit 3.0. |
 
-Gunakan [panduan audit](../README.md), MP4 sumber terpisah dan [kit terbaru](../homeku-audit-kit.zip). Default baru: sumber2.5/report2.2.4/media2.2.1, baseline6FPS dengan pendalaman10FPS/native sesuai kebutuhan. Satu chat per video; tidak wajib menggandakan seluruh video pada dua provider.
+## Menjalankan satu pilot
 
-Edh001 dimulai kembali dari r0001 dengan supersedes null. Jangan menggunakan laporan, hasil kamera atau persetujuan lama sebagai audit baru. MP4 kanonis tetap di video/edh001.mp4.
+1. Buka satu chat per video. Lampirkan MP4 asli dan [kit final HOMEKU 3.0](../homeku-audit-kit.zip). Gunakan [prompt mulai](../prompts/01-audit.md).
+2. Periksa kamera dan penjelasan pada kandidat yang ditampilkan. Tinjau laporan lengkap, Overview, Storyboard, serta seluruh kolase. Jika ada koreksi, gunakan [prompt koreksi](../prompts/02-correct.md).
+3. Setelah menyetujui seluruh snapshot terbaru, gunakan [prompt ekspor](../prompts/03-export.md). Unduh satu ZIP final tanpa MP4.
+4. Taruh ZIP di `incoming/` dan pastikan MP4 asli tersedia di `video/<id>.mp4`. Jalankan ingest. Berikut contoh untuk edh001.
 
-Tinjau Overview, Storyboard, kolase seluruh shot dan analysis.md lengkap di chat. Setelah koreksi dan persetujuan keseluruhan snapshot, ekspor ZIP tanpa MP4. Masukkan ZIP final ke incoming/ lalu jalankan ingest; tidak ada review isi kedua.
+~~~sh
+python tools/library.py ingest incoming/edh001-r0001.zip
+~~~
 
-Hasil edh058 dan pembandingnya tetap tersedia di audit/result/ serta [catatan perbandingan](edh058-comparison.md). Implementasi tooling, hasil audit, persetujuan, ekspor dan ingest adalah status terpisah.
+Pertahankan hasil pembanding terdahulu di `audit/result/` sebagai riwayat. Mulai setiap pilot 3.0 dari MP4 asli dan catat kandidat, persetujuan keseluruhan, ekspor, dan ingest sebagai status terpisah. Pilih ChatGPT atau Gemini per video sesuai kebutuhan.
 
-## Reset edh001
-
-Pada 24 November 2026, pengguna meminta seluruh data audit edh001 dibersihkan untuk memulai dari awal. Referensi aktif, r0001–r0003, kandidat, laporan review, frame/cache dan ledger ingest dihapus. Katalog/knowledge/proyeksi dibangun ulang tanpa edh001. Catatan implementasi historis bukan referensi audit aktif.
+[Verifikasi tooling](../../docs/implementation-verification-single-version.md) · [Panduan audit](../README.md)

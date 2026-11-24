@@ -1,70 +1,72 @@
-# Authoring HOMEKU2.5
+# Menyiapkan audit HOMEKU 3.0
 
-Baca visual-audit.md sebelum menyimpulkan isi. Helper menghitung metadata; AI menulis pengamatan. audit.json satu sumber final. Semua perintah berjalan di workspace chat; tidak ada pekerjaan teknis tambahan untuk pengguna.
+Baca [panduan visual](visual-audit.md). Tulis pengamatan di satu `audit.json`. Helper menyiapkan frame dan metadata dari video sumber.
 
-## 1. Siapkan sumber dan baseline sekali
+## Siapkan workspace
 
-Jalankan inspect, periksa cut nyata pada sumber dan catat indeks frame pertama setiap shot sesudah shot01. Simpan sebagai array JSON di work/cuts.json; [] bila satu take. Cut adalah edit video, bukan pergantian area. Jangan menyalin cut dari video contoh.
+Jalankan `inspect` dan tentukan cut nyata pada video. Simpan indeks native **frame pertama setelah setiap cut** dalam `work/cuts.json`. Gunakan `[]` untuk satu take kontinu, termasuk jika kamera melewati beberapa area.
 
 ~~~sh
-python tools/audit.py inspect /path/<id>.mp4
-python tools/audit.py prepare /path/<id>.mp4 --cuts-file work/cuts.json --output work/audit
+python tools/audit.py inspect /path/rumah.mp4
+python tools/audit.py prepare /path/rumah.mp4 --cuts-file work/cuts.json --output work/audit
 ~~~
 
-Hasil: audit.json kerangka, audit-info.json, session.json, pass/sheets dan performance.jsonl. PTS, frame awal/akhir, midpoint dan selected dihitung otomatis. Kerangka belum audit valid: area/Overview/fakta/gaya dan narasi harus diisi AI setelah melihat.
+Workspace berisi `session.json`, kerangka `audit.json`, `audit-info.json` dan sheet. Baseline mencakup 6 FPS dan batas native. Sumber ≤6 FPS atau shot <1 detik memakai seluruh frame native. Helper menyiapkan pula frame terdekat dari midpoint. Gunakan `--resume` pada sumber dan cut yang sama untuk mempertahankan isi serta deklarasi sebelumnya.
 
-prepare membuat baseline6FPS seluruh shot melalui batch kecil otomatis dan tambahan midpoint jika belum tercakup. Sumber≤6FPS/shot<1s native. Lihat semua sheet sebelum menyatakan viewed. Gunakan prepare dengan --resume untuk session yang sama; isi pengamatan tidak ditimpa. Sumber/cut berbeda memerlukan workspace baru; frame cache tetap hanya alat kerja.
+## Tulis pengamatan
 
-## 2. Isi pengamatan dan nyatakan viewed
+Isi nama gaya dalam bahasa Inggris dan narasi dalam bahasa Indonesia. Tulis rentang luas lantai, identitas area, detail desain beserta fakta dan bukti, framing awal, Overview, serta kamera dan tempo. [Panduan JSON](json-guide.md) menjelaskan field. Contoh normal dan multi area merupakan fixture sintetis.
 
-Tulis identitas/profil English, detail Indonesia, estimasi luas rentang wajib, area fisik/visibility/route, arsitektur/furnitur/lingkungan, fakta/coverage/facet_roles, Camera Start, komposisi, gerakan sederhana/teknis dan tempo. Contoh sintetik ada di audit/examples/normal/ dan multi/, bukan isi audit nyata.
+Tulis pengamatan depth, translation dan rotation sebelum notasi tiap fase. Angka skala dan sudut opsional per komponen. Angka tunggal dan rentang sama-sama sah. Contoh `Dolly-Out (~1.6×) + Orbit Left + Subtle Pan Right (Ease-Out)`.
 
-Notasi fase menjadi input kamera utama; complete menghitung parsed metadata dan summary. Pan/Orbit jelas memakai perkiraan ~°; Dolly/Zoom ~×. Asumsi wajar sah; tidak perlu focal length/kalibrasi. scale_measurement boleh null; estimate_basis cukup singkat. Semua moderate sah. Tidak ada SIFT/RANSAC rutin atau esai pembuktian.
+Periksa sheet lalu tandai frame yang sudah dilihat. Gunakan `--all-passes --all` setelah semua pass selesai diperiksa atau `--pass-id <ID> --frames <INDEKS...>` untuk bagian yang sudah dilihat.
 
-Setelah benar-benar melihat seluruh frame yang disediakan:
 ~~~sh
 python tools/audit.py mark-viewed work/audit/session.json --all-passes --all
+python tools/audit.py sample --session work/audit/session.json --shot-id shot-02 --fps 10 --start 2.4 --end 2.9 --reason "Perubahan oklusi kusen untuk membedakan Orbit dan Pan"
 ~~~
-Jika baru melihat sebagian, gunakan --pass-id <ID> --frames <INDEKS...>. Jangan memakai --all sebelum pemeriksaan. Selected/cache bukan viewed. Pass ID/daftar sheet tersedia pada output prepare/session.
 
-Pendalaman hanya untuk pertanyaan spesifik:
+Sesuaikan waktu pendalaman dengan PTS nyata dalam shot. Gunakan `--native` bila diperlukan, atau `sample --session work/audit/session.json --frames 24 31 --reason "Pilihan Overview tambahan"` untuk indeks tertentu. Lihat frame baru sebelum mendeklarasikan viewed.
+
+Koreksi satu shot dapat dikirim lewat file berisi objek JSON, misalnya `{"camera":{"description":"Kamera mundur menuju lorong."}}`. Helper menggabungkan objek dan mengganti array utuh bila disertakan. Update area global langsung di sumber. Shot ID, batas waktu dan jenis transisi terkunci pada helper.
+
 ~~~sh
-python tools/audit.py sample --session work/audit/session.json --shot-id shot-02 --fps 10 --start <PTS_AWAL> --end <PTS_AKHIR> --reason "Perubahan oklusi kusen belum membedakan Orbit dan Pan"
+python tools/audit.py update-shot work/audit/session.json --shot-id shot-02 --patch work/koreksi.json
 ~~~
-Boleh --native atau seluruh shot jika memang perlu. Tanpa --start/--end memakai batas shot presisi session. Periksa frame tambahan lalu deklarasikan viewed untuk pass tersebut. Tidak otomatis mengulang10FPS semua shot. Untuk pilihan panel/Overview baru yang belum tercakup, gunakan sample --session work/audit/session.json --frames <INDEKS...> --reason "Pilihan panel/Overview tambahan"; helper menyiapkan record native presisi. Lihat gambar lalu deklarasikan viewed.
 
-## 3. Lengkapi metadata dan periksa sebelum render
+## Periksa input
 
-Isi provider/model yang diketahui pada audit-info; build tidak diketahui null. native memakai mode frame-by-frame, bukan native; helper sudah menghitung recordnya.
+Isi metode, batas pemeriksaan dan identitas model yang diketahui di `audit-info.json`. Build yang tidak diketahui diisi `null`. `complete` menata notasi, menetapkan pilihan panel native yang ditentukan kontrak, dan menyalin deklarasi viewed dari sesi.
+
 ~~~sh
 python tools/audit.py complete work/audit/audit.json --session work/audit/session.json
-python tools/audit.py check-input /path/<id>.mp4 work/audit/audit.json --audit-info work/audit/audit-info.json
+python tools/audit.py check-input /path/rumah.mp4 work/audit/audit.json --audit-info work/audit/audit-info.json
 ~~~
 
-complete hanya memperbarui whitelist mekanis: batas/PTS/midpoint/parser/summary/pengaruh gaya dari klaim profil/log pass. Ia tidak menebak ruang, memindahkan evidence, membuat fakta, atau mengubah arah/besaran/tempo. Area/shot yang tertukar dilaporkan. Tidak mengonversi JSON lama atau mengedit kandidat ter-render. Perubahan mekanis ditampilkan; isi audit tetap pada audit.json.
+Perbaiki field yang ditunjuk `check-input`. Untuk bukti yang belum dilihat, ambil frame yang tepat dan periksa sebelum memperbarui deklarasi. Untuk tahap peninjauan dan penyerahan, ikuti [kontrak paket](contracts/package.md).
 
-check-input mengumpulkan kesalahan independen tanpa JPEG. Perbaiki path yang ditunjuk. Bila schema rusak, perbaiki dahulu agar pemeriksaan lanjut aman. Jangan mengarang bukti/angka/fakta untuk lolos. Tidak perlu menulis skrip builder khusus video.
+Untuk pertanyaan visual yang masih ambigu, gunakan [bantuan statistik gerak 2D](visual-audit.md#bantuan-statistik-gerak-2d) bila lingkungan mendukungnya.
 
-## 4. Kandidat, koreksi dan ekspor
+## Periksa isi sebelum memperlihatkan kandidat
+
+- Cocokkan cut, scope area, pengamatan tiga sumbu, notasi, tempo, dan bukti pada shot yang sama.
+- Baca narasi desain bersama fakta yang terkait. Periksa detail yang mudah tertukar, seperti bentuk bukaan, bahan tampak, lampu dan fungsi furnitur.
+- Periksa panel awal terhadap posisi Camera Start. Lihat cakupan setiap Overview pada frame terpilih.
+- Baca laporan enam bagian dan periksa caption serta gambar pada semua kolase. Untuk penyesuaian ukuran, ubah parameter render sebelum peninjauan berikutnya.
+
+Draft memakai kualitas JPEG 91 dan skala 1 secara default. Gunakan `--scale`, `--overview-scale`, `--storyboard-scale` atau `--columns` jika tata letak melebihi batas. Satu JPEG dapat memuat sampai 60 juta piksel dengan sisi sampai 65.000 px. Batas file 95 MiB dan batas ZIP terurai 256 MiB.
+
+## Tinjau kandidat dan serahkan ZIP
 
 ~~~sh
-python tools/audit.py draft-v2 /path/<id>.mp4 work/audit/audit.json --audit-info work/audit/audit-info.json --output work/candidate
-python tools/audit.py review work/candidate/<id> --source /path/<id>.mp4 --output work/review.md
+python tools/audit.py draft /path/rumah.mp4 work/audit/audit.json --audit-info work/audit/audit-info.json --output work/candidate
+python tools/audit.py review work/candidate/rumah --output work/review.md
 ~~~
 
-draft memeriksa input sebelum render dan memakai cache/frame/media yang cocok. Check-input manual berguna saat mengisi; tidak wajib diulang bila langsung draft. Tampilkan MD lengkap enam bagian, Overview, Storyboard dan semua kolase. Progres singkat saat berpindah tahap jika UI mendukung; tanpa jeda konfirmasi internal.
+Tampilkan laporan enam bagian, Overview, Storyboard, dan semua kolase. Jika ada koreksi, perbarui audit kerja dan ulangi draft serta review. Simpan receipt terbaru di luar folder kandidat. Setelah persetujuan pengguna atas seluruh snapshot, jalankan ekspor.
 
-Koreksi sumber kerja, complete bila metadata terkait berubah, lalu draft/review lagi. Cache tidak menggantikan tinjauan snapshot terbaru. Setelah persetujuan keseluruhan nyata:
 ~~~sh
-python tools/audit.py export-v2 work/candidate/<id> --source /path/<id>.mp4 --receipt work/review.md.json --output work/final
+python tools/audit.py export work/candidate/rumah --receipt work/review.md.json --output work/final
 ~~~
 
-Export tidak merender ulang. ZIP tanpa video, cache, log, sheet atau receipt. MP4 kanonis lokal terpisah. performance.jsonl mencatat durasi alat/cache/retry; selang percakapan dan jeda persetujuan bukan durasi komputasi.
-
-## Kamera fleksibel dan helper opsional2.5
-
-Angka opsional per komponen, tanpa mengubah confidence. Angka tunggal default, rentang boleh; estimate_basis boleh null tanpa angka. Contoh: Dolly-Out (~1.6×) + Orbit Left + Subtle Pan Right (Ease-Out). Lihat camera-cases.md.
-
-Jika interval gabungan belum jelas: python tools/audit.py motion-hints work/audit/session.json --shot-id shot-02. Helper memakai cache, maksimal32frame default/640px batas, tanpa verdict dan tidak mengisi viewed. OpenCV/NumPy opsional; bila tidak tersedia lanjutkan visual. Jangan memasang paket jaringan rutin di chat. Semua output helper/inventory kerja di luar ZIP.
-
-Untuk melanjutkan session2.4 gunakan prepare --contract-version 2.4 --resume; sumber/session harus versi sama. Review2.5 memberi ringkasan fakta kerja terpisah; AI mencocokkan narasi/fakta sebelum persetujuan, tanpa review ulang sesudah ingest.
+Serahkan satu ZIP final tanpa video. Untuk revisi, gunakan nomor berikutnya pada audit dan berikan `--supersedes` dengan revision dan content_sha256 dari entri aktif.

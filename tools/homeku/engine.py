@@ -1,11 +1,9 @@
 """Batch ingest, revision checks, derived output publication, and consistency checks."""
 
 from __future__ import annotations
-from .versions import JSON_CONTRACTS
+from . import FORMAT_VERSION
 
-import hashlib
 import re
-import shutil
 import tempfile
 from pathlib import Path
 
@@ -25,12 +23,11 @@ def registry_at(root):
         require(isinstance(entry, dict), f"Registry entry must be an object: {rid}")
         require(rid.casefold() not in folded, "Case collision in registry")
         folded.add(rid.casefold())
-        require(isinstance(entry.get("revision"), int) and 1 <= entry["revision"] <= 9999, f"Invalid registry revision: {rid}")
-        require(entry.get("contract_version") in {None,"1.0","1.1",*JSON_CONTRACTS},f"Unsupported registry contract version: {rid}")
-        if entry.get("contract_version") in JSON_CONTRACTS:
-            require(re.fullmatch(r"[a-f0-9]{64}",entry.get("audit_sha256","")),f"Invalid registry audit_sha256: {rid}")
-        for key in ("content_sha256", "source_sha256", "package_sha256", "analysis_sha256", "manifest_sha256"):
-            require(re.fullmatch(r"[a-f0-9]{64}", entry.get(key, "")), f"Invalid registry {key}: {rid}")
+        require(type(entry.get("revision")) is int and 1 <= entry["revision"] <= 9999, f"Invalid registry revision: {rid}")
+        require(entry.get("contract_version") == FORMAT_VERSION,f"Unsupported registry contract version: {rid}")
+        for key in ("content_sha256", "source_sha256", "package_sha256", "analysis_sha256", "manifest_sha256", "audit_sha256"):
+            value = entry.get(key)
+            require(isinstance(value, str) and re.fullmatch(r"[a-f0-9]{64}", value), f"Invalid registry {key}: {rid}")
     return registry
 
 
@@ -60,13 +57,13 @@ def validate_package(root, package):
 
 def ingest(root: Path, packages=None):
     with locked(root):
-        packages = sorted(set(packages if packages is not None else (root / "incoming").glob("*.zip")), key=lambda p: p.name)
+        packages = sorted(set(packages if packages is not None else (root / "incoming").glob("*.zip")), key=lambda p: (p.name, str(p)))
         registry = registry_at(root)
         ledger_path = root / "data/ingest.json"
         ledger = read_json(ledger_path) if ledger_path.exists() else {"version": 1, "packages": {}}
         require(isinstance(ledger, dict) and ledger.get("version") == 1 and isinstance(ledger.get("packages"), dict), "Invalid ingest ledger")
         models = load_models(root, registry)
-        proposed, results, source_overrides = {}, [], {}
+        proposed, results = {}, []
         with tempfile.TemporaryDirectory(prefix="batch-", dir=root / ".homeku") as work_name:
             work = Path(work_name)
             for index, package in enumerate(packages):
@@ -75,11 +72,11 @@ def ingest(root: Path, packages=None):
                     require(package.is_file() and not package.is_symlink(), f"Not a regular package: {package}")
                     package_hash = sha256(package)
                     record = ledger["packages"].get(package_hash)
-                    if record and record.get("status") == "imported":
+                    if record and record.get("status") == "imported" and record.get("package") == package.name:
                         results.append({"package": package.name, "status": "unchanged", "id": record["id"], "revision": record["revision"]})
                         continue
                     folder = extract_package(package, work / f"package-{index}")
-                    manifest, model, source = validate_folder(folder, root, package.name, source_overrides)
+                    manifest, model, _ = validate_folder(folder, root, package.name)
                     fixture_allowed(root, manifest)
                     rid, revision = manifest["id"], manifest["revision"]
                     existing = registry["references"].get(rid)
@@ -96,25 +93,14 @@ def ingest(root: Path, packages=None):
                         require(not (root / "references" / rid).exists(), f"Unregistered reference directory already exists: {rid}")
                     duplicate = next((key for key, entry in registry["references"].items() if key != rid and entry["source_sha256"] == manifest["source"]["sha256"]), None)
                     require(duplicate is None, f"Duplicate active source: {duplicate}")
-                    destination = work / f"prepared-{index}/references" / rid
-                    shutil.copytree(folder, destination, ignore=shutil.ignore_patterns("source.mp4"))
-                    canonical = root / "video" / f"{rid}.mp4"
-                    if canonical.is_file() and sha256(canonical) == manifest["source"]["sha256"]:
-                        source_destination = canonical
-                    else:
-                        source_destination = work / f"prepared-{index}/video" / f"{rid}.mp4"
-                        source_destination.parent.mkdir(parents=True, exist_ok=True)
-                        shutil.copyfile(source, source_destination)
-                    entry = {"revision": revision, "content_sha256": model["content_sha256"],
-                        "source_sha256": manifest["source"]["sha256"], "package_sha256": package_hash,
-                        "analysis_sha256": sha256(folder / "analysis.md"), "manifest_sha256": sha256(folder / "manifest.json")}
-                    if manifest["contract_version"] in JSON_CONTRACTS:
-                        entry.update(contract_version=manifest["contract_version"],audit_sha256=sha256(folder/"audit.json"))
+                    entry = {"revision": revision, "contract_version": FORMAT_VERSION,
+                             "content_sha256": model["content_sha256"], "audit_sha256": manifest["audit_sha256"],
+                             "source_sha256": manifest["source"]["sha256"], "package_sha256": package_hash,
+                             "analysis_sha256": sha256(folder / "analysis.md"),
+                             "manifest_sha256": sha256(folder / "manifest.json")}
                     result = {"package": package.name, "status": "imported", "id": rid, "revision": revision}
-                    # Mutate state only after every copy and fingerprint succeeds.
-                    proposed[f"references/{rid}"] = destination
-                    proposed[f"video/{rid}.mp4"] = source_destination
-                    source_overrides[rid] = source_destination
+                    # The canonical MP4 was verified above and is never a publication target.
+                    proposed[f"references/{rid}"] = folder
                     registry["references"][rid] = entry
                     models[rid] = model
                     ledger["packages"][package_hash] = result
@@ -141,7 +127,7 @@ def build(root, full=False):
         generated = render(root, models)
         with tempfile.TemporaryDirectory(prefix="build-", dir=root / ".homeku") as work:
             changed = publish(root, outputs_to_stage(Path(work), generated))
-        return {"references": len(models), "shots": sum(len(m["shots"]) for m in models.values()), "changed": changed}
+        return {"references": len(models), "shots": sum(len(m["audit"]["shots"]) for m in models.values()), "changed": changed}
 
 
 def check(root):
@@ -162,4 +148,4 @@ def check(root):
         if reference_dir.exists():
             found = {p.name for p in reference_dir.iterdir() if p.is_dir()}
             require(found == set(models), f"Unregistered reference folders: {sorted(found ^ set(models))}")
-        return {"references": len(models), "shots": sum(len(m["shots"]) for m in models.values()), "status": "ok"}
+        return {"references": len(models), "shots": sum(len(m["audit"]["shots"]) for m in models.values()), "status": "ok"}

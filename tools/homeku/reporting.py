@@ -1,68 +1,128 @@
-"""Report dispatcher; accepted renderers and their templates remain immutable."""
+"""Render the human report directly from the compact audit and native PTS."""
 import re
-import math
-from . import reporting_v2_legacy as legacy
-from .common import require, sha256
-from .media import FONT, BOLD_FONT
-
-ROOT=legacy.ROOT
-TEMPLATES={**legacy.TEMPLATES,'2.2.0':ROOT/'tools/assets/templates/analysis-2.2.0.md','2.2.1':ROOT/'tools/assets/templates/analysis-2.2.1.md','2.2.2':ROOT/'tools/assets/templates/analysis-2.2.2.md','2.2.3':ROOT/'tools/assets/templates/analysis-2.2.3.md','2.2.4':ROOT/'tools/assets/templates/analysis-2.2.4.md'}
-number=legacy.number
-table=legacy.table
-panel_sequence=legacy.panel_sequence
+from . import FORMAT_VERSION
+from .camera_pattern import video_pattern
+from .common import require
+from .derivations import camera_summary, phase_tempo_text, selections, tempo_segments
+from .render_assets import TEMPLATE, claim_text, number, require_english_style_names
+from .report_validation import display, lines, table, validate_report
 
 
-def render_config(*,quality=91,scale=1.0,columns=4,version='2.1.2',overview_scale=1.0,storyboard_scale=1.0):
-    if version not in {'2.2.0','2.2.1','2.2.2','2.2.3','2.2.4'}:
-        require(overview_scale==1.0 and storyboard_scale==1.0,'Combined media scales require renderer 2.2.0')
-        return legacy.render_config(quality=quality,scale=scale,columns=columns,version=version)
-    if version=='2.2.4':
-        from .media_v2_2_1 import LAYOUT
-    else:
-        from .media_v2_2 import LAYOUT
-    config={'report':version,'media':'2.2.1' if version=='2.2.4' else '2.2.0','template_sha256':sha256(TEMPLATES[version]),
-            'font_sha256':sha256(FONT),'bold_font_sha256':sha256(BOLD_FONT),'layout_sha256':sha256(LAYOUT),
-            'jpeg_quality':quality,'panel_scale':scale,'columns':columns,
-            'overview_scale':overview_scale,'storyboard_scale':storyboard_scale}
-    verify_renderer(config)
-    return config
+def render_report(audit, frames):
+    require(audit.get("schema_version") == FORMAT_VERSION, "Unsupported audit format for report")
+    require_english_style_names(audit)
+    template = TEMPLATE.read_text(encoding="utf-8")
+    headings = re.findall(r"^## [1-6]\. .+$", template, re.M)
+    groups = re.findall(r"^#### \*\*[ABC]\. .+\*\*$", template, re.M)
+    require(len(headings) == 6 and len(groups) == 3, "Invalid active report template")
+    design = audit["design"]
+    styles, size = design["styles"], design["size"]
+    areas = {area["id"]: area for area in audit["areas"]}
+    labels = {key: display(area["label"]) for key, area in areas.items()}
+    shots = audit["shots"]
 
+    def names(ids):
+        return " / ".join(labels[key] for key in ids)
 
-def verify_renderer(config):
-    if config['report'] not in {'2.2.0','2.2.1','2.2.2','2.2.3','2.2.4'}:return legacy.verify_renderer(config)
-    if config['report']=='2.2.4':
-        from .media_v2_2_1 import LAYOUT
-    else:
-        from .media_v2_2 import LAYOUT
-    from jsonschema import Draft202012Validator
-    from .common import read_json
-    version=config['report']
-    schemas={'2.2.0':'v2-1','2.2.1':'v2-2','2.2.2':'v2-3','2.2.3':'v2-4','2.2.4':'v2-5'}
-    schema=read_json(ROOT/f'docs/contracts/manifest-{schemas[version]}.schema.json')['properties']['render']
-    require(not list(Draft202012Validator(schema).iter_errors(config)),'Invalid renderer 2.2.0 configuration')
-    require(all(math.isfinite(config[key]) for key in ('panel_scale','overview_scale','storyboard_scale')), 'Media scales must be finite')
-    for key,path in [('template_sha256',TEMPLATES[version]),('font_sha256',FONT),('bold_font_sha256',BOLD_FONT),('layout_sha256',LAYOUT)]:
-        require(config[key]==sha256(path),f'Versioned renderer {key} mismatch')
+    def feature(*aspects):
+        return "; ".join(display(claim_text(claim)) for claim in design["features"]
+                         if claim["aspect"] in aspects) or "—"
 
+    def style_list(claims):
+        return "; ".join(display(claim_text(claim)) for claim in claims) or "—"
 
-def render_report(audit,config):
-    version=config['report']
-    if version not in {'2.2.0','2.2.1','2.2.2','2.2.3','2.2.4'}:return legacy.render_report(audit,config)
-    verify_renderer(config)
-    if version=='2.2.4':
-        from .reporting_v2_2_4 import render_report as implementation
-    elif version=='2.2.3':
-        from .reporting_v2_2_3 import render_report as implementation
-    elif version=='2.2.2':
-        from .reporting_v2_2_2 import render_report as implementation
-    elif version=='2.2.1':
-        from .reporting_v2_2_1 import render_report as implementation
-    else:
-        from .reporting_v2_2 import render_report as implementation
-    return implementation(audit,TEMPLATES[version])
-
-
-def review_report(audit,config,media_prefix=None):
-    text=render_report(audit,config)
-    if media_prefix:text=re.sub(r'\]\((media/[^)]+)\)',lambda m:f']({media_prefix}/{m[1]})',text)
-    return text
+    area = size["floor_area_m2"]
+    name = display(design["name"])
+    parts = [f"# {audit['id']} — {name}", '<a id="profil-dna"></a>', headings[0],
+             lines([("Nama desain", name), ("Gaya utama", f"**{display(claim_text(styles['primary']))}**"),
+                    ("Pengaruh gaya", style_list(styles["influences"])),
+                    ("Gaya interior", style_list(styles["interior"])),
+                    ("Ciri khas", feature("distinctive-features")),
+                    ("Warna & material", feature("palette", "material-hierarchy")),
+                    ("Suasana dan lingkungan", feature("environment", "lighting"))]), headings[1],
+             table(["Aspek", "Estimasi visual"], [(f"**{label}**", value) for label, value in [
+                 ("Ukuran rumah", display(claim_text(size["scale"]))),
+                 ("Bentuk bangunan", feature("massing")),
+                 ("Lantai & bentuk atap", display(claim_text(size["levels"])) +
+                  (" · " + feature("roof") if feature("roof") not in {"—", "unknown"} else "")),
+                 ("Tapak bangunan", display(claim_text(size["footprint"]))),
+                 ("Proporsi utama", display(claim_text(size["proportions"]))),
+                 ("Perkiraan luas lantai", f"**{number(area['min'])}–{number(area['max'])} m²**")]]),
+             headings[2], f"Durasi {shots[-1]['end_s']:.2f}s · {len(shots)} shot.",
+             "**Camera Pattern:** " + video_pattern(shots) + ".",
+             table(["Shot", "Time (s)", "Duration", "Area/Scene", "Camera Movement"], [
+                 (shot["shot"][5:], f"{shot['start_s']:.2f}–{shot['end_s']:.2f}",
+                  f"{shot['end_s']-shot['start_s']:.2f}s", names(shot["area_ids"]),
+                  display(camera_summary(shot))) for shot in shots]),
+             headings[3], "![Overview wide seluruh area](media/overview.jpg)"]
+    for selected in selections(audit, frames):
+        if selected["role"] == "overview":
+            shot_index, selection_index = (int(selected["source_pointer"].split("/")[i]) for i in (2, 4))
+            overview = shots[shot_index]["overviews"][selection_index]
+            parts += [f"**Shot {selected['shot_id'][5:]} · {names(selected['area_ids'])} · {selected['timestamp_s']:.2f}s**",
+                      "> " + display(overview["composition_summary"])]
+    parts += [headings[4], "![Storyboard seluruh shot dengan panel dan camera](media/storyboard.jpg)", headings[5]]
+    for index, shot in enumerate(shots):
+        sid = shot["shot"]
+        multi = len(shot["area_ids"]) > 1
+        composition, camera = shot["composition"], shot["camera"]
+        if index:
+            parts.append("---")
+        parts += [f'<a id="{sid}"></a>', f"### Shot {sid[5:]} · {names(shot['area_ids'])}",
+                  f"**Time:** {shot['start_s']:.2f}–{shot['end_s']:.2f}s · **Duration:** {shot['end_s']-shot['start_s']:.2f}s"]
+        if multi:
+            parts.append("**Shot Type:** Continuous shot · Multi area · No cut.")
+        parts += [f"![Kolase Shot {sid[5:]}](media/{sid}.jpg)", groups[0]]
+        order = {aid: j for j, aid in enumerate(shot["area_ids"])}
+        for block in sorted(shot["design"], key=lambda block: min(order[aid] for aid in block["area_ids"])):
+            if multi:
+                parts.append(f"##### **{names(block['area_ids'])}**")
+            for heading, key in (("Arsitektur", "architecture"), ("Furnitur & dekorasi", "furnishings"),
+                                 ("Lingkungan", "environment")):
+                parts += [f"**{heading}**", "> " + display(block[key]["text"])]
+        rows = [
+            ("Fokus", display(composition["focus"])),
+            ("Camera Start", " · ".join(display(composition[key]) for key in
+                                       ("camera_position", "camera_direction", "view_angle",
+                                        "camera_height", "camera_tilt"))),
+            ("Framing", display(composition["start_composition"]) + " → " + display(composition["end_composition"])),
+            ("Lighting", display(composition["lighting"])),
+            ("Foreground dan kedalaman", display(composition["foreground"]) + " · " + display(composition["depth"])),
+            ("Reveal", display(composition["reveal"])),
+            ("Kesesuaian gerak", display(composition["motion_compatibility"])),
+        ]
+        if multi:
+            route = " → ".join(f"{labels[r['area_id']]} ({r['start_s']:.2f}–{r['end_s']:.2f}s · "
+                               f"{display(r['connector'])} · {display(r['focus'])})" for r in shot.get("route", []))
+            rows += [("Area", names(shot["area_ids"])), ("Rute kamera", route or "—")]
+        parts += [groups[1], lines(rows)]
+        if multi:
+            visibility = []
+            for aid in shot["area_ids"]:
+                intervals = [(max(v["start_s"], shot["start_s"]), min(v["end_s"], shot["end_s"]))
+                             for v in areas[aid]["visible_intervals"]]
+                visibility.append(labels[aid] + " · " + ", ".join(f"{a:.2f}–{b:.2f}s"
+                                                                 for a, b in intervals if a < b))
+            parts += ["**Hubungan antararea**", lines([
+                ("Penghubung area", "; ".join(display(r["description"]) for r in shot.get("area_relations", [])) or "—"),
+                ("Peralihan", "; ".join(visibility)),
+                ("Orientasi ruang", display(shot["continuity"]) if "continuity" in shot else "—"),
+            ])]
+        tempo = camera["tempo"]
+        parts += [groups[2], display(camera["description"]), "**Tempo:** " + display(tempo["description"])]
+        if "segments" in tempo:
+            parts.append(lines([(f"{segment['start_s']:.2f}–{segment['end_s']:.2f}s · {segment['label']}",
+                                 display(segment["description"])) for segment in tempo_segments(shot)]))
+        if "journey" in camera:
+            parts.append("**Alur visual:** " + display(camera["journey"]))
+        if multi or len(camera["phases"]) > 1:
+            parts += ["**Movement Timeline**", table(["Time (s)", "Area & fokus", "Camera Movement", "Tempo"], [
+                (f"{p['start_s']:.2f}–{p['end_s']:.2f}",
+                 names(p.get("area_ids", shot["area_ids"])) + " · " + display(p["focus"]),
+                 display(p["notation"]), display(phase_tempo_text(shot, p))) for p in camera["phases"]])]
+        parts.append("**Camera:** " + display(camera_summary(shot)))
+        if "notes" in shot:
+            parts.append("**Catatan:** " + display(shot["notes"]))
+    if "notes" in audit:
+        parts.append("**Catatan referensi:** " + display(audit["notes"]))
+    return validate_report("\n\n".join(parts) + "\n", audit, frames)

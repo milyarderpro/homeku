@@ -1,144 +1,198 @@
 """Mechanical authoring helpers; observations are written by the auditor."""
 import copy
-import json
 import re
 from pathlib import Path
-from .common import dumps,read_json,require
+from jsonschema import Draft202012Validator
+from . import FORMAT_VERSION
+from .common import LibraryError, dumps, read_json, require
 from .video_cache import FrameCache,atomic
 from .audit_performance import timed,event
 from .audit_session import workspace,make_shots,record_for,materialize,load_session
-from .markdown import component
+from .camera_notation import normalize, parse
 
 ROOT=Path(__file__).resolve().parents[2]
 
-def prepare(source,cuts,output,*,resume=False,contract_version="2.5"):
-    require(contract_version in {"2.4","2.5"},"Unsupported working authoring contract")
-    output=workspace(output);output.mkdir(parents=True,exist_ok=True)
-    session_path=output/"session.json";audit_path=output/"audit.json";info_path=output/"audit-info.json"
+def _baseline_records(cache, shots):
+    records = []
+    for shot in shots:
+        record = record_for(cache, shot, shot["start_s"], shot["end_s"],
+                            reason="Baseline 6 FPS/native dan batas shot dari cut terkonfirmasi.")
+        records.append(record)
+        if shot["middle"] not in record["selected_frame_indices"]:
+            i = shot["middle"]
+            end = min(shot["end_s"], cache.times[i + 1] if i + 1 < len(cache.times) else shot["end_s"])
+            records.append(record_for(cache, shot, cache.times[i], end, native=True,
+                                      reason="Frame midpoint calon panel; belum dinyatakan viewed."))
+    return records
+
+
+def prepare(source, cuts, output, *, resume=False):
+    output = workspace(output)
+    output.mkdir(parents=True, exist_ok=True)
+    session_path, audit_path, info_path = (output / name for name in
+                                           ("session.json", "audit.json", "audit-info.json"))
     if session_path.exists():
-        require(resume,"Workspace already prepared; use --resume to preserve observations")
-        path,session,cache=load_session(session_path)
-        require(contract_version==session["contract_version"],"Session contract differs; select its original version")
-        require(Path(source).resolve()==cache.source and cuts==session["cuts"],"Source/cuts differ; use a new workspace")
-        records=[]
-        for shot in session["shots"]:
-            r=record_for(cache,shot,shot["start_s"],shot["end_s"],reason="Baseline6FPS/native dan batas shot dari cut terkonfirmasi.")
-            records.append(r)
-            if shot["middle"] not in r["selected_frame_indices"]:
-                i=shot["middle"];end=min(shot["end_s"],cache.times[i+1] if i+1<len(cache.times) else shot["end_s"])
-                records.append(record_for(cache,shot,cache.times[i],end,native=True,reason="Lihat satu frame midpoint untuk calon panel, bukan pendalaman gerak."))
-        materialize(path,session,cache,records)
-        return {"session":str(path),"audit":str(audit_path),"audit_info":str(info_path),
-                "resumed":True,"shots":session["shots"],"passes":session["passes"],"cache":cache.stats}
-    require(not any(p.exists() for p in (audit_path,info_path)),"Refusing to overwrite existing audit source")
-    with timed(output/"performance.jsonl","prepare"):
-        cache=FrameCache(source,output/".cache"/"frames",log=output/"performance.jsonl")
-        rid=cache.source.stem
-        require(re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,79}",rid) and cache.source.suffix.casefold()==".mp4","Use the canonical MP4 filename")
-        session={"version":"1.0","contract_version":contract_version,"source":{"path":str(cache.source),"sha256":cache.source_hash},
-                 "cuts":cuts,"shots":make_shots(cache,cuts),"passes":[]}
-        # A template is an incomplete working source, not an audit claim.
-        audit=read_json(ROOT/"audit/template-audit.json");audit["schema_version"]=contract_version;audit["id"]=rid
-        base=copy.deepcopy(audit["shots"][0]);audit["shots"]=[]
-        audit["areas"]=[] # Physical area identities are assigned after viewing.
-        for row in session["shots"]:
-            shot=copy.deepcopy(base);shot["shot"]=row["shot"];shot["start_s"]=row["start_s"];shot["end_s"]=row["end_s"]
-            for p in shot["panels"]:
-                p["id"]=f"s{row['shot'][5:]}-{p['role']}";p["shot_id"]=row["shot"]
-                p["frame_index"]=row[{"start":"first","middle":"middle","end":"last"}[p["role"]]]
-                p["timestamp_s"]=cache.times[p["frame_index"]];p["area_ids"]=[]
+        require(resume, "Workspace already prepared; use --resume to preserve observations")
+        path, session, cache = load_session(session_path)
+        require(Path(source).resolve() == cache.source and cuts == session["cuts"],
+                "Source/cuts differ; prepare a new workspace")
+        _bound_audit(audit_path, session, cache)
+        require(info_path.is_file(), "Missing working audit-info.json")
+        materialize(path, session, cache, _baseline_records(cache, session["shots"]))
+        return {"session": str(path), "audit": str(audit_path), "audit_info": str(info_path),
+                "resumed": True, "shots": session["shots"], "passes": session["passes"],
+                "cache": cache.stats}
+    require(not audit_path.exists() and not info_path.exists(),
+            "Refusing to overwrite existing audit source")
+    with timed(output / "performance.jsonl", "prepare"):
+        cache = FrameCache(source, output / ".cache" / "frames", log=output / "performance.jsonl")
+        rid = cache.source.stem
+        require(re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,79}", rid)
+                and cache.source.suffix.casefold() == ".mp4", "Use the canonical MP4 filename")
+        session = {"format_version": FORMAT_VERSION, "runtime_signature": cache.signature,
+                   "source": {"path": str(cache.source), "sha256": cache.source_hash},
+                   "cuts": cuts, "shots": make_shots(cache, cuts), "passes": []}
+        audit = read_json(ROOT / "audit/template-audit.json")
+        require(audit.get("schema_version") == FORMAT_VERSION, "Template format differs from runtime")
+        audit["id"] = rid
+        base = copy.deepcopy(audit["shots"][0])
+        audit["areas"], audit["shots"] = [], []
+        for n, row in enumerate(session["shots"]):
+            shot = copy.deepcopy(base)
+            shot.update(shot=row["shot"], start_s=row["start_s"], end_s=row["end_s"],
+                        transition="end" if n == len(session["shots"]) - 1 else "cut",
+                        area_ids=[])
+            for p, key in zip(shot["panels"], ("first", "middle", "last")):
+                p.update(frame_index=row[key], area_ids=[])
             for p in shot["overviews"]:
-                p["id"]=f"s{row['shot'][5:]}-overview";p["shot_id"]=row["shot"];p["area_ids"]=[]
-                p["frame_index"]=None;p["timestamp_s"]=None
-            shot["area_ids"]=[]
-            for d in shot["design"]:d["area_ids"]=[]
-            for p in shot["phases"]:
-                p["start_s"]=row["start_s"];p["end_s"]=row["end_s"];p["area_ids"]=[]
-            shot["tempo_profile"][0]["start_s"]=row["start_s"];shot["tempo_profile"][0]["end_s"]=row["end_s"]
+                p.update(frame_index=None, area_ids=[])
+            for d in shot["design"]:
+                d["area_ids"] = []
+            for phase in shot["camera"]["phases"]:
+                phase.update(start_s=row["start_s"], end_s=row["end_s"])
             audit["shots"].append(shot)
-        atomic(audit_path,dumps(audit).encode())
-        atomic(info_path,(ROOT/"audit/template-audit-info.json").read_bytes())
-        atomic(session_path,dumps(session).encode())
-        records=[]
-        for shot in session["shots"]:
-            r=record_for(cache,shot,shot["start_s"],shot["end_s"],reason="Baseline6FPS/native dan batas shot dari cut terkonfirmasi.")
-            records.append(r)
-            if shot["middle"] not in r["selected_frame_indices"]:
-                i=shot["middle"];end=min(shot["end_s"],cache.times[i+1] if i+1<len(cache.times) else shot["end_s"])
-                records.append(record_for(cache,shot,cache.times[i],end,native=True,
-                                          reason="Lihat satu frame midpoint untuk calon panel, bukan pendalaman gerak."))
-        materialize(session_path,session,cache,records)
-    return {"session":str(session_path),"audit":str(audit_path),"audit_info":str(info_path),"resumed":False,
-            "shots":session["shots"],"passes":session["passes"],"cache":cache.stats,
-            "next":"Inspect sheets, fill observations/areas/Overview; declare viewed explicitly; complete then draft."}
+        atomic(audit_path, dumps(audit).encode())
+        atomic(info_path, (ROOT / "audit/template-audit-info.json").read_bytes())
+        atomic(session_path, dumps(session).encode())
+        materialize(session_path, session, cache, _baseline_records(cache, session["shots"]))
+    return {"session": str(session_path), "audit": str(audit_path), "audit_info": str(info_path),
+            "resumed": False, "shots": session["shots"], "passes": session["passes"],
+            "cache": cache.stats, "next": "View sheets, fill observations, then declare viewed explicitly."}
 
-def notation(text,version="2.4"):
-    require(isinstance(text,str) and "{{" not in text and "→" not in text,"Fill one phase notation before complete")
-    if version=="2.5":
-        from .camera_notation import normalize
-        text=normalize(text)
-    clauses=[]
-    for raw in text.strip().rstrip(".").split("+"):
-        raw=raw.strip()
-        for estimate in component(raw,version)["estimates"]:
-            if not re.search(r"\([^)]*"+re.escape(estimate)+r"[^)]*\)",raw):
-                raw=raw.replace(estimate,"("+estimate+")",1)
-        clauses.append(raw)
-    return " + ".join(clauses)
+def _bound_audit(audit_path, session, cache):
+    audit = read_json(audit_path)
+    expected = [(s["shot"], s["start_s"], s["end_s"],
+                 "cut" if i + 1 < len(session["shots"]) else "end")
+                for i, s in enumerate(session["shots"])]
+    require(isinstance(audit, dict) and audit.get("schema_version") == FORMAT_VERSION
+            and audit.get("id") == cache.source.stem,
+            "Audit format or source ID differs from the session")
+    require(isinstance(audit.get("shots"), list) and
+            all(isinstance(s, dict) for s in audit["shots"]) and
+            [tuple(s.get(k) for k in ("shot", "start_s", "end_s", "transition"))
+             for s in audit["shots"]] == expected,
+            "Audit shot IDs, boundaries or transitions differ from the session")
+    return audit
 
-def complete(audit_path,*,session_path=None,info_path=None):
-    audit_path=workspace(audit_path);original=read_json(audit_path);a=copy.deepcopy(original)
-    require(a.get("schema_version") in {"2.4","2.5"},"complete only edits working source2.4/2.5; never converts old audits")
-    require(session_path is not None,"Complete requires the source-bound session")
-    path,session,cache=load_session(session_path)
-    require(a.get("id")==cache.source.stem and [s["shot"] for s in a["shots"]]==[s["shot"] for s in session["shots"]],
-            "Audit/session ID or shots differ")
-    require(a["schema_version"]==session["contract_version"],"Audit/session contracts differ; never converts old audits")
-    changes=[]
-    def assign(obj,key,value,pointer):
-        if obj.get(key)!=value:
-            obj[key]=value;changes.append(pointer+"/"+key)
-    with timed(path.parent/"performance.jsonl","complete"):
-        for si,(s,row) in enumerate(zip(a["shots"],session["shots"])):
-            label=f"/shots/{si}";assign(s,"start_s",row["start_s"],label);assign(s,"end_s",row["end_s"],label)
-            for group in ("panels","overviews"):
-                for j,p in enumerate(s[group]):
-                    if group=="panels":
-                        if p["role"]=="start":assign(p,"frame_index",row["first"],label+f"/{group}/{j}")
-                        if p["role"]=="end":assign(p,"frame_index",row["last"],label+f"/{group}/{j}")
-                        if p["role"]=="middle" and len(s["area_ids"])==1:assign(p,"frame_index",row["middle"],label+f"/{group}/{j}")
-                    index=p["frame_index"]
-                    require(type(index) is int and row["first"]<=index<=row["last"],"Select a valid native frame for every panel/Overview before complete")
-                    assign(p,"timestamp_s",cache.times[index],label+f"/{group}/{j}")
-                    require(p["shot_id"]==s["shot"],"Conflicting selection shot_id; fix its scope explicitly")
-            for pi,p in enumerate(s["phases"]):
-                loc=label+f"/phases/{pi}"
-                if len(s["phases"])==1:
-                    assign(p,"start_s",row["start_s"],loc);assign(p,"end_s",row["end_s"],loc)
-                text=notation(p["components"],a["schema_version"]);assign(p,"components",text,loc)
-                parsed=[component(c.strip(),a["schema_version"]) for c in text.split("+")]
-                assign(p,"components_parsed",parsed,loc)
-                observations=p["motion_observations"]
-                indices=[o["component_index"] for o in observations]
-                require(len(indices)==len(set(indices)) and all(0<=i<len(parsed) for i in indices),
-                        "Conflicting component observation indices; fix explicitly before complete")
-                if set(indices)!=set(range(len(parsed))):
-                    by_index={o["component_index"]:o for o in observations}
-                    filled=[by_index.get(i,{"component_index":i,"evidence":list(p["evidence"]),
-                        "basis":"{{OBSERVATION_BASIS}}","estimate_basis":"{{VISUAL_ESTIMATE_BASIS}}" if parsed[i]["estimates"] else None,
-                        "alternatives":None,"scale_measurement":None}) for i in range(len(parsed))]
-                    assign(p,"motion_observations",filled,loc)
 
-            if len(s["tempo_profile"])==1:
-                assign(s["tempo_profile"][0],"start_s",row["start_s"],label+"/tempo_profile/0")
-                assign(s["tempo_profile"][0],"end_s",row["end_s"],label+"/tempo_profile/0")
-            assign(s,"camera_summary"," → ".join(p["components"] for p in s["phases"])+".",label)
-        values=[p["value"] for p in a["profile"] if p["aspect"]=="style-influence" and p["state"] in {"observed","uncertain"}]
-        assign(a["identity"],"influences","; ".join(values) if values else "unknown","/identity")
-        info_target=workspace(info_path or path.parent/"audit-info.json")
-        info=read_json(info_target)
-        info["frame_reviews"]=[copy.deepcopy(p["record"]) for p in session["passes"]]
-        info["reviewed_ranges"]=[{"start_s":0,"end_s":cache.info["duration_s"],"mode":"sampling"}]
-        atomic(audit_path,dumps(a).encode());atomic(info_target,dumps(info).encode())
-        event(path.parent/"performance.jsonl","complete-changes",paths=changes)
-    return {"audit":str(audit_path),"audit_info":str(info_target),"changes":changes,"next":"check-input or draft-v2; observations remain authored by AI."}
+def update_shot(session_path, shot_id, patch_path):
+    """Merge a JSON object into one working shot; replace arrays as a unit."""
+    path, session, cache = load_session(session_path)
+    target = workspace(path.parent / "audit.json")
+    patch = read_json(Path(patch_path))
+    require(isinstance(patch, dict) and patch, "Shot patch must be a nonempty JSON object")
+    locked = {"shot", "start_s", "end_s", "transition"}
+    require(not (locked & patch.keys()), "Shot ID, boundaries and transition are locked")
+    audit = _bound_audit(target, session, cache)
+    index = next((i for i, shot in enumerate(audit["shots"]) if shot["shot"] == shot_id), None)
+    require(index is not None, f"Unknown session shot: {shot_id}")
+
+    def merge(old, changes):
+        result = dict(old)
+        for key, value in changes.items():
+            previous = result.get(key)
+            result[key] = merge(previous, value) if isinstance(previous, dict) and isinstance(value, dict) else value
+        return result
+
+    schema = read_json(ROOT / "schemas/audit.schema.json")
+    validator = Draft202012Validator({"$defs": schema["$defs"], "$ref": "#/$defs/shot"})
+    original = audit["shots"][index]
+    updated = merge(original, patch)
+    # The prepared skeleton can be incomplete. Reject new schema errors without
+    # requiring observations in untouched fields or other shots.
+    def error_key(error):
+        return tuple(error.path), error.message
+
+    existing = {error_key(error) for error in validator.iter_errors(original)}
+    for error in validator.iter_errors(updated):
+        suffix = "/".join(str(part) for part in error.path)
+        require(error_key(error) in existing, f"{shot_id}/{suffix}: {error.message}")
+    audit["shots"][index] = updated
+    atomic(target, dumps(audit).encode())
+    return {"audit": str(target), "shot": shot_id}
+
+def notation(text):
+    text = normalize(text)
+    return " + ".join(clause["raw"] for clause in parse(text))
+
+
+def complete(audit_path, *, session_path=None, info_path=None):
+    """Fill mechanical values and copy explicit declarations from the session."""
+    audit_path = workspace(audit_path)
+    require(session_path is not None, "Complete requires the source-bound session")
+    path, session, cache = load_session(session_path)
+    info_target = workspace(info_path or path.parent / "audit-info.json")
+    require(len({audit_path.resolve(), path.resolve(), info_target.resolve()}) == 3,
+            "Audit, session and audit-info must be separate files")
+    audit = _bound_audit(audit_path, session, cache)
+    info = read_json(info_target)
+    require(isinstance(info, dict), "Working audit-info must be a JSON object")
+    changes = []
+
+    def assign(obj, key, value, pointer):
+        if obj.get(key) != value:
+            obj[key] = value
+            changes.append(f"{pointer}/{key}")
+
+    log = path.parent / "performance.jsonl"
+    with timed(log, "complete"):
+        for i, (shot, row) in enumerate(zip(audit["shots"], session["shots"])):
+            pointer = f"/shots/{i}"
+            panels = shot["panels"]
+            require(len(panels) >= 2, f"{pointer}/panels: retain first and last panels")
+            assign(panels[0], "frame_index", row["first"], f"{pointer}/panels/0")
+            assign(panels[-1], "frame_index", row["last"], f"{pointer}/panels/{len(panels)-1}")
+            if len(shot["area_ids"]) == 1:
+                require(len(panels) == 3, f"{pointer}/panels: normal shot requires three panels")
+                assign(panels[1], "frame_index", row["middle"], f"{pointer}/panels/1")
+            for group in ("panels", "overviews"):
+                for j, item in enumerate(shot[group]):
+                    frame = item.get("frame_index")
+                    require(type(frame) is int and row["first"] <= frame <= row["last"],
+                            f"{pointer}/{group}/{j}/frame_index: select a native frame within this shot")
+            phases = shot["camera"]["phases"]
+            for j, phase in enumerate(phases):
+                loc = f"{pointer}/camera/phases/{j}"
+                if len(phases) == 1:
+                    assign(phase, "start_s", row["start_s"], loc)
+                    assign(phase, "end_s", row["end_s"], loc)
+                try:
+                    normalized = notation(phase["notation"])
+                except ValueError as error:
+                    raise LibraryError(f"{loc}/notation: {error}") from error
+                assign(phase, "notation", normalized, loc)
+        records = [item["record"] for item in session["passes"]]
+        info["frame_reviews"] = records
+        info["reviewed_ranges"] = [
+            {key: record[key] for key in ("start_s", "end_s", "mode")}
+            for record in records if record["selected_frame_indices"] == record["viewed_frame_indices"]
+            and record["viewed_frame_indices"]
+        ]
+        audit_bytes, info_bytes = dumps(audit).encode(), dumps(info).encode()
+        cache.ensure_source()
+        if changes:
+            atomic(audit_path, audit_bytes)
+        atomic(info_target, info_bytes)
+        event(log, "complete-changes", paths=changes)
+    return {"audit": str(audit_path), "audit_info": str(info_target),
+            "changes": changes, "next": "Run check-input with the completed working files."}

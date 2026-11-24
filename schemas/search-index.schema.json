@@ -1,0 +1,376 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "3.0"
+    },
+    "kind": {
+      "const": "homeku.search-index"
+    },
+    "taxonomy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "principles": {
+      "type": "string",
+      "minLength": 1
+    },
+    "knowledge": {
+      "type": "string",
+      "minLength": 1
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "title": {
+            "type": "string"
+          },
+          "json": {
+            "type": "string"
+          },
+          "camera_pattern": {
+            "type": "string"
+          },
+          "floor_area_m2": {
+            "type": "object",
+            "properties": {
+              "min": {
+                "type": "number"
+              },
+              "max": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "min",
+              "max"
+            ],
+            "additionalProperties": false
+          },
+          "style_relations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "from": {
+                  "type": "string"
+                },
+                "to": {
+                  "type": "string"
+                },
+                "relation": {
+                  "type": "string"
+                },
+                "state": {
+                  "enum": [
+                    "observed",
+                    "uncertain",
+                    "not-visible",
+                    "not-present",
+                    "unknown"
+                  ]
+                },
+                "source_pointer": {
+                  "type": "string",
+                  "pattern": "^(?:/.*)?$"
+                },
+                "confidence": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "from",
+                "to",
+                "relation",
+                "state",
+                "source_pointer"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "profile_facets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "aspect": {
+                  "type": "string"
+                },
+                "canonical": {
+                  "type": [
+                    "string",
+                    "null",
+                    "number",
+                    "boolean"
+                  ]
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null",
+                    "number",
+                    "boolean"
+                  ]
+                },
+                "source_pointer": {
+                  "type": "string",
+                  "pattern": "^(?:/.*)?$"
+                },
+                "state": {
+                  "enum": [
+                    "observed",
+                    "uncertain",
+                    "not-visible",
+                    "not-present",
+                    "unknown"
+                  ]
+                },
+                "confidence": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "aspect",
+                "canonical",
+                "value",
+                "source_pointer",
+                "state"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "shots": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "shot": {
+                  "type": "string"
+                },
+                "areas": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "areas_canonical": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "multi_area": {
+                  "type": "boolean"
+                },
+                "route": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "continuity": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "view_angle": {
+                  "type": "string"
+                },
+                "camera": {
+                  "type": "string"
+                },
+                "camera_pattern": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "movements": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "camera_qualifiers": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "tempos": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "design_facets": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "category": {
+                        "type": "string"
+                      },
+                      "domain": {
+                        "type": "string"
+                      },
+                      "subject": {
+                        "type": "string"
+                      },
+                      "attribute": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "string",
+                          "null",
+                          "number",
+                          "boolean"
+                        ]
+                      },
+                      "state": {
+                        "enum": [
+                          "observed",
+                          "uncertain",
+                          "not-visible",
+                          "not-present",
+                          "unknown"
+                        ]
+                      },
+                      "area_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "source_pointer": {
+                        "type": "string",
+                        "pattern": "^(?:/.*)?$"
+                      },
+                      "facet_roles": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "confidence": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "category",
+                      "domain",
+                      "subject",
+                      "attribute",
+                      "value",
+                      "state",
+                      "area_ids",
+                      "source_pointer",
+                      "facet_roles"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "path": {
+                  "type": "string"
+                },
+                "source_pointer": {
+                  "type": "string",
+                  "pattern": "^(?:/.*)?$"
+                },
+                "overview": {
+                  "type": "string"
+                },
+                "collage": {
+                  "type": "string"
+                },
+                "storyboard": {
+                  "type": "string"
+                },
+                "overview_selection_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "area_labels_by_id": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "required": [
+                "shot",
+                "areas",
+                "areas_canonical",
+                "multi_area",
+                "route",
+                "continuity",
+                "view_angle",
+                "camera",
+                "camera_pattern",
+                "movements",
+                "camera_qualifiers",
+                "tempos",
+                "design_facets",
+                "path",
+                "source_pointer",
+                "overview",
+                "collage",
+                "storyboard",
+                "overview_selection_ids",
+                "area_labels_by_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "title",
+          "json",
+          "camera_pattern",
+          "floor_area_m2",
+          "style_relations",
+          "profile_facets",
+          "shots"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "kind",
+    "taxonomy",
+    "principles",
+    "knowledge",
+    "references"
+  ],
+  "additionalProperties": false
+}

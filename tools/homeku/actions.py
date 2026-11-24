@@ -30,7 +30,7 @@ def publish_actions(root, branch, runner_temp, before_push=None, attempts=5):
                     raise RuntimeError("Full check failed; nothing pushed: " + verified.stderr)
                 if command.returncode not in (0, 1) or "results" not in result:
                     raise RuntimeError("Ingest did not finish normally: " + command.stderr)
-                git(work, "add", "--", "references", "catalogs", "knowledge", "data", "video")
+                git(work, "add", "--", "references", "catalogs", "knowledge", "data")
                 if git(work, "diff", "--cached", "--quiet", check=False).returncode == 0:
                     return result
                 git(work, "-c", "user.name=github-actions[bot]", "-c", "user.email=41898282+github-actions[bot]@users.noreply.github.com",

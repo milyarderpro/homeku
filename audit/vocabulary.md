@@ -1,6 +1,6 @@
 # Kosakata pencatatan
 
-Default sumber2.5/report2.2.4/media2.2.1. Aturan kamera di [visual-audit.md](visual-audit.md), contoh di [camera-cases.md](camera-cases.md). Angka opsional per komponen tanpa mengubah confidence; label intensitas bukan tempo.
+Aturan kamera di [visual-audit.md](visual-audit.md), contoh di [camera-cases.md](camera-cases.md). Angka opsional per komponen tanpa mengubah confidence; label intensitas bukan tempo.
 
 Gunakan label domain/subject/attribute yang konsisten untuk konsep yang sama. Nama gaya utama, pengaruh dan interior memakai bahasa Inggris; nilai penjelasan tetap bahasa Indonesia. Daftar berikut pedoman awal, bukan whitelist; label baru tetap boleh dicatat bila maknanya berbeda.
 
@@ -25,33 +25,20 @@ Label areas memakai fungsi eksplisit, misalnya bathroom; laundry bila keduanya t
 
 ## DNA, alias dan notasi
 
-Profil V2 mempertahankan seluruh aspek DNA kontrak 1.1: gaya/pengaruh, skala tampak, tingkat, massa/atap/entrance/porch/bukaan, material/palet/cahaya/lingkungan, konfigurasi/pembeda/kontinuitas. Nilai diskret ditulis per klaim dengan state/confidence/bukti. Gaya adalah interpretasi beralasan; tidak memastikan asal budaya/lokasi.
+Profil desain mencakup gaya/pengaruh, skala tampak, tingkat, massa/atap/entrance/porch/bukaan, material/palet/cahaya/lingkungan, konfigurasi/pembeda/kontinuitas. Nilai diskret ditulis per klaim dengan state/confidence/bukti. Gaya adalah interpretasi beralasan; tidak memastikan asal budaya/lokasi.
 
 Alias eksplisit Indonesia/Inggris berada di data/taxonomy.json: area, gaya, skala, sudut, massa dan gerak. Nilai asli tidak diganti. Contoh american cattage → american cottage hanya normalisasi ejaan label eksplisit, bukan deteksi gaya dari benda. Label baru dan klaim nonpositif tetap tersedia.
 
 Notasi kamera: Dolly-In/Out, Orbit Left/Right, Pan Left/Right, Truck Left/Right, Tilt-Up/Down, Pedestal Up/Down, Zoom-In/Out, Static atau Uncertain. Parser mengenali Tilt-Up dan Tilt Up tanpa mengubah teks literal. Label lain disimpan sebagai other beserta literalnya. Gentle/strong menjelaskan komponen, bukan otomatis tempo. Jangan memakai subtle tilt untuk drift/jitter kecil.
 
-## Area dan kontinuitas V2
+## Area dan kontinuitas
 
-`area_ids` menunjuk area fisik; `functions` boleh lebih dari satu (bathroom + laundry tetap satu area bila satu ruang). `visible_intervals` dapat tumpang tindih; `route` hanya perjalanan yang benar-benar dilalui. Fase gerak bukan batas area, dan cut memulai shot baru. Tidak menyimpulkan koneksi denah dari urutan shot. Gunakan `style_names_language: "en"`, primary-style/interior-style serta klaim influence terpisah agar label dapat ditemukan tanpa sintesis AI.
+`area_ids` menunjuk area fisik; `functions` boleh lebih dari satu (bathroom + laundry tetap satu area bila satu ruang). `visible_intervals` dapat tumpang tindih; `route` hanya perjalanan yang benar-benar dilalui. Fase gerak bukan batas area, dan cut memulai shot baru. Tidak menyimpulkan koneksi denah dari urutan shot. Tulis nama gaya Inggris sebagai klaim terpisah pada design.styles.
 
-## Camera Pattern dan tampilan2.2.0
+## Camera Pattern dan tampilan
 
 Depth_direction fase: IN, OUT, NO IN/OUT atau null ambigu. Pola per shot/video hasil helper, bukan field manual audit. Arah berubah dalam satu shot memakai →; antarshot memakai – dan pola campuran dikurung. Misalnya IN – (OUT → IN) – NO IN/OUT. Pan/orbit/zoom sendiri tidak menentukan kedalaman; ~× bukan tempo.
 
 Overview adalah gabungan frame wide terpilih satu baris; Storyboard adalah seluruh kolase shot vertikal. Camera Start adalah awal sumber, composition_summary adalah paragraf pada frame Overview. Gunakan istilah Profil desain, Ukuran & proporsi, Shot Timeline, Overview, Storyboard, Shot Details, Framing & Lighting, Camera Movement, Tempo, Alur visual, Movement Timeline. Notasi English satu paragraf; nama area/gaya teknis English, uraian Indonesia.
 
-
-## Format 2.2
-
-Skala mesin: tiny, small, medium, large, unknown. Nama gaya tetap English; satu nama per klaim, nama baru diperbolehkan. fact_coverage: mapped/not-visible/unknown. Tempo fase: label tempo_profile yang overlap, variable jika berubah. Status unknown tidak disamakan dengan tidak ada.
-
-## Format2.3 / metode6FPS
-
-camera_checks menyimpan bukti depth/translation/rotation sebelum simpulan; bukan daftar verdict kedua. scale_measurement memakai anchor/dimensi utuh yang sama, piksel resolusi sumber dan evidence awal/akhir; IN=akhir/awal, OUT=awal/akhir, notasi satu desimal atau rentang. ~× bukan faktor tempo. estimate_basis menjelaskan dasar sudut atau batas angka. facet_roles peran pencarian eksplisit, label asli tetap utuh.
-
-Baseline6FPS; sumber≤6FPS dan shot<1detik native. Pendalaman10FPS/native sesuai pertanyaan visual. Semua shot moderate sah. Metode pembeda tunggal di visual-audit.md. Format2.2 lama tetap baseline10FPS/report2.2.1.
-
-## Format2.4
-
-scale_measurement=null diterima bersama ~× visual; estimate_basis menyatakan jangkar/asumsi singkat. Angka dalam tanda kurung: Dolly-In (~2×) + Pan Right (~15–20°). Frame metadata/parsed/summary dihitung helper, bukan simpulan visual baru. viewed deklarasi AI setelah melihat; cache bukan viewed. Log durasi alat terpisah dari selang percakapan/persetujuan.
+Gunakan tiny, small, medium, atau large sebagai label skala bila dapat ditentukan. Nilai yang belum dapat diketahui dapat dicatat dengan state unknown. Gunakan facet_roles untuk menyebut peran pencarian yang memang dicatat, seperti layout, configuration, opening, atau circulation.

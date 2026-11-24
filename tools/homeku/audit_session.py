@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 from .common import dumps, read_json, require
+from . import FORMAT_VERSION
 from .video import selected_indices, nearest
 from .video_cache import FrameCache, atomic
 from .audit_performance import safe_path, timed, event
@@ -21,11 +22,14 @@ def workspace(path):
 def load_session(path):
     path=workspace(path)
     value=read_json(path)
-    require(isinstance(value,dict) and value.get("version")=="1.0" and value.get("contract_version") in {"2.4","2.5"},
-            "Invalid audit session")
+    require(isinstance(value,dict) and value.get("format_version")==FORMAT_VERSION
+            and not {"contract_version", "version"}.intersection(value),
+            "Unsupported audit session; prepare a new workspace with the current kit")
     require(isinstance(value.get("source"),dict) and isinstance(value["source"].get("path"),str) and isinstance(value["source"].get("sha256"),str),"Invalid session source")
-    require(isinstance(value.get("passes"),list) and isinstance(value.get("shots"),list),"Invalid session passes/shots")
+    require(all(isinstance(value.get(k), list) for k in ("passes", "shots", "cuts")),
+            "Invalid session cuts, passes or shots")
     cache=FrameCache(Path(value["source"]["path"]),path.parent/".cache"/"frames",log=path.parent/"performance.jsonl")
+    require(value.get("runtime_signature")==cache.signature,"Session runtime differs; prepare a new workspace")
     require(cache.source_hash==value["source"]["sha256"],"Source changed; prepare a new workspace/session")
     expected=make_shots(cache,value["cuts"])
     require(value["shots"]==expected,"Session cut/PTS metadata changed; prepare a new workspace/session")
@@ -35,7 +39,8 @@ def load_session(path):
         require(shot is not None and shot["start_s"]<=r["start_s"]<r["end_s"]<=shot["end_s"],"Pass outside shot")
         indices=selected_indices(cache.times,r["start_s"],r["end_s"],r["sampling_fps"] or 6,
                     native=r["mode"]=="frame-by-frame",source_fps=cache.info["fps"]["numerator"]/cache.info["fps"]["denominator"])
-        require(indices==r["selected_frame_indices"] and set(r["viewed_frame_indices"])<=set(indices),"Session selection/viewed mismatch")
+        require(indices==r["selected_frame_indices"] and isinstance(r["viewed_frame_indices"], list)
+                and all(type(i) is int and i in indices for i in r["viewed_frame_indices"]),"Session selection/viewed mismatch")
     return path,value,cache
 
 def make_shots(cache,cuts):
@@ -125,6 +130,7 @@ def mark_viewed(session_path,pid=None,indices=None,*,all_frames=False,all_passes
         selected=item["record"]["selected_frame_indices"];seen=selected if all_frames else indices
         require(isinstance(seen,list) and all(type(i) is int for i in seen) and set(seen)<=set(selected),"Viewed indices outside selected pass")
         item["record"]["viewed_frame_indices"]=sorted(set(item["record"]["viewed_frame_indices"])|set(seen))
+    cache.ensure_source()
     atomic(path,dumps(session).encode())
     result=[{"pass":p["id"],"viewed":len(p["record"]["viewed_frame_indices"]),
              "selected":len(p["record"]["selected_frame_indices"]),

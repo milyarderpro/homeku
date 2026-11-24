@@ -1,11 +1,11 @@
-# Mulai audit HOMEKU2.5
+# Mulai audit HOMEKU 3.0
 
-Audit MP4 terlampir untuk pustaka HOMEKU. Ekstrak kit dan jalankan bootstrap. Baca audit/visual-audit.md dan audit/authoring.md; gunakan helper resmi di workspace chat.
+Audit video MP4 terlampir untuk pustaka HOMEKU. Ekstrak kit, jalankan `python homeku_runtime.py --output .`, lalu baca `audit/visual-audit.md` dan `audit/authoring.md`.
 
-Inspect sumber/PTS dan periksa cut nyata. prepare menyiapkan batas presisi, kerangka audit dan baseline6FPS beserta midpoint yang diperlukan. Lihat frame, nilai depth→translation→rotation, simpulkan komponen/fase/estimasi/tempo, lalu isi detail desain dan sumber JSON. Satu take multi area tetap satu shot. Pendalaman10FPS/native hanya untuk pertanyaan belum jelas; tidak otomatis semua shot. Tidak perlu SIFT/RANSAC/pose3D.
+Konfirmasi cut nyata dan jalankan prepare. Periksa baseline 6 FPS serta frame batas native. Sumber ≤6 FPS dan shot <1 detik memakai seluruh native. Gunakan 10 FPS atau native tambahan untuk menjawab pertanyaan visual tertentu. Satu take kontinu boleh memperlihatkan beberapa area.
 
-Angka opsional per komponen, termasuk pada gerak jelas. Jangan menurunkan confidence karena tidak menulis sudut. Angka tunggal default, rentang boleh; gunakan format dan kasus di camera-cases.md. Pengukuran piksel opsional. Semua moderate sah. Gaya English, prosa Indonesia; estimasi luas rentang wajib; arsitektur/furnitur/lingkungan konkret, fact_coverage/facet_roles lengkap. Camera Start awal sumber berbeda dari Overview wide akhir OUT.
+Periksa depth, translation, dan rotation sebelum menentukan gerak. Angka skala dan sudut opsional per komponen. Gunakan angka tunggal atau rentang bila membantu. Pisahkan tempo dari fase dan intensitas. Ikuti kronologi video sumber.
 
-Deklarasikan viewed hanya setelah melihat, lalu complete dan check-input/draft resmi. Jangan mengetik ulang PTS/parser/log mekanis atau menulis builder khusus50KB. Beri progres singkat saat berpindah tahap bila UI mendukung, tanpa meminta konfirmasi internal.
+Tulis nama gaya dalam bahasa Inggris, luas lantai sebagai rentang angka, serta uraian arsitektur, furnitur, lingkungan, dan framing dalam bahasa Indonesia. Catat fakta eksplisit dengan bukti dan statusnya. Camera Start menjelaskan awal sumber. Overview menjelaskan frame wide yang dipilih.
 
-Tampilkan MD enam bagian sesuai template, Overview, Storyboard dan seluruh kolase untuk saya koreksi. Belum ekspor sebelum persetujuan keseluruhan terbaru; ZIP final tanpa MP4/cache/log/receipt. Versi lama tetap menurut kontraknya.
+Deklarasikan viewed setelah melihat frame. Gunakan helper resmi untuk complete, check-input, draft, dan review. Tampilkan laporan enam bagian, Overview, Storyboard, dan seluruh kolase agar saya bisa mengoreksinya. Tunggu persetujuan keseluruhan pada snapshot terbaru sebelum membuat ZIP final tanpa video.

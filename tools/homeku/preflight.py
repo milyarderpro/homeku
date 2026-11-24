@@ -1,93 +1,113 @@
 """Collect independent input errors before any final JPEG is rendered."""
-import copy
-from datetime import datetime, timezone
+import re
 from pathlib import Path
 from jsonschema import Draft202012Validator, FormatChecker
-from .common import LibraryError, read_json, require
-from .versions import JSON_CONTRACTS, DEFAULT_REPORT, schema_name
-from .video import frame_times,probe_video,nearest
+from . import FORMAT_VERSION
+from .audit_quality import validate_audit_logs, validate_frame_reviews
+from .common import LibraryError, read_json, require, sha256
+from .models import ROOT, _clean, validate_audit
+from .video import frame_times, probe_video
 
-ROOT=Path(__file__).resolve().parents[2]
 
-def check_inputs(source,audit,audit_info,*,config=None,limit=100,supersedes=None,purpose="reference"):
-    errors=[];seen=set()
-    def add(path,group,message,action="Perbaiki field yang ditunjuk, lalu jalankan check-input/draft kembali."):
-        key=(path,message)
-        if key not in seen and len(errors)<limit:
-            seen.add(key);errors.append({"path":path,"group":group,"message":message,"action":action})
-    def capture(path,group,fn,action=None):
+def check_inputs(source, audit, audit_info, *, limit=100, supersedes=None, purpose="reference",
+                 cache_dir=None, log=None):
+    errors = []
+
+    def add(path, group, message, action="Perbaiki field ini, lalu jalankan check-input kembali."):
+        if len(errors) < limit:
+            errors.append({"path": path, "group": group, "message": message, "action": action})
+
+    def capture(path, group, fn, action=None):
         try:
             return fn()
-        except LibraryError as exc:
-            add(path,group,str(exc),action or "Gunakan prepare/complete untuk metadata mekanis; koreksi isi pengamatan secara eksplisit.")
-    if not isinstance(audit,dict) or audit.get("schema_version") not in JSON_CONTRACTS:
-        add("/schema_version","schema","Unsupported JSON audit source")
-        return {"ok":False,"errors":errors,"context":None}
-    version=audit["schema_version"]
-    def schema(value,spec,path):
-        rows=sorted(Draft202012Validator(spec,format_checker=FormatChecker()).iter_errors(value),
-                    key=lambda e:str(list(e.path)))
-        for e in rows:
-            pointer=path+"/"+"/".join(str(k).replace("~","~0").replace("/","~1") for k in e.path)
-            action="Pakai enum yang didukung: "+str(e.validator_value) if e.validator=="enum" else "Lengkapi struktur sesuai template; jangan mengarang fakta."
-            add(pointer,"schema",e.message,action)
-        return not rows
-    valid_audit=schema(audit,read_json(ROOT/"docs/contracts"/schema_name("audit",version)),"/audit")
-    logs=copy.deepcopy(audit_info) if isinstance(audit_info,dict) else audit_info
-    if isinstance(logs,dict):logs.setdefault("created_at",datetime.now(timezone.utc).isoformat())
-    manifest_spec=read_json(ROOT/"docs/contracts"/schema_name("manifest",version))["properties"]
-    valid_logs=schema(logs,manifest_spec["audit"],"/audit-info")
-    valid_header=True
-    for key,value in (("supersedes",supersedes),("purpose",purpose)):
-        valid_header=schema(value,manifest_spec[key],"/manifest/"+key) and valid_header
-    # Structural failures are cheap and independent. No metadata/decode/render yet.
-    if not valid_audit or not valid_logs or not valid_header:
-        return {"ok":False,"errors":errors,"context":None}
-    source=Path(source)
-    if not source.is_file():
-        add("/source","source","Source unavailable")
-        return {"ok":False,"errors":errors,"context":None}
-    capture("/id","identity",lambda:require(source.stem==audit["id"] and source.suffix.casefold()==".mp4","ID must match original MP4 stem"))
-    info=capture("/source","metadata",lambda:probe_video(source),"Periksa MP4 asli yang bisa dibaca ffprobe.")
-    times=capture("/source","timestamps",lambda:frame_times(source)) if info is not None else None
-    if info is None or times is None:
-        return {"ok":False,"errors":errors,"context":None}
-    from .models import validate_audit
-    from .markdown import component
-    from .validation import validate_audit_logs,validate_frame_reviews
-    # Enumerate common independent failures; then run the canonical global checks.
-    shot_ids={s["shot"] for s in audit["shots"]}
-    for i,r in enumerate(audit["relations"]):
-        capture(f"/relations/{i}","scope",lambda r=r:require(r["from"] in shot_ids and r["to"] in shot_ids,
-             "Unknown related shot; area IDs belong in area_relations"))
-    for i,s in enumerate(audit["shots"]):
-        if len(s["area_ids"])==1:
-            want=capture(f"/shots/{i}/interval","timeline",lambda s=s:nearest(times,(s["start_s"]+s["end_s"])/2,s["start_s"],s["end_s"]))
-            capture(f"/shots/{i}/panels/1","midpoint",lambda s=s,want=want:require(
-                len(s["panels"])==3 and s["panels"][1]["frame_index"]==want,
-                f"Middle panel must be nearest native midpoint F{want}"),"Jalankan complete; lihat frame midpoint yang diusulkan jika belum viewed.")
-        for j,p in enumerate(s["phases"]):
-            capture(f"/shots/{i}/phases/{j}/components_parsed","notation",
-                lambda p=p:require(p["components_parsed"]==[component(c.strip(),version) for c in p["components"].split("+")],
-                                  "Parsed component metadata differs from raw notation"),"Jalankan complete; metadata parser tidak perlu diketik ulang.")
-    for i,r in enumerate(logs["frame_reviews"]):
-        capture(f"/audit-info/frame_reviews/{i}","frames",
-            lambda r=r:validate_frame_reviews([r],audit["shots"],source,info,contract_version=version,times=times,check_coverage=False),
-            "Gunakan pass session/mark-viewed yang benar; jangan membulatkan PTS atau mengarang viewed.")
-    audit_ok=capture("/audit","semantics",lambda:validate_audit(audit,info["duration_s"],times))
-    capture("/audit-info","coverage",lambda:validate_audit_logs(logs,audit,source,info,times=times))
-    if audit_ok is not None:
-        from .reporting import render_config,verify_renderer,render_report
-        from .media import expected_media
-        config=config or render_config(version=DEFAULT_REPORT[version])
-        capture("/render","renderer",lambda:verify_renderer(config))
-        capture("/analysis.md","report",lambda:render_report(audit,config))
-        capture("/media","layout",lambda:list(expected_media(audit,info,config)))
-    return {"ok":not errors,"errors":errors,"context":{"info":info,"times":times,"logs":logs}}
+        except (LibraryError, OSError) as exc:
+            message = str(exc)
+            if message.startswith("/"):
+                pointer, sep, detail = message.partition(": ")
+                if sep:
+                    path, message = path + pointer, detail
+            add(path, group, message, *([action] if action else []))
+            return None
 
-def require_inputs(source,audit,audit_info,*,config=None,**kwargs):
-    result=check_inputs(source,audit,audit_info,config=config,**kwargs)
+    def schema(value, spec, prefix):
+        entries = sorted(Draft202012Validator(spec, format_checker=FormatChecker()).iter_errors(value),
+                         key=lambda error: str(list(error.path)))
+        for error in entries:
+            parts = list(error.path)
+            if error.validator == "required":
+                field = re.match(r"'([^']+)' is a required property", error.message)
+                if field:
+                    parts.append(field[1])
+            pointer = prefix + "".join("/" + str(key).replace("~", "~0").replace("/", "~1")
+                                       for key in parts)
+            add(pointer, "schema", error.message,
+                "Lengkapi struktur sesuai template dan catat pengamatan yang tersedia.")
+        return not entries
+
+    def result(context=None):
+        return {"ok": not errors, "errors": errors, "context": context if not errors else None}
+
+    require(type(limit) is int and limit > 0, "Error limit must be positive")
+    if not isinstance(audit, dict) or audit.get("schema_version") != FORMAT_VERSION:
+        add("/audit/schema_version", "schema", "Unsupported audit format; use the current HOMEKU kit")
+        return result()
+    schema(audit, read_json(ROOT / "schemas/audit.schema.json"), "/audit")
+    schema(audit_info, read_json(ROOT / "schemas/audit-info.schema.json"), "/audit-info")
+    header = read_json(ROOT / "schemas/manifest.schema.json")["properties"]
+    schema(supersedes, header["supersedes"], "/manifest/supersedes")
+    schema(purpose, header["purpose"], "/manifest/purpose")
+    if errors:
+        return result()
+    capture("/audit", "observations", lambda: _clean(audit))
+    capture("/audit-info", "observations", lambda: _clean(audit_info))
+    size = audit["design"]["size"]["floor_area_m2"]
+    if size["min"] > size["max"]:
+        add("/audit/design/size/floor_area_m2", "semantics", "Minimum exceeds maximum")
+    if not ((audit["revision"] == 1 and supersedes is None) or
+            (isinstance(supersedes, dict) and supersedes["revision"] == audit["revision"] - 1)):
+        add("/manifest/supersedes", "revision", "Use null for revision 1 and identify the preceding revision otherwise")
+    source = Path(source).resolve()
+    if source.stem != audit["id"] or source.suffix.casefold() != ".mp4":
+        add("/audit/id", "source", "ID must match original MP4 stem")
+    if not source.is_file():
+        add("/source", "source", "Source unavailable")
+    if errors:
+        return result()
+    cache = None
+    if cache_dir is not None:
+        from .video_cache import FrameCache
+        cache = capture("/source", "metadata", lambda: FrameCache(source, cache_dir, log=log))
+        if cache is None:
+            return result()
+        info, times = cache.info, cache.times
+    else:
+        info = capture("/source", "metadata", lambda: probe_video(source))
+        if info is None:
+            return result()
+        times = capture("/source", "timestamps", lambda: frame_times(source, info=info))
+        if times is None:
+            return result()
+    capture("/audit", "semantics", lambda: validate_audit(audit, info["duration_s"], times))
+    frames_ok = True
+    for i, row in enumerate(audit_info["frame_reviews"]):
+        checked = capture(f"/audit-info/frame_reviews/{i}", "frames",
+                          lambda: validate_frame_reviews([row], audit["shots"], source, info,
+                                                         times=times, check_coverage=False),
+                          "Gunakan mark-viewed setelah frame benar-benar diperiksa.")
+        frames_ok = frames_ok and checked is not None
+    if frames_ok and not errors:
+        capture("/audit-info", "coverage",
+                lambda: validate_audit_logs(audit_info, audit, source, info, times=times))
+    if errors:
+        return result()
+    digest = cache.source_hash if cache else capture("/source", "hash", lambda: sha256(source))
+    return result({"info": info, "times": times, "logs": audit_info, "sha256": digest, "cache": cache})
+
+
+def require_inputs(source, audit, audit_info, **kwargs):
+    result = check_inputs(source, audit, audit_info, **kwargs)
     if not result["ok"]:
         import json
-        raise LibraryError("Input preflight failed before media render: "+json.dumps(result["errors"],ensure_ascii=False))
+        raise LibraryError("Input preflight failed before media render: " +
+                           json.dumps(result["errors"], ensure_ascii=False))
     return result["context"]

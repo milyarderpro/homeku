@@ -1,27 +1,33 @@
 #!/usr/bin/env python3
-"""Regenerate the two checked-in synthetic ZIPs; never import into the library."""
+"""Generate current synthetic packages and their separate MP4s in an isolated folder."""
+import argparse
 import sys
 import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from tests.fixtures.factory import copy_fixture, make_folder, package_folder
-from homeku.common import dumps, read_json
+from homeku.audit_session import workspace
+from homeku.common import LibraryError, require
+from tests.fixtures.factory import isolated_root, make_package
 
 
 def main():
-    with tempfile.TemporaryDirectory() as name:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+    root = workspace(args.output)
+    require(root.resolve() != ROOT and (not root.exists() or not any(root.iterdir())),
+            "Use an empty fixture output outside the library")
+    isolated_root(root)
+    with tempfile.TemporaryDirectory(prefix="homeku-test-packages-") as name:
         work = Path(name)
-        valid = make_folder(work / "valid", rid="fixture-valid")
-        package_folder(valid, ROOT / "tests/fixtures/fixture-valid-r0001.zip")
-        invalid = copy_fixture(work / "invalid", "fixture-invalid", valid)
-        manifest = read_json(invalid / "manifest.json")
-        manifest["media"][1]["sha256"] = "0" * 64
-        (invalid / "manifest.json").write_text(dumps(manifest))
-        package_folder(invalid, ROOT / "tests/fixtures/fixture-invalid-r0001.zip")
-    print("Generated synthetic valid/invalid test ZIPs, not active references.")
+        for fixture in ("normal", "multi"):
+            print(make_package(work / fixture, root, f"fixture-{fixture}", multi=fixture == "multi"))
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except (LibraryError, OSError) as error:
+        raise SystemExit(str(error))

@@ -1,73 +1,64 @@
-# Metode inti audit visual HOMEKU
+# Metode audit visual HOMEKU 3.0
 
-## Default 2.5 — aturan kamera yang disepakati
+Baca sebelum mengisi JSON. Periksa perjalanan utuh, lalu baseline berurutan per take kontinu. Ekstraksi bukan pengamatan. Hanya frame yang benar-benar dilihat boleh dinyatakan viewed.
 
-Format: [Komponen Utama] ([Skala]) [+ / →] [Komponen Sekunder] ([Intensitas / Kurva]).
-Bagian dalam kurung opsional. Gerak jelas tanpa angka tetap sah pada medium/high; tidak perlu alasan khusus atau menurunkan confidence. Angka tunggal default, rentang boleh. Estimate_basis cukup satu kalimat bila angka ada, boleh null bila tidak ada. Piksel opsional; ketidakpastian gerakan yang nyata tetap dipertahankan.
+## Sampling
 
-Contoh: Dolly-Out (~1.6×) + Orbit Left + Subtle Pan Right (Ease-Out).
-Straight/Diagonal/Pure/Mild/Subtle/Moderate/Strong dan easing dipertahankan. Intensitas Pan bukan tempo; easing berlaku pada komponen yang diberi label. + simultan, → berurutan, satu paragraf. x/koma desimal hanya dinormalisasi pada sumber kerja baru; paket lama utuh.
+Baseline 6 FPS ditambah frame native pertama/terakhir setiap shot. Sumber ≤6 FPS atau shot <1 detik diperiksa seluruh native. Tidak ada interpolasi. Periksa midpoint dan pilihan panel/Overview yang belum tercakup. Pendalaman 10 FPS/native hanya untuk pertanyaan visual tertentu, lalu perluas bila belum terjawab. Ringkasan 6–10 momen tidak menggantikan baseline.
 
-Baca perjalanan utuh dan baseline 6 FPS berurutan; bandingkan per interval dengan jangkar utama, benda dekat dan jauh yang benar-benar terlihat. Periksa depth → translation → rotation serta perubahan sisi/perspektif. Pergeseran layar atau oklusi saja tidak membuktikan Pan/Orbit. Ringkasan 6–10 momen bukan pengganti baseline; sumber ≤6 FPS dan shot <1s native, pendalaman 10/native sesuai pertanyaan. Cut memakai PTS native, bukan selalu30FPS.
-
-Helper motion-hints opsional memakai frame cache dan statistik ringan, tanpa verdict otomatis, panggilan AI berbayar atau instalasi jaringan rutin. Bila tidak tersedia, pemeriksaan visual tetap dapat dilanjutkan. Rumus/ambang eksperimen adalah petunjuk; bukan hukum universal. Lihat camera-cases.md.
-
-Inventaris temuan penting sebagai fakta lalu cocokkan narasi arsitektur/furnitur/lingkungan dan facet_roles. Tidak ada kuota enam fakta atau jumlah minimal baru. Validator memeriksa struktur, bukan membuktikan kelengkapan makna prosa. MD tetap enam bagian/A-B-C; statistik kerja tidak masuk MD/ZIP.
-
-Sumber2.5/report2.2.4/media2.2.1. Aturan versi2.4 dan sebelumnya di bawah berlaku untuk kompatibilitas, bukan default baru.
-
-
-Baca panduan ini sebelum mengisi JSON. Pengamatan dilakukan per take kontinu, bukan per ruangan. Lihat perjalanan utuh lalu frame terpilih berurutan. Catatan kerja bersifat sementara; hanya audit.json menjadi sumber final.
+Cut memakai indeks dan PTS native. Pergantian area tanpa cut tetap satu shot; rute yang dimasuki berbeda dari area yang hanya terlihat.
 
 ## Urutan keputusan per fase
 
-1. **Kedalaman dahulu.** Bandingkan ukuran objek yang sama, lapisan dekat/jauh, oklusi dan ruang yang terbuka. Tentukan apakah kamera mendekat, menjauh, netral atau ambigu. Sebelum memilih Pan-only/NO IN/OUT, periksa kemungkinan Dolly dan Zoom.
-2. **Translasi.** Periksa perpindahan lateral/vertikal dengan foreground dan background. Apakah kusen bergeser terhadap dinding jauh? Apakah sisi benda berubah? Bedakan gerak badan kamera dari gerak pandang.
-3. **Rotasi.** Periksa arah pandang terhadap jangkar; gabungkan Pan/Tilt yang nyata dengan translasi yang juga terlihat. Jangan memilih hanya komponen paling menonjol.
-4. **Fase.** + berarti simultan; → berarti komponen mulai/berhenti/berubah. Area baru atau tempo berubah saja tidak membuat cut/fase baru.
-5. **Besaran dan tempo.** Perkirakan skala dan sudut secara visual, lalu nilai tempo pada interval waktu setara. Tulis bahasa sederhana dan notasi teknis dari keputusan yang sama.
+1. **Depth:** bandingkan ukuran jangkar yang sama, lapisan dekat/jauh, oklusi dan ruang yang terbuka. Periksa Dolly/Zoom sebelum menyimpulkan Pan-only atau netral.
+2. **Translation:** periksa gerak badan kamera lateral/vertikal melalui paralaks, perubahan sisi dan hubungan foreground/background.
+3. **Rotation:** periksa putaran arah pandang terhadap jangkar. Jangan hanya mencatat komponen paling menonjol; translasi dan rotasi dapat simultan.
+4. **Fase:** pisahkan ketika komponen mulai/berhenti/berubah, bukan semata area atau tempo berubah. + simultan; → antar fase, satu paragraf.
+5. **Besaran/tempo:** angka dapat diperkirakan visual; nilai tempo dari perubahan per waktu setara, bukan kesan smooth.
 
-## Matriks pembeda Pan / Orbit / Truck
+Simpan observations depth/translation/rotation spesifik pada fase, dengan bukti temporal bersama. Override komponen hanya jika bukti/ambiguitas berbeda. Minimal dua frame temporal berbeda pada fase/toleransi satu batas native yang dinyatakan; jangan mengarang evidence agar lolos.
 
-| Tafsir | Oklusi foreground | Selisih paralaks | Perspektif/posisi jangkar utama |
-| --- | --- | --- | --- |
-| Pan | Biasanya menyapu scene tanpa perubahan lapisan besar akibat translasi | Pergeseran layar bisa berbeda karena proyeksi; bukan bukti translasi tunggal | Pandangan berputar; sisi objek tidak berubah seperti lintasan mengelilinginya |
-| Orbit | Foreground dapat membuka/menutupi latar saat mengelilingi jangkar | Lapisan dekat/jauh bergeser berbeda | Sisi/sudut jangkar berubah sepanjang lintasan, sering tetap terbingkai |
-| Truck | Foreground melewati/membuka latar akibat geser badan kamera | Lapisan dekat bergeser lebih besar daripada lapisan jauh | Translasi lateral; orientasi pandang relatif dipertahankan atau dikompensasi Pan |
+## Pan, Orbit dan Truck
 
-Gunakan ketiga tes bersama. Satu delta layar bukan rekonstruksi pose3D. Distorsi lensa, zoom, objek bergerak dan deformasi generatif dapat mengacaukan petunjuk. Pan Right pada scene statis umumnya menyapu gambar ke kiri, tetapi arah satu objek saja tidak menentukan arah kamera. Orbit Left menyatakan badan kamera melingkar ke kiri mengelilingi jangkar; Pan Right menyatakan arah pandang berputar ke kanan. Keduanya bisa terjadi bersamaan.
+| Tafsir | Oklusi / paralaks | Perspektif dan jangkar |
+| --- | --- | --- |
+| Pan | Scene tersapu; geser layar saja bukan bukti translasi | Arah pandang berputar, perubahan sisi subjek tidak seperti lintasan mengelilinginya |
+| Orbit | Lapisan dekat/jauh bergeser berbeda, foreground membuka/menutupi latar | Sisi/sudut subjek berubah sepanjang lintasan mengitari jangkar |
+| Truck | Badan kamera bergeser lateral, lapisan dekat bergerak berbeda dari latar | Translasi menyamping; orientasi relatif tetap atau dikompensasi Pan |
 
-**Contoh oklusi:** kusen dekat bergeser sehingga sakelar/nightstand di belakang mulai terlihat, sementara sisi objek utama berubah. Periksa translasi/orbit, jangan menyebutnya Pan hanya karena elemen menyapu layar. Bila kamera juga mundur dan pandangan mengompensasi ke kanan, hasil dapat berupa Dolly-Out + Orbit Left + Pan Right. Arah tetap ditentukan dari bukti sumber, bukan menyalin contoh.
+Gunakan ketiga tes bersama. Pada scene statis, Pan Right umumnya menggeser gambar ke kiri. Jika foreground yang benar-benar dekat bergeser lebih ke kanan daripada background, badan kamera cenderung bergerak ke kiri; periksa perspektif untuk membedakan Orbit Left dan Truck Left. Tanda terbalik berlaku untuk gerak kanan. Satu tanda delta/oklusi tidak membuktikan pose 3D; distorsi lensa, zoom, objek bergerak dan deformasi generatif dapat mengacaukan petunjuk.
 
-**Kasus kalibrasi edh058:** living room dan bathroom memperlihatkan jangkar mengecil dan cakupan dekat/lantai melebar. Pan-only melewatkan OUT. Periksa pasangan frame awal–akhir dan lapisan ruang sebelum menetapkan NO IN/OUT; contoh ini bukan daftar jawaban untuk video lain.
+Kusen yang membuka/menutupi sakelar atau nakas sambil sisi objek berubah perlu diuji sebagai translasi/orbit, bukan otomatis Pan. Dolly-Out + Orbit Left + Pan Right dapat simultan: mundur, badan melingkar kiri dan pandangan berputar kanan. Ini contoh pembacaan, bukan jawaban default video.
 
-## Kedalaman, vertikal dan ketidakpastian
+Goyangan/drift vertikal tipis akibat berjalan atau proyeksi wide bukan Tilt. Catat Tilt hanya bila rotasi vertikal disengaja terlihat jelas dan berkelanjutan; bedakan dari pedestal. Jangan menebak pemakaian gimbal.
 
-Skala membesar saja dapat berasal dari Dolly-In, Zoom-In atau crop digital. Dolly membutuhkan dukungan kedalaman/oklusi/perspektif. Pan/Static/Zoom dapat benar-benar tidak memiliki translasi kedalaman. NO IN/OUT adalah simpulan netral; null adalah belum dapat ditentukan. Jangan memaksakan Dolly.
+## Arah, notasi dan tempo
 
-Tilt memerlukan rotasi vertikal jelas dan berkelanjutan. Drift/jitter tipis bukan Tilt; bedakan dari pedestal/gerak naik turun badan kamera. Jangan menyimpulkan penggunaan gimbal dari video saja.
+Depth_direction auditor: IN, OUT, NO IN/OUT atau null ambigu. Pan/Static/Zoom bisa tidak mempunyai translasi depth. Zoom atau pembesaran skala saja tidak membuktikan Dolly. Camera Pattern dihitung dari arah fase, bukan dari narasi atau default produksi.
 
-## Pengamatan adaptif
+Format: [Komponen Utama] ([Skala]) [+ / →] [Komponen Sekunder] ([Intensitas / Kurva]). Angka opsional per komponen; angka tunggal/rentang sah. Gerak tanpa angka tidak memerlukan alasan khusus atau penurunan confidence. Asumsi visual wajar diterima tanpa kewajiban piksel/kalibrasi. Lihat camera-cases.md.
 
-Sumber2.3–2.5: baseline6FPS setiap shot ditambah batas native pertama/terakhir. Sumber≤6FPS seluruh native; shot<1detik native. Tidak ada interpolasi. Perdalam bagian yang belum jelas pada10FPS atau langsung native, lalu perluas jika pertanyaan belum terjawab. Alasan menyebut pertanyaan visual dan interval, bukan otomatis rentang tengah. Sumber2.2 tetap10FPS/native sesuai kontrak asal.
+~× adalah rasio skala gambar IN=akhir/awal, OUT=awal/akhir; bukan faktor kecepatan/jarak fisik. Gunakan jangkar yang sebanding; jangan memberi rasio gabungan yang sama pada Dolly dan Zoom bila kontribusinya tidak terpisahkan. ~° dapat diperkirakan dari perubahan orientasi; jangan menyatakan estimasi sebagai pose fisik terukur.
 
-Ekstraksi bukan pemeriksaan. Hanya frame yang benar-benar dilihat dicatat viewed. Semua evidence, panel dan Overview harus termasuk viewed. Simpan frame kerja di workspace sementara, bukan ZIP.
+Semua shot moderate sah. Smooth bukan slow; pembesaran perspektif tidak sendirian membuktikan accelerating. Easing/intensitas berlaku pada komponennya, tidak otomatis menjadi tempo seluruh shot. Simpan tempo sekali, seragam atau segments; batasnya tidak harus sama dengan fase gerak.
 
-## Estimasi dan tempo
+## Detail desain dan framing
 
-~× adalah besaran perubahan skala gambar: IN=ukuran akhir/awal; OUT=ukuran awal/akhir. Gunakan objek/bagian yang sama, dimensi width/height yang sama, terlihat utuh pada kedua frame native. Bila memilih pengukuran piksel, catat koordinat resolusi sumber (bukan ukuran thumbnail), anchor serta evidence awal/akhir. Pengukuran ini opsional pada sumber2.4; estimasi visual dengan asumsi wajar tetap sah. Hindari objek terpotong; pilih anchor lain. Angka ditulis ringkas, tunggal atau rentang; sumber2.5 juga menerima ~1.75×. Ini bukan faktor kecepatan/jarak fisik.
+Eksterior: gaya/massa, ukuran/proporsi, atap, fasad/bukaan, akses/teras, material/cahaya tampak dan lingkungan/tapak. Interior: geometri/volume/bukaan, layout/hubungan, bentuk/posisi/orientasi furnitur, penyimpanan/properti pembeda, material/cahaya dan lingkungan melalui bukaan.
 
-Pan/Orbit: usahakan ~° melalui orientasi/jangkar. Bila tidak dapat dipisahkan dari gerak lain, estimate_basis menjelaskan kendala khusus; jangan memberi presisi palsu. Dolly+Zoom yang tidak terpisahkan tidak boleh diberi rasio total yang sama pada keduanya. Pertahankan batas atribusi dan komponen yang jelas.
+Catat detail konkret, bukan daftar furnitur generik. Cocokkan text arsitektur/furnitur/lingkungan dengan fakta berkategori dan facet_roles. Tidak ada kuota fakta; validator struktural tidak membuktikan kelengkapan makna narasi.
 
-Semua shot boleh moderate. Smooth bukan slow; tidak ada kuota tempo. Bandingkan perpindahan/reveal pada interval waktu setara dan konteks lintasan. Pertumbuhan skala saat mendekati objek tidak sendirian membuktikan percepatan fisik. Confidence mengikuti kecukupan bukti, bukan jumlah frame atau kelengkapan formulir.
+Nama gaya Inggris, penjelasan Indonesia, estimasi luas min–max wajib. Bedakan observed/uncertain/not-visible/not-present/unknown. Urutan edit bukan bukti denah atau satu rumah fisik. Jangan menegaskan material fisik dari tampilan saja.
 
-## Detail desain yang diamati
+Camera Start menjelaskan awal sumber. Overview menjelaskan frame wide yang dipilih, biasanya awal IN atau akhir OUT; posisi/arah/angle dan cakupannya harus jelas. Default produksi reverse/durasi/lima shot tidak mengubah kronologi, tempo atau pilihan audit sumber.
 
-Eksterior: (1) gaya dan massa, (2) ukuran/proporsi, (3) atap, (4) fasad/bukaan, (5) akses/teras, (6) material/cahaya tampak, (7) tapak/lingkungan.
-Interior: (1) bentuk/volume/bukaan, (2) layout dan hubungan terlihat, (3) furnitur beserta bentuk/orientasi, (4) penyimpanan/properti pembeda, (5) tampilan material/lapisan cahaya, (6) lingkungan melalui bukaan.
+## Bantuan statistik gerak 2D
 
-Catat detail yang benar-benar terlihat, termasuk konfigurasi bathroom/kitchen yang berbeda. Hindari daftar furnitur generik. Pisahkan terlihat, uncertain, not-visible, not-present dan unknown. Urutan edit tidak membuktikan denah/adjacency. Nama gaya English; uraian Indonesia. Luas lantai wajib estimasi rentang. Ketentuan produksi reverse/4–6detik/lima shot tidak berlaku di audit pustaka.
+~~~sh
+python tools/audit.py motion-hints work/audit/session.json --shot-id shot-02
+python tools/audit.py motion-hints work/audit/session.json --shot-id shot-02 --details
+~~~
 
-## Kompatibilitas
+Helper opsional memakai 32 frame dan lebar analisis 320 px secara default. Batasnya 64 frame dan 640 px. Keluaran ringkas memuat cakupan tracking, gap, rentang valid, dan tren awal, tengah, serta akhir menurut PTS. Opsi `--details` menampilkan matriks setiap interval. `total` berlaku pada rentang PTS yang diukur dan berisi `null` saat rantai tracking terputus.
 
-Sumber2.4 tetap angka pada gerak jelas/report2.2.3/media2.2.0; sumber2.3 tetap pengukuran ~×, sumber2.2 baseline10FPS. Tidak mengubah paket lama. Default2.5 mengikuti aturan opsional di awal panduan.
+Upper dan lower merujuk zona gambar. Putuskan arah dan jenis gerak dari pengamatan visual tiga sumbu. Jika OpenCV atau NumPy tidak tersedia, lanjutkan audit visual. Helper menyimpan statistik di cache kerja dan deklarasi viewed tetap dilakukan setelah pemeriksaan frame.

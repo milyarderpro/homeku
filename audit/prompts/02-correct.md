@@ -1,7 +1,7 @@
-# Koreksi HOMEKU2.5
+# Koreksi audit HOMEKU 3.0
 
-Terapkan koreksi saya pada sumber kerja terbaru, dengan metode visual-audit.md dan helper authoring.md. Periksa ulang hanya bagian yang memerlukan pengamatan tambahan10FPS/native; gunakan pekerjaan/bukti yang masih cocok, jangan mulai ulang seluruh audit.
+Terapkan koreksi saya pada `audit.json` kerja. Temukan bukti terkait lalu periksa ulang bagian yang masih ambigu dengan pendalaman 10 FPS atau native. Pertahankan catatan yang sudah cocok. Angka kamera tetap opsional per komponen.
 
-Pertahankan notasi yang berguna; ~×/~° opsional per komponen. Jangan memaksa angka atau mengubah confidence karena angka tidak ditulis. Selaraskan detail/narasi/fakta, kamera sederhana/notasi, fase/tempo dan komposisi yang terdampak. complete menghitung metadata mekanis, preflight menemukan kesalahan sebelum render, cache memakai ulang gambar yang sesuai.
+Selaraskan fakta, narasi, komposisi, notasi, fase, dan tempo yang terdampak. Jika koreksi terpusat pada satu shot, gunakan `update-shot` dengan file patch JSON. Isi deklarasi viewed hanya untuk frame yang benar-benar sudah dilihat. Jalankan complete dan draft.
 
-Draft/review terbaru harus menampilkan seluruh kandidat: MD enam bagian, Overview, Storyboard dan semua kolase. Persetujuan lama tidak berlaku setelah isi berubah; tunggu persetujuan keseluruhan terbaru sebelum ekspor byte identik tanpa video.
+Jalankan review pada kandidat terbaru dan tampilkan ulang laporan lengkap, Overview, Storyboard serta seluruh kolase. Tunggu persetujuan keseluruhan untuk snapshot tersebut sebelum ekspor.

@@ -3,7 +3,7 @@ from .common import require
 
 
 def shot_pattern(shot):
-    directions = [p.get('depth_direction') for p in shot['phases']]
+    directions = [p.get('depth_direction') for p in shot['camera']['phases']]
     if not directions or any(d is None for d in directions):
         return None
     moving = []
@@ -15,10 +15,10 @@ def shot_pattern(shot):
 
 
 def provenance(shot, index):
-    return [{'source_pointer': f'/shots/{index}/phases/{j}/depth_direction',
-             'phase': p['phase'], 'depth_direction': p.get('depth_direction'),
+    return [{'source_pointer': f'/shots/{index}/camera/phases/{j}/depth_direction',
+             'phase': f'phase-{j+1:02d}', 'depth_direction': p.get('depth_direction'),
              'interval_s': [p['start_s'], p['end_s']], 'evidence_ids': list(p['evidence'])}
-            for j, p in enumerate(shot['phases'])]
+            for j, p in enumerate(shot['camera']['phases'])]
 
 
 def video_pattern(shots):
@@ -29,7 +29,8 @@ def video_pattern(shots):
 def validate_direction(phase):
     """Explicit Dolly translation can contradict a classification; zoom/orbit cannot."""
     declared = phase['depth_direction']
-    explicit = {c['movement'] for c in phase['components_parsed']} & {'Dolly-In', 'Dolly-Out'}
+    from .camera_notation import parse
+    explicit = {c['movement'] for c in parse(phase['notation'])} & {'Dolly-In', 'Dolly-Out'}
     require(len(explicit) < 2, 'Split opposing Dolly directions into separate phases')
     if declared is not None and explicit:
         expected = 'IN' if 'Dolly-In' in explicit else 'OUT'
