@@ -1,5 +1,5 @@
 # Fase gerakan kamera
 
-0 entri tercatat.
+6 entri tercatat.
 
-Belum ada entri aktif.
+- [Halaman 1](page-001.md)

@@ -1,7 +1,7 @@
 # Gerakan dan ritme
 
-0 entri tercatat.
+5 entri tercatat.
 
-Belum ada entri aktif.
+- [Halaman 1](page-001.md)
 
 - [Fase gerakan kamera](phases/README.md)

@@ -1,5 +1,5 @@
 # Profil DNA, gaya dan skala
 
-0 entri tercatat.
+18 entri tercatat.
 
-Belum ada entri aktif.
+- [Halaman 1](page-001.md)

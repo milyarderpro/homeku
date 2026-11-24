@@ -1,6 +1,6 @@
 # Katalog HOMEKU
 
-0 referensi aktif, 0 shot.
+1 referensi aktif, 5 shot.
 
 - [Referensi](references.md)
 - [Ruang dan fungsi](rooms/README.md)
