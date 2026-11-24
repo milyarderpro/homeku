@@ -79,3 +79,9 @@ Kasus teknis menjadi tes regresi terisolasi. Tidak ada audit ulang video atau pe
 Catatan sebelumnya tentang dua hasil2.0 adalah riwayat. Dua hasil terbaru2.2 ada di result/gemini/ dan result/gpt/; hash/temuan/status pada pilots/edh058-comparison.md. GPT melewatkan OUT living/bathroom ketika memilih Pan-only. Semua enam moderate Gemini sesuai penilaian pengguna dan tidak dianggap cacat distribusi tempo.
 
 Metode inti sekarang visual-audit.md: depth dahulu, tiga tes pembanding untuk gerak lateral/rotasi, baru simpulan gabungan dan serialisasi. Baseline sumber2.3=6FPS, targeted10/native; format2.2 tetap10. Rasio OUT=awal/akhir >1 dengan anchor utuh. Saran ini memperbaiki sistem, bukan mengesahkan angka/label seluruh output Gemini. Pilot2.3 belum dijalankan; tidak ada ground truth baru dari fixture.
+
+## Estimasi visual dan efisiensi2.4
+
+Hasil edh058 terbaru sumber2.3/report2.2.2 tersedia dan valid menurut kontraknya; hash/status diperbarui pada pilots/edh058-comparison.md. Pengguna menerima estimasi sudut berbasis asumsi wajar. Laporan waktu menunjukkan penulisan data dan pengulangan validasi sebagai beban utama Gemini, bukan pengukuran piksel semata.
+
+Sumber2.4 mengizinkan estimasi visual ~×/~° tanpa kalibrasi; scale_measurement opsional. Bagian jelas tetap punya perkiraan angka, bagian ambigu mempunyai alasan khusus. Metadata PTS/parser/summary/log dibantu prepare/complete, viewed eksplisit. Pendalaman tetap terarah dan preflight sebelum render. Tooling/fixture/benchmark tidak menjadi run atau persetujuan audit2.4.

@@ -106,7 +106,7 @@ def validate_quality(audit, times=None):
             expected = next(iter(labels)) if len(labels) == 1 else "variable"
             require(phase["tempo"] == expected,
                     label + ": tempo conflicts with overlapping tempo_profile")
-    if audit["schema_version"] == "2.3":
+    if audit["schema_version"] in {"2.3", "2.4"}:
         validate_method(audit, times)
     return audit
 
@@ -118,7 +118,7 @@ def validate_viewed_evidence(audit, reviews, times):
     for s in audit["shots"]:
         claims += s["facts"] + s["phases"] + s["area_relations"]
         claims += [o for p in s["phases"] for o in p["motion_observations"]]
-    if audit["schema_version"] == "2.3":
+    if audit["schema_version"] in {"2.3", "2.4"}:
         for s in audit["shots"]:
             for p in s["phases"]:
                 claims += list(p["camera_checks"].values())
@@ -172,12 +172,31 @@ def validate_method(audit, times=None):
                 angles = [e for e in c["estimates"] if e.endswith("°")]
                 require(not angles or movement.startswith(("Pan ", "Orbit ", "Tilt ")),
                         label + ": angle estimate is not applicable to this component")
+                if audit["schema_version"] == "2.4":
+                    required_unit = "°" if movement.startswith(("Pan ", "Orbit ")) else "×" if movement.startswith(("Dolly-", "Zoom-")) else None
+                    if required_unit and phase["confidence"] in {"high", "medium"}:
+                        require(any(e.endswith(required_unit) for e in c["estimates"]),
+                                label + ": clear camera movement requires a visual ~" + required_unit + " estimate; calibration is not required")
+                    for estimate in c["estimates"]:
+                        require(re.search(r"\([^)]*" + re.escape(estimate) + r"[^)]*\)", c["raw"]) is not None,
+                                label + ": write numeric camera estimates inside parentheses")
+                if audit["schema_version"] == "2.4":
+                    for value in ratios:
+                        match=re.fullmatch(r"~([0-9]+(?:\.[0-9])?)(?:[–−-]([0-9]+(?:\.[0-9])?))?×",value)
+                        require(match is not None and 1<=float(match[1])<=float(match[2] or match[1]),
+                                label + ": visual scale uses a positive ordered IN/OUT magnitude, at most one decimal")
+                    for value in angles:
+                        match=re.fullmatch(r"~([0-9]+(?:\.[0-9]+)?)(?:°?[–−-]([0-9]+(?:\.[0-9]+)?))?°",value)
+                        require(match is not None and 0<float(match[1])<=float(match[2] or match[1]),
+                                label + ": visual angle uses a positive ordered estimate/range")
                 measure = obs["scale_measurement"]
                 if not ratios:
                     require(measure is None, label + ": scale_measurement needs a stated scale estimate")
                     continue
                 require(len(ratios) == 1 and movement in {"Dolly-In", "Dolly-Out", "Zoom-In", "Zoom-Out"},
                         label + ": scale estimate requires an IN/OUT Dolly or Zoom component")
+                if measure is None and audit["schema_version"] == "2.4":
+                    continue
                 require(measure is not None, label + ": numeric scale requires scale_measurement")
                 require(measure["anchor"].strip(), label + ": scale anchor required")
                 keys = [measure["start_evidence"], measure["end_evidence"]]

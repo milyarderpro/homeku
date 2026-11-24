@@ -30,6 +30,10 @@ def expected_media(audit,source,config):
 
 def build_media(folder,audit,source_path,source,config):
     if config['media']=='2.2.0':
+        from .video_cache import ACTIVE
+        if ACTIVE.get() is not None:
+            from .video_cache import cached_media
+            return cached_media(folder,audit,source_path,source,config)
         from .media_v2_2 import build_media as implementation
     else:implementation=legacy.build_media
     return implementation(folder,audit,source_path,source,config)
@@ -50,3 +54,8 @@ def crop_panel(folder,manifest,selection_id,output):
     with Image.open(folder/chosen['path']) as picture:result=picture.crop((x,y,x+w,y+h))
     output.parent.mkdir(parents=True,exist_ok=True);result.save(output,'PNG');result.close()
     return {'output':str(output),'width':w,'height':h,'source_panel':selection_id,'location':chosen}
+
+
+def render_missing_media(*args, **kwargs):
+    from .media_incremental import render_missing_media as implementation
+    return implementation(*args, **kwargs)

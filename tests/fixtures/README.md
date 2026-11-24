@@ -19,3 +19,5 @@ Sumber fixture baru memakai `make_v2_inputs(..., version="2.1")`; default 2.0 di
 Fixture kualitas2.2 memakai version=2.2 dengan motion_observations dan fact_coverage sintetis. Snapshot MD lengkap normal/multi berada di reports/*-2.2.1.md. ZIP2.2 tanpa video; MP4 test-pattern ditempatkan terpisah di root fixture. Ini pengujian tooling, bukan audit/penerimaan pilot nyata.
 
 Fixture metode2.3 memakai version="2.3", camera_checks tiga sumbu, scale_measurement dan facet_roles sintetis. Golden normal/multi reports/method-*-2.2.2.md dibuat renderer. Native log test-pattern10FPS untuk semua bukti; tes sampling6FPS/VFR/low-FPS/shot pendek terpisah. 300model diuji pada root terisolasi, tanpa mengubah registry produksi.
+
+Fixture efisiensi2.4 memakai estimasi visual tanpa pengukuran piksel, camera_checks/coverage/facets lengkap dan phase notation bertanda kurung. Contoh normal/multi lengkap di audit/examples/ dibuat dari factory yang sama; golden reports/efficiency-*-2.2.3.md. Prepare/log viewed adalah deklarasi sintetis pada test-pattern, bukan audit rumah. Cache/helper/benchmark hanya direktori sementara dan purpose=fixture; tidak ada ingest produksi.

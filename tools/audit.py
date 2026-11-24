@@ -17,14 +17,37 @@ from homeku.markdown import review_cards
 def main():
     parser = argparse.ArgumentParser(description="Inspect source, sample evidence, and assemble a HOMEKU ZIP")
     commands = parser.add_subparsers(dest="command", required=True)
+    preparing=commands.add_parser("prepare",help="Source-bound cuts, skeleton and baseline; no viewed declaration")
+    preparing.add_argument("source",type=Path)
+    preparing.add_argument("--cuts-file",type=Path,required=True,help="JSON array of confirmed native cut indices; [] for one take")
+    preparing.add_argument("--output",type=Path,required=True)
+    preparing.add_argument("--resume",action="store_true")
+    completing=commands.add_parser("complete",help="Fill only mechanical metadata on working source2.4")
+    completing.add_argument("audit",type=Path)
+    completing.add_argument("--session",type=Path,required=True)
+    completing.add_argument("--audit-info",type=Path)
+    viewing=commands.add_parser("mark-viewed",help="Explicit declaration after actual image inspection")
+    viewing.add_argument("session",type=Path)
+    passes=viewing.add_mutually_exclusive_group(required=True)
+    passes.add_argument("--pass-id",nargs="+")
+    passes.add_argument("--all-passes",action="store_true")
+    selection=viewing.add_mutually_exclusive_group(required=True)
+    selection.add_argument("--all",action="store_true")
+    selection.add_argument("--frames",type=int,nargs="+")
+    checking=commands.add_parser("check-input",help="Collect input errors before rendering any JPEG")
+    checking.add_argument("source",type=Path)
+    checking.add_argument("audit",type=Path)
+    checking.add_argument("--audit-info",type=Path,required=True)
     inspecting = commands.add_parser("inspect")
     inspecting.add_argument("source", type=Path)
     sampling = commands.add_parser("sample")
-    sampling.add_argument("source", type=Path)
-    sampling.add_argument("--output", required=True, type=Path)
+    sampling.add_argument("source", type=Path, nargs="?")
+    sampling.add_argument("--session",type=Path)
+    sampling.add_argument("--frames",type=int,nargs="+",help="Exact extra native selections with --session")
+    sampling.add_argument("--output", type=Path)
     sampling.add_argument("--fps", type=float)
-    sampling.add_argument("--contract-version", choices=["2.2", "2.3"], default="2.3")
-    sampling.add_argument("--start", type=float, default=0)
+    sampling.add_argument("--contract-version", choices=["2.2", "2.3", "2.4"], default="2.4")
+    sampling.add_argument("--start", type=float)
     sampling.add_argument("--end", type=float)
     sampling.add_argument("--native", action="store_true", help="All original frames in the interval, no forced 30 FPS")
     sampling.add_argument("--shot-id")
@@ -51,10 +74,11 @@ def main():
     v2draft.add_argument("--output",type=Path,required=True)
     v2draft.add_argument("--supersedes",type=Path)
     v2draft.add_argument("--include-source",action="store_true")
+    v2draft.add_argument("--cache-dir",type=Path)
     v2draft.add_argument("--quality",type=int,default=91)
     v2draft.add_argument("--scale",type=float,default=1.0)
     v2draft.add_argument("--columns",type=int,default=4)
-    v2draft.add_argument("--renderer-version",choices=["2.0.0","2.1.0","2.1.1","2.1.2","2.2.0","2.2.1","2.2.2"])
+    v2draft.add_argument("--renderer-version",choices=["2.0.0","2.1.0","2.1.1","2.1.2","2.2.0","2.2.1","2.2.2","2.2.3"])
     v2draft.add_argument("--overview-scale",type=float,default=1.0)
     v2draft.add_argument("--storyboard-scale",type=float,default=1.0)
     v2export=commands.add_parser("export-v2",help="Package an accepted whole-snapshot candidate unchanged")
@@ -66,10 +90,43 @@ def main():
     v2export.add_argument("--source",type=Path)
     args = parser.parse_args()
     try:
+        if args.command in {"prepare","complete","mark-viewed","check-input"} or (args.command=="sample" and args.session):
+            if args.command=="prepare":
+                from homeku.authoring import prepare
+                result=prepare(args.source,read_json(args.cuts_file),args.output,resume=args.resume)
+            elif args.command=="complete":
+                from homeku.authoring import complete
+                result=complete(args.audit,session_path=args.session,info_path=args.audit_info)
+            elif args.command=="mark-viewed":
+                from homeku.audit_session import mark_viewed
+                result=mark_viewed(args.session,args.pass_id,args.frames,all_frames=args.all,all_passes=args.all_passes)
+            elif args.command=="check-input":
+                from homeku.preflight import check_inputs
+                result=check_inputs(args.source,read_json(args.audit),read_json(args.audit_info))
+                result.pop("context",None)
+                print(json.dumps(result,ensure_ascii=False,indent=2))
+                return 0 if result["ok"] else 1
+            else:
+                from homeku.audit_session import add_pass,add_frames
+                if args.frames:
+                    if args.start is not None or args.end is not None or args.shot_id:
+                        raise LibraryError("Exact frame selections do not combine with time/shot intervals")
+                    result=add_frames(args.session,args.frames,reason=args.reason)
+                else:
+                    if not args.shot_id or not args.reason:
+                        raise LibraryError("Session deepening requires --shot-id and --reason")
+                    result=add_pass(args.session,args.shot_id,start=args.start,end=args.end,
+                                    fps=args.fps or 10,native=args.native,reason=args.reason)
+            if isinstance(result.get("passes"),list):
+                result["passes"]=[{"id":p["id"],"shot":p["record"]["shot_id"],"mode":p["record"]["mode"],
+                                  "selected":len(p["record"]["selected_frame_indices"]),
+                                  "viewed":len(p["record"]["viewed_frame_indices"]),"sheets":p["sheets"]}
+                                 if "record" in p else p for p in result["passes"]]
+            print(json.dumps(result,ensure_ascii=False,indent=2));return 0
         if args.command == "draft-v2":
             result=assemble_v2(args.source.resolve(),args.audit.resolve(),read_json(args.audit_info),args.output.resolve(),
                  include_source=args.include_source,supersedes=read_json(args.supersedes) if args.supersedes else None,
-                 quality=args.quality,scale=args.scale,columns=args.columns,version=args.renderer_version,overview_scale=args.overview_scale,storyboard_scale=args.storyboard_scale)
+                 quality=args.quality,scale=args.scale,columns=args.columns,cache_dir=args.cache_dir,version=args.renderer_version,overview_scale=args.overview_scale,storyboard_scale=args.storyboard_scale)
             print(json.dumps(result,ensure_ascii=False,indent=2));return 0
         if args.command == "export-v2":
             digest=args.reviewed_sha256
@@ -102,12 +159,14 @@ def main():
             output_path.write_text(review_cards(model, snapshot_hash, media_prefix=candidate.as_posix()), encoding="utf-8")
             print(json.dumps({"review": str(output_path), "analysis_sha256": snapshot_hash}, indent=2))
             return 0
+        if args.source is None:raise LibraryError("Source MP4 is required without --session")
         source = args.source.resolve()
         if args.command == "inspect":
             times = frame_times(source)
             result = {"source_sha256": sha256(source), "source": probe_video(source), "frame_count": len(times), "frame_timestamps_s": times}
         elif args.command == "sample":
-            result = sample(source, args.output.resolve(), args.fps, args.start, args.end, native=args.native, shot_id=args.shot_id, reason=args.reason, contract_version=args.contract_version)
+            if args.output is None:raise LibraryError("Sampling without --session requires --output")
+            result = sample(source, args.output.resolve(), args.fps, args.start or 0, args.end, native=args.native, shot_id=args.shot_id, reason=args.reason, contract_version=args.contract_version)
         else:
             result = assemble(source, args.analysis.resolve(), read_json(args.audit_info), args.output.resolve(),
                               extras=read_json(args.extras) if args.extras else None,

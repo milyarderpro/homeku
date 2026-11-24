@@ -1,4 +1,4 @@
-# Panduan pengisian audit.json 2.3
+# Panduan pengisian audit.json 2.4
 
 Gunakan template-audit.json untuk isi dan template-audit-info.json untuk metadata proses. Semua placeholder waktu/indeks/luas dan {{penanda}} harus diisi sebelum draft. Null yang sah (depth_direction ambigu, model_build tidak diketahui, atau metadata komponen yang tidak berlaku) dipertahankan sesuai bukti; jangan mengarang nilai untuk menghapus null. Setelah kit diekstrak, `template-audit.json` dan `template-audit-info.json` berada di root workspace; salin sebagai work/audit.json dan work/audit-info.json, lalu isi. Template bukan audit valid; jangan mengisinya dengan fakta contoh Willow Cottage atau nilai default ruangan.
 
@@ -8,7 +8,7 @@ AI auditor menulis identitas/gaya, estimasi ukuran, narasi, klaim/status/bukti, 
 
 | Bidang sumber | Cara mengisi |
 | --- | --- |
-| schema_version/id/revision | 2.3; ID mengikuti stem MP4; r1 untuk sumber baru, +1 dengan supersedes yang benar untuk revisi aktif |
+| schema_version/id/revision | 2.4; ID mengikuti stem MP4; r1 untuk sumber baru, +1 dengan supersedes yang benar untuk revisi aktif |
 | identity | Nama rumah deskriptif; primary_style, nama influences dan interior_style bahasa Inggris. style_names_language=en; penjelasan boleh Indonesia. Ciri, palet, suasana/lingkungan konkret. style_relations hanya family/blend/influence yang dinyatakan, bukan alias rekaan |
 | size | scale/massing/vertical/footprint/proportions dan floor_area_m2 min/max positif berurutan. Estimasi luas lantai total rumah wajib diisi; basis/uncertainty hanya JSON, tampilan cukup 60–90 m² sebagai contoh format |
 | profile | Seluruh aspek DNA kontrak ditulis eksplisit dengan id/aspect/value/state/confidence/evidence/area_ids/basis/uncertainty. Tambahkan interior-style dan nilai pengaruh diskret agar mudah dicari. Unknown bila belum diketahui; jangan menebak material fisik |
@@ -50,14 +50,14 @@ Simpan sumber audit JSON, MP4 dan metadata kerja di luar kandidat. Koreksi JSON/
 
 ## Render dan pemeriksaan final
 
-Sumber/paket2.3 → report2.2.2/media2.2.0. Helper menghasilkan laporan enam bagian: Profil desain, Ukuran & proporsi, Shot Timeline, Overview, Storyboard, Shot Details. Timeline lima kolom memakai Camera Movement teknis; Tempo tetap di detail. A/B/C dan subjudul multi area bold; Overview dan kategori desain A memakai blockquote. Kamera regular satu paragraf. Nama gaya utama dan luas bold, tanpa catatan dasar/kepastian pada MD.
+Sumber/paket2.4 → report2.2.3/media2.2.0. Helper menghasilkan laporan enam bagian: Profil desain, Ukuran & proporsi, Shot Timeline, Overview, Storyboard, Shot Details. Timeline lima kolom memakai Camera Movement teknis; Tempo tetap di detail. A/B/C dan subjudul multi area bold; Overview dan kategori desain A memakai blockquote. Kamera regular satu paragraf. Nama gaya utama dan luas bold, tanpa catatan dasar/kepastian pada MD.
 
 Inventaris tepat N+2 JPEG: media/shot-NN.jpg per take kontinu, media/overview.jpg satu baris, media/storyboard.jpg seluruh kolase vertikal. Kolase normal tiga panel, multi area dinamis dan kronologis. Semua foto native mempertahankan konteks/rasio; hanya camera: bold pada baris kamera, caption regular. Tidak ada JPEG overview lepas per shot atau motion/.
 
 Default quality91, scale1, columns4. Bila batas media dilampaui, pilih --quality (60–98), --scale, --overview-scale, --storyboard-scale (0,1], --columns (1–6) secara eksplisit, lalu draft/review ulang lengkap. Jangan mengecilkan font/membuang panel/membagi file diam-diam. Tampilkan Overview, Storyboard, seluruh kolase dan MD sebelum pengguna menyetujui snapshot terakhir. Export memakai receipt di luar kandidat dan tidak merender ulang.
 
 
-## Pengisian sumber 2.3
+## Pengisian sumber 2.4
 
 Aturan wajib: [protocol.md](protocol.md). Gunakan template JSON terbaru; jangan mengonversi hasil lama tanpa revisi eksplisit.
 
@@ -68,14 +68,18 @@ Aturan wajib: [protocol.md](protocol.md). Gunakan template JSON terbaru; jangan 
 - Tiap gerakan memerlukan ≥2 frame berbeda dalam fase atau batas satu interval native, setidaknya satu berada dalam fase. Jika tidak cukup, periksa ulang atau pertahankan ambigu; jangan mengarang gerakan/angka/bukti.
 - phase.tempo sama dengan label tempo_profile yang overlap bila seragam; variable jika berubah. unknown tidak diubah menjadi moderate. Periksa penjelasan manusia secara visual.
 - Paragraf yang ditampilkan MD harus polos satu paragraf; tidak berisi heading/tabel/code fence/HTML. Semantik MD dan label tidak ditulis manual.
-- review/export membutuhkan --source /path/<id>.mp4 ketika sumber tidak ada di repo workspace. Jangan gunakan --include-source: paket2.3 tanpa video. Sebelum ingest lokal, MP4 asli harus ada di video/<id>.mp4 dan sesuai hash.
+- review/export membutuhkan --source /path/<id>.mp4 ketika sumber tidak ada di repo workspace. Jangan gunakan --include-source: paket2.4 tanpa video. Sebelum ingest lokal, MP4 asli harus ada di video/<id>.mp4 dan sesuai hash.
 
-## Tambahan sumber2.3
+## Tambahan sumber2.4
 
 - phases[].camera_checks: depth, translation, rotation; tiap objek {evidence:[ID1,ID2], basis:"pengamatan khusus sumbu"}. Minimal dua frame fisik berbeda pada fase/toleransi batas satu native, juga masuk evidence fase dan viewed. Tidak menyalin verdict; source simpulan tetap depth_direction/components_parsed.
-- motion_observations[].scale_measurement: null bila tidak ada ~×; jika ada angka wajib {anchor,dimension:"width" atau "height",start_evidence,end_evidence,start_px,end_px}. Piksel resolusi sumber, objek/bagian sama terlihat utuh, evidence berurutan dari observasi. IN=akhir/awal; OUT=awal/akhir; >1. Tulis ~2.0× atau ~1.8–2.2× sesuai hasil, bukan angka presisi berlebihan atau faktor kecepatan.
+- motion_observations[].scale_measurement: null sah untuk estimasi visual ~×; bila pengukuran nyata dijalankan, isi {anchor,dimension:"width" atau "height",start_evidence,end_evidence,start_px,end_px}. Piksel resolusi sumber, objek/bagian sama terlihat utuh, evidence berurutan dari observasi. IN=akhir/awal; OUT=awal/akhir; >1. Tulis ~2.0× atau ~1.8–2.2× sesuai hasil, bukan angka presisi berlebihan atau faktor kecepatan.
 - Pan/Orbit dan Dolly/Zoom: estimate_basis wajib baik saat angka ada maupun belum terpisahkan; jelaskan kendala khusus jika tidak ada angka. Jangan menggandakan rasio total pada Dolly+Zoom simultan yang tidak terpisahkan. Gerakan lain tidak dipaksa angka tidak relevan.
 - facts[].facet_roles: peran filter struktur eksplisit seperti opening, roof, massing, layout, configuration, circulation; label baru boleh slug. Kosong [] untuk fakta nonstruktural. attribute/value asli dan state/negasi tetap disimpan.
-- Baseline2.3=6FPS; sumber≤6FPS atau shot<1detik seluruh native. Sampling lebih rendah hanya tambahan. Log pendalaman10FPS/native menyebut pertanyaan visual; alasan tidak kosong.
+- Baseline2.4=6FPS; sumber≤6FPS atau shot<1detik seluruh native. Sampling lebih rendah hanya tambahan. Log pendalaman10FPS/native menyebut pertanyaan visual; alasan tidak kosong.
 - Semua shot moderate/constant sah. Jangan menyatakan accelerating dari perspektif saja atau memaksa variasi label.
-- Kompatibilitas: sumber2.2 tetap10FPS/native/report2.2.1; data baru tidak disisipkan ke sumber lama. Baca kontrak package-v2-3.md setelah pengamatan; metode inti di visual-audit.md.
+- Kompatibilitas: sumber2.2 tetap10FPS/native/report2.2.1; data baru tidak disisipkan ke sumber lama. Baca kontrak package-v2-4.md setelah pengamatan; metode inti di visual-audit.md.
+
+## Authoring efisien2.4
+
+Ikuti authoring.md. prepare/complete menghitung batas/PTS/midpoint/parsed/summary/log selected. viewed tetap deklarasi eksplisit setelah melihat. Tidak perlu builder khusus atau menyalin metadata manual. ~×/~° menerima asumsi visual wajar, scale_measurement opsional/null; estimate_basis satu kalimat cukup, bukan tuntutan kalibrasi. Bagian jelas memakai estimasi, bagian ambigu mempertahankan kendala khusus dan alternatives. Pengukuran yang diisi tetap diverifikasi. Format2.3 tetap aturan asal; tidak dikonversi.

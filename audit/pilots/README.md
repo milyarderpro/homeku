@@ -66,3 +66,13 @@ Pembagian tetap: pengguna menjalankan enam pilot tersisa di chat provider; asist
 5. Setelah hasil memadai, lanjutkan edh013,edh033,edh049,edh056,dreamshome01 sesuai pembagian. Tidak wajib menggandakan seluruh video di dua provider.
 
 Kedua run edh058 harus memakai sumber kanonis hash823be3ce9ee96fc07a6ab263010a09a3d60e72cfcf334ef2fbe5a38e7a550731. Pembanding Gemini2.2 dan koreksi pengguna dipakai menilai keputusan, bukan template jawaban. Semua moderate boleh. Ukur kecukupan bukti/keterbacaan/beban pemeriksaan; lebih sedikit frame bukan otomatis lebih akurat. Persetujuan/ingest menunggu hasil nyata, tidak diisi dari tes sintetis.
+
+## Pilot efisiensi2.4 — siap sesudah tooling, belum dijalankan
+
+Dua hasil2.3 edh058 kini tersedia, dengan laporan proses di result/<provider>/laporan.md; lihat pembandingan terbaru. Bagian yang menyatakan run2.3 belum berjalan di atas adalah catatan pada akhir implementasi sebelumnya.
+
+Pengguna menjalankan edh058 di chat baru ChatGPT/Gemini memakai MP4 kanonis dan kit2.4 terbaru. Sumber2.4/report2.2.3/media2.2.0, estimasi visual sah tanpa piksel wajib, helper authoring resmi dan baseline6FPS terarah. Gunakan prompt01; koreksi lewat02; ekspor setelah persetujuan keseluruhan lewat03.
+
+Simpan run baru di audit/result/<provider>/v2.4/run-NN/<id>-rNNNN.zip agar hasil2.3 tidak ditimpa. Catat versi/model/hash kit/sumber/paket, waktu kandidat siap, retry dan log alat; pisahkan jeda persetujuan/ekspor. Periksa seluruh desain/fakta/estimasi/arah/tempo/Camera Start/Overview/MD/media. Semua moderate boleh; target efisiensi tidak mengurangi detail. Setelah memadai lanjutkan lima pilot lain.
+
+Benchmark lokal hanya pengukuran helper dan kandidat fixture, bukan menit yang dijanjikan pada AI provider. Tooling siap, run nyata, persetujuan, ekspor dan ingest dicatat terpisah; pembagian enam pilot pengguna tetap.

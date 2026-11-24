@@ -24,7 +24,7 @@ from .validation import CODE_ROOT, extract_package, validate_folder
 from .video import probe_video, frame_times, nearest, extract_frame, selected_indices
 
 
-def sample(source, output, fps=None, start=0.0, end=None, *, native=False, shot_id=None, reason=None, contract_version="2.3"):
+def sample(source, output, fps=None, start=0.0, end=None, *, native=False, shot_id=None, reason=None, contract_version="2.4"):
     """Temporary audit evidence only. The selected frames are not yet viewed."""
     from .versions import BASELINE_FPS
     require(contract_version in BASELINE_FPS, "Sampling policy requires contract 2.2 or 2.3")
@@ -38,7 +38,7 @@ def sample(source, output, fps=None, start=0.0, end=None, *, native=False, shot_
     require(0 <= start < end <= info["duration_s"] + 0.001, "Sampling interval outside video")
     source_fps = info["fps"]["numerator"] / info["fps"]["denominator"]
     # A bounded --shot-id interval represents a whole shot for the short-take rule.
-    native = native or (contract_version == "2.3" and shot_id is not None and end-start < 1)
+    native = native or (contract_version in {"2.3", "2.4"} and shot_id is not None and end-start < 1)
     indices = selected_indices(times, start, end, fps, native=native, source_fps=source_fps)
     require(len(indices) <= 1000, "Use bounded audit intervals rather than thousands of images at once")
     output.mkdir(parents=True, exist_ok=True)
@@ -237,7 +237,7 @@ def assemble(source, analysis, audit_info, output_root, *, extras=None, include_
             "mode": "reviewed-export" if reviewed_sha256 is not None else "draft-for-chat-review"}
 
 
-def assemble_v2(source, audit_path, audit_info, output_root, *, supersedes=None, purpose="reference",
+def _assemble_v2(source, audit_path, audit_info, output_root, *, supersedes=None, purpose="reference",
                 include_source=False, quality=91, scale=1.0, columns=4, version=None, overview_scale=1.0, storyboard_scale=1.0):
     """Create a candidate only. No ZIP or acceptance is inferred from drafting."""
     from .models import validate_audit
@@ -248,8 +248,8 @@ def assemble_v2(source, audit_path, audit_info, output_root, *, supersedes=None,
     authored=audit_path.read_bytes();audit=read_json(audit_path)
     require(isinstance(audit,dict),"Audit JSON must be an object")
     info={"path":f"video/{audit.get('id','')}.mp4","sha256":sha256(source),**probe_video(source)}
-    validate_audit(audit,info["duration_s"],frame_times(source))
-    require(audit["schema_version"] not in {"2.2", "2.3"} or not include_source, "Package 2.2+ forbids --include-source; attach/reference MP4 separately")
+    require(audit.get("schema_version") in JSON_CONTRACTS, "Unsupported JSON contract")
+    require(audit["schema_version"] not in {"2.2", "2.3", "2.4"} or not include_source, "Package 2.2+ forbids --include-source; attach/reference MP4 separately")
     rid=audit["id"]
     require(source.stem==rid and source.suffix.casefold()==".mp4","ID must match original MP4 stem")
     require(isinstance(audit_info,dict),"Actual audit metadata required")
@@ -262,24 +262,29 @@ def assemble_v2(source, audit_path, audit_info, output_root, *, supersedes=None,
         require(old.get("contract_version") in JSON_CONTRACTS and old.get("id")==rid,"Refusing to replace unmanaged candidate")
         owned={"audit.json","analysis.md","manifest.json","source.mp4"}|{m["path"] for m in old["media"]}
         require(all(not f.is_symlink() and (not f.is_file() or f.relative_to(destination).as_posix() in owned) for f in destination.rglob("*")),"Unmanaged files in candidate folder")
+    kwargs={}
+    if audit["schema_version"] in OVERVIEW_CONTRACTS:
+        from .versions import DEFAULT_REPORT
+        wanted = DEFAULT_REPORT[audit["schema_version"]]
+        require(version in {None, wanted}, f"Source {audit['schema_version']} requires renderer {wanted}")
+        kwargs.update(version=wanted,overview_scale=overview_scale,storyboard_scale=storyboard_scale)
+    else:
+        require(version not in {"2.2.0", "2.2.1", "2.2.2", "2.2.3"}, "Renderer 2.2.0+ requires source 2.1+")
+        require(overview_scale==1.0 and storyboard_scale==1.0,"Combined media scales require source 2.1")
+        if version is not None:kwargs["version"]=version
+    config=render_config(quality=quality,scale=scale,columns=columns,**kwargs)
+    from .preflight import require_inputs
+    from .audit_performance import timed
+    from .video_cache import ACTIVE
+    active=ACTIVE.get()
+    with timed(active.log if active else None,"check-input"):
+        preflight=require_inputs(source,audit,audit_info,config=config, supersedes=supersedes, purpose=purpose)
     with tempfile.TemporaryDirectory(prefix=".v2-draft-",dir=output_root) as work_name:
         folder=Path(work_name)/rid;folder.mkdir()
         (folder/"audit.json").write_bytes(authored)
-        kwargs={}
-        if audit["schema_version"] in OVERVIEW_CONTRACTS:
-            from .versions import DEFAULT_REPORT
-            wanted = DEFAULT_REPORT[audit["schema_version"]]
-            require(version in {None, wanted}, f"Source {audit['schema_version']} requires renderer {wanted}")
-            kwargs.update(version=wanted,overview_scale=overview_scale,storyboard_scale=storyboard_scale)
-        else:
-            require(version not in {"2.2.0", "2.2.1", "2.2.2"}, "Renderer 2.2.0+ requires source 2.1+")
-            require(overview_scale==1.0 and storyboard_scale==1.0,"Combined media scales require source 2.1")
-            if version is not None:kwargs["version"]=version
-        config=render_config(quality=quality,scale=scale,columns=columns,**kwargs)
         media=build_media(folder,audit,source,info,config)
         (folder/"analysis.md").write_text(render_report(audit,config),encoding="utf-8",newline="\n")
-        logs=dict(audit_info)
-        logs.setdefault("created_at",datetime.now(timezone.utc).isoformat())
+        logs=preflight["logs"]
         manifest={"contract_version":audit["schema_version"],"id":rid,"revision":audit["revision"],"supersedes":supersedes,
                   "purpose":purpose,"source":info,"audit":logs,"audit_sha256":sha256(folder/"audit.json"),"render":config,"media":media}
         (folder/"manifest.json").write_text(dumps(manifest),encoding="utf-8")
@@ -298,7 +303,7 @@ def assemble_v2(source, audit_path, audit_info, output_root, *, supersedes=None,
             "media_count":len(media),"media_bytes":sum((destination/m["path"]).stat().st_size for m in media)}
 
 
-def review_v2(candidate, output, source=None):
+def _review_v2(candidate, output, source=None):
     """Produce readable cards and a separate receipt; this is not user approval."""
     from .common import snapshot_hash
     from .reporting import review_report
@@ -316,7 +321,7 @@ def review_v2(candidate, output, source=None):
     return {"review":str(output),"receipt":str(receipt),"snapshot_sha256":digest}
 
 
-def export_v2(candidate, output_root, reviewed_sha256, source=None):
+def _export_v2(candidate, output_root, reviewed_sha256, source=None):
     """Package reviewed bytes; never regenerate images, timestamps or narratives."""
     from .common import snapshot_hash
     require(snapshot_hash(candidate)==reviewed_sha256,"Candidate changed since whole-snapshot review")
@@ -341,3 +346,41 @@ def export_v2(candidate, output_root, reviewed_sha256, source=None):
         os.replace(target,destination)
     return {"mode":"reviewed-export","package":str(destination),"snapshot_sha256":reviewed_sha256,
             "package_sha256":sha256(destination),"package_bytes":destination.stat().st_size}
+
+
+def assemble_v2(source,audit_path,audit_info,output_root,*,cache_dir=None,**kwargs):
+    from .video_cache import FrameCache
+    from .audit_performance import timed
+    audit=read_json(audit_path)
+    if not isinstance(audit,dict) or (audit.get("schema_version")!="2.4" and cache_dir is None):
+        return _assemble_v2(source,audit_path,audit_info,output_root,**kwargs)
+    from .audit_session import workspace
+    cache_root=workspace(cache_dir or
+        (output_root/".audit-cache"/"frames" if (audit_path.parent/"manifest.json").exists() else audit_path.parent/".cache"/"frames"))
+    log=cache_root.parent.parent/"performance.jsonl"
+    with timed(log,"draft"):
+        cache=FrameCache(source,cache_root,log=log)
+        with cache.activate():
+            result=_assemble_v2(source,audit_path,audit_info,output_root,**kwargs)
+        result["cache"]=cache.stats
+        result["performance_log"]=str(log)
+        return result
+
+
+def review_v2(candidate,output,source=None):
+    from .audit_performance import timed
+    require(not output.resolve().is_relative_to(candidate.resolve()),"Receipt/cards must remain outside candidate")
+    log=output.parent/"performance.jsonl"
+    with timed(log,"review"):
+        result=_review_v2(candidate,output,source)
+    result["performance_log"]=str(log)
+    return result
+
+def export_v2(candidate,output_root,reviewed_sha256,source=None):
+    from .audit_performance import timed
+    require(not output_root.resolve().is_relative_to(candidate.resolve()),"ZIP output must stay outside candidate")
+    log=output_root.parent/"performance.jsonl"
+    with timed(log,"export"):
+        result=_export_v2(candidate,output_root,reviewed_sha256,source)
+    result["performance_log"]=str(log)
+    return result

@@ -1,42 +1,18 @@
-# Audit HOMEKU 2.3 di ChatGPT/Gemini
+# Audit HOMEKU2.4 di ChatGPT/Gemini
 
-Satu video per chat. Lampirkan **MP4 asli + homeku-audit-kit.zip**, lalu kirim [prompt audit](prompts/01-audit.md). AI menjalankan seluruh helper di workspace chat. Anda cukup meninjau laporan dan gambar, memberi koreksi, lalu mengunduh satu ZIP final. Sesudah menaruh ZIP di incoming/ lokal, jalankan `python tools/library.py ingest`.
+Lampirkan **MP4 asli + homeku-audit-kit.zip**, satu video per chat, lalu gunakan [prompt mulai](prompts/01-audit.md). AI menjalankan helper di chat; pengguna meninjau isi dan mengunduh satu ZIP final.
 
-## Alur singkat
+1. Bootstrap memulihkan runtime/panduan lokal berhash. Baca [metode visual](visual-audit.md) dan [authoring](authoring.md).
+2. Inspect dan pastikan cut nyata; prepare membuat kerangka, PTS dan baseline6FPS. Sumber≤6FPS/shot<1s native. Pendalaman10FPS/native untuk pertanyaan tertentu.
+3. AI melihat frame, mengisi desain/kamera/fakta dan menyatakan viewed eksplisit. complete menghitung metadata, tanpa menebak isi.
+4. check-input/draft memeriksa data sebelum render. Kandidat berisi analysis.md enam bagian, Overview satu baris, Storyboard vertikal dan kolase per shot.
+5. Koreksi memakai sumber kerja/helper/cache. Seluruh snapshot terbaru ditinjau; satu persetujuan keseluruhan sebelum export.
+6. Unduh ZIP <id>-rNNNN.zip **tanpa video**; taruh incoming/ lokal dan jalankan python tools/library.py ingest. MP4 asli tersedia terpisah di video/<id>.mp4 dengan hash sama.
 
-1. AI membuka kit, membaca README, menjalankan `python homeku_runtime.py --output .`, lalu inspect video. Runtime/schema/template/font/lisensi tersedia tanpa repo penuh atau API AI.
-2. AI membaca [metode visual](visual-audit.md), menentukan cut nyata, memeriksa baseline 6 FPS seluruh shot + frame native awal/akhir, lalu memperdalam10FPS/native bila arah/fase/tempo/detail belum jelas. Sumber≤6FPS dan shot<1detik memakai seluruh native. Satu take melewati banyak area tetap satu shot.
-3. Setelah pengamatan dan pemeriksaan silang simpulan, AI membaca panduan JSON lalu mengisi `work/audit.json` dari template serta `work/audit-info.json` dari log nyata. [Panduan JSON](json-guide.md) menjelaskan bidang dan bukti. JSON adalah satu sumber isi; MD tidak ditulis terpisah.
-4. AI menjalankan draft-v2 dan review. Anda melihat Overview, Storyboard, kolase semua shot dan analysis.md manusia enam bagian dengan desain lengkap, posisi awal, kamera sederhana/teknis dan ritme. Nama gaya memakai bahasa Inggris; prosa Indonesia.
-5. Bila perlu gunakan [prompt koreksi](prompts/02-correct.md). AI memperbarui JSON/log, merender ulang dan menampilkan hasil terbaru. Persetujuan satu aspek bukan persetujuan keseluruhan audit.
-6. Setelah seluruh kandidat sesuai, kirim [prompt ekspor](prompts/03-export.md). Export mengemas kandidat yang sama tanpa membuat ulang JPEG/MD/created_at. Anda mengunduh satu ZIP `<id>-r0001.zip` atau revisi yang benar.
+Estimasi visual kamera sah: Dolly-In (~2×) + Pan Right (~15–20°). Tidak perlu kalibrasi/sumber eksternal; piksel opsional. Nama gaya English, penjelasan Indonesia, luas lantai rentang wajib dan detail desain lengkap. Semua moderate boleh. Camera Start awal sumber berbeda dari Overview akhir OUT.
 
-Tidak ada review isi kedua setelah ingest. Kesalahan teknis harus diselesaikan sebelum penyerahan ZIP; helper tidak membuat atau menebak fakta agar lolos validasi.
+[Authoring](authoring.md) berisi perintah prepare/mark-viewed/complete/check-input/draft/review/export yang diuji. [Panduan JSON](json-guide.md) dibaca sesuai field yang diperlukan; tidak perlu memuat semua kontrak sekaligus sebelum mengamati. Contoh normal/multi di examples/ hanya sintetik, bukan isi referensi.
 
-## Perintah yang dijalankan AI
+Sumber2.4 → report2.2.3/media2.2.0/reader2.4; layout/font/caption tetap. Format2.3 tetap pengukuran wajib untuk ~×,2.2 tetap10FPS; sumber diterima tidak dikonversi. JSON satu sumber final, MD hanya renderer. Cache/session/performance/receipt di luar kandidat dan ZIP.
 
-```sh
-python homeku_runtime.py --output .
-python tools/audit.py inspect /path/<id>.mp4
-python tools/audit.py sample /path/<id>.mp4 --output work/baseline-shot-01 --start 0 --end <SHOT_END> --shot-id shot-01
-python tools/audit.py sample /path/<id>.mp4 --output work/native-shot-01 --native --start <START> --end <END> --shot-id shot-01 --reason "Pan/orbit belum jelas"
-python tools/audit.py draft-v2 /path/<id>.mp4 work/audit.json --audit-info work/audit-info.json --output work/candidate
-python tools/audit.py review work/candidate/<id> --source /path/<id>.mp4 --output work/review.md
-python tools/audit.py export-v2 work/candidate/<id> --source /path/<id>.mp4 --output work/final --receipt work/review.md.json
-```
-
-Opsi draft --overview-scale dan --storyboard-scale mengatur media gabungan; --scale mengatur foto kolase, --quality dan --columns tersedia. Default skala1/quality91/kolom multi4. Perubahan harus eksplisit, lalu kandidat lengkap dirender/ditinjau ulang.
-
-Receipt dihitung helper dan tetap di luar kandidat; pengguna tidak diminta membaca JSON/hash. Receipt bukan persetujuan otomatis: export tetap menunggu pernyataan pengguna bahwa keseluruhan hasil terbaru sesuai. `--reviewed-sha256` tetap tersedia untuk pemanggilan teknis eksplisit.
-
-Untuk revisi aktif, --supersedes work/supersedes.json memakai revision/content_sha256 aktif yang benar. Format2.3 melarang --include-source. Input JSON/video tetap di luar kandidat. MP4 harus tersedia sebagai video/<id>.mp4 dengan hash sama sebelum ingest. Koreksi melalui draft ulang; ekspor tidak merender ulang.
-
-## Isi paket dan media
-
-Paket final berisi audit.json, analysis.md, manifest.json dan N+2 JPEG: satu kolase per shot, media/overview.jpg serta media/storyboard.jpg; video/source.mp4 dilarang dalam ZIP. Normal memakai tiga panel Start/Middle/End; multi area memakai panel dinamis yang cukup menjelaskan perjalanan. Overview seluruh area satu baris; Storyboard seluruh blok kolase vertikal. Setiap overview wajib composition_summary untuk komposisi wide, terpisah dari Camera Start sumber. Arah IN/OUT/netral/ambigu disimpan per fase; pola dihitung helper. Semua gambar berasal dari frame asli; tidak ada JPEG frame terpisah, motion/ atau seluruh rangkaian frame dalam ZIP final.
-
-Kit input dan ZIP hasil berbeda. Kit input dikemas ringkas untuk batas lampiran provider, tetapi bootstrap memulihkan seluruh inventaris teknis yang sama dengan repo. Gunakan hanya alat yang benar-benar tersedia dan laporkan kegagalan spesifik; [panduan lingkungan](providers.md) tidak menganggap nama model sebagai bukti kemampuan eksekusi.
-
-Format sumber/paket **2.3**, renderer/template **2.2.2**, media **2.2.0**. Paket2.0 tetap memakai versi renderer asal; tidak dikonversi diam-diam. Legacy 1.0/1.1 tetap dapat dibaca, tetapi prompt audit baru mengisi JSON V2. [Pilot](pilots/README.md) mencatat run nyata; kit siap tidak berarti tujuh pilot selesai.
-
-Pemeriksaan wajib terbaru: [protokol sumber2.3](protocol.md), [panduan JSON](json-guide.md). Kit gagal sebelum review bila struktur MD, baseline, bukti fase, tempo, label atau pointer fakta tidak memenuhi kontrak. Ketepatan visual tetap diperiksa di chat.
+[Provider](providers.md), [koreksi](prompts/02-correct.md), [ekspor](prompts/03-export.md), [kontrak](../docs/contracts/package-v2-4.md), [pilot](pilots/README.md). Kelulusan tooling bukan persetujuan isi atau penyelesaian pilot nyata.

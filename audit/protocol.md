@@ -1,4 +1,4 @@
-# Protokol audit HOMEKU 2.3
+# Protokol audit HOMEKU2.4
 
 ## 1. Inspeksi dan pengamatan
 
@@ -10,11 +10,11 @@ Periksa kamera sesuai urutan metode inti, lalu bentuk/layout/detail rumah. Setel
 
 ## 2. Data dan kandidat
 
-Isi audit.json2.3 dan audit-info nyata. camera_checks mencatat depth/translation/rotation per fase, termasuk Pan/Static. Keputusan hanya depth_direction/components; Camera Pattern turunan. ~× memakai scale_measurement dari objek/dimensi sama dan utuh; sudut diusahakan, keterbatasan khusus ditulis bila belum terpisahkan. Semua shot moderate sah. Jangan menambah fase/laju hanya agar bervariasi.
+Isi audit.json2.4 dan audit-info nyata melalui authoring.md. camera_checks mencatat depth/translation/rotation per fase, termasuk Pan/Static. Keputusan hanya depth_direction/components; Camera Pattern turunan. ~×/~° berupa estimasi visual dengan asumsi wajar; scale_measurement opsional. Bila diukur, objek/dimensi sama dan utuh. Keterbatasan khusus ditulis hanya bila benar-benar ambigu. Semua shot moderate sah. Jangan menambah fase/laju hanya agar bervariasi.
 
 Catat detail Arsitektur, Furnitur & dekorasi, Lingkungan; fact_coverage dan facet_roles mempertahankan temuan konkret. Gaya English, prosa Indonesia, luas lantai wajib rentang angka. Camera Start tetap awal sumber, Overview posisi wide yang dipilih (sering akhir OUT), tiap Overview satu composition_summary. Semua bukti/panel/Overview harus viewed.
 
-Jalankan draft-v2 dan review resmi. analysis.md hanya renderer2.2.2 enam bagian; jangan edit manual. Media2.2.0: N kolase, Overview satu baris, Storyboard vertikal; normal3panel, multi dinamis. Periksa silang JSON/narasi/fakta/kamera sederhana/notasi/fase/tempo dan seluruh gambar. Validator tidak memahami makna visual.
+Jalankan draft-v2 dan review resmi. analysis.md hanya renderer2.2.3 enam bagian; jangan edit manual. Media2.2.0: N kolase, Overview satu baris, Storyboard vertikal; normal3panel, multi dinamis. Periksa silang JSON/narasi/fakta/kamera sederhana/notasi/fase/tempo dan seluruh gambar. Validator tidak memahami makna visual.
 
 ## 3. Tinjauan dan ekspor
 
@@ -24,4 +24,8 @@ Setelah persetujuan keseluruhan terbaru, export-v2 memakai receipt terakhir di l
 
 ## Kompatibilitas
 
-Sumber2.2 tetap baseline10FPS/native dan report2.2.1;2.1 report2.2.0; format lebih lama mengikuti kontraknya. Jangan mengubah aturan sumber diterima secara diam-diam. Dokumen bekerja/ hanya acuan metode/notasi, bukan default produksi reverse/4–6detik/frontal/slow.
+Sumber2.3 tetap report2.2.2 dengan kewajiban pengukuran asal. Sumber2.2 tetap baseline10FPS/native dan report2.2.1;2.1 report2.2.0; format lebih lama mengikuti kontraknya. Jangan mengubah aturan sumber diterima secara diam-diam. Dokumen bekerja/ hanya acuan metode/notasi, bukan default produksi reverse/4–6detik/frontal/slow.
+
+## Alur baru2.4
+
+Default baru mengikuti authoring.md: prepare → amati/isi → deklarasi viewed → complete/check-input → draft/review → satu persetujuan keseluruhan → export. Baseline6FPS sekali, pendalaman terarah. Metadata teknis dibantu helper; ~×/~° adalah estimasi visual sah, piksel opsional. Format2.3 historis pada bagian sebelumnya tetap aturan asal. Hanya bagian yang berubah dirender ulang, snapshot tetap ditinjau lengkap. Cache/log tidak menjadi isi ZIP atau sumber fakta.

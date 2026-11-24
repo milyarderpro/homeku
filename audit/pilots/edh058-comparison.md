@@ -39,3 +39,19 @@ Temuan yang disepakati dalam diskusi:
 - Pilihan orbit/truck gabungan dan nilai sudut/rasio bukan pose3D terkalibrasi. Hasil Gemini pembanding kuat sesuai preferensi pengguna, bukan ground truth seluruh paket.
 
 Status: kedua ZIP2.2 tersedia/dibandingkan; belum disetujui keseluruhan atau di-ingest. Pilot2.3 dengan kit6FPS belum dijalankan pada ChatGPT/Gemini. Tidak ada konversi ZIP, persetujuan otomatis atau pengubahan referensi aktif.
+
+
+## Pilot2.3 yang diberikan setelah evaluasi waktu
+
+Kedua file pada result/gemini/ dan result/gpt/ kini memuat hasil2.3/report2.2.2, menggantikan berkas2.2 pada path yang sama. Hash2.2 terdahulu tetap riwayat; jangan mengklaim file lama masih tersedia dengan byte yang sama.
+
+| Provider | SHA-256 ZIP2.3 | Fakta | Frame unik declared-viewed |
+| --- | --- | --- | --- |
+| gemini | 51962d120cc63600d0e5ba99403021c66c6ed85aac82221ab4e67c5e0c2e1556 | 47 | 145 |
+| gpt | 20a80cbc48335ca035b693c30aabd7c3b75f341c47b913a2dd42f20a93cb1229 | 68 | 299 |
+
+Kedua paket lulus validasi dan seluruh8JPEG identik renderer saat pemeriksaan read-only. Tambahan spotcheck12frame awal/akhir; bukan audit ulang seluruh597frame. Laporan proses masing-masing di result/<provider>/laporan.md. Gemini melaporkan8kegagalan validasi/3putaran sampling, dominasi waktu penulisan data dan perbaikan; GPT menambah10FPS seluruh6shot dan SIFT/RANSAC. Durasi provider bukan log alat mentah yang independen.
+
+Pengguna menerima asumsi wajar pada estimasi sudut; estimasi visual tidak perlu kalibrasi. Ini menjadi kontrak2.4 untuk audit berikutnya, bukan perubahan terhadap paket2.3. Dua hasil tersedia/dibandingkan; penyerahan untuk evaluasi tidak dipakai sebagai instruksi ingest atau persetujuan kandidat lain.
+
+Benchmark tooling2.4 memakai salinan kerja kontrak2.3 yang sama dalam /tmp dengan purpose=fixture dan revisi sintetis untuk uji cache. Bukan audit visual baru, tidak menulis ZIP asli atau sumber aktif. Angka/hasil di docs/audit-efficiency-verification.md. Run2.4 ChatGPT/Gemini belum dijalankan pada implementasi ini.

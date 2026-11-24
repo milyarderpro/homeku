@@ -87,3 +87,11 @@ Reader2.2 mempertahankan cabang sumber lama dan menambahkan source2.2 beserta po
 | analysis.md | Renderer/template2.2.2, tampilan enam bagian identik; proses/pengukuran tetap JSON |
 
 Reader/index2.3 dan generator6 mempertahankan semua cabang lama, termasuk aturan10FPS sumber2.2. Indeks hanya facet/pointer tanpa log/ukuran/basis lengkap. Diagnostik atribut belum dipetakan di dependencies; seluruh label tetap knowledge/topics/proyeksi. Template authoring enam bagian tidak perlu berubah.
+
+## Sumber2.4 / report2.2.3 / reader2.4
+
+- Field sumber tetap seperti2.3; scale_measurement=null boleh walau ~× visual ada. estimate_basis memuat jangkar/asumsi ringkas, ~° tidak perlu kalibrasi. Pengukuran yang diisi tetap diperiksa.
+- prepare/complete menghitung turunan mekanis di audit.json kerja: batas/PTS/midpoint/components_parsed/camera_summary/influences dari profil. Tidak ada JSON isi kedua. Fakta/narasi/area/gerak/tempo dipilih AI.
+- frame_reviews selected/mode/FPS berasal dari pass helper. viewed deklarasi eksplisit setelah melihat; cache tidak otomatis viewed.
+- Reader2.4 mempertahankan semua cabang lama dan provenance, termasuk measurement null. Generator7 tidak menambahkan cache/session/performance ke referensi, indeks atau knowledge.
+- analysis.md tetap enam bagian/A-B-C; font/layout/media2.2.0 dan snapshot export byte-identik.

@@ -166,7 +166,7 @@ def validate_audit(audit, duration=None, times=None):
         evidence(r)
     require(any(c["aspect"] == "primary-style" and c["value"] == audit["identity"]["primary_style"] for c in audit["profile"]), "Primary style must match explicit DNA claim")
     require(any(c["aspect"] == "apparent-scale" and c["value"] == audit["size"]["scale"] for c in audit["profile"]), "Scale must match explicit DNA claim")
-    if audit["schema_version"] in {"2.2", "2.3"}:
+    if audit["schema_version"] in {"2.2", "2.3", "2.4"}:
         from .audit_quality import validate_quality
         validate_quality(audit, times)
     return audit

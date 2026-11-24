@@ -28,13 +28,20 @@ RUNTIME += ["tools/homeku/versions.py", "tools/homeku/audit_quality.py", "tools/
             "docs/contracts/manifest-v2-2.schema.json", "tools/assets/templates/analysis-2.2.1.md"]
 RUNTIME += ["tools/homeku/reporting_v2_2_2.py", "docs/contracts/audit-v2-3.schema.json",
             "docs/contracts/manifest-v2-3.schema.json", "tools/assets/templates/analysis-2.2.2.md"]
+RUNTIME += ["tools/homeku/reporting_v2_2_3.py", "docs/contracts/audit-v2-4.schema.json",
+            "docs/contracts/manifest-v2-4.schema.json", "tools/assets/templates/analysis-2.2.3.md",
+            "tools/homeku/authoring.py", "tools/homeku/preflight.py", "tools/homeku/audit_session.py",
+            "tools/homeku/video_cache.py", "tools/homeku/audit_performance.py", "tools/homeku/media_incremental.py",
+            "audit/template-audit.json", "audit/template-audit-info.json"]
 # Guides are local, hash-inventoried resources; read only the current stage.
 GUIDES = ["audit/README.md", "audit/visual-audit.md", "audit/protocol.md", "audit/rubric.md",
           "audit/json-guide.md", "audit/vocabulary.md", "audit/providers.md", "audit/calibration.md",
           "audit/prompts/01-audit.md", "audit/prompts/02-correct.md", "audit/prompts/03-export.md",
           "docs/contracts/package-v2-3.md", "docs/contracts/analysis-v2-2-2.md",
           "docs/contracts/package-v2-2.md", "docs/contracts/package-v2-1.md", "docs/contracts/package-v2.md",
-          "docs/contracts/analysis-v2-2-1.md"]
+          "docs/contracts/analysis-v2-2-1.md", "audit/authoring.md",
+          "docs/contracts/package-v2-4.md", "docs/contracts/analysis-v2-2-3.md",
+          "audit/examples/normal/audit.json", "audit/examples/multi/audit.json"]
 BUNDLED = RUNTIME + GUIDES
 OUTER_FILES = {"README.md", "homeku_runtime.py", "template-audit.json", "template-audit-info.json"}
 
@@ -106,17 +113,17 @@ if __name__=="__main__":
 
 
 def build_bytes():
-    parts = ["""# HOMEKU — kit audit 2.3
+    parts = ["""# HOMEKU — kit audit2.4
 
-Input: MP4 asli terpisah + ZIP ini. Hasil audit kelak satu ZIP tanpa video.
+Input: MP4 asli terpisah + ZIP ini. Hasil akhir satu ZIP tanpa video.
 
-1. Ekstrak empat file ini. Jalankan python homeku_runtime.py --output . untuk memulihkan runtime dan panduan lokal berhash, tanpa jaringan. Python3.11+, Pillow, jsonschema, FFmpeg/ffprobe diperlukan.
-2. Jalankan python tools/audit.py inspect /path/<id>.mp4. Baca audit/visual-audit.md; kerjakan pengamatan shot/kamera/desain terlebih dahulu. Baseline6FPS/native, pendalaman10FPS/native sesuai pertanyaan. Jangan menganggap ekstraksi sebagai viewed.
-3. Setelah simpulan visual diperiksa silang, baca audit/json-guide.md, audit/protocol.md, audit/rubric.md dan docs/contracts/package-v2-3.md. Isi template-audit.json dan template-audit-info.json di work/. Placeholder bukan hasil audit.
-4. Baca audit/README.md untuk perintah draft-v2/review. Sumber2.3 → report2.2.2/media2.2.0. MD enam bagian dihasilkan renderer; media/font diterima tetap. Tampilkan seluruh kandidat untuk koreksi pengguna.
-5. Setelah persetujuan keseluruhan terbaru, baca audit/prompts/03-export.md. export-v2 --source /path/<id>.mp4 --receipt work/review.md.json membungkus byte snapshot yang sama. Contoh teks persetujuan di dokumen bukan persetujuan nyata.
+1. Ekstrak4file dan jalankan python homeku_runtime.py --output . untuk memulihkan seluruh resource lokal berhash. Python3.11+, Pillow, jsonschema dan FFmpeg/ffprobe diperlukan; tanpa unduhan kode.
+2. Baca audit/visual-audit.md dan audit/authoring.md. Inspect dan periksa cut nyata; prepare menghitung PTS/panel serta baseline6FPS. Amati kamera/desain sebelum menulis isi.
+3. Isi work/audit/audit.json dan metadata provider. Estimasi visual ~×/~° dengan asumsi wajar sah; piksel opsional. Deklarasikan viewed hanya sesudah melihat. complete menghitung metadata mekanis, check-input/draft memeriksa sebelum render.
+4. Tampilkan MD enam bagian, Overview, Storyboard dan semua kolase. Koreksi memakai pekerjaan/cache yang cocok; satu persetujuan keseluruhan kandidat terbaru.
+5. Sesudah persetujuan, export-v2 --source /path/<id>.mp4 --receipt work/review.md.json membungkus byte snapshot sama. ZIP tanpa MP4/cache/log/receipt.
 
-Panduan lingkungan: audit/providers.md; koreksi: audit/prompts/02-correct.md. Tidak ada konfirmasi tambahan antarputaran internal. Semua shot moderate boleh. ZIP final tanpa MP4, frame kerja atau receipt. Kontrak lama tetap menurut versi masing-masing.
+Sumber2.4/report2.2.3/media2.2.0. Detail desain, estimasi luas, gaya English/prosa Indonesia tetap lengkap. Semua moderate boleh. Pendalaman10FPS/native terarah; bukan mengulang semua shot secara rutin. Panduan JSON dibaca sesuai kebutuhan; contoh normal/multi hanya sintetik. Jangan menyalin contoh atau menganggap ekstraksi sebagai viewed. Kontrak lama tidak dilonggarkan.
 """]
     parts.append("\n## Inventaris resource lokal\n\n| File | SHA-256 |\n| --- | --- |\n" +
                  "".join(f"| {name} | {sha256(ROOT / name)} |\n" for name in BUNDLED))

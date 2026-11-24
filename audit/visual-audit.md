@@ -8,7 +8,7 @@ Baca panduan ini sebelum mengisi JSON. Pengamatan dilakukan per take kontinu, bu
 2. **Translasi.** Periksa perpindahan lateral/vertikal dengan foreground dan background. Apakah kusen bergeser terhadap dinding jauh? Apakah sisi benda berubah? Bedakan gerak badan kamera dari gerak pandang.
 3. **Rotasi.** Periksa arah pandang terhadap jangkar; gabungkan Pan/Tilt yang nyata dengan translasi yang juga terlihat. Jangan memilih hanya komponen paling menonjol.
 4. **Fase.** + berarti simultan; → berarti komponen mulai/berhenti/berubah. Area baru atau tempo berubah saja tidak membuat cut/fase baru.
-5. **Besaran dan tempo.** Ukur skala, usahakan sudut, lalu nilai tempo pada interval waktu setara. Tulis bahasa sederhana dan notasi teknis dari keputusan yang sama.
+5. **Besaran dan tempo.** Perkirakan skala dan sudut secara visual, lalu nilai tempo pada interval waktu setara. Tulis bahasa sederhana dan notasi teknis dari keputusan yang sama.
 
 ## Matriks pembeda Pan / Orbit / Truck
 
@@ -38,7 +38,7 @@ Ekstraksi bukan pemeriksaan. Hanya frame yang benar-benar dilihat dicatat viewed
 
 ## Estimasi dan tempo
 
-~× adalah besaran perubahan skala gambar: IN=ukuran akhir/awal; OUT=ukuran awal/akhir. Gunakan objek/bagian yang sama, dimensi width/height yang sama, terlihat utuh pada kedua frame native. Catat piksel dalam koordinat resolusi sumber (bukan ukuran thumbnail), anchor serta evidence awal/akhir. Hindari objek terpotong; pilih anchor lain. Angka tampil satu desimal atau rentang yang mencakup hasil ukur. Ini bukan faktor kecepatan/jarak fisik.
+~× adalah besaran perubahan skala gambar: IN=ukuran akhir/awal; OUT=ukuran awal/akhir. Gunakan objek/bagian yang sama, dimensi width/height yang sama, terlihat utuh pada kedua frame native. Bila memilih pengukuran piksel, catat koordinat resolusi sumber (bukan ukuran thumbnail), anchor serta evidence awal/akhir. Pengukuran ini opsional pada sumber2.4; estimasi visual dengan asumsi wajar tetap sah. Hindari objek terpotong; pilih anchor lain. Angka tampil satu desimal atau rentang yang mencakup hasil ukur. Ini bukan faktor kecepatan/jarak fisik.
 
 Pan/Orbit: usahakan ~° melalui orientasi/jangkar. Bila tidak dapat dipisahkan dari gerak lain, estimate_basis menjelaskan kendala khusus; jangan memberi presisi palsu. Dolly+Zoom yang tidak terpisahkan tidak boleh diberi rasio total yang sama pada keduanya. Pertahankan batas atribusi dan komponen yang jelas.
 
@@ -50,3 +50,11 @@ Eksterior: (1) gaya dan massa, (2) ukuran/proporsi, (3) atap, (4) fasad/bukaan, 
 Interior: (1) bentuk/volume/bukaan, (2) layout dan hubungan terlihat, (3) furnitur beserta bentuk/orientasi, (4) penyimpanan/properti pembeda, (5) tampilan material/lapisan cahaya, (6) lingkungan melalui bukaan.
 
 Catat detail yang benar-benar terlihat, termasuk konfigurasi bathroom/kitchen yang berbeda. Hindari daftar furnitur generik. Pisahkan terlihat, uncertain, not-visible, not-present dan unknown. Urutan edit tidak membuktikan denah/adjacency. Nama gaya English; uraian Indonesia. Luas lantai wajib estimasi rentang. Ketentuan produksi reverse/4–6detik/lima shot tidak berlaku di audit pustaka.
+
+## Audit efisien sumber2.4
+
+Estimasi visual ~×/~° boleh memakai asumsi yang wajar; pengukuran piksel opsional. Pan/Orbit yang jelas tetap diberi perkiraan sudut, Dolly/Zoom perkiraan skala. Contoh: Dolly-In (~1.8–2.2×) + Pan Right (~15–20°). Tidak perlu focal length, kalibrasi3D atau sumber eksternal. Ketiadaan kalibrasi saja bukan alasan menghapus angka. estimate_basis cukup satu kalimat mengenai jangkar/pengamatan/asumsi; kendala nyata dijelaskan khusus pada bagian ambigu, bukan alasan umum yang disalin ke semua shot.
+
+Jika scale_measurement diisi, pengukuran nyata tetap diperiksa. Format2.3 mempertahankan kewajiban pengukuran asal. camera_checks tetap tiga sumbu dengan uraian singkat, bukan esai pembuktian. Semua moderate boleh; estimasi ~× bukan tempo.
+
+Baseline6FPS satu putaran; pendalaman10/native pada rentang pertanyaan. Calon midpoint tambahan cukup frame yang diperlukan, bukan otomatis lima frame setiap shot. Pemeriksaan seluruh shot boleh bila memang perlu. SIFT/RANSAC/pose3D bukan langkah rutin. Helper menghitung PTS, parser komponen dan log selected; hanya AI yang menyatakan frame benar-benar viewed. Isi desain dan posisi awal tetap diperiksa lengkap.

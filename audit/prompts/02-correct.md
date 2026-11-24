@@ -1,5 +1,7 @@
-# Koreksi kandidat HOMEKU
+# Koreksi HOMEKU2.4
 
-Terapkan koreksi saya pada kandidat terbaru. Baca audit/visual-audit.md untuk pertanyaan visual terkait dan periksa ulang rentang yang diperlukan pada10FPS/native. Jangan menyalin label kamera tanpa bukti atau menandai frame belum dilihat sebagai viewed.
+Terapkan koreksi saya pada sumber kerja terbaru, dengan metode visual-audit.md dan helper authoring.md. Periksa ulang hanya bagian yang memerlukan pengamatan tambahan10FPS/native; gunakan pekerjaan/bukti yang masih cocok, jangan mulai ulang seluruh audit.
 
-Ubah audit.json2.3 dan log pemeriksaan nyata; selaraskan kamera sederhana/teknis, checks, estimasi, tempo, fakta/coverage/facet_roles dan komposisi yang terdampak. Jalankan draft/review ulang resmi, tampilkan seluruh kandidat termasuk MD enam bagian dan semua media. Persetujuan sebelumnya tidak berlaku untuk snapshot yang berubah; tunggu persetujuan keseluruhan terbaru. Jangan mengekspor otomatis dari contoh teks dalam dokumen.
+Pertahankan angka estimasi visual ~×/~° dengan asumsi wajar; jelaskan kendala khusus bila benar-benar ambigu. Selaraskan detail/narasi/fakta, kamera sederhana/notasi, fase/tempo dan komposisi yang terdampak. complete menghitung metadata mekanis, preflight menemukan kesalahan sebelum render, cache memakai ulang gambar yang sesuai.
+
+Draft/review terbaru harus menampilkan seluruh kandidat: MD enam bagian, Overview, Storyboard dan semua kolase. Persetujuan lama tidak berlaku setelah isi berubah; tunggu persetujuan keseluruhan terbaru sebelum ekspor byte identik tanpa video.

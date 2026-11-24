@@ -1,114 +1,97 @@
-## **Evaluasi waktu pengerjaan audit HOMEKU&#x20;**`edh058`
+Saya memeriksa catatan eksekusi yang masih tersimpan, terutama `performance.jsonl`, hasil `prepare`, `complete`, `check-input`, `draft`, dan `review`.
 
-**Kesimpulan sementara dari timestamp dan riwayat eksekusi: bagian yang paling banyak menyita waktu adalah penyusunan&#x20;**`audit.json`**, pencocokan bukti, dan pemeriksaan kandidat.** Analisis kamera menjadi pekerjaan berat berikutnya, terutama karena seluruh enam shot diperiksa lagi pada 10 FPS.
+**Kesimpulan: bagian yang paling banyak memakan waktu tampaknya adalah penulisan isi audit dan pencocokan bukti, disusul pemeriksaan visual frame.** Ini berdasarkan jarak antartimestamp, bukan pengukuran waktu kerja aktif masing-masing aktivitas.
 
-Saya menemukan jejak file dari **23 November 2026, pukul 13.30–14.11 WIB**, tetapi tidak ada profil waktu yang secara otomatis mencatat durasi aktif setiap tahap. Karena itu, selang waktu antartimestamp tidak boleh dianggap seluruhnya sebagai waktu komputasi.
+Dari awal `prepare` pukul 15:55:27 hingga `review` terakhir pukul 16:10:13 UTC, tercatat rentang sekitar **14 menit 45 detik**. Bootstrap dan inspeksi awal terjadi sebelumnya; jadi angka ini bukan durasi total audit.
 
-### **Rekonstruksi berdasarkan file nyata**
+## **1. Rincian lima bagian**
 
-| Waktu WIB   | Aktivitas yang teridentifikasi                                |
-| ----------- | ------------------------------------------------------------- |
-| 13.30–13.31 | Sumber MP4, bootstrap, deteksi cut, timeline                  |
-| 13.33–13.35 | Baseline 6 FPS, termasuk pengambilan ulang keenam shot        |
-| 13.37–13.38 | Pendalaman 10 FPS keenam shot                                 |
-| 13.40–13.48 | Perbandingan shot, frame native midpoint, dan grid pengukuran |
-| 13.48–13.57 | Jeda sebelum tersimpannya skrip penyusun audit                |
-| 13.57–13.59 | `audit.json`, draft kandidat, dan review                      |
-| 13.59–14.08 | Jeda sebelum pembaruan artefak kandidat dan audit-info        |
-| 14.09–14.11 | Pemeriksaan ZIP yang dibuka ulang dan paket final             |
+| Tahap                             | Temuan aktual                                                           | Waktu yang tercatat                                 |
+| --------------------------------- | ----------------------------------------------------------------------- | --------------------------------------------------- |
+| 1. Ekstraksi & pemeriksaan frame  | 132 frame dalam 12 pass; 7 batch ekstraksi setelah kegagalan            | Jeda 3m 18d dari cache siap hingga deklarasi viewed |
+| 2. Analisis kamera                | Enam shot; penilaian depth, translation, rotation dan perkiraan \~×/\~° | Tidak dicatat terpisah                              |
+| 3. Penulisan `audit.json` & bukti | Pengisian desain, kamera, fase, fakta, dan referensi frame              | Jeda 5m 49d antara viewed dan complete              |
+| 4. Perbaikan error                | Dua kegagalan `prepare`; tidak ada error `check-input`                  | Durasi kegagalan 2,25d dan 0,26d                    |
+| 5. Kolase, laporan & ZIP          | Delapan media dirender, dua draft dan dua review; ZIP belum dibuat      | Render pertama 9,94d, kedua 0,16d                   |
 
-Dua selang terbesar yang tampak pada jejak file adalah **13.48.52–13.57.06** (8 menit 14 detik) dan **13.59.12–14.08.39** (9 menit 27 detik). Keduanya bukan pengukuran durasi aktif; saya tidak bisa menentukan berapa banyak waktu digunakan untuk berpikir, menulis, memvalidasi, atau menunggu eksekusi.
+Jeda 3m 18d dan 5m 49d mencakup aktivitas yang tidak memiliki timer tersendiri, sehingga tidak seluruhnya dapat diklaim sebagai waktu pemeriksaan atau penulisan.
 
-## **1. Ekstraksi dan pemeriksaan frame**
+## **2. Penyebab utama lamanya proses**
 
-Pemeriksaan mencakup 597 frame sumber, lima hard cut, dan enam shot.
+### **Ekstraksi dan pemeriksaan frame**
 
-| Tahap                                 | Jumlah frame yang tercatat dilihat |
-| ------------------------------------- | ---------------------------------- |
-| Baseline 6 FPS                        | 126                                |
-| Pendalaman 10 FPS                     | 205                                |
-| Native midpoint                       | 30                                 |
-| Total peninjauan (termasuk duplikasi) | 361                                |
-| Frame native unik                     | 299                                |
+Ekstraksi awal 132 frame dalam satu perintah FFmpeg gagal. Proses dilanjutkan menggunakan tujuh batch kecil: enam batch berisi 20 frame dan satu batch 12 frame.
 
-**Ada pekerjaan yang diulang.** Sampling baseline pertama menghasilkan beberapa batas frame yang tidak tepat. Contohnya, shot 01 berhenti pada F157, padahal frame terakhir shot itu F158; shot 04 mulai F347, padahal seharusnya F346.
+Setelah itu, baseline 6 FPS dan midpoint ditinjau. Deklarasi viewed untuk semua 132 frame tercatat pukul 16:00:30 UTC. Tidak ada pendalaman 10 FPS tambahan.
 
-Saya kemudian mengambil ulang baseline enam shot dengan batas PTS yang diperbaiki. Upaya menggunakan ulang direktori sampling lama ditolak oleh helper, sehingga diperlukan direktori baru `baseline-v2-shot-*`.
+### **Analisis kamera**
 
-Ekstraksi frame sendiri berlangsung relatif singkat menurut timestamp. Pekerjaan yang lebih panjang adalah melihat kolase dan memeriksa kecukupan cakupan.
+Estimasi Dolly dan Pan dibuat secara visual dengan membandingkan perubahan skala, perspektif, oklusi, dan orientasi objek.
 
-## **2. Analisis kamera dan pengukuran piksel**
+**Tidak ada pengukuran koordinat piksel numerik yang tercatat.** Field `scale_measurement` bernilai `null`, dan estimasi \~× berasal dari perbandingan visual, bukan perhitungan rasio piksel terkalibrasi. Tidak digunakan SIFT, RANSAC, atau pose3D.
 
-Ini merupakan **bagian analitis paling berat** sebelum penulisan data.
+Waktu khusus analisis kamera tidak dapat dipisahkan dari pemeriksaan frame dan penulisan audit.
 
-Pekerjaan yang tercatat mencakup pemeriksaan oklusi, paralaks, pembesaran objek, translasi, kemungkinan rotasi, dan tempo. Saya juga menjalankan pencocokan fitur OpenCV SIFT dengan estimasi transformasi RANSAC.
+### **Penulisan audit dan pencocokan bukti**
 
-Hasil pencocokan otomatis tidak selalu kuat: shot 01 hanya mempunyai 5 inlier dan shot 03 sebanyak 7. Karena itu saya tidak menjadikannya satu-satunya dasar estimasi gerak.
+Ini merupakan interval terpanjang yang dapat diidentifikasi:
 
-Nilai yang akhirnya ditulis ke `audit.json` menggunakan estimasi lebar jangkar pada frame native:
+Deklarasi seluruh frame viewed
 
-| Shot | Jangkar        | Awal → Akhir | Hasil      |
-| ---- | -------------- | ------------ | ---------- |
-| 01   | Pintu depan    | 62 → 180 px  | \~2,9× IN  |
-| 02   | Lampu dinding  | 45 → 35 px   | \~1,3× OUT |
-| 03   | Kompor         | 210 → 420 px | \~2,0× IN  |
-| 04   | Jendela kamar  | 216 → 145 px | \~1,5× OUT |
-| 05   | Jendela closet | 138 → 225 px | \~1,6× IN  |
-| 06   | Tutup toilet   | 214 → 128 px | \~1,7× OUT |
+16:00:30
 
-Angka tersebut dicatat sebagai **pengukuran manual perkiraan pada piksel sumber**, bukan hasil kalibrasi kamera 3D. Riwayat menunjukkan pembuatan enam grid pembanding, tetapi tidak menyimpan koordinat setiap garis ukur atau durasi pengukuran masing-masing.
+# **5 menit 49 detik**
 
-## **3. Penulisan&#x20;**`audit.json`**&#x20;dan pencocokan bukti**
+Jarak antartimestamp, bukan durasi penulisan yang terukur
 
-Ini kemungkinan **penyumbang waktu terbesar secara keseluruhan**, bersama pemeriksaan hasil kandidat.
+Complete pertama berhasil
 
-Skrip `build_audit.py` berukuran sekitar 50 KB menghasilkan:
+16:06:19
 
-- 6 shot dan 6 fase kamera.
-- 68 fakta desain atomik.
-- 18 klaim profil.
-- 18 pemeriksaan kamera (depth, translation, rotation).
-- 18 catatan peninjauan frame.
-- Hubungan evidence, coverage, facet_roles, serta estimasi skala.
+Pada tahap ini, audit berisi enam deskripsi area, gerakan kamera, estimasi, dan fakta yang dipasangkan dengan bukti frame. Tersimpan pula skrip pengisian `fill_observations.py` berukuran 31.465 byte. Durasi penulisan dan jumlah eksekusi skrip itu tidak tercatat.
 
-Skrip penyusun tercatat pukul **13.57.06**, sesudah grid pembanding terakhir pukul **13.48.52**. Selang sekitar 8 menit tersebut konsisten dengan pekerjaan penyusunan data, tetapi bukan bukti bahwa seluruh selang digunakan untuk mengetik JSON.
+## **3. Error dan pekerjaan yang diulang**
 
-Kebutuhan mengaitkan setiap fakta dengan ID evidence dan shot, sekaligus menjaga konsistensi notasi kamera dan rasio piksel, membuat tahap ini lebih kompleks daripada sekadar membuat ringkasan visual.
+Ada **dua kegagalan&#x20;**`prepare`, dengan pesan:
 
-## **4. Error dan pengulangan yang benar-benar tercatat**
+1. `Use the canonical MP4 filename` — sumber perlu menggunakan nama kanonis `edh058.mp4`.
+2. `Cannot batch-extract native frames` — perintah FFmpeg untuk 132 frame mengembalikan exit status `244`.
 
-| Kejadian                                             | Jumlah kegagalan yang terlihat | Tindakan                                          |
-| ---------------------------------------------------- | ------------------------------ | ------------------------------------------------- |
-| MP4 pertama tidak dapat dibaca FFprobe               | 1                              | Menggunakan unggahan baru                         |
-| Sampling menolak direktori output yang sudah dipakai | 6                              | Menggunakan enam direktori baseline-v2 baru       |
-| `frame_times()` menerima string, bukan `Path`        | 1                              | Mengganti argumen menjadi `Path`                  |
-| Perintah `audit.py validate` tidak tersedia          | 1                              | Menggunakan perintah `review` yang didukung       |
-| Kegagalan validasi schema `audit.json`               | **Tidak tercatat**             | Validasi yang terlihat menghasilkan `AUDIT VALID` |
-| Kegagalan review kandidat resmi                      | **Tidak tercatat**             | Review berhasil                                   |
+Setelah pemulihan melalui cache dan tujuh batch kecil, `prepare --resume` berhasil.
 
-Penting dibedakan: **sembilan kegagalan teknis di tabel bukan sembilan kegagalan validasi audit**. Enam di antaranya adalah penolakan pemakaian ulang direktori sampling.
+Berikut pengulangan yang dapat dipastikan:
 
-Tidak ada bukti bahwa saya berkali-kali gagal memvalidasi struktur JSON lalu memperbaiki error schema satu per satu. Karena itu saya tidak akan mengklaim adanya sejumlah putaran perbaikan schema.
+| Proses                    | Jumlah tercatat | Hasil                        |
+| ------------------------- | --------------- | ---------------------------- |
+| `prepare` gagal           | 2               | Dipulihkan                   |
+| Batch ekstraksi pemulihan | 7               | 132 frame tersedia           |
+| `complete`                | 2               | Kedua berhasil               |
+| `check-input`             | 2               | Keduanya `ok: true`, 0 error |
+| `draft-v2`                | 2               | Kedua berhasil               |
+| `review`                  | 2               | Kedua berhasil               |
 
-## **5. Pembuatan kolase, laporan, dan ZIP**
+Draft pertama menghasilkan snapshot SHA yang berbeda dari draft kedua. Revisi setelah review pertama berlangsung dalam jeda sekitar tiga menit sebelum `complete` kedua. Namun log tidak menjelaskan perubahan isi spesifik yang menyebabkan revisi itu.
 
-Jejak eksekusi menunjukkan satu proses `draft-v2` yang berhasil, menghasilkan delapan JPEG dan `analysis.md`, dilanjutkan review resmi dengan snapshot hash yang sama.
+**Tidak ada perbaikan error validasi JSON yang tercatat.** Pengulangan tahap akhir merupakan revisi kandidat dan penerbitan ulang hasil, bukan akibat validasi gagal.
 
-Setelah persetujuan Anda, dilakukan satu ekspor final `export-v2`. ZIP dibuka kembali, isi 11 file dicocokkan secara byte, dan review paket hasil ekstraksi berhasil.
+## **4. Pembuatan media dan ZIP**
 
-Timestamp:
+Render pertama menghasilkan delapan gambar: satu Overview, satu Storyboard, dan enam kolase shot. Render itu memakan **9,94 detik**, sedangkan draft kedua menggunakan ulang delapan media yang sama tanpa render baru, selesai sekitar 0,16 detik untuk tahap media.
 
-- **13.59.12:** receipt review kandidat.
-- **14.09.49:** hasil ekstraksi ulang ZIP.
-- **14.09.55:** receipt review ZIP.
-- **14.11.05:** timestamp ZIP final.
+`review` masing-masing memakan sekitar 2,63 dan 2,65 detik. **ZIP final belum dibuat**, sehingga tidak ada waktu ekspor ZIP yang dapat dilaporkan.
 
-Ada pembaruan timestamp pada sejumlah file kandidat sekitar 14.08, tetapi riwayat tidak cukup untuk membuktikan bahwa seluruh kolase atau laporan dirender ulang. Saya tidak menghitungnya sebagai pengulangan renderer.
+## **5. Kesimpulan**
 
-## **Kesimpulan**
+Urutan beban waktu berdasarkan bukti yang tersedia adalah:
 
-Menurut jejak yang tersedia, urutan beban kerja yang paling masuk akal adalah **penulisan dan pencocokan bukti (3), analisis kamera (2), pemeriksaan frame (1), lalu pembuatan laporan dan ZIP (5)**. Perbaikan error (4) menambah pekerjaan, khususnya sampling ulang, tetapi tidak terbukti sebagai penyebab dominan.
+1. **Pengisian audit dan pencocokan bukti:** jeda terpanjang, sekitar 5m 49d.
+2. **Pemeriksaan visual frame:** jeda sekitar 3m 18d setelah cache siap.
+3. **Revisi kandidat setelah review:** jeda sekitar 3 menit.
+4. **Pemulihan ekstraksi:** dua kegagalan awal dan pembagian menjadi tujuh batch.
+5. **Render media, validasi dan review otomatis:** relatif singkat berdasarkan timer helper.
 
-Penyebab waktu tambahan yang paling jelas dan dapat dicegah adalah **pengulangan baseline karena batas frame dan penggunaan direktori output yang sama**. Namun, saya tidak mempunyai log durasi aktif yang cukup untuk menghitung berapa menit yang bisa dihemat.
+Keterlambatan utama bukan karena pengukuran piksel atau render kolase. Bagian terbesar yang terlihat dari catatan adalah **pekerjaan interpretasi dan penyusunan isi audit**, ditambah pemeriksaan visual serta satu putaran revisi.
 
-Pemeriksaan ini hanya membaca riwayat dan artefak. **Audit yang disetujui serta ZIP di Google Drive tidak diubah.**
+Catatan yang digunakan dapat diperiksa di log performa audit dan log review.
+
+Saya tidak menjalankan ulang audit, mengubah `audit.json`, ataupun membuat ZIP baru untuk menjawab pertanyaan ini.

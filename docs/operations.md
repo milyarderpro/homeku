@@ -2,7 +2,7 @@
 
 ## Format dan workflow aktif
 
-Audit/paket2.3 memakai audit.json, MD enam bagian/report2.2.2, media2.2.0. Reader/index2.3 dan generator6 mendukung sumber1.0/1.1/2.0/2.1/2.2/2.3. [Paket2.3](contracts/package-v2-3.md), [laporan](contracts/analysis-v2-2-2.md), [reader](contracts/ai-reader-v2-3.md), [field map](v2-field-map.md).
+Audit/paket2.4 memakai audit.json, MD enam bagian/report2.2.3, media2.2.0. Reader/index2.4 dan generator7 mendukung sumber1.0/1.1/2.0/2.1/2.2/2.3/2.4. [Paket2.4](contracts/package-v2-4.md), [laporan](contracts/analysis-v2-2-3.md), [reader](contracts/ai-reader-v2-4.md), [field map](v2-field-map.md).
 
 Paket 2.0 tetap renderer asalnya, termasuk2.1.2 dan storyboard overview satu baris; legacy tetap kontrak MD asal. Tidak ada penerjemahan nama gaya, penambahan fakta atau konversi paket diterima otomatis. Referensi aktif edh001 sudah r0003/2.1, disetujui pengguna, diekspor dan di-ingest; [status nyata](overview-storyboard-verification.md).
 
@@ -12,7 +12,7 @@ python tools/audit.py review /work/candidate/<id> --source /path/<id>.mp4 --outp
 python tools/audit.py export-v2 /work/candidate/<id> --source /path/<id>.mp4 --output /work/packages --receipt /work/review.md.json
 ```
 
-Default renderer mengikuti sumber:2.0→2.1.2,2.1→2.2.0,2.2→2.2.1,2.3→2.2.2. Paket2.2/2.3 melarang video dan --include-source. MP4 asli tetap terpisah, tersedia di video/<id>.mp4 dan cocok hash sebelum ingest. --quality/--scale/--columns/--overview-scale/--storyboard-scale mengatur media eksplisit; koreksi config/JSON/log diikuti draft/review seluruh kandidat. Receipt di luar kandidat bukan persetujuan otomatis. Setelah pengguna menerima keseluruhan snapshot terbaru, export membungkus byte yang sama tanpa regenerasi JPEG/MD/created_at. Aset versi diterima tidak ditimpa.
+Default renderer mengikuti sumber:2.0→2.1.2,2.1→2.2.0,2.2→2.2.1,2.3→2.2.2,2.4→2.2.3. Paket2.2/2.3/2.4 melarang video dan --include-source. MP4 asli tetap terpisah, tersedia di video/<id>.mp4 dan cocok hash sebelum ingest. --quality/--scale/--columns/--overview-scale/--storyboard-scale mengatur media eksplisit; koreksi config/JSON/log diikuti draft/review seluruh kandidat. Receipt di luar kandidat bukan persetujuan otomatis. Setelah pengguna menerima keseluruhan snapshot terbaru, export membungkus byte yang sama tanpa regenerasi JPEG/MD/created_at. Aset versi diterima tidak ditimpa.
 
 Registry tetap version1, V2 menyimpan contract_version/audit_sha256. Source2.1 wajib paragraf Overview dan klasifikasi depth_direction fase. Pola turunan mempertahankan ambigu/urutan, bukan inferensi narasi. Fingerprint mencakup runtime/schema/template/font/layout/prinsip/taksonomi. Turunan dibangun generator; cache bukan sumber fakta.
 
@@ -89,3 +89,15 @@ Pengamatan mengikuti audit/visual-audit.md dahulu, JSON sesudah simpulan diperik
 Facet2.3 eksplisit; format lama lewat sources/fact-facets.json yang ikut fingerprint. role_source dan pointer menunjukkan aturan/fakta asal. Atribut belum dipetakan tercatat data/dependencies.json.unmapped_fact_attributes dan tetap ditemukan lewat knowledge/topics. Indeks tetap ringkas; data pemeriksaan lengkap melalui reader terpilih.
 
 Kit memulihkan panduan lokal berhash; README hanya urutan tahap, bukan gabungan seluruh panduan. Perintah sample default6FPS; --contract-version 2.2 memilih default10. --fps 10 untuk pendalaman; --native untuk semua frame. Catatan kerja/receipt di luar ZIP. [Verifikasi](audit-method-verification.md).
+
+## Authoring dan efisiensi2.4
+
+Ikuti audit/authoring.md. prepare memakai cut frame-index yang telah diperiksa untuk membuat batas PTS, panel/midpoint dan baseline sekali. complete menghitung parsed metadata/summary/timestamp dan log selected dari session; isi visual/fakta tetap auditor. mark-viewed baru sesudah pemeriksaan nyata. Frame tambahan panel multi/Overview dapat diambil dengan sample --session ... --frames ...; tidak perlu membulatkan waktu manual.
+
+check-input mengumpulkan kesalahan struktur/data sebelum JPEG. draft juga mewajibkan preflight internal; validasi artefak/snapshot sesudahnya tetap berlaku. Cache default sumber2.4 berada pada workspace audit/.cache/frames, performance.jsonl di workspace yang sama. Source lama dapat memakai --cache-dir secara eksplisit untuk pengujian teknis tanpa mengubah kontraknya.
+
+Batch dipakai untuk sampling, sedangkan frame media final diperoleh dari extractor kanonis sekali per frame unik lalu di-cache untuk menjamin kesamaan byte. Executor subset baru memakai layout/font/media2.2.0 yang sama. Revisi basis/fakta tanpa pengaruh tampilan memakai ulang JPEG; notasi/gaya/area/panel/config yang memengaruhi gambar menginvalidasi dependensinya. Cache memiliki batas512MiB per bucket dan dapat dibangun ulang; symlink/korupsi tidak dipercaya.
+
+performance.jsonl mencatat durasi alat, cache hit/miss, decode dan retry, bukan durasi aktif berpikir AI. Pilihan --resume tidak mengganti sumber/cut atau menimpa fakta. Tidak ada watcher, auto-viewed, auto-persetujuan atau auto-ingest.
+
+Benchmark terisolasi: python tools/benchmark_audit.py /path/<id>.mp4 /work/audit.json --audit-info /work/audit-info.json --output /tmp/benchmark-baru. Hanya kandidat purpose=fixture dan revisi sintetis dalam root kerja kosong; bukan audit baru atau produksi. Bandingkan baseline/cold/warm/koreksi dan kesamaan byte. [Hasil nyata](audit-efficiency-verification.md).

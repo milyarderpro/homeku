@@ -10,7 +10,7 @@ from pathlib import Path
 from PIL import Image
 from .common import LibraryError, require
 
-def probe_video(path: Path):
+def _probe_video_uncached(path: Path):
     try:
         completed = subprocess.run(["ffprobe", "-v", "error", "-protocol_whitelist", "file,pipe",
                                     "-show_streams", "-show_format", "-of", "json", str(path)],
@@ -34,7 +34,7 @@ def probe_video(path: Path):
         raise LibraryError(f"ffprobe cannot read {path.name}: {error}") from error
 
 
-def frame_times(source):
+def _frame_times_uncached(source):
     """Presentation timestamps in decoder order, relative to the first video frame."""
     try:
         stream_index = probe_video(source)["video_stream_index"]
@@ -62,7 +62,7 @@ def nearest(times, timestamp, start=0.0, end=float("inf")):
     return min(candidates, key=lambda i: (abs(times[i] - timestamp), i))
 
 
-def extract_frame(source, index, stream_index=None):
+def _extract_frame_uncached(source, index, stream_index=None):
     try:
         if stream_index is None:
             stream_index = probe_video(source)["video_stream_index"]
@@ -91,3 +91,21 @@ def selected_indices(times, start, end, fps=10.0, *, native=False, source_fps=No
     return sorted(chosen | {lo, hi - 1})
 
 
+
+
+def probe_video(path):
+    from .video_cache import ACTIVE
+    cache=ACTIVE.get()
+    return dict(cache.info) if cache is not None and cache.matches(path) else _probe_video_uncached(Path(path))
+
+def frame_times(source):
+    from .video_cache import ACTIVE
+    cache=ACTIVE.get()
+    return list(cache.times) if cache is not None and cache.matches(source) else _frame_times_uncached(source)
+
+def extract_frame(source,index,stream_index=None):
+    from .video_cache import ACTIVE
+    cache=ACTIVE.get()
+    if cache is not None and cache.matches(source,stream_index):
+        return cache.frame(index,stream_index)
+    return _extract_frame_uncached(source,index,stream_index)

@@ -58,7 +58,7 @@ def search(root,*,style=None,style_role="primary-style",style_relation=None,scal
                 if not s["multi_area"] or not any(actual[i:i+len(wanted_route)]==wanted_route for i in range(len(actual)-len(wanted_route)+1)):continue
             selected.append(s)
         if selected:matches.append({**{k:r[k] for k in ("id","title","revision","json","profile_facets")},"shots":selected})
-    return {"schema_version":"2.3","total":len(matches),"offset":offset,"limit":limit,"results":matches[offset:offset+limit],
+    return {"schema_version":"2.4","total":len(matches),"offset":offset,"limit":limit,"results":matches[offset:offset+limit],
             "next_offset":offset+limit if offset+limit<len(matches) else None}
 
 
@@ -66,7 +66,7 @@ def load_reader(root,rid):
     registry=_registry(root)["references"]
     require(rid in registry,"Reference is not active in registry")
     payload=_generated(root,f"data/projections/{rid}.json")
-    schema_check(payload,"reference-reader-v2-3.schema.json")
+    schema_check(payload,"reference-reader-v2-4.schema.json")
     require(payload["reference"]["content_sha256"]==registry[rid]["content_sha256"]==content_hash(root/"references"/rid),"Reference changed outside ZIP revision")
     return payload
 

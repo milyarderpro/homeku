@@ -221,3 +221,7 @@ Pada penyusunan awal dokumen ini hanya plan. Implementasi kini sudah memperbarui
 engine.py sudah memakai JSON_CONTRACTS terpusat sehingga tidak memerlukan edit tambahan. video.py tetap helper PTS generik; kebijakan6FPS ada di dispatch, exporter dan validator. template-audit-info.json tidak memiliki default FPS sehingga tetap; template authoring MD dan seluruh renderer/media/font diterima tidak ditimpa. Tes reader/report lama tetap berjalan tanpa mengubah kontrak sumbernya.
 
 Rincian hasil, fingerprint kit dan batas pembuktian tersedia pada docs/audit-method-verification.md. Menyelesaikan implementasi tooling tidak menggantikan pelaksanaan pilot oleh pengguna.
+
+## Lanjutan sesudah hasil pilot2.3 tersedia
+
+Pada diskusi berikutnya pengguna telah memberikan dua hasil2.3 edh058 beserta laporan proses. Kedua paket lulus pemeriksaan teknis dan reproduksi JPEG; status “belum ada run2.3” pada catatan sebelumnya berlaku saat implementasi itu selesai. Hash terbaru dan status pada audit/pilots/edh058-comparison.md. Paket asli tidak dikonversi atau di-ingest oleh evaluasi ini. Perbaikan efisiensi berikutnya memakai kontrak2.4 menurut docs/audit-efficiency-implementation-plan.md; pengujian historis di dokumen ini tetap dicatat apa adanya.

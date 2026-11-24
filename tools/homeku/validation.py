@@ -249,13 +249,13 @@ def validate_folder(folder: Path, root: Path, package_name=None, source_override
     return manifest, legacy_model(model), source
 
 
-def validate_frame_reviews(reviews, shots, source, info, *, strict=False, contract_version=None):
+def validate_frame_reviews(reviews, shots, source, info, *, strict=False, contract_version=None, times=None, check_coverage=True):
     """Check declarations against native PTS; cannot prove an AI actually looked."""
     from .video import frame_times, selected_indices
     from .versions import BASELINE_FPS
     baseline = BASELINE_FPS.get(contract_version, 10)
     strict = strict or contract_version in BASELINE_FPS
-    times = frame_times(source)
+    times = frame_times(source) if times is None else times
     source_fps = info["fps"]["numerator"] / info["fps"]["denominator"]
     by_shot = {s["shot"]: s for s in shots}
     coverage = {sid: [] for sid in by_shot}
@@ -274,18 +274,19 @@ def validate_frame_reviews(reviews, shots, source, info, *, strict=False, contra
         require(review["reason"].strip(), "Frame review reason required")
         qualified = native or fps >= min(baseline, source_fps)
         needs_native = strict and (source_fps <= baseline or
-                                  (contract_version == "2.3" and shot["end_s"] - shot["start_s"] < 1))
+                                  (contract_version in {"2.3", "2.4"} and shot["end_s"] - shot["start_s"] < 1))
         if needs_native:
             qualified = expected == selected_indices(times, start, end, native=True, source_fps=source_fps)
         if not strict or qualified:
             coverage[sid].append((start, end))
-    for sid, shot in by_shot.items():
-        cursor = shot["start_s"]
-        for start, end in sorted(coverage[sid]):
-            require(start <= cursor + 0.000001, f"Every shot requires a complete {baseline} FPS (or native) viewed baseline; gap in {sid}")
-            cursor = max(cursor, end)
-        require(abs(cursor - shot["end_s"]) <= 0.000001,
-                f"Every shot requires a complete {baseline} FPS (or native) viewed baseline including boundary frames: {sid}")
+    if check_coverage:
+        for sid, shot in by_shot.items():
+            cursor = shot["start_s"]
+            for start, end in sorted(coverage[sid]):
+                require(start <= cursor + 0.000001, f"Every shot requires a complete {baseline} FPS (or native) viewed baseline; gap in {sid}")
+                cursor = max(cursor, end)
+            require(abs(cursor - shot["end_s"]) <= 0.000001,
+                    f"Every shot requires a complete {baseline} FPS (or native) viewed baseline including boundary frames: {sid}")
     return times
 
 
@@ -304,7 +305,7 @@ def validate_v2_folder(folder, root, manifest, package_name=None, source_overrid
     require(info["path"]==f"video/{rid}.mp4", "Source must be video/<id>.mp4")
     if (root / "video").is_dir():
         require(all(p.name.casefold()!=f"{rid}.mp4".casefold() or p.name==f"{rid}.mp4" for p in (root/"video").iterdir()), "Source filename case collision")
-    require(manifest["contract_version"] not in {"2.2", "2.3"} or not any(p.suffix.casefold() in {".mp4", ".mov", ".mkv", ".webm", ".avi", ".m4v"} for p in folder.rglob("*")), "Package 2.2+ forbids video files; keep the reference MP4 separate")
+    require(manifest["contract_version"] not in {"2.2", "2.3", "2.4"} or not any(p.suffix.casefold() in {".mp4", ".mov", ".mkv", ".webm", ".avi", ".m4v"} for p in folder.rglob("*")), "Package 2.2+ forbids video files; keep the reference MP4 separate")
     source=folder/"source.mp4"
     if not source.exists():source=(source_overrides or {}).get(rid,root/info["path"])
     require(source.is_file() and not source.is_symlink(), "Source unavailable")
@@ -322,25 +323,7 @@ def validate_v2_folder(folder, root, manifest, package_name=None, source_overrid
     require(audit.get("schema_version")==manifest["contract_version"],"Audit source/manifest contract versions differ")
     validate_audit(audit,info["duration_s"],times)
     require(audit["id"]==rid and audit["revision"]==manifest["revision"],"Audit identity/revision differs from manifest")
-    logs=manifest["audit"]
-    validate_frame_reviews(logs["frame_reviews"],audit["shots"],source,info, contract_version=manifest["contract_version"])
-    if manifest["contract_version"] in {"2.2", "2.3"}:
-        from .audit_quality import validate_viewed_evidence
-        validate_viewed_evidence(audit, logs["frame_reviews"], times)
-    ranges=sorted(logs["reviewed_ranges"],key=lambda r:r["start_s"])
-    cursor=0
-    for r in ranges:
-        require(0<=r["start_s"]<r["end_s"]<=info["duration_s"] and r["start_s"]<=cursor+1e-6,"Audit coverage gap/invalid range")
-        cursor=max(cursor,r["end_s"])
-        if r["mode"]=="frame-by-frame":
-            native=sorted((v["start_s"],v["end_s"]) for v in logs["frame_reviews"] if v["mode"]=="frame-by-frame")
-            end=r["start_s"]
-            for lo,hi in native:
-                if lo<=end+1e-6:end=max(end,hi)
-            require(end>=r["end_s"]-1e-6,"Frame-by-frame coverage claim lacks native review records")
-    require(abs(cursor-info["duration_s"])<1e-6,"Audit must cover source duration")
-    created=datetime.fromisoformat(logs["created_at"].replace("Z","+00:00"))
-    require(created.utcoffset() is not None,"Audit timestamp needs timezone")
+    validate_audit_logs(manifest["audit"],audit,source,info,times=times)
     verify_renderer(manifest["render"])
     expected=[m for m,*_ in expected_media(audit,info,manifest["render"])]
     require(len(manifest["media"])==len(expected),"Media inventory count differs from versioned layout")
@@ -370,3 +353,26 @@ def validate_v2_folder(folder, root, manifest, package_name=None, source_overrid
         if name in {"audit.json","analysis.md","manifest.json"}:require(size<=2*1024*1024,f"Text file exceeds 2 MiB: {name}")
     require(total<=MAX_TOTAL,"Uncompressed candidate exceeds 256 MiB")
     return manifest,v2_model(audit,manifest,content_hash(folder),times),source
+
+
+def validate_audit_logs(logs,audit,source,info,*,times=None):
+    from .video import frame_times
+    times=frame_times(source) if times is None else times
+    validate_frame_reviews(logs["frame_reviews"],audit["shots"],source,info, contract_version=audit["schema_version"], times=times)
+    if audit["schema_version"] in {"2.2", "2.3", "2.4"}:
+        from .audit_quality import validate_viewed_evidence
+        validate_viewed_evidence(audit, logs["frame_reviews"], times)
+    ranges=sorted(logs["reviewed_ranges"],key=lambda r:r["start_s"])
+    cursor=0
+    for r in ranges:
+        require(0<=r["start_s"]<r["end_s"]<=info["duration_s"] and r["start_s"]<=cursor+1e-6,"Audit coverage gap/invalid range")
+        cursor=max(cursor,r["end_s"])
+        if r["mode"]=="frame-by-frame":
+            native=sorted((v["start_s"],v["end_s"]) for v in logs["frame_reviews"] if v["mode"]=="frame-by-frame")
+            end=r["start_s"]
+            for lo,hi in native:
+                if lo<=end+1e-6:end=max(end,hi)
+            require(end>=r["end_s"]-1e-6,"Frame-by-frame coverage claim lacks native review records")
+    require(abs(cursor-info["duration_s"])<1e-6,"Audit must cover source duration")
+    created=datetime.fromisoformat(logs["created_at"].replace("Z","+00:00"))
+    require(created.utcoffset() is not None,"Audit timestamp needs timezone")

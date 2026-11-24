@@ -112,7 +112,7 @@ class V21CompatibilityTests(unittest.TestCase):
         self.assertEqual(ingest(self.root,[pkg])['changed'],[])
         self.assertEqual(build(self.root,full=True)['changed'],[])
         entry=read_json(self.root/'data/registry.json')['references']['new-media'];self.assertEqual(entry['contract_version'],'2.1')
-        full=read_reference(self.root,'new-media',part='full');self.assertEqual(full['schema_version'],'2.3')
+        full=read_reference(self.root,'new-media',part='full');self.assertEqual(full['schema_version'],'2.4')
         for key,value in self.audit.items():
             if key=='shots':
                 for original,projected in zip(value,full['reference']['shots']):
@@ -189,7 +189,7 @@ class V21CompatibilityTests(unittest.TestCase):
         with zipfile.ZipFile(io.BytesIO(kit_builder.build_bytes())) as archive:archive.extractall(workspace)
         result=subprocess.run([sys.executable,str(workspace/'homeku_runtime.py'),'--output',str(workspace)],capture_output=True,text=True)
         self.assertEqual(result.returncode,0,result.stderr)
-        self.assertEqual(read_json(workspace/'template-audit.json')['schema_version'],'2.3')
+        self.assertEqual(read_json(workspace/'template-audit.json')['schema_version'],'2.4')
         info=self.work/'info.json';info.write_text(dumps(self.info))
         def run(*args):
             p=subprocess.run([sys.executable,str(workspace/'tools/audit.py'),*map(str,args)],capture_output=True,text=True,cwd=workspace)

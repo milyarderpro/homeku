@@ -49,3 +49,7 @@ Skala mesin: tiny, small, medium, large, unknown. Nama gaya tetap English; satu 
 camera_checks menyimpan bukti depth/translation/rotation sebelum simpulan; bukan daftar verdict kedua. scale_measurement memakai anchor/dimensi utuh yang sama, piksel resolusi sumber dan evidence awal/akhir; IN=akhir/awal, OUT=awal/akhir, notasi satu desimal atau rentang. ~× bukan faktor tempo. estimate_basis menjelaskan dasar sudut atau batas angka. facet_roles peran pencarian eksplisit, label asli tetap utuh.
 
 Baseline6FPS; sumber≤6FPS dan shot<1detik native. Pendalaman10FPS/native sesuai pertanyaan visual. Semua shot moderate sah. Metode pembeda tunggal di visual-audit.md. Format2.2 lama tetap baseline10FPS/report2.2.1.
+
+## Format2.4
+
+scale_measurement=null diterima bersama ~× visual; estimate_basis menyatakan jangkar/asumsi singkat. Angka dalam tanda kurung: Dolly-In (~2×) + Pan Right (~15–20°). Frame metadata/parsed/summary dihitung helper, bukan simpulan visual baru. viewed deklarasi AI setelah melihat; cache bukan viewed. Log durasi alat terpisah dari selang percakapan/persetujuan.

@@ -58,3 +58,7 @@ Dua hasil edh058 terbaru di result/gemini/ dan result/gpt/ adalah sumber2.2/repo
 [Urutan pilot2.3](../audit/pilots/README.md#pilot-metode23--disiapkan-belum-dijalankan) sudah tersedia: chat baru edh058 dengan kit baru di ChatGPT/Gemini, koreksi seluruh kandidat, ekspor byte identik tanpa MP4, simpan run terpisah; kemudian lima pilot lain. Pembagian tetap pengguna menjalankan enam pilot tersisa, asisten menyiapkan/membandingkan hasil yang dikembalikan. Run2.3, persetujuan, ekspor dan ingest menunggu pelaksanaan nyata.
 
 Validator memeriksa field/pointer/interval/angka/snapshot, tidak memastikan objek ukur utuh atau klasifikasi gerak benar dari gambar. Perbaikan akurasi visual perlu dibuktikan pada pilot; berkurangnya FPS, catatan lengkap atau156tes lulus tidak menggantikan pengamatan nyata.
+
+## Lanjutan sesudah hasil pilot2.3 tersedia
+
+Pada diskusi berikutnya pengguna telah memberikan dua hasil2.3 edh058 beserta laporan proses. Kedua paket lulus pemeriksaan teknis dan reproduksi JPEG; status “belum ada run2.3” pada catatan sebelumnya berlaku saat implementasi itu selesai. Hash terbaru dan status pada audit/pilots/edh058-comparison.md. Paket asli tidak dikonversi atau di-ingest oleh evaluasi ini. Perbaikan efisiensi berikutnya memakai kontrak2.4 menurut docs/audit-efficiency-implementation-plan.md; pengujian historis di dokumen ini tetap dicatat apa adanya.

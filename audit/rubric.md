@@ -6,7 +6,7 @@ Metode pengamatan dipelihara hanya di [visual-audit.md](visual-audit.md). Rubrik
 | --- | --- |
 | Shot/area | Cut nyata, timeline utuh; satu take multi area tidak dipecah menjadi shot rekaan; visible berbeda dari dilalui |
 | Kamera | Depth diperiksa sebelum Pan-only; translation dan rotation juga diperiksa. Gabungan/arah/fase dijelaskan oleh bukti dan alternatif yang relevan |
-| Estimasi | ~× objek/dimensi utuh yang sama, piksel resolusi sumber, rasio IN/OUT dan pembulatan cocok. Sudut diusahakan; alasan khusus bila belum dapat diperkirakan |
+| Estimasi | ~×/~° visual tersedia; bila diukur, objek/dimensi utuh yang sama, piksel resolusi sumber dan rasio cocok. Sudut diusahakan; alasan khusus bila belum dapat diperkirakan |
 | Tempo | Sesuai sumber dan interval setara. Semua moderate boleh; smooth bukan slow; pembesaran perspektif bukan otomatis percepatan fisik |
 | Desain | Bentuk/proporsi, bukaan, layout, penyimpanan, furnitur/properti/orientasi dan lingkungan yang terlihat konkret; bukan isi ruang generik |
 | Fakta | Narasi penting terwakili fact_coverage dan facts; facet_roles eksplisit. Status, negasi, label baru, basis/uncertainty dan evidence dipertahankan |
@@ -20,3 +20,7 @@ Metode pengamatan dipelihara hanya di [visual-audit.md](visual-audit.md). Rubrik
 Periksa ulang detail rawan salah: lampu kaca vs anyaman, bench vs footboard, opening/shutter, crop anchor dan tampilan material vs kepastian material fisik. Tidak ada kuota fakta atau distribusi tempo. High tidak diberikan hanya karena formulir lengkap. Jika bukti belum cukup, perdalam atau simpan batasnya.
 
 Default quality91, scale1, columns4. Batas60M piksel/gambar, sisi65000px,95MiB/file,256MiB paket/ekstraksi. Perubahan skala/quality/kolom eksplisit sebelum review lengkap; jangan mengganti font/layout versi lama. Tooling lulus tidak berarti audit visual benar atau kandidat disetujui.
+
+## Sumber2.4
+
+Estimasi visual ~×/~° sah tanpa kalibrasi atau sumber eksternal; pengukuran piksel opsional. Jangan menghilangkan sudut pada gerak jelas hanya karena lensa tidak diketahui. Jika pengukuran diisi, nilai/bukti/rasio diperiksa. Camera checks tetap singkat dan lengkap. Runtime resmi memakai preflight sebelum render dan cache yang terikat sumber; seluruh isi/narasi/media tetap ditinjau.
