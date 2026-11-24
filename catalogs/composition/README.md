@@ -1,5 +1,5 @@
 # Posisi kamera dan komposisi
 
-5 entri tercatat; rincian dan ketidakpastian mengikuti sumber.
+0 entri tercatat; rincian dan ketidakpastian mengikuti sumber.
 
-- [Halaman 1](page-001.md)
+Belum ada entri aktif.

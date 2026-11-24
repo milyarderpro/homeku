@@ -1,5 +1,7 @@
 # Verifikasi Tahap 2 V2
 
+> Status setelah reset 24 November 2026: data audit edh001 telah dihapus atas permintaan pengguna. Catatan edh001 di dokumen ini bersifat historis, bukan referensi aktif atau persetujuan audit baru.
+
 Tanggal: 22 November 2026. **Workflow dan kit siap; keseluruhan Tahap 2 belum selesai.**
 
 ## Status sesuai urutan plan
@@ -57,8 +59,8 @@ Seluruh 128 fakta lama dipertahankan dengan status/negasi/bukti native yang dipe
 
 ## Snapshot yang disetujui
 
-- [Laporan review manusia lengkap](../audit/pilots/edh001-v2-review.md): lima bagian baku, desain lengkap dan semua gambar.
-- [analysis.md kandidat](../audit/pilots/v2-candidates/edh001/analysis.md), [sumber audit.json](../audit/pilots/v2-candidates/edh001/audit.json), [manifest](../audit/pilots/v2-candidates/edh001/manifest.json).
+- Laporan review manusia lengkap (artefak lama dihapus): lima bagian baku, desain lengkap dan semua gambar.
+- analysis.md kandidat (artefak lama dihapus), sumber audit.json (artefak lama dihapus), manifest (artefak lama dihapus).
 - Receipt eksternal: audit/pilots/edh001-v2-review.md.json. Snapshot lengkap `71e949c51a3ca82f0a8d22c26ad98c82c6283d8c40413b8b0a24ef99e178ca45`. Setiap perubahan kandidat memerlukan review/receipt baru; receipt sendiri bukan persetujuan; pengguna kemudian menyetujui seluruh snapshot dengan “ya saya setuju”.
 - Lima kolase 2260×1507 dan satu storyboard satu baris 3750×1577. Semua dibuka dan diperiksa visual: caption di bawah foto, timestamp kecil, header interval/durasi saja; tidak ada teks menimpa foto. Foto asli termasuk black bar sumber dipertahankan.
 - Media: r0001 = 22 JPEG / 4,252,016 byte; kandidat V2 = 6 JPEG / 4,840,420 byte. Jumlah file berkurang, ukuran byte naik sekitar 13.8% pada native scale/quality 91. Tidak ada janji kolase otomatis lebih kecil; tidak mengubah kualitas/layout yang disetujui untuk mengejar ukuran.
@@ -94,7 +96,7 @@ Pengguna menyetujui **seluruh** hasil yang ditampilkan dengan “ya saya setuju�
 | Identitas | Nilai |
 | --- | --- |
 | Snapshot disetujui = kandidat = ZIP = referensi aktif | `71e949c51a3ca82f0a8d22c26ad98c82c6283d8c40413b8b0a24ef99e178ca45` |
-| ZIP final | [edh001-r0002.zip](../incoming/edh001-r0002.zip) |
+| ZIP final | edh001-r0002.zip (artefak lama dihapus) |
 | Ukuran ZIP | 4,600,760 byte |
 | SHA-256 ZIP | `c290e7f81642498330cdb4b0b4b2ecaf2238c5074b83761bf31b08040e74c26f` |
 | Revisi aktif / kontrak | 2 / 2.0 |
@@ -104,6 +106,6 @@ Pengguna menyetujui **seluruh** hasil yang ditampilkan dengan “ya saya setuju�
 
 Ingest pertama menghasilkan imported dan memperbarui references/edh001, registry/ledger, proyeksi/indeks, katalog dan knowledge. Semua berkas aktif dibandingkan byte per byte dengan ZIP/kandidat. Pembaca identitas/kelima shot mempertahankan 128 fakta, 32 klaim DNA dan seluruh pointer bukti; pencarian kitchen + fast menemukan r0002. Replay incoming/ terhadap r0001 dan r0002 sama-sama unchanged, changed=[] dan seluruh berkas managed tetap sama hash-nya. ZIP r0001 dan source MP4 tetap utuh.
 
-[Laporan manusia aktif](../references/edh001/analysis.md), [sumber JSON aktif](../references/edh001/audit.json) dan [JSON pembaca AI](../data/projections/edh001.json) tersedia. Pembaruan status/calibration di kit tidak mengubah paket final yang diterima. Enam pilot pengguna serta pembuktian run ChatGPT/Gemini masih terbuka; tidak ada klaim keseluruhan Tahap 2 telah selesai.
+Laporan manusia aktif (artefak lama dihapus), sumber JSON aktif (artefak lama dihapus) dan JSON pembaca AI (artefak lama dihapus) tersedia. Pembaruan status/calibration di kit tidak mengubah paket final yang diterima. Enam pilot pengguna serta pembuktian run ChatGPT/Gemini masih terbuka; tidak ada klaim keseluruhan Tahap 2 telah selesai.
 
 Pemeriksaan setelah publikasi: `python tools/library.py build` menghasilkan changed=[]; `python tools/library.py check` lulus (1 referensi/5 shot), `python tools/build_audit_kit.py --check` lulus. Isi audit yang diterima tidak diedit; hanya status dokumen/pilot dan bundel panduan yang diperbarui.

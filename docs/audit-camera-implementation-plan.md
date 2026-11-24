@@ -1,5 +1,7 @@
 # Plan implementasi audit kamera berbasis panduan eksperimen
 
+> Status setelah reset 24 November 2026: data audit edh001 telah dihapus atas permintaan pengguna. Catatan edh001 di dokumen ini bersifat historis, bukan referensi aktif atau persetujuan audit baru.
+
 Tanggal: 24 November 2026. Status: **tahap1–8 selesai; tahap9 siap diuji pengguna, run provider2.5 belum dijalankan**.
 
 Melanjutkan [plan efisiensi](audit-efficiency-implementation-plan.md) dan evaluasi dua hasil pilot edh058 sumber 2.4. Acuan eksperimen: [panduan audit gerakan kamera](panduan_audit_gerakan_kamera_ai.md). Kesepakatan terbaru pengguna pada plan ini menggantikan kewajiban angka per komponen untuk **format baru**, tanpa mengubah kontrak atau paket lama.

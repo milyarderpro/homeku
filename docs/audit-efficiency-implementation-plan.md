@@ -1,5 +1,7 @@
 # Plan implementasi audit efisien dengan hasil tetap lengkap
 
+> Status setelah reset 24 November 2026: data audit edh001 telah dihapus atas permintaan pengguna. Catatan edh001 di dokumen ini bersifat historis, bukan referensi aktif atau persetujuan audit baru.
+
 Status: **tooling tahap1–7 dan pengujian/benchmark tahap8 selesai23November2026; pilot2.4 provider siap dijalankan pengguna, belum dijalankan**. Disusun 23 November 2026 sesudah evaluasi pilot edh058 sumber2.3 dan persetujuan pengguna atas estimasi visual berbasis asumsi yang wajar. Melanjutkan audit-method-6fps-implementation-plan.md; temuan run2.3 memperbarui status pilot, bukan mengubah kontrak lama.
 
 ## 1. Tujuan dan batas pekerjaan

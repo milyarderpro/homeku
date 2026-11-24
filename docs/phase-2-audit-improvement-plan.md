@@ -1,5 +1,7 @@
 # Rencana Penyempurnaan Pustaka dan Audit HOMEKU — Phase 2
 
+> Status setelah reset 24 November 2026: data audit edh001 telah dihapus atas permintaan pengguna. Catatan edh001 di dokumen ini bersifat historis, bukan referensi aktif atau persetujuan audit baru.
+
 Dibuat: 21 November 2026
 
 Diperbarui: 22 November 2026
@@ -162,7 +164,7 @@ Koreksi gerakan shot 02 edh001 yang sudah disetujui pengguna:
 Dolly-Out (~2×) + Orbit Left + Pan Right.
 ```
 
-Persetujuan awal ini khusus gerakan shot 02; setelah audit ulang, pengguna juga menyetujui keseluruhan snapshot. Koreksi sudah diterapkan pada draf 1.1 setelah audit ulang seluruh durasi; lihat [catatan audit ulang](edh001-re-audit.md). Snapshot terbaru sudah disetujui dan diekspor final dengan hash MD terkunci.
+Persetujuan awal ini khusus gerakan shot 02; setelah audit ulang, pengguna juga menyetujui keseluruhan snapshot. Koreksi sudah diterapkan pada draf 1.1 setelah audit ulang seluruh durasi; lihat catatan audit ulang (artefak lama dihapus). Snapshot terbaru sudah disetujui dan diekspor final dengan hash MD terkunci.
 
 ## 8. Tinjauan pengguna, koreksi dan ekspor
 

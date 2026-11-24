@@ -1,5 +1,7 @@
 # Rencana Implementasi Pustaka HOMEKU
 
+> Status setelah reset 24 November 2026: data audit edh001 telah dihapus atas permintaan pengguna. Catatan edh001 di dokumen ini bersifat historis, bukan referensi aktif atau persetujuan audit baru.
+
 **Kelanjutan Overview/Storyboard (23 November 2026):** format2.1/report2.2.0 dan reader2.1 tersedia; workflow/kit terbaru telah diselaraskan. edh001 r0003 telah disetujui, diekspor dan di-ingest; implementasi Overview/Storyboard selesai. Enam pilot pengguna tetap belum dinyatakan selesai. Lihat [plan berurutan](implementation-plan-overview-storyboard.md) dan [hasil/status terbaru](overview-storyboard-verification.md). Uraian versi sebelumnya di bawah dipertahankan sebagai riwayat.
 
 Dibuat: 21 November 2026
@@ -336,7 +338,7 @@ Setelah standar stabil, ketujuh paket menjadi referensi aktif pertama. Pengisian
 
 ## 12. Langkah berikutnya
 
-Langkah 1–3 dan audit ulang edh001 telah dilaksanakan; lihat [catatan audit ulang](edh001-re-audit.md). Kartu dan MD terbaru sudah disetujui pengguna; ZIP final telah diekspor dari snapshot terkunci, diserahkan melalui incoming/ dan di-ingest menjadi 1 referensi/5 shot aktif lokal. Kit sudah diperbarui; enam audit berikutnya tetap dilaksanakan pengguna di ChatGPT/Gemini.
+Langkah 1–3 dan audit ulang edh001 telah dilaksanakan; lihat catatan audit ulang (artefak lama dihapus). Kartu dan MD terbaru sudah disetujui pengguna; ZIP final telah diekspor dari snapshot terkunci, diserahkan melalui incoming/ dan di-ingest menjadi 1 referensi/5 shot aktif lokal. Kit sudah diperbarui; enam audit berikutnya tetap dilaksanakan pengguna di ChatGPT/Gemini.
 
 Setelah paket final diterima, periksa ingest, kelengkapan data/alias, kesetaraan MD–JSON, tautan sumber dan pembaruan katalog/knowledge. Selesaikan pembenahan dari tujuh pilot sebelum membekukan kontrak; tidak ada percobaan konsep/gambar tambahan. Setelah implementasi dipush, buktikan konfigurasi hosted melalui Library checks dan Library ingest.
 

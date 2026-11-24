@@ -1,5 +1,7 @@
 # Verifikasi Media Tahap 1
 
+> Status setelah reset 24 November 2026: data audit edh001 telah dihapus atas permintaan pengguna. Catatan edh001 di dokumen ini bersifat historis, bukan referensi aktif atau persetujuan audit baru.
+
 Tanggal: 22 November 2026. Versi tampilan terbaru: **2.1.2**. Tahap 2 tidak dijalankan.
 
 ## Koreksi sesuai contoh pengguna

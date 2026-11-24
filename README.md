@@ -2,7 +2,7 @@
 
 Pustaka referensi desain, komposisi dan gerakan kamera dari audit video. Workflow baru memakai **audit/paket 2.5**, laporan **2.2.4**, media **2.2.1** dan pembaca AI **2.5**. audit.json adalah sumber audit; analysis.md laporan manusia hasil renderer. Kit ChatGPT/Gemini dan panduan audit tersedia pada [audit/README.md](audit/README.md).
 
-**Aktif: edh001 r0003, format 2.1, lima shot dan tujuh JPEG.** Pengguna menyetujui keseluruhan snapshot; ZIP final diekspor tanpa render ulang dan di-ingest. Implementasi Overview/Storyboard selesai. Dua hasil edh058 dari Gemini/ChatGPT sudah diterima untuk dibandingkan, belum disetujui atau di-ingest; lima pilot lainnya belum tercatat. [Implementasi kualitas audit](docs/audit-quality-verification.md), [plan Overview/Storyboard](docs/implementation-plan-overview-storyboard.md), [PRD](docs/prd-overview-storyboard-cloning.md), [hasil dan status penerapan](docs/overview-storyboard-verification.md).
+**Pustaka aktif: 0 referensi / 0 shot.** Data audit edh001, ZIP revisi, cache dan riwayat ingest telah dihapus atas permintaan pengguna untuk memulai audit dari awal. MP4 asli tetap tersimpan di video/edh001.mp4. Hasil pilot edh058 tetap tersimpan untuk perbandingan dan belum di-ingest.
 
 ## Membaca referensi
 
@@ -32,9 +32,9 @@ python tools/library.py validate incoming/<id>-r0001.zip
 python tools/library.py ingest incoming/<id>-r0001.zip
 python tools/library.py build
 python tools/library.py search --area kitchen --tempo fast --limit 5
-python tools/library.py read edh001 --part shot --shot shot-03
-python tools/library.py panel edh001 s03-overview --output /tmp/kitchen.png
-python tools/library.py shot-image edh001 shot-03 --output /tmp/kitchen-shot.jpg
+python tools/library.py read reference-id --part shot --shot shot-03
+python tools/library.py panel reference-id s03-overview --output /tmp/kitchen.png
+python tools/library.py shot-image reference-id shot-03 --output /tmp/kitchen-shot.jpg
 python tools/library.py check
 python -m unittest discover -s tests -t . -v
 python tools/build_audit_kit.py --check

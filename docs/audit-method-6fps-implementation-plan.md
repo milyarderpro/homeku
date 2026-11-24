@@ -1,5 +1,7 @@
 # Plan implementasi metode audit visual dan baseline 6 FPS
 
+> Status setelah reset 24 November 2026: data audit edh001 telah dihapus atas permintaan pengguna. Catatan edh001 di dokumen ini bersifat historis, bukan referensi aktif atau persetujuan audit baru.
+
 Status: tahap1–7 selesai diterapkan dan diverifikasi pada23November2026; tahap8 siap dijalankan pengguna di ChatGPT/Gemini, belum ada run2.3. Disusun 23 November 2026 berdasarkan evaluasi pilot edh058 dan perbandingan dengan bekerja/masterprompt/audit-video.md. Melanjutkan audit-quality-implementation-plan.md; bukan penulisan ulang riwayat implementasi2.2.
 
 ## 1. Tujuan dan hasil yang diharapkan

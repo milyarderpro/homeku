@@ -1,5 +1,7 @@
 # Verifikasi Tahap 1 V2
 
+> Status setelah reset 24 November 2026: data audit edh001 telah dihapus atas permintaan pengguna. Catatan edh001 di dokumen ini bersifat historis, bukan referensi aktif atau persetujuan audit baru.
+
 Tanggal: 22 November 2026. **Status: Tahap 1 selesai; Tahap 2 belum dijalankan.**
 
 **Pembaruan berikutnya:** [koreksi tampilan 2.1.2](v2-stage-1-media-verification.md) sudah selesai: nama gaya bahasa Inggris, judul lebih kecil, header hanya judul/rentang/durasi, serta label dan timestamp kecil di bawah tiap foto. Catatan fondasi 2.0.0 di bawah dipertahankan sebagai riwayat; hasil verifikasi terbaru ada pada dokumen tersebut.

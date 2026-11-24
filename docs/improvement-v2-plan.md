@@ -1,5 +1,7 @@
 # Plan Improvement V2 — MD untuk Manusia, JSON sebagai Sumber Audit
 
+> Status setelah reset 24 November 2026: data audit edh001 telah dihapus atas permintaan pengguna. Catatan edh001 di dokumen ini bersifat historis, bukan referensi aktif atau persetujuan audit baru.
+
 **Kelanjutan Overview/Storyboard (23 November 2026):** format2.1/report2.2.0 dan reader2.1 tersedia; workflow/kit terbaru telah diselaraskan. edh001 r0003 telah disetujui, diekspor dan di-ingest; implementasi Overview/Storyboard selesai. Enam pilot pengguna tetap belum dinyatakan selesai. Lihat [plan berurutan](implementation-plan-overview-storyboard.md) dan [hasil/status terbaru](overview-storyboard-verification.md). Uraian versi sebelumnya di bawah dipertahankan sebagai riwayat.
 
 Tanggal: 22 November 2026.

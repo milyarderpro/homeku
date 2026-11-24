@@ -1,5 +1,7 @@
 # Verifikasi perangkat Phase 2 dan pilot pertama
 
+> Status setelah reset 24 November 2026: data audit edh001 telah dihapus atas permintaan pengguna. Catatan edh001 di dokumen ini bersifat historis, bukan referensi aktif atau persetujuan audit baru.
+
 Catatan historis implementasi awal, 21 November 2026. Penyempurnaan berikutnya dicatat terpisah pada [verifikasi improvement](phase-2-improvement-verification.md).
 
 Tanggal: 21 November 2026. Perangkat workflow telah diimplementasikan. Penyelesaian seluruh Phase 2 masih menunggu tinjauan pengguna atas edh001 serta enam audit di chat sehari-hari; kontrak belum dibekukan.
@@ -27,7 +29,7 @@ Sumber asli: video/edh001.mp4; SHA-256 3ccf8acf75ca46922025d39b3198e3cf460f9cb3c
 
 Audit dilakukan di chat implementasi Codex. Pemeriksaan visual menggunakan 184 sampel setiap 0.1 s, 20 pilihan keyframe termasuk batas cut, serta pembesaran sepuluh frame awal/akhir. Sampel bertumpang tindih dan tidak dinyatakan sebagai semua 552 frame. Audio tidak diperiksa. Native PTS digunakan untuk pembuatan media.
 
-[Laporan lengkap](../audit/pilots/edh001/analysis.md) memuat 5 shot, 127 fakta terstruktur dan 9 fase kamera. [Kandidat ZIP](../audit/pilots/packages/edh001-r0001.zip) memuat 21 JPEG, analysis.md dan manifest.json; MP4 tidak diduplikasi karena sumber kanonis tersedia dan cocok.
+Laporan lengkap (artefak lama dihapus) memuat 5 shot, 127 fakta terstruktur dan 9 fase kamera. Kandidat ZIP (artefak lama dihapus) memuat 21 JPEG, analysis.md dan manifest.json; MP4 tidak diduplikasi karena sumber kanonis tersedia dan cocok.
 
 Gambaran area exterior/kitchen/bathroom dipilih pada awal IN; living/bedroom pada akhir OUT. Storyboard tersusun dari lima gambaran area. Interpretasi kamera diberi dasar dan ketidakpastian; minor pan/tracking/orbit dan percepatan fisik tidak dinyatakan sebagai hasil rekonstruksi pose.
 

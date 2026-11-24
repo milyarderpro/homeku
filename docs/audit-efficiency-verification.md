@@ -1,5 +1,7 @@
 # Verifikasi implementasi audit efisien2.4
 
+> Status setelah reset 24 November 2026: data audit edh001 telah dihapus atas permintaan pengguna. Catatan edh001 di dokumen ini bersifat historis, bukan referensi aktif atau persetujuan audit baru.
+
 Tanggal23November2026. Mengikuti [plan](audit-efficiency-implementation-plan.md). Tahap1–7 tooling selesai; bagian teknis tahap8 (regresi/build/benchmark) selesai. Pilot2.4 ChatGPT/Gemini **belum dijalankan**, tetap tugas pengguna sesuai pembagian sebelumnya. Implementasi ini tidak mengaudit video baru atau mengesahkan/ingest hasil provider.
 
 ## Perubahan yang diterapkan

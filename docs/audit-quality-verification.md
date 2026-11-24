@@ -1,5 +1,7 @@
 # Verifikasi implementasi kualitas audit
 
+> Status setelah reset 24 November 2026: data audit edh001 telah dihapus atas permintaan pengguna. Catatan edh001 di dokumen ini bersifat historis, bukan referensi aktif atau persetujuan audit baru.
+
 Implementasi selesai sesuai [plan](audit-quality-implementation-plan.md). Audit/paket baru2.2, laporan2.2.1, media2.2.0, reader/index2.2, generator5.
 
 ## Hasil yang diterapkan

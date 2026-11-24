@@ -1,5 +1,7 @@
 # Verifikasi improvement — langkah 1, 2 dan 3
 
+> Status setelah reset 24 November 2026: data audit edh001 telah dihapus atas permintaan pengguna. Catatan edh001 di dokumen ini bersifat historis, bukan referensi aktif atau persetujuan audit baru.
+
 Tanggal: 22 November 2026. Lingkup yang selesai adalah kontrak/format, perangkat audit serta tooling. Audit ulang edh001 dan penyelesaian tujuh pilot tetap pekerjaan berikutnya; kontrak belum dibekukan.
 
 ## Perubahan yang tersedia
@@ -38,4 +40,4 @@ Registry produksi belum berisi referensi final aktif. Status teknis ini tidak be
 Langkah berikutnya: audit ulang seluruh edh001 menggunakan format/metode baru, tampilkan kartu untuk koreksi, lalu ekspor setelah pengguna menyatakan sesuai. Enam pilot lain tetap dikerjakan pengguna di ChatGPT/Gemini. Tidak ada benchmark manfaat pustaka atau percobaan membuat konsep/gambar dalam kriteria pekerjaan ini.
 
 
-Perkembangan setelah verifikasi langkah 1–3: [audit ulang edh001](edh001-re-audit.md) telah menghasilkan laporan 1.1 dan kartu yang disetujui pengguna, ZIP final serta ingest lokal yang lulus. Registry kini berisi edh001 sebagai 1 referensi/5 shot aktif. Catatan format 1.0 di atas menjelaskan keadaan sebelum audit ulang, bukan status terkini.
+Perkembangan setelah verifikasi langkah 1–3: audit ulang edh001 (artefak lama dihapus) telah menghasilkan laporan 1.1 dan kartu yang disetujui pengguna, ZIP final serta ingest lokal yang lulus. Registry kini berisi edh001 sebagai 1 referensi/5 shot aktif. Catatan format 1.0 di atas menjelaskan keadaan sebelum audit ulang, bukan status terkini.

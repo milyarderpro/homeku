@@ -1,5 +1,7 @@
 # Verifikasi metode audit6FPS / sumber2.3
 
+> Status setelah reset 24 November 2026: data audit edh001 telah dihapus atas permintaan pengguna. Catatan edh001 di dokumen ini bersifat historis, bukan referensi aktif atau persetujuan audit baru.
+
 Tanggal23November2026. Implementasi mengikuti [plan](audit-method-6fps-implementation-plan.md). Tahap1–7 tooling selesai; tahap8 run provider disiapkan dan belum dijalankan. Tidak ada audit visual baru, persetujuan kandidat, ekspor referensi nyata atau ingest pada pekerjaan ini.
 
 ## Hasil penerapan

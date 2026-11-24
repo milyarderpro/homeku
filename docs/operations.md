@@ -4,7 +4,7 @@
 
 Audit/paket2.4 memakai audit.json, MD enam bagian/report2.2.3, media2.2.0. Reader/index2.4 dan generator7 mendukung sumber1.0/1.1/2.0/2.1/2.2/2.3/2.4. [Paket2.4](contracts/package-v2-4.md), [laporan](contracts/analysis-v2-2-3.md), [reader](contracts/ai-reader-v2-4.md), [field map](v2-field-map.md).
 
-Paket 2.0 tetap renderer asalnya, termasuk2.1.2 dan storyboard overview satu baris; legacy tetap kontrak MD asal. Tidak ada penerjemahan nama gaya, penambahan fakta atau konversi paket diterima otomatis. Referensi aktif edh001 sudah r0003/2.1, disetujui pengguna, diekspor dan di-ingest; [status nyata](overview-storyboard-verification.md).
+Paket 2.0 tetap renderer asalnya, termasuk2.1.2 dan storyboard overview satu baris; legacy tetap kontrak MD asal. Tidak ada penerjemahan nama gaya, penambahan fakta atau konversi paket diterima otomatis. Pustaka aktif kosong setelah reset edh001 atas permintaan pengguna. Data audit dan ledger edh001 telah dihapus; MP4 kanonis dipertahankan. Audit baru dapat dimulai dari r0001 dengan supersedes null.
 
 ```sh
 python tools/audit.py draft-v2 /path/<id>.mp4 /work/audit.json --audit-info /work/audit-info.json --output /work/candidate

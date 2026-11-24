@@ -1,5 +1,7 @@
 # Verifikasi Overview / Storyboard — Tahap 1
 
+> Status setelah reset 24 November 2026: data audit edh001 telah dihapus atas permintaan pengguna. Catatan edh001 di dokumen ini bersifat historis, bukan referensi aktif atau persetujuan audit baru.
+
 Tanggal: 23 November 2026. **Tahap 1 selesai. Catatan Tahap 1 ada pada bagian 1–6; riwayat persiapan Tahap 2 ada pada bagian 7; penerimaan/ekspor/ingest final ada pada bagian 8.**
 
 Acuan: [plan implementasi](implementation-plan-overview-storyboard.md), [PRD](prd-overview-storyboard-cloning.md). Langkah 1.1–1.8 telah dijalankan berurutan. Saat penutupan Tahap 1, aktif masih edh001 r0002, sumber2.0/report-media2.1.2; pada tahap itu belum membuat kandidat r0003 atau melakukan ingest revisi baru.
@@ -125,9 +127,9 @@ Perbaikan kecil saat merender data nyata: **Camera Start** pada renderer baru ha
 
 Kandidat lokal: `.homeku/overview-storyboard-stage2/candidate/edh001/`. Seluruh input/provenance, review/receipt dan bukti pemeriksaan berada di luar folder kandidat. Kandidat ini bukan referensi aktif dan belum menjadi ZIP final.
 
-- [Laporan analysis.md lengkap](../.homeku/overview-storyboard-stage2/candidate/edh001/analysis.md) dan [review lengkap](../.homeku/overview-storyboard-stage2/review.md).
-- [Overview](../.homeku/overview-storyboard-stage2/candidate/edh001/media/overview.jpg) · [Storyboard](../.homeku/overview-storyboard-stage2/candidate/edh001/media/storyboard.jpg).
-- Kolase: [Shot 01](../.homeku/overview-storyboard-stage2/candidate/edh001/media/shot-01.jpg) · [Shot 02](../.homeku/overview-storyboard-stage2/candidate/edh001/media/shot-02.jpg) · [Shot 03](../.homeku/overview-storyboard-stage2/candidate/edh001/media/shot-03.jpg) · [Shot 04](../.homeku/overview-storyboard-stage2/candidate/edh001/media/shot-04.jpg) · [Shot 05](../.homeku/overview-storyboard-stage2/candidate/edh001/media/shot-05.jpg).
+- Laporan analysis.md lengkap (artefak lama dihapus) dan [review lengkap](../.homeku/overview-storyboard-stage2/review.md).
+- Overview (artefak lama dihapus) · Storyboard (artefak lama dihapus).
+- Kolase: Shot 01 (artefak lama dihapus) · Shot 02 (artefak lama dihapus) · Shot 03 (artefak lama dihapus) · Shot 04 (artefak lama dihapus) · Shot 05 (artefak lama dihapus).
 
 Tautan kandidat bersifat lokal, diabaikan Git. MD lengkap, seluruh tujuh media dan lima frame Overview native telah dibuka untuk pemeriksaan. Gambar hasil identik dengan preview layout Tahap 1, tidak ada perubahan font/jarak atau pilihan foto.
 
@@ -216,9 +218,9 @@ Suite lengkap **121 tes** telah lolos pada implementasi terakhir (bagian7); kode
 
 ### Penyerahan dan referensi aktif
 
-- [Unduh ZIP final](../audit/pilots/packages/edh001-r0003.zip); salinan [incoming](../incoming/edh001-r0003.zip) mempunyai SHA-256 sama.
-- [analysis.md aktif](../references/edh001/analysis.md) · [JSON untuk AI](../data/projections/edh001.json).
-- [Overview](../references/edh001/media/overview.jpg) · [Storyboard](../references/edh001/media/storyboard.jpg).
+- Unduh ZIP final (artefak lama dihapus); salinan incoming (artefak lama dihapus) mempunyai SHA-256 sama.
+- analysis.md aktif (artefak lama dihapus) · JSON untuk AI (artefak lama dihapus).
+- Overview (artefak lama dihapus) · Storyboard (artefak lama dihapus).
 - [Kit audit terbaru](../audit/homeku-audit-kit.zip) · [panduan mulai audit berikutnya](../audit/README.md).
 
 Export menerima receipt/digest yang telah ditinjau, tanpa draft/render ulang. ZIP dibuka ulang dan seluruh10file dibandingkan dengan kandidat; folder aktif setelah ingest juga cocok byte demi byte. Receipt serta catatan persetujuan tetap di luar ZIP. Kandidat dan rekaman lokal berada di `.homeku/overview-storyboard-stage2/`: approval-r0003.json, approved-export.json, application-results.json dan hasil roundtrip. Source, font/template/algoritme lama serta ZIP r0001/r0002 tetap utuh.

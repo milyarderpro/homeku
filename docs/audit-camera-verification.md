@@ -1,5 +1,7 @@
 # Verifikasi implementasi audit kamera 2.5
 
+> Status setelah reset 24 November 2026: data audit edh001 telah dihapus atas permintaan pengguna. Catatan edh001 di dokumen ini bersifat historis, bukan referensi aktif atau persetujuan audit baru.
+
 Tanggal: 24 November 2026. Mengikuti [plan implementasi](audit-camera-implementation-plan.md). **Tahap 1–8 selesai; tahap 9 siap dijalankan pengguna di ChatGPT/Gemini, belum dijalankan.**
 
 Implementasi ini tidak melakukan audit visual ulang edh058, tidak mengesahkan sepuluh studi kasus, dan tidak menerima/mengekspor/meng-ingest referensi produksi baru. Pengujian paket lengkap memakai fixture terisolasi.

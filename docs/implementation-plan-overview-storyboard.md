@@ -1,5 +1,7 @@
 # Plan implementasi — Overview, Storyboard dan laporan HOMEKU
 
+> Status setelah reset 24 November 2026: data audit edh001 telah dihapus atas permintaan pengguna. Catatan edh001 di dokumen ini bersifat historis, bukan referensi aktif atau persetujuan audit baru.
+
 Tanggal: 23 November 2026.
 
 Status: **Tahap 1 dan Tahap 2 implementasi Overview/Storyboard selesai. edh001 r0003/2.1 telah disetujui, diekspor dan di-ingest. Enam pilot pengguna tetap belum dinyatakan selesai.** [Hasil verifikasi dan daftar file aktual](overview-storyboard-verification.md).

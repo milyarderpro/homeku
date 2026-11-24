@@ -8,6 +8,6 @@ Overview dipilih dari frame asli (biasanya awal IN/akhir OUT) dengan paragraf po
 
 AI membaca data/search-index.json lalu `tools/library.py read` untuk identitas/shot/area. Proyeksi lengkap di data/projections/. [Reader2.1](../docs/contracts/ai-reader-v2-1.md) mempertahankan pointer, status, negasi dan bukti. `panel` serta `shot-image` mengambil foto/kolase tersimpan tanpa MP4; --from-storyboard mengambil seluruh blok pada media 2.2.0, --native secara khusus memeriksa MP4.
 
-Paket 2.0 mempertahankan laporan lima bagian dan storyboard overview satu baris. Legacy 1.0/1.1 memakai MD/media menurut kontrak masing-masing. **edh001 aktif r0003/2.1**, telah disetujui sebagai keseluruhan snapshot, diekspor dan di-ingest melalui ZIP revisi eksplisit. Paket lama/riwayat tetap utuh; tidak ada konversi atau penambahan fakta otomatis.
+Paket 2.0 mempertahankan laporan lima bagian dan storyboard overview satu baris. Legacy 1.0/1.1 memakai MD/media menurut kontrak masing-masing. **Pustaka aktif kosong setelah reset edh001.** Audit baru dimulai dari r0001; MP4 kanonis dipertahankan.
 
 Folder aktif hanya diisi importer dari ZIP final. Kandidat/fixture/arsip bukan input build. Jangan edit audit/MD aktif, proyeksi, katalog atau knowledge secara manual. [Status implementasi](../docs/overview-storyboard-verification.md).

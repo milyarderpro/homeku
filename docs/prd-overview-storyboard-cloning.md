@@ -1,5 +1,7 @@
 # PRD — Overview, Storyboard dan Alur Cloning HOMEKU
 
+> Status setelah reset 24 November 2026: data audit edh001 telah dihapus atas permintaan pengguna. Catatan edh001 di dokumen ini bersifat historis, bukan referensi aktif atau persetujuan audit baru.
+
 Diperbarui: 23 November 2026.
 
 Status: **Tahap 1 dan Tahap 2 implementasi selesai; edh001 r0003 disetujui, diekspor dan aktif melalui ingest. Enam pilot pengguna tetap belum dinyatakan selesai.**
