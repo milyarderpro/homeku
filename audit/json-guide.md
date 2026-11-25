@@ -53,6 +53,8 @@ Satu `areas[].label` menamai satu area fisik. Gunakan `Bathroom & Laundry` untuk
 
 Normal tiga panel `Start`, `Middle`, dan `End` pada awal, midpoint native terdekat dan akhir. Multi-area memakai jumlah panel yang sesuai dengan momen visual, dengan awal dan akhir wajib. Isi `panels[].label` pada momen antara yang bisa dinamai, misalnya `Living & Kitchen` atau `Doorway`. Overview dipilih untuk gambaran area lengkap, biasanya awal IN/akhir OUT; paragrafnya menjelaskan frame itu, Camera Start tetap awal sumber.
 
+Jika transisi mengaburkan awal shot, simpan frame jernih pertama yang layak di `shots[].composition.production_start`. Isi `frame_index` native dan `composition_summary` satu paragraf tentang posisi, arah, dan framing. Frame harus berada setelah Start native dalam shot yang sama dan tercatat viewed. Untuk awal yang jernih, biarkan field ini absen dan gunakan Start biasa. Jika belum ada acuan jernih, catat keterbatasan di `notes`. Panel, Overview, dan Camera Start mengikuti sumber.
+
 ID selection, shot_id, PTS, duration, parsed/summary/pattern dan coverage mekanis dihitung saat diperlukan atau disimpan teknis sekali dalam manifest. Tidak disisipkan kembali ke audit ringkas. Tidak menyimpan seluruh frame video.
 
 ## Provenance proses

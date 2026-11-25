@@ -10,6 +10,6 @@ Filter mencakup tipe rumah (`--house-type`), gaya utama/pengaruh/interior, skala
 
 `read --part identity` menyediakan susunan ruang, pencahayaan, atmosfer, dan palet HEX dari sumber beserta pointer dan frame bukti. Indeks membawa facet tipe untuk menyaring referensi. Pencarian biasa menyertakan perkiraan `uncertain`, dan `--observed-only` menyaringnya.
 
-read/panel/shot-image memakai snapshot/proyeksi/media tersimpan tanpa MP4. PTS/bukti panel berasal dari frame map dan selections manifest; crop memakai bbox terdaftar. `--native` membutuhkan MP4 kanonis. Gunakan ID selection atau `F<indeks>` untuk bukti native di luar kolase. Build/check/ingest tetap memverifikasi MP4 kanonis/hash.
+read/panel/shot-image memakai snapshot/proyeksi/media tersimpan tanpa MP4. PTS/bukti panel berasal dari frame map dan selections manifest; crop memakai bbox terdaftar. `read --part shot` dan `read --part area` menyertakan `shot.composition.production_start` bila ada, beserta PTS pada `evidence.frames` dan pointer sumber. Untuk mengambil fotonya, gunakan `python tools/library.py panel <id> F<indeks> --native --output <path>`. `--native` membutuhkan MP4 kanonis. Gunakan ID selection atau `F<indeks>` untuk bukti native di luar kolase. Build/check/ingest tetap memverifikasi MP4 kanonis/hash.
 
 Referensi aktif hanya registry. Hasil pilot, fixture, cache, incoming belum diterima dan arsip bukan sumber discovery. Registry kosong tetap sah; full/incremental/replay dan penggantian revisi harus menghasilkan keluaran konsisten tanpa data usang.

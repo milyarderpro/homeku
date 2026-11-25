@@ -130,6 +130,9 @@ def referenced_frames(audit):
     for shot in audit["shots"]:
         for group in ("panels", "overviews"):
             indices.update(p["frame_index"] for p in shot[group])
+        production_start = shot["composition"].get("production_start")
+        if production_start is not None:
+            indices.add(production_start["frame_index"])
     require(all(type(i) is int and i >= 0 for i in indices), "Invalid referenced frame index")
     return sorted(indices)
 

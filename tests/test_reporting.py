@@ -6,7 +6,7 @@ from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
 from homeku.common import LibraryError, read_json
-from homeku.derivations import camera_summary
+from homeku.derivations import camera_summary, frame_map
 from homeku.reporting import render_report
 from homeku.report_validation import HEADINGS, validate_report
 
@@ -70,6 +70,17 @@ class ReportingTests(unittest.TestCase):
         self.assertEqual(report.count("### Palet warna"), 1)
         with self.assertRaises(LibraryError):
             validate_report(report.replace("### Palet warna", "### Extra"), audit, PTS)
+
+    def test_production_start_is_conditional_and_uses_manifest_pts(self):
+        audit = self.audit("normal")
+        original = render_report(audit, PTS)
+        composition = audit["shots"][0]["composition"]
+        composition["production_start"] = {"frame_index": 4, "composition_summary": "Dari dekat pintu [kiri]."}
+        report = render_report(audit, frame_map(audit, PTS))
+        row = r"- **Production Start:** F4 · 0.40s · Dari dekat pintu \[kiri\]."
+        self.assertIn(row, report)
+        self.assertEqual(report.replace(row + "\n", ""), original)
+        self.assertEqual(re.findall(r"^## .+$", report, re.M), HEADINGS)
 
     def test_damage_to_template_structure_is_rejected(self):
         audit = self.audit("normal")

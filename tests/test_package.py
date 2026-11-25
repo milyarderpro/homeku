@@ -16,10 +16,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PackageTests(test_prepare.VideoFixture, unittest.TestCase):
-    def authored(self, name="normal"):
+    def authored(self, name="normal", *, production_start=None):
         source = self.video("camera-" + name)
         prepared = prepare(source, [], self.work / "audit")
         audit = read_json(ROOT / "audit/examples" / name / "audit.json")
+        if production_start is not None:
+            audit["shots"][0]["composition"]["production_start"] = production_start
         audit_path, info_path = Path(prepared["audit"]), Path(prepared["audit_info"])
         audit_path.write_text(dumps(audit))
         info_path.write_text(dumps({"method": "Fixture", "limitations": "Synthetic fixture",
@@ -50,6 +52,25 @@ class PackageTests(test_prepare.VideoFixture, unittest.TestCase):
             self.assertEqual(set(archive.namelist()), names)
             for name in names:
                 self.assertEqual(archive.read(name), (candidate.parent / name).read_bytes())
+
+    def test_production_start_roundtrip_keeps_original_media_inventory(self):
+        summary = "Kamera dekat ambang dan menghadap wastafel."
+        source, audit_path, logs = self.authored(
+            production_start={"frame_index": 4, "composition_summary": summary})
+        result = draft(source, audit_path, logs, self.work / "candidates", purpose="fixture")
+        candidate = Path(result["candidate"])
+        checked = review(candidate, self.work / "review.md")
+        packaged = export(candidate, self.work / "out", Path(checked["receipt"]))
+        with zipfile.ZipFile(packaged["package"]) as archive:
+            relative = {name.removeprefix(candidate.name + "/") for name in archive.namelist()}
+            self.assertEqual(relative, {"audit.json", "analysis.md", "manifest.json", "media/shot-01.jpg",
+                                        "media/overview.jpg", "media/storyboard.jpg"})
+        manifest = read_json(candidate / "manifest.json")
+        self.assertEqual(manifest["frames"]["4"], .4)
+        selections = {p["role"]: p["frame_index"] for p in manifest["selections"]}
+        self.assertEqual(selections, {"start": 0, "middle": 6, "end": 11, "overview": 11})
+        self.assertIn("- **Production Start:** F4 · 0.40s · " + summary,
+                      (candidate / "analysis.md").read_text())
 
     def test_draft_binds_the_standard_profile_template(self):
         source, audit, logs = self.authored()

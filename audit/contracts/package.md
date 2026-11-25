@@ -31,6 +31,7 @@ Audit.json adalah satu sumber keputusan isi; analysis.md hasil renderer dan mani
 | Desain manusia | shots[].design[].architecture / furnishings / environment .text | Paragraf A. Desain area |
 | Fakta AI | Ketiga kategori desain .facts[] | Kategori melekat; tanpa fact_coverage paralel |
 | Camera Start | shots[].composition | Posisi/arah/angle awal sumber |
+| Production Start | shots[].composition.production_start | Penunjuk frame native jernih dan framing untuk awal produksi saat ada transisi |
 | Framing / fokus / cahaya | shots[].composition | B. Framing & Lighting |
 | Gerak Indonesia | shots[].camera.description | C. Camera Movement |
 | Gerak teknis | shots[].camera.phases[].notation | Parser dan summary; tidak ditulis kembali |
@@ -52,7 +53,7 @@ Setiap klaim memiliki satu lokasi sumber; renderer dan generator merujuk lokasi 
 
 Profile paralel, components_parsed, camera_summary, fact_coverage/fact_ids, timestamp/shot_id selection berulang, esai basis wajib dan null pengukuran kosong dihapus dari audit final. Nilai turunan dihitung sesuai kebutuhan tanpa model legacy perantara.
 
-Frame map hanya indeks yang dirujuk audit/selection; bukan seluruh video. Session, cache, log performa, sheet dan receipt berada di workspace. Satu take sampai cut tetap satu shot; fungsi area yang berubah tidak menjadi cut.
+Frame map menyimpan indeks yang dirujuk audit dan seleksi, termasuk Production Start bila dipilih. Acuan produksi memakai shot dan deklarasi viewed yang sama dengan sumber, dengan PTS setelah Start native. JPEG tetap berasal dari seleksi panel dan Overview. Session, cache, log performa, sheet dan receipt berada di workspace. Satu take sampai cut tetap satu shot; fungsi area yang berubah tidak menjadi cut.
 
 ## Struktur, versi dan penyerahan
 

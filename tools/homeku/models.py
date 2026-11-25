@@ -32,6 +32,25 @@ def validate_profile(design):
                 "/design/palette: use the structured palette as the only palette source")
 
 
+def validate_production_starts(audit, frames=None):
+    for i, shot in enumerate(audit["shots"]):
+        choice = shot["composition"].get("production_start")
+        if choice is None:
+            continue
+        index = choice["frame_index"]
+        path = f"/shots/{i}/composition/production_start/frame_index"
+        require(shot["panels"][0]["frame_index"] < index <= shot["panels"][-1]["frame_index"],
+                path + ": choose a frame after native Start in the same shot")
+        if frames is None:
+            continue
+        if isinstance(frames, dict):
+            pts = frames.get(str(index))
+        else:
+            pts = frames[index] if index < len(frames) else None
+        require(pts is not None and shot["start_s"] < pts < shot["end_s"],
+                path + ": frame PTS must be after native Start and within the shot")
+
+
 def validate_audit(audit, duration=None, times=None):
     require(isinstance(audit, dict) and audit.get("schema_version") == FORMAT_VERSION,
             "Unsupported audit format; use the current HOMEKU kit and audit again")
@@ -149,6 +168,7 @@ def validate_audit(audit, duration=None, times=None):
                 require(shot["start_s"] <= times[i] < shot["end_s"], pointer + ": evidence outside shot")
             if ids:
                 require(any(visible(aid, times[i]) for aid in ids), pointer + ": evidence outside area visibility")
+    validate_production_starts(audit, times)
     from .audit_quality import validate_motion
     validate_motion(audit, times)
     return audit

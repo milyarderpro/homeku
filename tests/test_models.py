@@ -99,6 +99,20 @@ class ModelTests(unittest.TestCase):
         with self.assertRaisesRegex(LibraryError, "visible"):
             self.validate(value)
 
+    def test_production_start_frame_stays_after_native_start_in_its_shot(self):
+        value = self.audit()
+        composition = value["shots"][0]["composition"]
+        choice = {"frame_index": 4, "composition_summary": "Menghadap wastafel dari dekat pintu."}
+        composition["production_start"] = choice
+        self.validate(value)
+        for index in (0, 12):
+            with self.subTest(index=index), self.assertRaisesRegex(
+                    LibraryError, "/shots/0/composition/production_start/frame_index"):
+                choice["frame_index"] = index
+                self.validate(value)
+        del composition["production_start"]
+        self.validate(value)
+
     def test_all_moderate_and_optional_numbers_still_validate(self):
         value = self.audit()
         shot = value["shots"][0]

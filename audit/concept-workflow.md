@@ -27,14 +27,14 @@ Indeks mencari tipe rumah, gaya, skala, konfigurasi, rute, gerak, dan tempo. Buk
 | Tipe rumah, gaya, ukuran, dan palet | design.house_type, design.styles, design.size, design.features, design.palette serta katalog DNA |
 | Variasi ruang dan furnitur | Area fisik, fungsi, kategori desain, fakta dan facet konfigurasi |
 | Kontinuitas rumah | Rute, visibilitas, hubungan area, bukaan dan lingkungan yang terlihat |
-| Komposisi dan gerak | Camera Start, framing, fase, tempo, Overview serta panel native |
+| Komposisi dan gerak | Camera Start, Production Start bila ada, framing, fase, tempo, Overview, dan panel native |
 | Prinsip umum | Knowledge memuat prinsip terkurasi tentang orisinalitas, skala, kontinuitas, dan komposisi |
 
 Catat ketidakpastian serta negasi sesuai sumber. Rujuk halaman [prinsip desain](../knowledge/principles.md) untuk hubungan DNA, orisinalitas, skala, kompatibilitas gaya, variasi ruang, kontinuitas rumah, material dan cahaya, serta kecocokan frame awal.
 
 ## Susun frame awal dan gerakan
 
-Untuk tiap take, tentukan area pertama, posisi dan arah kamera, sudut, tinggi, kemiringan, foreground, kedalaman, cahaya dan bagian yang akan terungkap. Baca Camera Start, panel Start, fase pertama, serta tempo secara bersamaan. Overview memuat frame wide terpilih dan komposisinya. Pada OUT, Overview biasanya berada di akhir sumber. Gunakan sudut yang sesuai lintasan dan ruang.
+Untuk tiap take, tentukan area pertama, posisi dan arah kamera, sudut, tinggi, kemiringan, foreground, kedalaman, cahaya dan bagian yang akan terungkap. Untuk produksi maju sesuai urutan sumber, pakai `composition.production_start` jika ada. Baca `composition_summary`, lihat frame native di `frame_index`, dan cocokkan dengan fase serta tempo pada PTS frame itu. Jika awal sudah jernih, gunakan Camera Start dan panel Start. Jika transisi diketahui dan pilihan jernih belum tercatat, periksa sumber sebelum menyusun prompt. Overview memuat frame wide terpilih dan komposisinya. Pada OUT, Overview biasanya berada di akhir sumber. Gunakan sudut yang sesuai lintasan dan ruang.
 
 Untuk satu take multi area, pilih rute yang benar-benar kontinu dan pelajari tiap penghubung, kemunculan area, fokus, fase, serta tempo. Siapkan satu frame awal untuk take tersebut. Gunakan gambar pendukung untuk ruang yang muncul kemudian. Pastikan jalur kamera baru dapat melewati penghubung dalam desain terkunci.
 
@@ -44,4 +44,4 @@ Gerakan sederhana menjelaskan perjalanan. Notasi teknis mempertahankan komponen 
 
 Jika pengguna memilih meniru satu video, baca ID aktif tersebut untuk desain, posisi furnitur, pencahayaan, urutan, framing, serta kamera dan tempo. Pertahankan penghubung dan reveal pada take multi area sesuai yang terlihat.
 
-Untuk produksi IN, Overview awal sering cocok sebagai sumber gambar awal. Jika produksi OUT memakai reverse, gunakan Overview akhir sebagai gambar awal perjalanan kebalikan. Balik lintasan, arah rotasi, urutan fase, target dan perkembangan tempo sebelum membalik hasil video. Untuk fase campuran, Overview tengah, atau area yang baru terlihat kemudian, sesuaikan bagian lintasan dengan cakupan bukti. Keputusan reverse dicatat pada proyek produksi.
+Untuk produksi IN, Overview awal dapat membantu membaca cakupan ruang. Gunakan komposisi Production Start bila auditor memilih acuan jernih. Jika produksi OUT memakai reverse, gunakan Overview akhir sebagai gambar awal perjalanan kebalikan. Balik lintasan, arah rotasi, urutan fase, target dan perkembangan tempo sebelum membalik hasil video. Untuk fase campuran, Overview tengah, atau area yang baru terlihat kemudian, sesuaikan bagian lintasan dengan cakupan bukti. Keputusan reverse dicatat pada proyek produksi.

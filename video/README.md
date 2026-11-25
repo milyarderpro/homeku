@@ -1,9 +1,7 @@
 # Video sumber HOMEKU
 
-Simpan satu MP4 kanonis per sumber sebagai `video/<id>.mp4`. ID paket mengikuti stem nama file dan mempertahankan kapitalisasinya. Manifest mengikat sumber dengan SHA-256 serta metadata stream video aktual.
+Simpan MP4 asli sebagai `video/<id>.mp4`. ID audit mengikuti stem nama file, termasuk kapitalisasi. Manifest mengikat MP4 kanonis dengan SHA-256 dan metadata stream aktual.
 
-Jika sumber sudah ada di sini, ZIP cukup berisi sumber audit JSON (V2), laporan, manifest dan media. Jika belum ada, chat dapat menyertakan `<id>/source.mp4` di ZIP; importer menempatkannya di sini. Tidak ada salinan MP4 kedua dalam folder referensi.
+Simpan ZIP final secara terpisah di [incoming](../incoming/README.md). Paket 3.0 memuat `audit.json`, `analysis.md`, `manifest.json`, dan JPEG terdaftar. Penambahan referensi aktif dilakukan melalui ingest setelah ZIP dan MP4 tersedia. [Kontrak paket](../audit/contracts/package.md)
 
-File video yang tersedia belum otomatis menjadi referensi aktif. Audit final masuk melalui [incoming/](../incoming/README.md) sesuai [kontrak V2](../docs/contracts/package-v2.md) atau [legacy](../docs/contracts/package-v1.md). Metadata/review lama dalam arsip tidak dipindahkan otomatis.
-
-Alur baru tidak memakai YAML, Git blob SHA-1, requests/save.json atau perintah save now. Upload sumber juga dapat memicu retry ingest paket yang sebelumnya gagal karena sumber belum tersedia.
+Pemeriksaan native seperti `panel --native` membaca MP4 kanonis. Arsip video dapat tersedia di folder ini sebelum audit selesai dan diterima ke pustaka.

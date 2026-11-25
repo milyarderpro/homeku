@@ -75,3 +75,11 @@ class PreflightTests(test_prepare.VideoFixture, unittest.TestCase):
         digest.assert_called_once_with(source)
         self.assertEqual(result["context"]["sha256"], sha256(source))
         self.assertEqual(result["context"]["times"], frame_times(source))
+        audit = read_json(Path(work["audit"]))
+        audit["shots"][0]["composition"]["production_start"] = {
+            "frame_index": 4, "composition_summary": "Kamera dari dekat ambang."}
+        result = check_inputs(source, audit, read_json(Path(work["audit_info"])))
+        self.assertFalse(result["ok"])
+        [error] = result["errors"]
+        self.assertEqual(error["path"], "/audit-info/frame_reviews")
+        self.assertIn("/shots/0/composition/production_start/frame_index", error["message"])

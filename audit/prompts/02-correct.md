@@ -1,6 +1,6 @@
 # Koreksi audit HOMEKU 3.0
 
-Terapkan koreksi saya pada `audit.json` kerja. Temukan bukti terkait lalu periksa ulang bagian yang masih ambigu dengan pendalaman 10 FPS atau native. Pertahankan catatan yang sudah cocok. Jika koreksi menyangkut kamera, baca `audit/camera-cases.md` sebelum memeriksa fase yang terdampak. Nilai kembali jenis, arah, lintasan, intensitas, profil laju, dan besaran setiap komponen. Cantumkan rincian dan estimasi ~× atau ~° yang didukung frame di `notation`.
+Terapkan koreksi saya pada `audit.json` kerja. Temukan bukti terkait lalu periksa ulang bagian yang masih ambigu dengan pendalaman 10 FPS atau native. Pertahankan catatan yang sudah cocok. Jika koreksi menyangkut kamera, baca `audit/camera-cases.md` sebelum memeriksa fase yang terdampak. Periksa batas fase lalu bandingkan jangkar dekat, jangkar jauh, dan sudut bidang untuk membedakan Pan, Orbit, serta Truck. Nilai kembali jenis, arah, intensitas, profil laju, dan besaran tiap komponen. Cantumkan rincian dan estimasi ~× atau ~° yang didukung frame di `notation`.
 
 Jika koreksi menyangkut Profil Desain, perbarui klaim tipe rumah atau aspek terkait pada sumber audit. Untuk koreksi palet, perbarui entri `design.palette` dan bukti frame yang bersangkutan.
 
@@ -8,4 +8,4 @@ Koreksi label area dan label momen di sumber audit agar laporan dan media konsis
 
 Selaraskan fakta, narasi, komposisi, notasi, fase, dan tempo yang terdampak. Jika koreksi terpusat pada satu shot, gunakan `update-shot` dengan file patch JSON. Isi deklarasi viewed hanya untuk frame yang benar-benar sudah dilihat. Jalankan complete dan draft.
 
-Ikuti checklist isi di `audit/authoring.md`. Untuk koreksi kamera, cocokkan kembali `notation` dengan `observations` dan bukti temporal sebelum ekspor. Setelah kandidat terbaru lulus validasi, jalankan `review` dan langsung `export --receipt` dengan receipt terbaru. Tampilkan ulang laporan dan tautan unduhan ZIP terbaru.
+Ikuti checklist isi di `audit/authoring.md`. Jika gerak dikoreksi, cocokkan `notation`, `observations`, dan frame sebelum review. Periksa fase terlewat, Orbit/Pan, dan arah badan serta sapuan. Setelah kandidat terbaru lulus validasi, jalankan `review` dan langsung `export --receipt` dengan receipt terbaru. Tampilkan ulang laporan dan tautan unduhan ZIP terbaru.

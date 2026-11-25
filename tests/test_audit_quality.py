@@ -3,7 +3,8 @@ import unittest
 from .test_audit_preflight import normal
 from homeku.audit_quality import validate_audit_logs, validate_frame_reviews
 from homeku.common import LibraryError
-from homeku.derivations import frame_map
+from homeku.derivations import frame_map, selections
+from homeku.package_manifest import validate_frame_map
 from homeku.video import selected_indices
 
 
@@ -50,6 +51,31 @@ class AuditQualityTests(unittest.TestCase):
             validate_audit_logs(logs, self.audit, None, self.info, times=self.times)
         logs["frame_reviews"].append(self.review(6, .4, .5, native=True))
         validate_audit_logs(logs, self.audit, None, self.info, times=self.times)
+
+    def test_production_start_participates_in_viewed_and_offline_frame_validation(self):
+        shot = self.audit["shots"][0]
+        shot["composition"]["production_start"] = {
+            "frame_index": 4, "composition_summary": "Framing jernih setelah transisi."}
+        reviews = [self.review(6), self.review(6, .6, .7, native=True)]
+        logs = {"method": "Fixture", "limitations": "Fixture only",
+                "ai": {"provider": "fixture", "model": "fixture", "model_build": None},
+                "reviewed_ranges": [{"start_s": 0, "end_s": 1.2, "mode": "sampling"}],
+                "frame_reviews": reviews}
+        frames = frame_map(self.audit, self.times)
+        manifest = {"frames": frames, "selections": list(selections(self.audit, frames)), "audit": logs}
+        self.assertEqual(frames["4"], .4)
+        self.assertNotIn(4, {item["frame_index"] for item in manifest["selections"]})
+        path = "/shots/0/composition/production_start/frame_index"
+        with self.assertRaisesRegex(LibraryError, "/frame_reviews: frame not actually declared viewed for " + path):
+            validate_audit_logs(logs, self.audit, None, self.info, times=self.times)
+        with self.assertRaisesRegex(LibraryError, "/frame_reviews: frame not actually declared viewed for " + path):
+            validate_frame_map(manifest, self.audit)
+        reviews.append(self.review(6, .4, .5, native=True))
+        validate_audit_logs(logs, self.audit, None, self.info, times=self.times)
+        validate_frame_map(manifest, self.audit)
+        frames["4"] = shot["end_s"]
+        with self.assertRaisesRegex(LibraryError, path + ": frame PTS"):
+            validate_frame_map(manifest, self.audit)
 
     def test_adjacent_baseline_passes_cover_shot_and_gaps_do_not(self):
         rows = [self.review(6, end=.5), self.review(6, start=.5)]

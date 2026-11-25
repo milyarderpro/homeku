@@ -1,6 +1,6 @@
 # Tujuh pilot HOMEKU 3.0
 
-Kit 3.0 telah lulus uji teknis dengan fixture. Registry produksi berisi nol referensi. Tujuh video di bawah siap digunakan sebagai sumber pilot. Audit 3.0, persetujuan, ekspor dan ingest untuk tiap video masih menunggu pelaksanaan.
+Kit 3.0 telah lulus uji teknis dengan fixture. Tabel berikut mencatat tujuh video dan fokus pilotnya. Status referensi aktif mengikuti `data/registry.json`.
 
 | Video sumber | Fokus pilot | Riwayat |
 | --- | --- | --- |
@@ -11,6 +11,10 @@ Kit 3.0 telah lulus uji teknis dengan fixture. Registry produksi berisi nol refe
 | [edh049](../../video/edh049.mp4) | Perspektif bangunan dan kitchen lengkung, serta pembedaan pan dan orbit | Gunakan MP4 asli dengan kit 3.0. |
 | [edh056](../../video/edh056.mp4) | Lintasan exterior–interior, cut dan pergantian area | Gunakan MP4 asli dengan kit 3.0. |
 | [dreamshome01](../../video/dreamshome01.mp4) | Pembanding arah, ritme, dan perkembangan komposisi | Gunakan MP4 asli dengan kit 3.0. |
+
+## Pembanding rilis kamera
+
+Enam paket pilot baru telah diperiksa secara teknis. Gunakan [pembanding kamera](camera-release-check.md) untuk uji terarah di GPT dan Gemini, termasuk kasus awal yang tertutup transisi.
 
 ## Menjalankan satu pilot
 

@@ -167,6 +167,9 @@ def read_reference(root, rid, *, part="identity", shot=None, area=None):
     areas = [a for a in audit["areas"] if a["id"] in found["area_ids"]]
     selected_frames = [p for p in payload["evidence_inventory"]["selections"] if p["shot_id"] == shot]
     indices = {p["frame_index"] for p in selected_frames}
+    production_start = found["composition"].get("production_start")
+    if production_start is not None:
+        indices.add(production_start["frame_index"])
     omitted = set()
     for pointer, claim, scope, sid, category in claims(audit):
         if sid != shot:

@@ -1,11 +1,17 @@
-# Menyerahkan ZIP final
+# Menyerahkan ZIP final HOMEKU 3.0
 
-Untuk lokal: letakkan ZIP final di folder ini, lalu jalankan `python tools/library.py ingest`. Menyalin ZIP saja tidak menjalankan proses.
+Letakkan ZIP yang sudah dipilih dari chat di folder ini. Nama paket mengikuti `<id>-rNNNN.zip`. ZIP memuat satu folder `<id>/` berisi `audit.json`, `analysis.md`, `manifest.json`, serta JPEG kolase setiap shot, Overview, dan Storyboard di `media/`. Simpan MP4 kanonis secara terpisah di `video/<id>.mp4`. [Kontrak paket](../audit/contracts/package.md) · [Panduan MP4](../video/README.md)
 
-Untuk GitHub: upload satu file `<id>-r0001.zip` langsung di folder ini pada branch utama. ZIP berisi satu folder `<id>/` dengan laporan, manifest dan seluruh media. [Kontrak V2](../docs/contracts/package-v2.md) dan [kontrak legacy](../docs/contracts/package-v1.md) menentukan isi sesuai versi. V2 menambahkan audit.json, MD hasil render serta kolase; paket lama tetap valid.
+## Ingest lokal
 
-Audit/koreksi dilakukan sebelum download ZIP dari chat. Setelah upload, workflow **Library ingest** memproses seluruh ZIP yang tersedia, termasuk unggahan berdekatan. Tidak perlu mengirim perintah save now atau mengedit requests/save.json.
+Setelah MP4 dan ZIP tersedia, jalankan perintah berikut dari root repo. Gunakan `python tools/library.py ingest` untuk memindai seluruh ZIP di folder ini.
 
-Hasil ada di [katalog](../catalogs/README.md). Status teknis ada di `data/ingest.json` dan artifact **homeku-ingest-report** pada Actions. ZIP gagal tidak mengganti referensi aktif; setelah diperbaiki, upload paket koreksi dan simpan perubahan. Paket dengan ID/revisi yang sudah aktif hanya dapat diubah melalui revisi berikutnya.
+~~~sh
+python tools/library.py ingest incoming/rumah-r0001.zip
+~~~
 
-ZIP disimpan sebagai bukti penyerahan. Tidak ada penghapusan otomatis; kebijakan [retensi](../docs/operations.md) berlaku.
+## Ingest di GitHub
+
+Workflow [Library ingest](../.github/workflows/library-ingest.yml) memindai ZIP yang tersedia pada branch default ketika dipicu oleh push pada path yang tercantum, termasuk `incoming/*.zip` dan `video/*.mp4`. Workflow juga bisa dijalankan manual pada branch default.
+
+Referensi baru memakai r0001 dengan `supersedes` bernilai null. Untuk memperbarui referensi aktif, gunakan revisi berikutnya dan isi `supersedes` dengan revisi serta hash snapshot aktif. Hasil ingest yang berhasil masuk [katalog](../catalogs/README.md). Status teknis tercatat di `data/ingest.json` dan artifact **homeku-ingest-report** di Actions.

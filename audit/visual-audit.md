@@ -10,56 +10,41 @@ Cut memakai indeks dan PTS native. Pergantian area tanpa cut tetap satu shot; ru
 
 ## Urutan keputusan per fase
 
-1. **Depth:** bandingkan ukuran jangkar yang sama, lapisan dekat/jauh, oklusi dan ruang yang terbuka. Periksa Dolly/Zoom sebelum menyimpulkan Pan-only atau netral.
-2. **Translation:** periksa gerak badan kamera lateral/vertikal melalui paralaks, perubahan sisi dan hubungan foreground/background.
-3. **Rotation:** periksa putaran arah pandang terhadap jangkar. Jangan hanya mencatat komponen paling menonjol; translasi dan rotasi dapat simultan.
-4. **Fase:** pisahkan ketika komponen mulai/berhenti/berubah, bukan semata area atau tempo berubah. + simultan; → antar fase, satu paragraf.
-5. **Besaran dan tempo:** nilai besaran setiap komponen dari perubahan visual sepanjang fase. Nilai tempo dari perubahan per waktu setara, secara terpisah.
+Baca [camera-cases.md](camera-cases.md) sebelum menganalisis kamera. Setelah meninjau baseline, pilih sekitar 6–10 frame pembanding sesuai durasi dan kerumitan shot.
 
-Simpan observations depth/translation/rotation spesifik pada fase, dengan bukti temporal bersama. Override komponen hanya jika bukti/ambiguitas berbeda. Minimal dua frame temporal berbeda pada fase/toleransi satu batas native yang dinyatakan; jangan mengarang evidence agar lolos.
+1. **Temukan kandidat batas fase.** Bandingkan awal, tengah, dan akhir. Cari kapan komponen mulai, berhenti, atau berubah. Lihat frame sebelum dan sesudah dugaan batas. Perubahan area serta tempo bisa berlangsung dalam satu fase gerak.
+2. **Nilai kedalaman.** Bandingkan ukuran bagian yang sama pada jangkar yang sama, lapisan dekat dan jauh, serta ruang yang terbuka. Uji kemungkinan Dolly dan Zoom sebelum menyimpulkan arah kedalaman. Pembesaran saja juga dapat terjadi karena Zoom.
+3. **Pisahkan lintasan badan dan arah pandang.** Bandingkan satu jangkar dekat, satu jangkar jauh, dan orientasi satu bidang pada frame yang sama. Cari komponen lateral atau vertikal serta rotasi yang berlangsung bersamaan. Gunakan panduan Pan, Orbit, dan Truck di bawah.
+4. **Tegaskan fase dan notasi.** Cocokkan dugaan batas dengan frame dan komponen yang benar-benar berubah. Pakai `+` untuk komponen simultan dalam satu fase. Ringkasan turunan memakai `→` antar fase. Baru kemudian nilai estimasi besaran, lintasan, intensitas, dan profil laju tiap komponen.
+
+Catat depth, translation, dan rotation secara spesifik di `observations`. Pakai bukti temporal bersama dan override bila bukti suatu komponen berbeda. Gunakan minimal dua frame temporal pada fase atau dalam toleransi satu batas native. Jika masih ada tafsir yang bersaing, catat perbedaan yang terlihat atau batasnya di pengamatan fase dan dalami interval itu saja.
 
 ## Pan, Orbit dan Truck
 
-| Tafsir | Oklusi / paralaks | Perspektif dan jangkar |
-| --- | --- | --- |
-| Pan | Scene tersapu; geser layar saja bukan bukti translasi | Arah pandang berputar, perubahan sisi subjek tidak seperti lintasan mengelilinginya |
-| Orbit | Lapisan dekat/jauh bergeser berbeda, foreground membuka/menutupi latar | Sisi/sudut subjek berubah sepanjang lintasan mengitari jangkar |
-| Truck | Badan kamera bergeser lateral, lapisan dekat bergerak berbeda dari latar | Translasi menyamping; orientasi relatif tetap atau dikompensasi Pan |
+| Tafsir | Yang diperiksa |
+| --- | --- |
+| Pan | Sapuan latar dan perubahan arah pandang terhadap jangkar. Pada scene statis, Pan Right umumnya menggeser latar ke kiri. |
+| Orbit | Pergeseran relatif lapisan dekat dan jauh disertai perubahan sisi atau sudut bidang subjek yang dikitari. |
+| Truck | Pergeseran relatif akibat badan bergerak menyamping, dengan lintasan lebih lurus. Arah pandang bisa tetap atau berputar untuk mengimbangi translasi. |
 
-Gunakan ketiga tes bersama. Pada scene statis, Pan Right umumnya menggeser gambar ke kiri. Jika foreground yang benar-benar dekat bergeser lebih ke kanan daripada background, badan kamera cenderung bergerak ke kiri; periksa perspektif untuk membedakan Orbit Left dan Truck Left. Tanda terbalik berlaku untuk gerak kanan. Satu tanda delta/oklusi tidak membuktikan pose 3D; distorsi lensa, zoom, objek bergerak dan deformasi generatif dapat mengacaukan petunjuk.
+Bandingkan pergeseran relatif setelah mempertimbangkan perubahan skala akibat Dolly. Foreground yang bergerak lebih ke kiri daripada latar dapat mendukung badan kamera ke kanan, dan sebaliknya. Konfirmasi dengan bidang subjek dan oklusi. Misalnya, bila meja dekat berubah orientasi terhadap dinding sambil latar menyapu ke kanan, uji Orbit Right bersama Pan Left. Distorsi lensa, objek bergerak, dan deformasi generatif dapat membuat satu tanda menyesatkan.
 
-Kusen yang membuka/menutupi sakelar atau nakas sambil sisi objek berubah perlu diuji sebagai translasi/orbit, bukan otomatis Pan. Dolly-Out + Orbit Left + Pan Right dapat simultan: mundur, badan melingkar kiri dan pandangan berputar kanan. Ini contoh pembacaan, bukan jawaban default video.
-
-Goyangan/drift vertikal tipis akibat berjalan atau proyeksi wide bukan Tilt. Catat Tilt hanya bila rotasi vertikal disengaja terlihat jelas dan berkelanjutan; bedakan dari pedestal. Jangan menebak pemakaian gimbal.
+Untuk arah vertikal, periksa rotasi yang disengaja dan berkelanjutan sebelum menulis Tilt. Bandingkan dengan perpindahan tinggi kamera dan drift tipis akibat jalan atau proyeksi wide.
 
 ## Arah, notasi dan tempo
 
-Depth_direction auditor: IN, OUT, NO IN/OUT atau null ambigu. Pan/Static/Zoom bisa tidak mempunyai translasi depth. Zoom atau pembesaran skala saja tidak membuktikan Dolly. Camera Pattern dihitung dari arah fase, bukan dari narasi atau default produksi.
+Tentukan `depth_direction` per fase sebagai IN, OUT, NO IN/OUT, atau null jika ambigu. Camera Pattern mengikuti arah fase. Gunakan pola `[Komponen Utama] ([Skala]) [+ / →] [Komponen Sekunder] ([Intensitas / Kurva])`.
 
-Format: [Komponen Utama] ([Skala]) [+ / →] [Komponen Sekunder] ([Intensitas / Kurva]).
+- **Lintasan dan intensitas.** Gunakan `Straight` atau `Diagonal` bila lintasannya terlihat. Gunakan `Pure` setelah memeriksa bahwa fase hanya memperlihatkan satu komponen. Pilih intensitas yang sesuai dari `Mild`, `Subtle`, `Gentle`, `Moderate`, atau `Strong`.
+- **Skala (~×).** Bandingkan dimensi yang sama dari jangkar utuh pada awal dan akhir fase. Untuk pembesaran gunakan akhir/awal. Untuk pengecilan gunakan awal/akhir. Rasio ini menyatakan perubahan skala gambar. Jika Dolly dan Zoom sulit dipisahkan, pertahankan batas perkiraan gabungannya.
+- **Sudut (~°).** Taksir Pan atau Tilt dari perubahan arah pandang, serta Orbit dari perubahan sisi yang terlihat sepanjang lintasan. Saat Pan mengimbangi Orbit, pisahkan tafsir putaran tiap komponen sebelum menaksir sudutnya.
+- **Profil laju.** Bandingkan beberapa interval PTS setara. Gunakan `Constant`, `Accelerating`, `Decelerating`, `Ease-In`, atau `Ease-Out` saat didukung perubahan laju setelah mempertimbangkan perspektif. Nilai tempo shot tersendiri. Semua shot boleh `moderate` jika pengamatan mendukungnya.
 
-Evaluasi besaran setiap komponen gerak sesuai jenisnya. Cantumkan estimasi skala (~×) atau sudut (~°) jika petunjuk visual cukup untuk membuat perkiraan yang wajar. Angka tunggal dan rentang sama-sama sah. Hilangkan angka hanya pada komponen yang besarannya sulit diperkirakan secara wajar. Asumsi visual wajar diterima tanpa pengukuran piksel atau kalibrasi wajib. Lihat [contoh kamera](camera-cases.md).
-
-- **Skala (~×).** Bandingkan dimensi yang sama dari jangkar yang sama pada awal dan akhir fase, misalnya tinggi pintu yang terlihat utuh. Untuk pembesaran, gunakan akhir/awal. Untuk pengecilan, gunakan awal/akhir. Rasio ini menyatakan perubahan skala gambar. Jika Dolly dan Zoom tidak dapat dipisahkan, hindari pemberian rasio gabungan pada masing-masing komponen.
-- **Sudut (~°).** Perkirakan Pan atau Tilt dari perubahan arah pandang terhadap jangkar. Untuk Orbit, bandingkan perubahan sisi yang terlihat sepanjang lintasan mengitari subjek. Pergeseran jangkar di layar saja belum cukup untuk menaksir sudut masing-masing ketika Pan mengompensasi Orbit.
-
-Semua shot moderate sah. Smooth bukan slow; pembesaran perspektif tidak sendirian membuktikan accelerating. Easing/intensitas berlaku pada komponennya, tidak otomatis menjadi tempo seluruh shot. Simpan tempo sekali, seragam atau segments; batasnya tidak harus sama dengan fase gerak.
+Cantumkan estimasi per komponen jika bisa ditaksir secara wajar. Angka tunggal dan rentang sama-sama sah. Gunakan angka tunggal jika perkiraannya berdekatan. Perkiraan visual wajar diterima tanpa pengukuran piksel atau kalibrasi wajib.
 
 ## Kelengkapan notasi Camera Movement
 
-Wajib baca [camera-cases.md](camera-cases.md) sebelum menganalisis kamera. Gunakan contoh untuk menentukan kedalaman pemeriksaan, lalu susun notasi dari gerak pada video sumber.
-
-Untuk setiap fase, periksa gerak utama dan sekunder, termasuk rotasi yang mengompensasi translasi atau orbit. Catat kapan komponen mulai, berhenti, atau berubah. Susun gerak simultan dengan `+` dan urutan fase pada ringkasan dengan `→`.
-
-Nilai karakteristik tiap komponen sesuai jenis geraknya.
-
-- **Jenis dan arah.** Periksa depth, translation, dan rotation untuk menentukan komponen yang benar-benar terlihat.
-- **Lintasan.** Gunakan `Straight` atau `Diagonal` untuk lintasan translasi yang bisa dibedakan. Gunakan `Pure` jika hanya satu komponen terlihat sepanjang fase setelah kemungkinan gerak lain diperiksa.
-- **Intensitas.** Nilai apakah geraknya `Mild`, `Subtle`, `Gentle`, `Moderate`, atau `Strong`. Pilih istilah yang paling mewakili intensitas komponen.
-- **Profil laju.** Bandingkan perubahan gerak pada beberapa interval waktu setara. Nilai `Constant`, `Accelerating`, `Decelerating`, `Ease-In`, atau `Ease-Out` sesuai bukti. Periksa perspektif sebelum menyimpulkan perubahan laju dari perubahan ukuran objek.
-- **Besaran.** Cantumkan estimasi ~× atau ~° jika bisa ditaksir secara wajar. Nilai tiap komponen secara terpisah.
-
-Sebelum finalisasi, cocokkan `notation` dengan `observations`, deskripsi gerak, dan frame bukti. Masukkan setiap karakteristik yang teridentifikasi secara wajar pada komponen yang tepat, termasuk yang sudah dijelaskan dalam narasi. Gunakan notasi singkat jika pemeriksaan hanya mendukung jenis, arah, dan besaran yang dicatat. Kelengkapan gerak diperiksa dari bukti visual. Validator memeriksa struktur dan sintaks.
+Sebelum review, cocokkan `notation`, `observations`, dan frame pada fase yang sama. Periksa fase yang terlewat, kemungkinan Orbit terbaca sebagai Pan, dan arah badan atau sapuan yang terbalik. Masukkan setiap komponen dan qualifier yang didukung visual ke notasi. Validator memeriksa struktur dan sintaks. Ketepatan gerak diperiksa auditor dari frame.
 
 ## Detail desain dan framing
 

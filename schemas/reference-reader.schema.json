@@ -965,6 +965,24 @@
           "type": "string",
           "minLength": 1
         },
+        "production_start": {
+          "type": "object",
+          "properties": {
+            "frame_index": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "composition_summary": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "frame_index",
+            "composition_summary"
+          ],
+          "additionalProperties": false
+        },
         "end_composition": {
           "type": "string",
           "minLength": 1

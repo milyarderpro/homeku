@@ -106,6 +106,12 @@ def render_report(audit, frames, *, template_path=None):
             ("Reveal", display(composition["reveal"])),
             ("Kesesuaian gerak", display(composition["motion_compatibility"])),
         ]
+        production_start = composition.get("production_start")
+        if production_start is not None:
+            index_of_start = production_start["frame_index"]
+            pts = frames[str(index_of_start)] if isinstance(frames, dict) else frames[index_of_start]
+            rows.insert(2, ("Production Start", f"F{index_of_start} · {pts:.2f}s · "
+                            + display(production_start["composition_summary"])))
         if multi:
             route = " → ".join(f"{labels[r['area_id']]} ({r['start_s']:.2f}–{r['end_s']:.2f}s · "
                                f"{display(r['connector'])} · {display(r['focus'])})" for r in shot.get("route", []))

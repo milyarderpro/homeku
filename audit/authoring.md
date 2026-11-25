@@ -19,7 +19,9 @@ Nilai tipe rumah, susunan ruang, pencahayaan, atmosfer, dan lingkungan. Isi pale
 
 Isi nama gaya dalam bahasa Inggris dan narasi dalam bahasa Indonesia. Tulis rentang luas lantai, identitas area, detail desain beserta fakta dan bukti, framing awal, Overview, serta kamera dan tempo. [Panduan JSON](json-guide.md) menjelaskan field. Contoh normal dan multi area merupakan fixture sintetis.
 
-Tulis pengamatan depth, translation dan rotation sebelum notasi tiap fase. Nilai besaran setiap komponen dan cantumkan estimasi skala atau sudut jika dapat diperkirakan secara wajar. Jika hanya sebagian komponen dapat ditaksir, tulis angka pada bagian itu. Lihat [contoh kamera](camera-cases.md).
+Ikuti [urutan keputusan kamera](visual-audit.md#urutan-keputusan-per-fase). Tandai kandidat perubahan fase, lalu bandingkan jangkar dekat, jangkar jauh, dan sudut bidang sebelum memilih komponen. Isi pengamatan depth, translation, dan rotation. Tulis estimasi besaran yang wajar pada komponen yang terlihat.
+
+Jika frame awal tertutup transisi, periksa sekitar batas dan pilih frame jernih pertama yang layak untuk produksi. Gunakan `production_start` sesuai [panduan JSON](json-guide.md#seleksi-dan-metadata). Camera Start tetap menjelaskan awal sumber. Jika tidak ada pilihan jernih, catat keterbatasannya di `notes`.
 
 Periksa sheet lalu tandai frame yang sudah dilihat. Gunakan `--all-passes --all` setelah semua pass selesai diperiksa atau `--pass-id <ID> --frames <INDEKS...>` untuk bagian yang sudah dilihat.
 
@@ -51,11 +53,11 @@ Untuk pertanyaan visual yang masih ambigu, gunakan [bantuan statistik gerak 2D](
 
 ## Periksa isi sebelum memperlihatkan kandidat
 
-- Cocokkan cut, scope area, pengamatan tiga sumbu, notasi, tempo, dan bukti pada shot yang sama.
-- Periksa [kelengkapan notasi](visual-audit.md#kelengkapan-notasi-camera-movement) pada tiap fase. Pastikan jenis, arah, lintasan, intensitas, profil laju, dan estimasi yang didukung frame muncul pada komponen yang tepat. Cocokkan `notation` dengan `observations` dan deskripsi. Gunakan frame tambahan hanya jika ada pertanyaan visual spesifik yang belum terjawab.
+- Cocokkan cut, scope area, dan tempo dengan kronologi shot.
+- Lakukan satu [pemeriksaan akhir kamera](visual-audit.md#kelengkapan-notasi-camera-movement). Cocokkan `notation`, `observations`, dan frame pada tiap fase. Cari fase yang terlewat, Orbit yang mungkin terbaca sebagai Pan, serta arah badan atau sapuan yang terbalik. Pastikan qualifier dan estimasi yang didukung frame masuk pada komponen yang tepat. Dalami hanya interval yang masih menyisakan pertanyaan.
 - Periksa tipe rumah dan sumber buktinya. Cocokkan palet HEX dengan frame yang diperiksa serta pastikan pencahayaan, atmosfer, dan lingkungan masing-masing menyampaikan hal yang berbeda.
 - Baca narasi desain bersama fakta yang terkait. Cocokkan gaya utama dengan ciri arsitektur dominan. Periksa bentuk bukaan, material tampak, lampu, dan fungsi furnitur. Pisahkan konfigurasi yang terlihat dari tipe layout yang masih belum pasti.
-- Periksa panel awal terhadap posisi Camera Start. Pastikan Overview menjelaskan cakupan wide, sementara uraian shot memuat detail desain. Ringkas detail berulang agar tiap bagian mudah dipindai.
+- Periksa panel awal terhadap Camera Start. Jika awal tertutup transisi dan ada `Production Start`, cocokkan framing-nya dengan frame jernih yang dipilih. Pastikan Overview menjelaskan cakupan wide dan uraian shot memuat detail desain.
 - Cocokkan nama area Inggris Title Case di laporan dan media. Gunakan `&` untuk fungsi dalam satu area. Periksa bahwa judul shot memakai ` / ` antararea dan caption momen multi-area sesuai gambar. Baca laporan enam bagian dan periksa gambar pada semua kolase. Untuk penyesuaian ukuran, ubah parameter render sebelum peninjauan berikutnya.
 
 Draft memakai kualitas JPEG 91 dan skala 1 secara default. Gunakan `--scale`, `--overview-scale`, `--storyboard-scale` atau `--columns` jika tata letak melebihi batas. Satu JPEG dapat memuat sampai 60 juta piksel dengan sisi sampai 65.000 px. Batas file 95 MiB dan batas ZIP terurai 256 MiB.

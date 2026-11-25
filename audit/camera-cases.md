@@ -15,6 +15,12 @@ Sepuluh contoh ini berasal dari dokumen eksperimen pengguna. Gunakan tiap kasus 
 | 9 | Diagonal Dolly-Out (~2.5×) + Moderate Pan Right (Ease-Out) | Mundur diagonal tidak otomatis Orbit; periksa perubahan sudut pandang. |
 | 10 | Diagonal Dolly-Out (~1.75×) + Subtle Pan Left (Ease-Out) | Tinjau orientasi bidang dan lapisan dekat/jauh pada setiap interval. |
 
+## Tiga perbandingan sebelum memilih notasi
+
+- **Orbit → pendekatan.** Periksa sudut bidang pada awal, titik peralihan, dan ukuran jangkar sesudahnya. Jika sisi fasad lebih dahulu terbuka lalu tangga membesar dengan orientasi lebih stabil, beri masing-masing lintasan fase yang sesuai. Nilai skala awal sebelum memakai `Pure`.
+- **Dolly-Out + Orbit + Pan.** Bandingkan perubahan orientasi meja dekat dengan pergeseran bidang belakang. Bila meja relatif bergerak ke kiri dan sudutnya berubah sementara latar menyapu ke kanan, uji Orbit Right bersama Pan Left. Periksa juga perubahan skala akibat mundur sebelum menarik simpulan.
+- **Dolly-In → Dolly-In + Pan.** Jika jendela atau wastafel relatif terpusat di awal lalu bergerak ke kiri saat area kanan terbuka, cari frame sebelum dan sesudah Pan Right mulai. Pertahankan pendekatan pada kedua fase bila berlanjut.
+
 ## Memilih tingkat detail notasi
 
 `Straight` dan `Diagonal` menjelaskan lintasan translasi. `Pure` menandai fase dengan satu komponen yang teridentifikasi setelah pemeriksaan gerak lain. Intensitas dan profil laju berlaku pada komponennya.

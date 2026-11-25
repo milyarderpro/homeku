@@ -5,6 +5,7 @@ from pathlib import Path
 from unittest.mock import patch
 from . import test_generation, test_prepare
 from homeku.common import LibraryError, dumps, read_json, sha256
+from homeku.derivations import frame_map, resolve
 from homeku.generation import render
 from homeku.reader import read_reference, search
 
@@ -22,6 +23,10 @@ class ReaderTests(test_prepare.VideoFixture, unittest.TestCase):
         self.models[1]["audit"]["design"]["styles"]["influences"] = [
             {"value": "Modern Farmhouse", "state": "observed", "evidence": [0]}]
         self.models[1]["audit"]["shots"][0]["design"][0]["architecture"]["facts"][0]["value"] = "living-only layout"
+        alternate = self.models[1]
+        alternate["audit"]["shots"][0]["composition"]["production_start"] = {
+            "frame_index": 5, "composition_summary": "Kamera serong dari ambang."}
+        alternate["manifest"]["frames"] = frame_map(alternate["audit"], test_generation.TIMES)
         registry = {}
         for item in self.models:
             rid = item["id"]
@@ -83,6 +88,14 @@ class ReaderTests(test_prepare.VideoFixture, unittest.TestCase):
         result = read_reference(self.root, rid, part="shot", shot="shot-01")
         shot = result["shot"]
         self.assertEqual(len(shot["design"]), 2)
+        self.assertEqual(result["evidence"]["frames"]["5"], .5)
+        self.assertNotIn(5, {p["frame_index"] for p in result["evidence"]["selections"]})
+        path = "/shots/0/composition/production_start"
+        for key in ("frame_index", "composition_summary"):
+            pointer = result["provenance"]["/reference" + path + "/" + key]
+            self.assertEqual(pointer["document"], "audit")
+            self.assertEqual(resolve(self.models[1]["audit"], pointer["source_pointer"]),
+                             shot["composition"]["production_start"][key])
         self.assertIn("segments", shot["camera"]["tempo"])
         self.assertNotIn("frame_reviews", dumps(result))
         self.assertNotIn("reference", result)
@@ -132,12 +145,14 @@ class ReaderTests(test_prepare.VideoFixture, unittest.TestCase):
             board = extract_shot_image(self.root, rid, "shot-01", self.work / "block.png", from_storyboard=True)
             self.assertEqual(board["location"]["path"], "media/storyboard.jpg")
         with self.assertRaisesRegex(LibraryError, "requires canonical MP4"):
-            extract_panel(self.root, rid, "F2", self.work / "native.png", native=True)
+            extract_panel(self.root, rid, "F5", self.work / "native.jpg", native=True)
         canonical = self.root / info["path"]
         canonical.parent.mkdir()
         shutil.copyfile(source, canonical)
-        result = extract_panel(self.root, rid, "F2", self.work / "native.png", native=True)
-        self.assertEqual(result["frame_index"], 2)
+        from homeku.video import extract_frame
+        result = extract_panel(self.root, rid, "F5", self.work / "native.jpg", native=True)
+        self.assertEqual((result["frame_index"], result["timestamp_s"]), (5, .5))
+        self.assertEqual((self.work / "native.jpg").read_bytes(), extract_frame(canonical, 5))
         (folder / "media/shot-01.jpg").write_bytes(b"changed")
         with self.assertRaisesRegex(LibraryError, "Stored media unavailable or changed"):
             extract_shot_image(self.root, rid, "shot-01", self.work / "invalid.jpg")

@@ -181,6 +181,11 @@ def provenance_for(audit, manifest):
         for key in ("composition", "design", "camera", "route", "area_relations", "notes", "continuity"):
             if key in shot:
                 direct(base + "/" + key)
+        if "production_start" in shot["composition"]:
+            production_start = base + "/composition/production_start"
+            direct(production_start)
+            direct(production_start + "/frame_index")
+            direct(production_start + "/composition_summary")
         for j, group in enumerate(shot["design"]):
             for category in ("architecture", "furnishings", "environment"):
                 direct(f"{base}/design/{j}/{category}")
