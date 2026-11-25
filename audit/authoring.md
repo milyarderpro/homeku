@@ -64,10 +64,12 @@ python tools/audit.py draft /path/rumah.mp4 work/audit/audit.json --audit-info w
 python tools/audit.py review work/candidate/rumah --output work/review.md
 ~~~
 
-Tampilkan laporan enam bagian, Overview, Storyboard, dan semua kolase. Jika ada koreksi, perbarui audit kerja dan ulangi draft serta review. Simpan receipt terbaru di luar folder kandidat. Setelah persetujuan pengguna atas seluruh snapshot, jalankan ekspor.
+Setelah `review` berhasil, langsung jalankan ekspor dengan receipt kandidat tersebut. Simpan receipt di luar folder kandidat.
 
 ~~~sh
 python tools/audit.py export work/candidate/rumah --receipt work/review.md.json --output work/final
 ~~~
 
-Serahkan satu ZIP final tanpa video. Untuk revisi, gunakan nomor berikutnya pada audit dan berikan `--supersedes` dengan revision dan content_sha256 dari entri aktif.
+Tampilkan laporan ringkasan dari table setiap shot nya, gambar Overview dan Storyboard, serta tautan unduhan ZIP tanpa MP4 dalam balasan yang sama. Jika ada koreksi, perbarui audit kerja, ulangi draft dan review, lalu ekspor dengan receipt terbaru. Berikan tautan ke ZIP hasil koreksi.
+
+Untuk revisi referensi yang sudah aktif, gunakan nomor berikutnya pada audit dan berikan `--supersedes` dengan revision dan content_sha256 dari entri aktif.

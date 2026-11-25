@@ -8,4 +8,4 @@ Periksa depth, translation, dan rotation sebelum menentukan gerak. Evaluasi besa
 
 Tulis nama gaya dalam bahasa Inggris, luas lantai sebagai rentang angka, serta uraian arsitektur, furnitur, lingkungan, dan framing dalam bahasa Indonesia. Catat fakta eksplisit dengan bukti dan statusnya. Camera Start menjelaskan awal sumber. Overview menjelaskan frame wide yang dipilih.
 
-Deklarasikan viewed setelah melihat frame. Sebelum menampilkan laporan, ikuti checklist di `audit/authoring.md` dan tinjau kembali komponen tanpa angka dari frame yang sudah dilihat. Gunakan helper resmi untuk complete, check-input, draft, dan review. Tampilkan laporan enam bagian, Overview, Storyboard, dan seluruh kolase agar saya bisa mengoreksinya. Tunggu persetujuan keseluruhan pada snapshot terbaru sebelum membuat ZIP final tanpa video.
+Deklarasikan viewed setelah melihat frame. Sebelum menampilkan laporan, ikuti checklist di `audit/authoring.md` dan tinjau kembali komponen tanpa angka dari frame yang sudah dilihat. Jalankan `complete`, `check-input`, dan `draft`. Jika kandidat lulus validasi, jalankan `review` dan langsung `export --receipt` untuk membuat ZIP tanpa MP4 dalam sesi ini.

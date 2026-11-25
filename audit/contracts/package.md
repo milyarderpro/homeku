@@ -57,7 +57,7 @@ Hanya format 3.0 didukung; paket/session lama ditolak tanpa konversi otomatis. S
 
 ZIP final bernama <id>-rNNNN.zip berisi satu folder <id>/ dengan audit.json, analysis.md, manifest.json dan media/shot-NN.jpg, media/overview.jpg, media/storyboard.jpg. Tidak ada MP4, sheet, cache, session, log atau receipt. Video sumber kanonis terpisah di video/<id>.mp4 dan SHA-256 harus cocok.
 
-Sumber baru revision 1 dengan supersedes null. Revisi berikutnya +1 dan supersedes mengikat revision/content_sha256 aktif. Review mengikat seluruh byte kandidat; receipt disimpan di luar kandidat dan bukan persetujuan otomatis. Pengguna menilai seluruh MD/media di chat, export membungkus snapshot yang sama tanpa render ulang. Ingest tidak meminta review isi baru.
+Sumber baru revision 1 dengan supersedes null. Revisi berikutnya +1 dan supersedes mengikat revision/content_sha256 aktif. `review` memvalidasi kandidat dan mencatat hash snapshot dalam receipt di luar folder kandidat. Segera setelah `review` berhasil, `export` membungkus snapshot yang sama tanpa render ulang. Tampilkan tautan ZIP bersama laporan dan media di chat agar pengguna dapat memeriksa dan memilih ZIP yang akan di-ingest.
 
 Baseline 6 FPS ditambah batas native; sumber ≤6 FPS atau shot <1 detik seluruh native. Pendalaman 10 FPS/native sesuai pertanyaan visual. Log selected dan viewed tetap berbeda. Bukti gerak membutuhkan minimal dua frame temporal berbeda pada fase/toleransi batas satu native, dengan scope dan viewed tervalidasi.
 

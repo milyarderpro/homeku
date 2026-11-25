@@ -4,4 +4,4 @@ Terapkan koreksi saya pada `audit.json` kerja. Temukan bukti terkait lalu periks
 
 Selaraskan fakta, narasi, komposisi, notasi, fase, dan tempo yang terdampak. Jika koreksi terpusat pada satu shot, gunakan `update-shot` dengan file patch JSON. Isi deklarasi viewed hanya untuk frame yang benar-benar sudah dilihat. Jalankan complete dan draft.
 
-Ikuti checklist isi di `audit/authoring.md`, lalu jalankan review pada kandidat terbaru dan tampilkan ulang laporan lengkap, Overview, Storyboard serta seluruh kolase. Tunggu persetujuan keseluruhan untuk snapshot tersebut sebelum ekspor.
+Ikuti checklist isi di `audit/authoring.md`. Setelah kandidat terbaru lulus validasi, jalankan `review` dan langsung `export --receipt` dengan receipt terbaru. Tampilkan ulang laporannya.

@@ -16,7 +16,7 @@ Kit 3.0 telah lulus uji teknis dengan fixture. Registry produksi berisi nol refe
 
 1. Buka satu chat per video. Lampirkan MP4 asli dan [kit final HOMEKU 3.0](../homeku-audit-kit.zip). Gunakan [prompt mulai](../prompts/01-audit.md).
 2. Periksa kamera dan penjelasan pada kandidat yang ditampilkan. Tinjau laporan lengkap, Overview, Storyboard, serta seluruh kolase. Jika ada koreksi, gunakan [prompt koreksi](../prompts/02-correct.md).
-3. Setelah menyetujui seluruh snapshot terbaru, gunakan [prompt ekspor](../prompts/03-export.md). Unduh satu ZIP final tanpa MP4.
+3. Unduh ZIP yang Anda pilih dari balasan yang menampilkan laporan dan media. Jika ada koreksi, gunakan tautan ZIP dari hasil terbaru.
 4. Taruh ZIP di `incoming/` dan pastikan MP4 asli tersedia di `video/<id>.mp4`. Jalankan ingest. Berikut contoh untuk edh001.
 
 ~~~sh
