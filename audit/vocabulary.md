@@ -20,8 +20,6 @@ Untuk hubungan, tulis jangkar dan perspektifnya, misalnya 'tower laundry di kana
 
 Pisahkan material appearance yang terlihat dari physical-material yang belum diketahui. Contoh 'tampak kayu cokelat' observed tidak membuktikan teak; physical-material dapat unknown. Jangan menerjemahkan state not-visible menjadi daftar barang yang tidak ada.
 
-Label areas memakai fungsi eksplisit, misalnya bathroom; laundry bila keduanya tampak. Kabinet dalam bedroom bukan otomatis ruang walk-in closet. Jika variasi penting tidak cocok daftar ini, beri label baru yang spesifik dan pertahankan bukti/statusnya.
-
 
 ## Tipe rumah
 
@@ -48,7 +46,12 @@ Alias eksplisit Indonesia/Inggris berada di data/taxonomy.json: area, gaya, skal
 
 Notasi kamera: Dolly-In/Out, Orbit Left/Right, Pan Left/Right, Truck Left/Right, Tilt-Up/Down, Pedestal Up/Down, Zoom-In/Out, Static atau Uncertain. Parser mengenali Tilt-Up dan Tilt Up tanpa mengubah teks literal. Label lain disimpan sebagai other beserta literalnya. Gentle/strong menjelaskan komponen, bukan otomatis tempo. Jangan memakai subtle tilt untuk drift/jitter kecil.
 
-## Area dan kontinuitas
+## Area, caption, dan kontinuitas
+
+- Pakai nama area pendek berbahasa Inggris dengan Title Case, misalnya `Exterior`, `Living Room`, atau `Sleeping Loft`. Pakai `&` bila dua fungsi memakai ruang yang sama, seperti `Bathroom & Laundry`. Renderer memakai ` / ` saat menggabungkan area fisik terpisah, seperti `Open-Plan Living / Sleeping Loft`.
+- Tulis setiap fungsi yang terlihat di `areas[].functions`. `Open-Plan Living` dapat mencatat `Living Room`, `Dining Area`, dan `Kitchen` bila semuanya tampak. Kabinet di kamar tidur saja belum mendukung fungsi `Walk-In Closet`.
+- Pakai label teknis Inggris untuk nilai yang dipakai dalam filter, seperti `oblique` atau `walk-in shower`. Narasi dan uraian bukti memakai bahasa Indonesia. Gunakan label baru bila maknanya berbeda.
+- Untuk panel antara pada shot multi-area, beri caption Inggris singkat dengan Title Case bila momennya jelas, misalnya `Facade Reveal` atau `Doorway`. Panel biasa memakai `Start`, `Middle`, dan `End`.
 
 `area_ids` menunjuk area fisik; `functions` boleh lebih dari satu (bathroom + laundry tetap satu area bila satu ruang). `visible_intervals` dapat tumpang tindih; `route` hanya perjalanan yang benar-benar dilalui. Fase gerak bukan batas area, dan cut memulai shot baru. Tidak menyimpulkan koneksi denah dari urutan shot. Tulis nama gaya Inggris sebagai klaim terpisah pada design.styles.
 

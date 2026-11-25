@@ -26,6 +26,7 @@ ASSETS = [
     "tools/assets/fonts/DejaVuSans.ttf", "tools/assets/fonts/DejaVuSans-Bold.ttf",
     "tools/assets/fonts/LICENSE.txt", "tools/assets/templates/analysis.md",
     "tools/assets/templates/analysis-profile.md", "tools/assets/layouts/media.json",
+    "tools/assets/layouts/media-aligned.json",
 ]
 GUIDES = [
     "audit/README.md", "audit/visual-audit.md", "audit/authoring.md", "audit/json-guide.md",

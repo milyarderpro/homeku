@@ -13,7 +13,7 @@ Baca visual-audit.md sebelum menyimpulkan gerak. Satu audit.json ringkas adalah 
 | design.styles | primary satu klaim; influences/interior daftar klaim diskret, nama Inggris |
 | design.size | scale, levels, footprint, proportions; floor_area_m2 min/max positif wajib |
 | design.features | Aspek DNA yang dinyatakan; tanpa 17 placeholder wajib |
-| areas | ID ruang fisik, label, fungsi dan visible_intervals presisi |
+| areas | ID ruang fisik, label Inggris Title Case, fungsi Inggris eksplisit dan visible_intervals presisi |
 | shots | Satu take sampai cut; bukan satu area |
 | shots.design | Scope area dan architecture/furnishings/environment: text + facts |
 | shots.composition | Posisi/arah/angle/tinggi/tilt awal; framing/fokus/lighting/depth/reveal |
@@ -49,7 +49,9 @@ Tempo hanya satu sumber: label+description jika seragam; segments bertimestamp+d
 
 ## Seleksi dan metadata
 
-Normal tiga panel Start/Middle/End pada awal, midpoint native terdekat dan akhir. Multi dinamis, awal/akhir wajib. Overview dipilih untuk gambaran area lengkap, biasanya awal IN/akhir OUT; paragrafnya menjelaskan frame itu, Camera Start tetap awal sumber.
+Satu `areas[].label` menamai satu area fisik. Gunakan `Bathroom & Laundry` untuk dua fungsi dalam satu ruang dan catat kedua fungsi di `areas[].functions`. Tulis `Open-Plan Living` dan `Sleeping Loft` sebagai dua label pada ID berbeda. Renderer menggabungkan kedua label dengan ` / ` pada judul shot. Gunakan padanan Inggris untuk nilai teknis yang dipakai filter dan bahasa Indonesia untuk narasi.
+
+Normal tiga panel `Start`, `Middle`, dan `End` pada awal, midpoint native terdekat dan akhir. Multi-area memakai jumlah panel yang sesuai dengan momen visual, dengan awal dan akhir wajib. Isi `panels[].label` pada momen antara yang bisa dinamai, misalnya `Living & Kitchen` atau `Doorway`. Overview dipilih untuk gambaran area lengkap, biasanya awal IN/akhir OUT; paragrafnya menjelaskan frame itu, Camera Start tetap awal sumber.
 
 ID selection, shot_id, PTS, duration, parsed/summary/pattern dan coverage mekanis dihitung saat diperlukan atau disimpan teknis sekali dalam manifest. Tidak disisipkan kembali ke audit ringkas. Tidak menyimpan seluruh frame video.
 

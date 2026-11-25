@@ -6,7 +6,8 @@ from unittest.mock import patch
 from . import test_prepare
 from homeku.common import LibraryError, read_json
 from homeku.media import build_media
-from homeku.render_assets import render_config
+from homeku.media_incremental import render_missing_media
+from homeku.render_assets import LAYOUT, render_config
 from homeku.video import extract_frame
 from homeku.video_cache import FrameCache, cached_media
 
@@ -51,6 +52,29 @@ class CacheTests(test_prepare.VideoFixture, unittest.TestCase):
         self.assertNotEqual(updated[0]["sha256"], baseline[0]["sha256"])
         self.assertEqual(updated[1]["sha256"], baseline[1]["sha256"])
         self.assertNotEqual(updated[2]["sha256"], baseline[2]["sha256"])
+
+    def test_layout_and_moment_labels_invalidate_dependent_jpegs(self):
+        source = self.video("layout")
+        audit = read_json(ROOT / "audit/examples/multi/audit.json")
+        cache = FrameCache(source, self.work / "cache")
+        config = render_config(columns=4)
+
+        def render(name, settings):
+            return cached_media(self.work / name, audit, source, cache.info, settings, cache.times)
+
+        with cache.activate():
+            old = render("old", render_config(layout_path=LAYOUT, columns=4))
+            with patch("homeku.media_incremental.render_missing_media",
+                       wraps=render_missing_media) as run:
+                baseline = render("baseline", config)
+                self.assertEqual(run.call_args.args[2], {row["path"] for row in baseline})
+                audit["shots"][0]["panels"][1]["label"] = "Doorway"
+                revised = render("revised", config)
+                self.assertEqual(run.call_args.args[2], {"media/shot-01.jpg", "media/storyboard.jpg"})
+        self.assertNotEqual(old[0]["sha256"], baseline[0]["sha256"])
+        self.assertNotEqual(revised[0]["sha256"], baseline[0]["sha256"])
+        self.assertEqual(revised[1]["sha256"], baseline[1]["sha256"])
+        self.assertNotEqual(revised[2]["sha256"], baseline[2]["sha256"])
 
     def test_native_batch_bound_retry_and_early_failure(self):
         source = self.video("batch", rate=30, duration=2.4)

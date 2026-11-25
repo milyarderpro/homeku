@@ -13,6 +13,8 @@ Palet warna memakai tabel Peran, Warna, HEX di bagian bawah Profil Desain. Detai
 
 Nama gaya teknis memakai bahasa Inggris; penjelasan bahasa Indonesia. Luas cukup **60–90 m²**, tanpa dasar perkiraan atau label kepastian tambahan wajib. Narasi sumber dipertahankan utuh dan di-escape untuk keamanan tampilan; renderer tidak mengarang, menerjemahkan ulang atau menyimpulkan isi.
 
+Nama area berasal dari `areas[].label` untuk laporan, kolase, Storyboard, dan Overview. Audit baru memakai nama Inggris Title Case. ` / ` menyambung label area fisik yang berbeda pada judul. Overview memakai area yang masuk di frame wide terpilih.
+
 Paragraf Overview menjelaskan posisi kamera, arah pandang dan bagian area yang masuk dalam frame wide. Rincian bahan tampak, susunan furnitur dan ciri desain dijelaskan di bagian A. Gunakan paragraf singkat dengan ciri pembeda di awal.
 
 A memuat arsitektur, furnitur/dekorasi dan lingkungan per area. B memuat fokus, posisi/arah/sudut/ketinggian/kemiringan Camera Start, framing awal→akhir, pencahayaan, foreground, kedalaman, reveal dan kesesuaian gerak. Multi area juga menampilkan rute, penghubung, visibilitas/peralihan dan orientasi ruang yang dinyatakan. C memuat gerakan Indonesia singkat-lengkap, tempo, alur visual bila diperlukan, timeline fase dan notasi teknis satu paragraf.

@@ -6,6 +6,7 @@ import json
 import sys
 from pathlib import Path
 from homeku.common import LibraryError, read_json, require, sha256
+from homeku.render_assets import DEFAULT_COLUMNS
 
 
 def parser():
@@ -61,7 +62,7 @@ def parser():
     drafting.add_argument("--cache-dir", type=Path)
     drafting.add_argument("--quality", type=int, default=91)
     drafting.add_argument("--scale", type=float, default=1)
-    drafting.add_argument("--columns", type=int, default=4)
+    drafting.add_argument("--columns", type=int, default=DEFAULT_COLUMNS, help="Maximum columns for multi-area shots (default: %(default)s)")
     drafting.add_argument("--overview-scale", type=float, default=1)
     drafting.add_argument("--storyboard-scale", type=float, default=1)
     drafting.add_argument("--fixture", action="store_true", help="Mark synthetic test data")

@@ -4,7 +4,7 @@ from . import FORMAT_VERSION
 from .camera_pattern import video_pattern
 from .common import require
 from .derivations import camera_summary, phase_tempo_text, selections, tempo_segments
-from .render_assets import PROFILE_TEMPLATE, claim_text, number, report_template, require_english_style_names
+from .render_assets import PROFILE_TEMPLATE, area_names, claim_text, number, report_template, require_english_style_names
 from .report_validation import display, lines, table, validate_report
 
 
@@ -23,7 +23,7 @@ def render_report(audit, frames, *, template_path=None):
     shots = audit["shots"]
 
     def names(ids):
-        return " / ".join(labels[key] for key in ids)
+        return area_names(ids, labels)
 
     def feature(*aspects):
         return "; ".join(display(claim_text(claim)) for claim in design["features"]

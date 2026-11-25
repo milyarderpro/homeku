@@ -15,7 +15,7 @@ from .common import dumps, read_json, require, sha256, snapshot_hash
 from .media import expected_media
 from .package_manifest import build_manifest
 from .preflight import require_inputs
-from .render_assets import render_config, report_template
+from .render_assets import DEFAULT_COLUMNS, render_config, report_template
 from .reporting import render_report
 from .storage import locked
 from .validation import extract_package, package_files, validate_folder
@@ -37,7 +37,7 @@ def _managed_candidate(candidate):
 
 
 def draft(source, audit_path, audit_info, output_root, *, supersedes=None, purpose="reference",
-          quality=91, scale=1.0, columns=4, overview_scale=1.0, storyboard_scale=1.0,
+          quality=91, scale=1.0, columns=DEFAULT_COLUMNS, overview_scale=1.0, storyboard_scale=1.0,
           cache_dir=None):
     source, audit_path = Path(source).absolute(), workspace(audit_path)
     require(not any(p.is_symlink() for p in (source, *source.parents)), "Use the original source path")

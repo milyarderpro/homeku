@@ -2,12 +2,14 @@
 import json
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 from . import test_prepare
 from homeku.common import read_json
 from homeku.derivations import frame_map, selections
 from homeku.generation import render
 from homeku.media import expected_media
 from homeku.render_assets import render_config
+from homeku.reader import search
 
 ROOT = Path(__file__).resolve().parents[1]
 TIMES = [i / 10 for i in range(12)]
@@ -74,7 +76,31 @@ class GenerationTests(unittest.TestCase):
         index = json.loads(output["data/search-index.json"])["references"][0]
         self.assertTrue({"primary-style", "style-influence", "interior-style", "apparent-scale", "massing"} <=
                         {facet["aspect"] for facet in index["profile_facets"]})
-        self.assertEqual(index["shots"][0]["route"], ["living", "kitchen"])
+        self.assertEqual(index["shots"][0]["route"], ["Living Room", "Kitchen"])
+
+    def test_area_search_uses_explicit_functions_and_preserves_labels(self):
+        normal, multi = model("normal"), model("multi")
+        area = multi["audit"]["areas"][0]
+        area.update(label="Open-Plan Living", functions=["Living Room", "Dining Area", "Kitchen"])
+        models = {item["id"]: item for item in (normal, multi)}
+        outputs = render(ROOT, models)
+        index = json.loads(outputs["data/search-index.json"])
+        registry = {rid: {"revision": 1} for rid in models}
+        with patch("homeku.reader._generated", return_value=index), patch("homeku.reader._registry", return_value=registry):
+            for term in ("Living Room", "Dining Area", "dining room", "Kitchen", "ruang makan"):
+                with self.subTest(term=term):
+                    [match] = search(ROOT, area=[term])["results"]
+                    [shot] = match["shots"]
+                    self.assertEqual(match["id"], multi["id"])
+                    self.assertIn("Open-Plan Living", shot["areas"])
+                    self.assertIn("dining", shot["area_labels_by_id"][area["id"]])
+            for term in ("Bathroom", "Laundry", "kamar mandi", "ruang cuci"):
+                with self.subTest(term=term):
+                    [match] = search(ROOT, area=[term])["results"]
+                    self.assertEqual(match["id"], normal["id"])
+                    self.assertIn("Bathroom & Laundry", match["shots"][0]["areas"])
+        stored = json.loads(outputs[f"data/projections/{multi['id']}.json"])
+        self.assertEqual(stored["reference"]["areas"][0], area)
 
     def test_projection_pointers_resolve_audit_and_manifest(self):
         from homeku.derivations import resolve

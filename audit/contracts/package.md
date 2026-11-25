@@ -66,4 +66,6 @@ Baseline 6 FPS ditambah batas native; sumber ≤6 FPS atau shot <1 detik seluruh
 
 Manifest menyimpan provenance, source metadata/hash, render fingerprint, frame map terbatas, selections, media/bbox/hash dan audit_sha256. Semua fakta tetap pada audit.json. Lihat report.md dan reader.md untuk tampilan manusia dan akses AI.
 
+Draft baru memakai aset `tools/assets/layouts/media-aligned.json`. Validator memilih geometri dari `render.layout_sha256` secara terpisah dari fingerprint template laporan. Paket 3.0 yang menunjuk `tools/assets/layouts/media.json` tetap diperiksa dengan layout asal. Fingerprint yang tidak dikenal ditolak.
+
 Validasi menggunakan allowlist dengan nama file dan casing yang tepat serta mencocokkan hash sumber, audit dan tiap JPEG. Review menghasilkan kartu dan receipt di luar kandidat. Ekspor memeriksa receipt dan snapshot, lalu memverifikasi isi ZIP terhadap hash snapshot tanpa memanggil renderer atau membaca MP4.

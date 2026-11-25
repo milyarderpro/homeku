@@ -11,4 +11,8 @@ Gunakan workspace yang dapat menjalankan Python dan FFmpeg, membuka frame hasil 
 5. Jika ada koreksi, perbarui audit kerja, ulangi draft dan review, lalu ekspor dan berikan tautan ZIP terbaru.
 6. Periksa hasil di chat dan unduh ZIP yang Anda pilih. Taruh di `incoming/`, simpan MP4 kanonis di `video/<id>.mp4`, dan jalankan `python tools/library.py ingest`.
 
+## Susunan media
+
+Shot biasa memakai tiga panel. Shot multi-area memakai panel sesuai momen visual dan muat hingga lima panel pada satu baris secara default. Jika lebih banyak, panel dibagi rata antarbaris. `draft --columns` dapat menentukan batas 1–6 untuk shot multi-area. Storyboard memakai lebar dan margin kiri yang sama pada setiap shot. Waktu shot berada di kanan, sementara waktu panel berada di bawah foto di samping caption. Overview menampilkan frame wide dalam satu baris.
+
 [Prompt koreksi](prompts/02-correct.md) · [Prompt ekspor](prompts/03-export.md) · [Kontrak paket](contracts/package.md)

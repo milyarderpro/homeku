@@ -21,8 +21,8 @@ GENERATOR_MODULES = (
     "engine", "storage", "reader", "audit_performance",
 )
 SCHEMA_PATHS = ("audit", "audit-info", "manifest", "reference-reader", "search-index")
-ASSETS = ("templates/analysis.md", "templates/analysis-profile.md", "layouts/media.json",
-          "fonts/DejaVuSans.ttf",
+ASSETS = ("templates/analysis.md", "templates/analysis-profile.md",
+          "layouts/media.json", "layouts/media-aligned.json", "fonts/DejaVuSans.ttf",
           "fonts/DejaVuSans-Bold.ttf", "fonts/LICENSE.txt")
 
 

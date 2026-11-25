@@ -10,4 +10,6 @@ Isi Profil Desain dari frame. Pilih tipe rumah paling sesuai dalam bahasa Inggri
 
 Tulis nama gaya dalam bahasa Inggris, luas lantai sebagai rentang angka, serta uraian arsitektur, furnitur, lingkungan, dan framing dalam bahasa Indonesia. Catat fakta eksplisit dengan bukti dan statusnya. Camera Start menjelaskan awal sumber. Overview menjelaskan frame wide yang dipilih.
 
+Tulis nama area dan caption momen multi-area dalam bahasa Inggris dengan Title Case. Gunakan `&` untuk fungsi dalam ruang yang sama, simpan setiap fungsi yang terlihat di `areas[].functions`, dan biarkan renderer memakai ` / ` antararea. Gunakan kosakata teknis Inggris untuk filter serta pertahankan narasi Indonesia. Lihat `audit/vocabulary.md`.
+
 Deklarasikan viewed setelah melihat frame. Sebelum ekspor, ikuti checklist di `audit/authoring.md` dan cocokkan kelengkapan `notation` dengan `observations` serta frame bukti yang sudah dilihat. Jalankan `complete`, `check-input`, dan `draft`. Jika kandidat lulus validasi, jalankan `review` dan langsung `export --receipt` untuk membuat ZIP tanpa MP4 dalam sesi ini. Berikan tautan unduhan ZIP bersama hasil audit.

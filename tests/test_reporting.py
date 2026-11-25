@@ -42,6 +42,17 @@ class ReportingTests(unittest.TestCase):
                         self.assertIn(overview["composition_summary"], report)
                 self.assertEqual(audit, original)
 
+    def test_multi_area_labels_follow_shot_and_overview_scope(self):
+        audit = self.audit("multi")
+        audit["areas"][0]["label"] = "Open-Plan Living"
+        audit["areas"][1]["label"] = "Sleeping Loft"
+        report = render_report(audit, PTS)
+        self.assertIn("### Shot 01 · Open-Plan Living / Sleeping Loft", report)
+        overview = report.split(HEADINGS[3], 1)[1].split(HEADINGS[4], 1)[0]
+        self.assertIn("**Shot 01 · Open-Plan Living · ", overview)
+        self.assertIn("**Shot 01 · Sleeping Loft · ", overview)
+        self.assertNotIn("Open-Plan Living / Sleeping Loft", overview)
+
     def test_standard_profile_order_and_palette_escaping(self):
         audit = self.audit("multi")
         design = audit["design"]

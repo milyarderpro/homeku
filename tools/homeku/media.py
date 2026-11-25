@@ -4,7 +4,7 @@ import io
 import math
 from PIL import Image, ImageDraw, ImageFont
 from .common import read_json, require, safe_relative, sha256
-from .render_assets import BOLD_FONT, FONT, LAYOUT, MAX_BYTES, MAX_PIXELS, titles, wrap
+from .render_assets import BOLD_FONT, FONT, MAX_BYTES, MAX_PIXELS, area_names, resolve_layout, titles, wrap
 from .camera_pattern import shot_pattern
 from .derivations import camera_summary, selections
 from .video import extract_frame
@@ -15,18 +15,33 @@ def preflight(width, height, path):
             f'{path}: pixel/JPEG limit exceeded; choose explicit panel/overview/storyboard scale')
 
 
-def layout(selections, source, title, *, columns=3, scale=1.0, overview=False,
-           area_labels=None, camera=None, pattern=None, multi_area=False):
+def layout(selections, source, title, *, spec, columns=3, scale=1.0, overview=False,
+           area_labels=None, camera=None, pattern=None):
     require(selections and math.isfinite(scale) and 0 < scale <= 1 and 1 <= columns <= 6, 'Invalid media layout')
-    spec = read_json(LAYOUT)
     fw, fh = round(source['width'] * scale), round(source['height'] * scale)
     require(fw > 0 and fh > 0, 'Panel scale too small')
-    cell = max(fw, spec['minimum_cell_width'])
-    unit = cell / spec['reference_panel_width']
+    nominal_cell = max(fw, spec['minimum_cell_width'])
+    unit = nominal_cell / spec['reference_panel_width']
     px = lambda key: max(1, round(spec[key] * unit))
     gap, bottom = px('margin'), px('bottom_padding')
-    cols = len(selections) if overview else min(columns, len(selections))
-    width = cols * cell + (cols + 1) * gap
+    count = len(selections)
+    cols = count if overview else min(columns, count)
+    aligned = spec.get('align_shot_blocks', False) and not overview
+    if aligned:
+        width = 3 * nominal_cell + 4 * gap
+        row_count = (count + cols - 1) // cols
+        base, extra = divmod(count, row_count)
+        row_sizes = [base + (row < extra) for row in range(row_count)]
+        widest = row_sizes[0]
+        cell = min(nominal_cell, (width - (widest + 1) * gap) // widest)
+        if fw > cell:
+            fw = cell
+            scale = fw / source['width']
+            fh = max(1, round(source['height'] * scale))
+    else:
+        cell = nominal_cell
+        width = cols * cell + (cols + 1) * gap
+        row_sizes = [min(cols, count - start) for start in range(0, count, cols)]
     # Reject impossible source dimensions before measuring text or allocating a bitmap.
     preflight(width, fh + 2 * gap, 'media layout')
     fonts = {key: ImageFont.truetype(str(path), px(size)) for key,path,size in [
@@ -57,18 +72,21 @@ def layout(selections, source, title, *, columns=3, scale=1.0, overview=False,
             y = max(lines(heading['title'],'heading',gap,y,room,'title'), ty+line_height('time'))
         else:
             y = lines(heading['title'],'heading',gap,y,usable,'title')
-            if timing:y = lines(timing,'time',gap,y,usable,'header_time')
+            if timing and aligned:
+                for line in wrap(timing, fonts['time'], usable):
+                    add(line, 'time', width - gap - fonts['time'].getlength(line), y, 'header_time')
+                    y += line_height('time')
+            elif timing:
+                y = lines(timing, 'time', gap, y, usable, 'header_time')
         header = max(y+gap,px('header_height'))
     captions = []
     for p in selections:
         if overview:
-            name=' / '.join((area_labels or {}).get(a,a) for a in p['area_ids'])
+            name=area_names(p['area_ids'], area_labels if area_labels is not None else {a: a for a in p['area_ids']})
             rows=[[(v,'caption_bold')] for v in wrap(f"{p['shot_id'][5:]} · {name}",fonts['caption_bold'],cell)]
             rows += [[(v,'caption_time')] for v in wrap(f"Overview · {p['timestamp_s']:.2f}s",fonts['caption_time'],cell)]
         else:
-            moment={'start':'Start','end':'End'}.get(p['role'])
-            if moment is None:
-                moment='Middle' if not multi_area and p['role']=='middle' else p['label']
+            moment=p['label']
             suffix=f" · {p['timestamp_s']:.2f}s"
             if fonts['caption_bold'].getlength(moment)+fonts['caption_time'].getlength(suffix)<=cell:
                 rows=[[(moment,'caption_bold'),(suffix,'caption_time')]]
@@ -79,11 +97,14 @@ def layout(selections, source, title, *, columns=3, scale=1.0, overview=False,
     def caption_height(rows):
         return sum(max(line_height(key) for _,key in row) for row in rows)
     placements=[];row_y=header;last_bottom=header
-    for offset in range(0,len(selections),cols):
-        chunk=selections[offset:offset+cols]
-        cap_height=max(caption_height(rows) for rows in captions[offset:offset+cols])
+    offset = 0
+    for row_size in row_sizes:
+        stop = offset + row_size
+        chunk = selections[offset:stop]
+        cap_height=max(caption_height(rows) for rows in captions[offset:stop])
         for j,p in enumerate(chunk):
-            cell_x=gap+j*(cell+gap);x=cell_x+(cell-fw)//2
+            cell_x = gap + j * (cell + gap)
+            x = cell_x if aligned else cell_x + (cell - fw) // 2
             placements.append({'selection_id':p['id'], 'bbox':[x,row_y,fw,fh], 'scale':scale})
             cy=row_y+fh+px('caption_gap')
             for row in captions[offset+j]:
@@ -94,9 +115,11 @@ def layout(selections, source, title, *, columns=3, scale=1.0, overview=False,
                 cy+=max(line_height(key) for _,key in row)
         last_bottom=row_y+fh+px('caption_gap')+cap_height
         row_y=last_bottom+gap
+        offset = stop
     if camera is not None:
         y=last_bottom+px('camera_gap')
-        label='camera:';prefix=f" ({pattern or '—'}) "
+        label = 'Camera:' if aligned else 'camera:'
+        prefix = f" ({pattern or '—'}) "
         add(label,'caption_bold',gap,y,'camera_label')
         x=gap+fonts['caption_bold'].getlength(label)
         # The first line shares the label baseline; continuation starts at left margin.
@@ -124,6 +147,7 @@ def layout(selections, source, title, *, columns=3, scale=1.0, overview=False,
 
 def expected_media(audit, source, config, frames):
     labels = {a["id"]: a["label"] for a in audit["areas"]}
+    spec = read_json(resolve_layout(config["layout_sha256"]))
     headings = titles(audit)
     all_selections = list(selections(audit, frames))
     by_shot = {shot["shot"]: [] for shot in audit["shots"]}
@@ -138,18 +162,18 @@ def expected_media(audit, source, config, frames):
         sid = shot["shot"]
         panels = by_shot[sid]
         multi = len(shot["area_ids"]) > 1
-        meta, design = layout(panels, source, headings[sid], columns=config["columns"] if multi else 3,
+        meta, design = layout(panels, source, headings[sid], spec=spec, columns=config["columns"] if multi else 3,
                               scale=config["panel_scale"], camera=camera_summary(shot),
-                              pattern=shot_pattern(shot), multi_area=multi)
+                              pattern=shot_pattern(shot))
         meta.update(path=f"media/{sid}.jpg", kind="shot-collage")
         shots.append((sid, meta))
         yield meta, panels, design
     identity = headings["storyboard"]["title"]
-    meta, design = layout(choices, source, identity, overview=True, area_labels=labels,
+    meta, design = layout(choices, source, identity, spec=spec, overview=True, area_labels=labels,
                           scale=config["overview_scale"])
     meta.update(path="media/overview.jpg", kind="overview")
     yield meta, choices, design
-    spec=read_json(LAYOUT);scale=config['storyboard_scale']
+    scale=config['storyboard_scale']
     unit=max(source['width']*config['panel_scale'],spec['minimum_cell_width'])/spec['reference_panel_width']*scale
     gap=max(1,round(spec['block_gap']*unit));margin=max(1,round(spec['margin']*unit))
     width=max(round(m['width']*scale) for _, m in shots)

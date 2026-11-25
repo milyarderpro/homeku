@@ -9,6 +9,8 @@ BOLD_FONT = ROOT / "tools/assets/fonts/DejaVuSans-Bold.ttf"
 TEMPLATE = ROOT / "tools/assets/templates/analysis.md"
 PROFILE_TEMPLATE = ROOT / "tools/assets/templates/analysis-profile.md"
 LAYOUT = ROOT / "tools/assets/layouts/media.json"
+ALIGNED_LAYOUT = LAYOUT.with_name("media-aligned.json")
+DEFAULT_COLUMNS = 5
 MAX_PIXELS = 60_000_000
 MAX_BYTES = 95 * 1024 * 1024
 
@@ -48,15 +50,14 @@ def require_english_style_names(audit):
             "Style names must be authored as English technical names, without translation")
 
 
-def panel_label(panel, multi_area=False):
-    return panel.get("label") or {"start": "Start", "middle": "Middle", "end": "End"}.get(
-        panel["role"], panel["role"])
+def area_names(area_ids, labels):
+    return " / ".join(labels[area_id] for area_id in area_ids)
 
 
 def titles(audit):
     labels = {a["id"]: a["label"] for a in audit["areas"]}
     result = {s["shot"]: {
-        "title": f"SHOT {s['shot'][5:]} · {' / '.join(labels[a] for a in s['area_ids'])}",
+        "title": f"SHOT {s['shot'][5:]} · {area_names(s['area_ids'], labels)}",
         "subtitle": f"{s['start_s']:.2f}–{s['end_s']:.2f}s · {seconds(s['end_s'] - s['start_s'])}"
     } for s in audit["shots"]}
     result["storyboard"] = {
@@ -85,7 +86,15 @@ def wrap(text, font, width):
         lines.append(current)
     return lines
 
-def render_config(*, template_path=TEMPLATE, quality=91, scale=1.0, columns=4, overview_scale=1.0, storyboard_scale=1.0):
+def resolve_layout(fingerprint):
+    for path in (LAYOUT, ALIGNED_LAYOUT):
+        if sha256(path) == fingerprint:
+            return path
+    require(False, "Unknown media layout fingerprint")
+
+
+def render_config(*, template_path=TEMPLATE, layout_path=ALIGNED_LAYOUT, quality=91, scale=1.0,
+                  columns=DEFAULT_COLUMNS, overview_scale=1.0, storyboard_scale=1.0):
     require(type(quality) is int and 30 <= quality <= 100, "JPEG quality must be 30–100")
     require(type(columns) is int and 1 <= columns <= 6, "Collage columns must be 1–6")
     require(all(type(value) in {float, int} and 0 < value <= 1
@@ -93,13 +102,14 @@ def render_config(*, template_path=TEMPLATE, quality=91, scale=1.0, columns=4, o
             "Media scales must be in (0, 1]")
     return {"format_version": FORMAT_VERSION, "template_sha256": sha256(template_path),
             "font_sha256": sha256(FONT), "bold_font_sha256": sha256(BOLD_FONT),
-            "layout_sha256": sha256(LAYOUT), "jpeg_quality": quality, "panel_scale": scale,
+            "layout_sha256": sha256(layout_path), "jpeg_quality": quality, "panel_scale": scale,
             "columns": columns, "overview_scale": overview_scale, "storyboard_scale": storyboard_scale}
 
 
 def verify_renderer(config, audit):
     template_path = report_template(audit)
-    expected = render_config(template_path=template_path, quality=config["jpeg_quality"],
+    layout_path = resolve_layout(config["layout_sha256"])
+    expected = render_config(template_path=template_path, layout_path=layout_path, quality=config["jpeg_quality"],
                              scale=config["panel_scale"],
                              columns=config["columns"], overview_scale=config["overview_scale"],
                              storyboard_scale=config["storyboard_scale"])

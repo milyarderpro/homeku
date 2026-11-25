@@ -31,13 +31,13 @@ Durasi 1.20s · 1 shot.
 
 | Shot | Time (s) | Duration | Area/Scene | Camera Movement |
 | --- | --- | --- | --- | --- |
-| 01 | 0.00–1.20 | 1.20s | bathroom | Dolly-In (~1.3×) + gentle Pan Right (~15°). |
+| 01 | 0.00–1.20 | 1.20s | Bathroom & Laundry | Dolly-In (~1.3×) + gentle Pan Right (~15°). |
 
 ## 4. Overview
 
 ![Overview wide seluruh area](media/overview.jpg)
 
-**Shot 01 · bathroom · 1.10s**
+**Shot 01 · Bathroom & Laundry · 1.10s**
 
 > Kamera berada dekat bukaan kiri, menghadap serong ke dinding belakang pada ketinggian mata dengan kemiringan datar. Cakupan wide memperlihatkan kabinet rendah di kiri dan ceruk di kanan, dengan kedalaman menuju jendela dan cahaya samping hangat.
 
@@ -49,7 +49,7 @@ Durasi 1.20s · 1 shot.
 
 <a id="shot-01"></a>
 
-### Shot 01 · bathroom
+### Shot 01 · Bathroom & Laundry
 
 **Time:** 0.00–1.20s · **Duration:** 1.20s
 

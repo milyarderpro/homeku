@@ -10,7 +10,7 @@ from homeku.common import LibraryError, dumps, read_json, sha256
 from homeku.derivations import referenced_frames
 from homeku.exporter import draft, review, export
 from homeku.validation import validate_folder
-from homeku.render_assets import PROFILE_TEMPLATE, TEMPLATE
+from homeku.render_assets import ALIGNED_LAYOUT, LAYOUT, PROFILE_TEMPLATE, TEMPLATE, render_config
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -64,6 +64,24 @@ class PackageTests(test_prepare.VideoFixture, unittest.TestCase):
                 manifest["render"]["template_sha256"] = fingerprint
                 manifest_path.write_text(dumps(manifest))
                 validate_folder(candidate, self.work, require_source=False)
+
+    def test_validation_accepts_both_layout_hashes_and_rejects_unknown_assets(self):
+        source, audit, logs = self.authored("multi")
+        for asset in (LAYOUT, ALIGNED_LAYOUT):
+            with self.subTest(layout=asset.name):
+                def config(**kwargs):
+                    return render_config(layout_path=asset, **kwargs)
+
+                with patch("homeku.exporter.render_config", side_effect=config):
+                    result = draft(source, audit, logs, self.work / asset.stem, purpose="fixture")
+                candidate = Path(result["candidate"])
+                manifest_path = candidate / "manifest.json"
+                manifest, _, _ = validate_folder(candidate, self.work, require_source=False)
+                self.assertEqual(manifest["render"]["layout_sha256"], sha256(asset))
+                manifest["render"]["layout_sha256"] = "0" * 64
+                manifest_path.write_text(dumps(manifest))
+                with self.assertRaisesRegex(LibraryError, "Unknown media layout fingerprint"):
+                    validate_folder(candidate, self.work, require_source=False)
 
     def test_each_payload_change_requires_a_fresh_review(self):
         source, audit, logs = self.authored()

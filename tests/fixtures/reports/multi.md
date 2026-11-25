@@ -31,17 +31,17 @@ Durasi 1.20s · 1 shot.
 
 | Shot | Time (s) | Duration | Area/Scene | Camera Movement |
 | --- | --- | --- | --- | --- |
-| 01 | 0.00–1.20 | 1.20s | living / kitchen | Dolly-In (~1.3×) + gentle Pan Right (~15°). |
+| 01 | 0.00–1.20 | 1.20s | Living Room / Kitchen | Dolly-In (~1.3×) + gentle Pan Right (~15°). |
 
 ## 4. Overview
 
 ![Overview wide seluruh area](media/overview.jpg)
 
-**Shot 01 · living · 0.00s**
+**Shot 01 · Living Room · 0.00s**
 
 > Kamera berada dekat bukaan kiri, menghadap serong ke dinding belakang pada ketinggian mata dengan kemiringan datar. Cakupan wide memperlihatkan kabinet rendah di kiri dan ceruk di kanan, dengan kedalaman menuju jendela dan cahaya samping hangat.
 
-**Shot 01 · kitchen · 1.10s**
+**Shot 01 · Kitchen · 1.10s**
 
 > Kamera berada dekat bukaan kiri, menghadap serong ke dinding belakang pada ketinggian mata dengan kemiringan datar. Cakupan wide memperlihatkan kabinet rendah di kiri dan ceruk di kanan, dengan kedalaman menuju jendela dan cahaya samping hangat.
 
@@ -53,7 +53,7 @@ Durasi 1.20s · 1 shot.
 
 <a id="shot-01"></a>
 
-### Shot 01 · living / kitchen
+### Shot 01 · Living Room / Kitchen
 
 **Time:** 0.00–1.20s · **Duration:** 1.20s
 
@@ -63,7 +63,7 @@ Durasi 1.20s · 1 shot.
 
 #### **A. Desain area**
 
-##### **living**
+##### **Living Room**
 
 **Arsitektur**
 
@@ -77,7 +77,7 @@ Durasi 1.20s · 1 shot.
 
 > Pemandangan luar tidak dinyatakan pada fixture ini.
 
-##### **kitchen**
+##### **Kitchen**
 
 **Arsitektur**
 
@@ -100,13 +100,13 @@ Durasi 1.20s · 1 shot.
 - **Foreground dan kedalaman:** Deskripsi komposisi sintetis. · Deskripsi komposisi sintetis.
 - **Reveal:** Deskripsi komposisi sintetis.
 - **Kesesuaian gerak:** Deskripsi komposisi sintetis.
-- **Area:** living / kitchen
-- **Rute kamera:** living (0.00–0.70s · awal · living) → kitchen (0.70–1.20s · bukaan open plan · kitchen)
+- **Area:** Living Room / Kitchen
+- **Rute kamera:** Living Room (0.00–0.70s · awal · living) → Kitchen (0.70–1.20s · bukaan open plan · kitchen)
 
 **Hubungan antararea**
 
 - **Penghubung area:** Living terhubung ke kitchen melalui bukaan lebar.
-- **Peralihan:** living · 0.00–1.00s; kitchen · 0.40–1.20s
+- **Peralihan:** Living Room · 0.00–1.00s; Kitchen · 0.40–1.20s
 - **Orientasi ruang:** Satu pengambilan tanpa cut dalam fixture.
 
 #### **C. Camera Movement**
@@ -124,7 +124,7 @@ Kamera bergerak maju sambil memutar pandangan perlahan ke kanan menuju bidang ke
 
 | Time (s) | Area & fokus | Camera Movement | Tempo |
 | --- | --- | --- | --- |
-| 0.00–1.20 | living / kitchen · Perjalanan fixture | Dolly-In (~1.3×) + gentle Pan Right (~15°) | Sedang di awal; Cepat pada bagian akhir |
+| 0.00–1.20 | Living Room / Kitchen · Perjalanan fixture | Dolly-In (~1.3×) + gentle Pan Right (~15°) | Sedang di awal; Cepat pada bagian akhir |
 
 **Camera:** Dolly-In (~1.3×) + gentle Pan Right (~15°).
 

@@ -63,6 +63,8 @@ Sebelum finalisasi, cocokkan `notation` dengan `observations`, deskripsi gerak, 
 
 ## Detail desain dan framing
 
+Nama setiap area fisik dengan label Inggris singkat dan Title Case. Gunakan `&` pada satu area yang berbagi fungsi. Biarkan renderer menggabungkan beberapa label dengan ` / `. Catat fungsi yang terlihat secara terpisah dan pakai label teknis berbahasa Inggris untuk pencarian. Tulis narasi dalam bahasa Indonesia. Pada shot multi-area, pilih panel sesuai kronologi dan beri nama momen dalam bahasa Inggris, seperti `Doorway`, bila terlihat jelas. Lihat [aturan penamaan](vocabulary.md#area-caption-dan-kontinuitas).
+
 Nilai tipe rumah dari massa, tapak, akses dan susunan ruang. Pilih label Inggris yang paling sesuai dan gunakan `uncertain` untuk perkiraan yang wajar. [Panduan tipe rumah](vocabulary.md#tipe-rumah) memuat contoh label dan ciri visual.
 
 Ringkas susunan ruang yang terlihat. Catat pencahayaan sebagai sumber, arah atau karakter cahaya, atmosfer sebagai kesan visual singkat, dan lingkungan sebagai kondisi fisik di sekitar rumah.

@@ -56,7 +56,7 @@ Untuk pertanyaan visual yang masih ambigu, gunakan [bantuan statistik gerak 2D](
 - Periksa tipe rumah dan sumber buktinya. Cocokkan palet HEX dengan frame yang diperiksa serta pastikan pencahayaan, atmosfer, dan lingkungan masing-masing menyampaikan hal yang berbeda.
 - Baca narasi desain bersama fakta yang terkait. Cocokkan gaya utama dengan ciri arsitektur dominan. Periksa bentuk bukaan, material tampak, lampu, dan fungsi furnitur. Pisahkan konfigurasi yang terlihat dari tipe layout yang masih belum pasti.
 - Periksa panel awal terhadap posisi Camera Start. Pastikan Overview menjelaskan cakupan wide, sementara uraian shot memuat detail desain. Ringkas detail berulang agar tiap bagian mudah dipindai.
-- Baca laporan enam bagian dan periksa caption serta gambar pada semua kolase. Untuk penyesuaian ukuran, ubah parameter render sebelum peninjauan berikutnya.
+- Cocokkan nama area Inggris Title Case di laporan dan media. Gunakan `&` untuk fungsi dalam satu area. Periksa bahwa judul shot memakai ` / ` antararea dan caption momen multi-area sesuai gambar. Baca laporan enam bagian dan periksa gambar pada semua kolase. Untuk penyesuaian ukuran, ubah parameter render sebelum peninjauan berikutnya.
 
 Draft memakai kualitas JPEG 91 dan skala 1 secara default. Gunakan `--scale`, `--overview-scale`, `--storyboard-scale` atau `--columns` jika tata letak melebihi batas. Satu JPEG dapat memuat sampai 60 juta piksel dengan sisi sampai 65.000 px. Batas file 95 MiB dan batas ZIP terurai 256 MiB.
 
