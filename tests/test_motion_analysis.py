@@ -37,6 +37,36 @@ class MotionMathTests(unittest.TestCase):
         self.assertAlmostEqual(late["covered_fraction"], .75)
         self.assertEqual(len(result["gaps"]), 2)
 
+    def test_zone_rates_are_weighted_by_overlap_across_unequal_intervals(self):
+        valid = {"status": "ok", "image_size": [100, 100], "matrix": [[1, 0, 5], [0, 1, 0]]}
+        rows = [
+            {**valid, "start_s": 0, "end_s": .5, "lower_minus_upper_fraction": .1},
+            {**valid, "start_s": .5, "end_s": 2.5, "lower_minus_upper_fraction": -.2},
+            {**valid, "start_s": 2.5, "end_s": 3, "lower_minus_upper_fraction": None},
+        ]
+        early, middle, late = summarize(rows, 0, 3)["trends"]
+        for segment, rate, coverage in ((early, .05, 1), (middle, -.1, 1), (late, -.1, .5)):
+            with self.subTest(segment=segment["segment"]):
+                self.assertAlmostEqual(segment["lower_minus_upper_fraction_per_s"], rate)
+                self.assertEqual(segment["zone_coverage_fraction"], coverage)
+                self.assertEqual(segment["covered_fraction"], 1)
+
+    def test_zero_zone_difference_counts_as_measured(self):
+        valid = {"status": "ok", "image_size": [100, 100], "matrix": [[1, 0, 5], [0, 1, 0]]}
+        rows = [
+            {**valid, "start_s": 0, "end_s": 1, "lower_minus_upper_fraction": 0},
+            {**valid, "start_s": 1, "end_s": 2, "lower_minus_upper_fraction": None},
+            {"status": "insufficient", "start_s": 2, "end_s": 3},
+        ]
+        early, middle, late = summarize(rows, 0, 3)["trends"]
+        self.assertEqual(early["lower_minus_upper_fraction_per_s"], 0)
+        self.assertEqual(early["zone_coverage_fraction"], 1)
+        self.assertEqual(middle["covered_fraction"], 1)
+        self.assertEqual(late["covered_fraction"], 0)
+        for segment in (middle, late):
+            self.assertIsNone(segment["lower_minus_upper_fraction_per_s"])
+            self.assertEqual(segment["zone_coverage_fraction"], 0)
+
 
 class MotionFallbackTests(unittest.TestCase):
     def test_missing_dependency_is_nonfatal(self):
@@ -65,12 +95,16 @@ class MotionCacheTests(test_prepare.VideoFixture, unittest.TestCase):
 
         def tracked(first, second, dt, **_):
             self.assertLessEqual(first.width, 100)
-            return {"status": "ok", "image_size": list(first.size), "matrix": [[1, 0, 2], [0, 1, 0]]}
+            return {"status": "ok", "image_size": list(first.size), "matrix": [[1, 0, 2], [0, 1, 0]],
+                    "lower_minus_upper_fraction": .03 * dt}
 
         with (patch("homeku.motion_analysis.dependencies", return_value=backend),
               patch("homeku.motion_analysis.interval", side_effect=tracked) as estimator):
             hints = motion_hints(session, "shot-01", max_frames=4, width=100)
             self.assertNotIn("intervals", hints)
+            for segment in hints["summary"]["trends"]:
+                self.assertAlmostEqual(segment["lower_minus_upper_fraction_per_s"], .03)
+                self.assertEqual(segment["zone_coverage_fraction"], 1)
             self.assertFalse(hints["reused"])
             self.assertEqual(estimator.call_count, 3)
             detail = motion_hints(session, "shot-01", max_frames=4, width=100, details=True)

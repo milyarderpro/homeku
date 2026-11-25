@@ -125,6 +125,7 @@ def summarize(rows, start, end):
     for i, label in enumerate(("early", "middle", "late")):
         left, right = first_pts + i * span / 3, first_pts + (i + 1) * span / 3
         duration = translation = scale = rotation = 0.0
+        zone_duration = zone_difference = 0.0
         for row in valid:
             overlap = min(row["end_s"], right) - max(row["start_s"], left)
             if overlap <= 0:
@@ -135,11 +136,17 @@ def summarize(rows, start, end):
             translation += weight * math.hypot(metrics["dx_fraction"], metrics["dy_fraction"])
             scale += weight * math.log(metrics["scale_2d"])
             rotation += weight * metrics["rotation_degrees_2d"]
+            difference = row.get("lower_minus_upper_fraction")
+            if difference is not None:
+                zone_duration += overlap
+                zone_difference += weight * difference
         trends.append({"segment": label, "start_s": left, "end_s": right,
                        "covered_fraction": duration / (right - left),
                        "translation_fraction_per_s": translation / duration if duration else None,
                        "scale_log_change_per_s": scale / duration if duration else None,
-                       "rotation_degrees_2d_per_s": rotation / duration if duration else None})
+                       "rotation_degrees_2d_per_s": rotation / duration if duration else None,
+                       "lower_minus_upper_fraction_per_s": zone_difference / zone_duration if zone_duration else None,
+                       "zone_coverage_fraction": zone_duration / (right - left)})
     total = ranges[0] if len(valid) == len(rows) else None
     return {"requested": {"start_s": start, "end_s": end},
             "sampled": {"start_s": first_pts, "end_s": last_pts},

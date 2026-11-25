@@ -45,6 +45,22 @@ Evaluasi besaran setiap komponen gerak sesuai jenisnya. Cantumkan estimasi skala
 
 Semua shot moderate sah. Smooth bukan slow; pembesaran perspektif tidak sendirian membuktikan accelerating. Easing/intensitas berlaku pada komponennya, tidak otomatis menjadi tempo seluruh shot. Simpan tempo sekali, seragam atau segments; batasnya tidak harus sama dengan fase gerak.
 
+## Kelengkapan notasi Camera Movement
+
+Wajib baca [camera-cases.md](camera-cases.md) sebelum menganalisis kamera. Gunakan contoh untuk menentukan kedalaman pemeriksaan, lalu susun notasi dari gerak pada video sumber.
+
+Untuk setiap fase, periksa gerak utama dan sekunder, termasuk rotasi yang mengompensasi translasi atau orbit. Catat kapan komponen mulai, berhenti, atau berubah. Susun gerak simultan dengan `+` dan urutan fase pada ringkasan dengan `→`.
+
+Nilai karakteristik tiap komponen sesuai jenis geraknya.
+
+- **Jenis dan arah.** Periksa depth, translation, dan rotation untuk menentukan komponen yang benar-benar terlihat.
+- **Lintasan.** Gunakan `Straight` atau `Diagonal` untuk lintasan translasi yang bisa dibedakan. Gunakan `Pure` jika hanya satu komponen terlihat sepanjang fase setelah kemungkinan gerak lain diperiksa.
+- **Intensitas.** Nilai apakah geraknya `Mild`, `Subtle`, `Gentle`, `Moderate`, atau `Strong`. Pilih istilah yang paling mewakili intensitas komponen.
+- **Profil laju.** Bandingkan perubahan gerak pada beberapa interval waktu setara. Nilai `Constant`, `Accelerating`, `Decelerating`, `Ease-In`, atau `Ease-Out` sesuai bukti. Periksa perspektif sebelum menyimpulkan perubahan laju dari perubahan ukuran objek.
+- **Besaran.** Cantumkan estimasi ~× atau ~° jika bisa ditaksir secara wajar. Nilai tiap komponen secara terpisah.
+
+Sebelum finalisasi, cocokkan `notation` dengan `observations`, deskripsi gerak, dan frame bukti. Masukkan setiap karakteristik yang teridentifikasi secara wajar pada komponen yang tepat, termasuk yang sudah dijelaskan dalam narasi. Gunakan notasi singkat jika pemeriksaan hanya mendukung jenis, arah, dan besaran yang dicatat. Kelengkapan gerak diperiksa dari bukti visual. Validator memeriksa struktur dan sintaks.
+
 ## Detail desain dan framing
 
 Nilai tipe rumah dari massa, tapak, akses dan susunan ruang. Pilih label Inggris yang paling sesuai dan gunakan `uncertain` untuk perkiraan yang wajar. [Panduan tipe rumah](vocabulary.md#tipe-rumah) memuat contoh label dan ciri visual.
@@ -74,4 +90,6 @@ python tools/audit.py motion-hints work/audit/session.json --shot-id shot-02 --d
 
 Helper opsional memakai 32 frame dan lebar analisis 320 px secara default. Batasnya 64 frame dan 640 px. Keluaran ringkas memuat cakupan tracking, gap, rentang valid, dan tren awal, tengah, serta akhir menurut PTS. Opsi `--details` menampilkan matriks setiap interval. `total` berlaku pada rentang PTS yang diukur dan berisi `null` saat rantai tracking terputus.
 
-Upper dan lower merujuk zona gambar. Putuskan arah dan jenis gerak dari pengamatan visual tiga sumbu. Jika OpenCV atau NumPy tidak tersedia, lanjutkan audit visual. Helper menyimpan statistik di cache kerja dan deklarasi viewed tetap dilakukan setelah pemeriksaan frame.
+Setiap segmen tren memuat `lower_minus_upper_fraction_per_s`, yaitu selisih laju geser horizontal zona bawah terhadap zona atas dalam fraksi lebar gambar per detik. Nilai positif berarti zona bawah bergeser lebih ke kanan relatif terhadap zona atas, dan nilai negatif berarti lebih ke kiri. `zone_coverage_fraction` menunjukkan bagian durasi segmen yang memiliki data kedua zona, dari 0 sampai 1. Laju `null` berarti data kedua zona tidak tersedia pada segmen itu. Laju `0` berarti selisih neto terukur nol.
+
+Upper dan lower merujuk zona gambar. Gunakan selisih ini untuk memilih bagian yang perlu diperiksa lebih dekat, lalu nilai depth, translation, dan rotation dari frame untuk membedakan Pan, Orbit, dan Truck. Jika OpenCV atau NumPy tidak tersedia, lanjutkan audit visual. Helper menyimpan statistik di cache kerja dan deklarasi viewed tetap dilakukan setelah pemeriksaan frame.

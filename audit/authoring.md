@@ -52,7 +52,7 @@ Untuk pertanyaan visual yang masih ambigu, gunakan [bantuan statistik gerak 2D](
 ## Periksa isi sebelum memperlihatkan kandidat
 
 - Cocokkan cut, scope area, pengamatan tiga sumbu, notasi, tempo, dan bukti pada shot yang sama.
-- Tinjau komponen tanpa angka dari frame yang sudah dilihat. Tambahkan estimasi yang dapat dibuat secara wajar. Gunakan frame tambahan hanya jika ada pertanyaan visual spesifik yang belum terjawab.
+- Periksa [kelengkapan notasi](visual-audit.md#kelengkapan-notasi-camera-movement) pada tiap fase. Pastikan jenis, arah, lintasan, intensitas, profil laju, dan estimasi yang didukung frame muncul pada komponen yang tepat. Cocokkan `notation` dengan `observations` dan deskripsi. Gunakan frame tambahan hanya jika ada pertanyaan visual spesifik yang belum terjawab.
 - Periksa tipe rumah dan sumber buktinya. Cocokkan palet HEX dengan frame yang diperiksa serta pastikan pencahayaan, atmosfer, dan lingkungan masing-masing menyampaikan hal yang berbeda.
 - Baca narasi desain bersama fakta yang terkait. Cocokkan gaya utama dengan ciri arsitektur dominan. Periksa bentuk bukaan, material tampak, lampu, dan fungsi furnitur. Pisahkan konfigurasi yang terlihat dari tipe layout yang masih belum pasti.
 - Periksa panel awal terhadap posisi Camera Start. Pastikan Overview menjelaskan cakupan wide, sementara uraian shot memuat detail desain. Ringkas detail berulang agar tiap bagian mudah dipindai.

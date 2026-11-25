@@ -1,6 +1,6 @@
 # Kasus pembacaan kamera HOMEKU 3.0
 
-Adaptasi dokumen eksperimen pengguna; sepuluh kasus belum diaudit ulang di implementasi ini. Bukan jawaban untuk sumber lain atau referensi aktif. Angka adalah contoh, bukan target.
+Sepuluh contoh ini berasal dari dokumen eksperimen pengguna. Gunakan tiap kasus untuk melihat tingkat detail yang dapat ditarik dari bukti, lalu nilai jenis, arah, lintasan, intensitas, profil laju, dan besaran sesuai video yang diaudit.
 
 | No | Notasi yang sah | Pemeriksaan |
 | --- | --- | --- |
@@ -15,7 +15,14 @@ Adaptasi dokumen eksperimen pengguna; sepuluh kasus belum diaudit ulang di imple
 | 9 | Diagonal Dolly-Out (~2.5×) + Moderate Pan Right (Ease-Out) | Mundur diagonal tidak otomatis Orbit; periksa perubahan sudut pandang. |
 | 10 | Diagonal Dolly-Out (~1.75×) + Subtle Pan Left (Ease-Out) | Tinjau orientasi bidang dan lapisan dekat/jauh pada setiap interval. |
 
-Nilai besaran setiap komponen. Misalnya, `Dolly-Out (~1.6×) + Orbit Left + Pan Right` cocok ketika ukuran jangkar memberi skala mundur yang wajar dan arah kedua komponen lain terlihat, tetapi sudutnya sulit dipisahkan. Angka tunggal dan rentang sama-sama sah. Baseline tetap 6 FPS. Flow 2D hanyalah pendamping; bawah/atas gambar bukan kedalaman pasti. Skala global bukan bukti Dolly, oklusi bukan bukti Orbit tunggal. Tilt berkelanjutan tidak harus ekstrem dan berbeda dari Crane/Pedestal.
+## Memilih tingkat detail notasi
+
+`Straight` dan `Diagonal` menjelaskan lintasan translasi. `Pure` menandai fase dengan satu komponen yang teridentifikasi setelah pemeriksaan gerak lain. Intensitas dan profil laju berlaku pada komponennya.
+
+- Gunakan `Dolly-Out (~1.6×) + Orbit Left + Pan Right` jika ukuran jangkar mendukung skala mundur dan tiga komponen terlihat, sementara rincian lintasan, intensitas, profil laju, serta sudut putaran sulit diperkirakan.
+- Gunakan `Dolly-Out (~1.6×) + Orbit Left + Subtle Pan Right (Ease-Out)` jika bukti juga menunjukkan pan ringan yang mereda menjelang akhir. Tulis kedua qualifier pada `Pan Right` meski sudutnya belum bisa ditaksir secara wajar.
+
+Nilai besaran tiap komponen. Angka tunggal dan rentang sama-sama sah. Baseline tetap 6 FPS. Flow 2D membantu memilih interval yang perlu ditinjau secara visual. Zona bawah dan atas menunjukkan posisi pada gambar. Skala global saja belum cukup untuk menyimpulkan Dolly, dan oklusi saja belum cukup untuk menyimpulkan Orbit. Bandingkan perspektif, oklusi, dan lapisan dekat/jauh untuk membedakan Dolly, Orbit, Pan, serta Truck. Tilt yang terlihat berkelanjutan perlu dibedakan dari Crane atau Pedestal.
 
 ## Pembanding saat tafsir masih ambigu
 
