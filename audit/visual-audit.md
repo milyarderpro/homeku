@@ -47,6 +47,12 @@ Semua shot moderate sah. Smooth bukan slow; pembesaran perspektif tidak sendiria
 
 ## Detail desain dan framing
 
+Nilai tipe rumah dari massa, tapak, akses dan susunan ruang. Pilih label Inggris yang paling sesuai dan gunakan `uncertain` untuk perkiraan yang wajar. [Panduan tipe rumah](vocabulary.md#tipe-rumah) memuat contoh label dan ciri visual.
+
+Ringkas susunan ruang yang terlihat. Catat pencahayaan sebagai sumber, arah atau karakter cahaya, atmosfer sebagai kesan visual singkat, dan lingkungan sebagai kondisi fisik di sekitar rumah.
+
+Pilih 4–6 warna yang mewakili desain bila cakupan video mencukupi. Amati bagian permukaan dengan pencahayaan merata dan hindari pantulan, bayangan pekat, serta area yang terlalu terang. Catat nama, peran, perkiraan HEX, dan frame bukti setiap warna. Detail Shot menjelaskan warna itu dipakai di mana.
+
 Eksterior: gaya/massa, ukuran/proporsi, atap, fasad/bukaan, akses/teras, material/cahaya tampak dan lingkungan/tapak. Interior: geometri/volume/bukaan, layout/hubungan, bentuk/posisi/orientasi furnitur, penyimpanan/properti pembeda, material/cahaya dan lingkungan melalui bukaan.
 
 Catat detail konkret, bukan daftar furnitur generik. Cocokkan text arsitektur/furnitur/lingkungan dengan fakta berkategori dan facet_roles. Tidak ada kuota fakta; validator struktural tidak membuktikan kelengkapan makna narasi.

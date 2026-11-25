@@ -7,6 +7,8 @@ Audit.json adalah satu sumber keputusan isi; analysis.md hasil renderer dan mani
 | Kemampuan | Sumber final | Turunan / tampilan |
 | --- | --- | --- |
 | Nama desain | design.name | Judul laporan |
+| Tipe rumah | design.house_type | Profil dan facet house-type |
+| Palet warna terstruktur | design.palette | Tabel Peran, Warna, HEX dan bukti per warna |
 | Gaya utama | design.styles.primary | Profil dan facet primary-style |
 | Pengaruh gaya | design.styles.influences[] | Daftar terpisah dan facet style-influence |
 | Gaya interior | design.styles.interior[] | Profil dan facet interior-style |
@@ -18,8 +20,9 @@ Audit.json adalah satu sumber keputusan isi; analysis.md hasil renderer dan mani
 | Massa bangunan | design.features[aspect=massing] | Tabel ukuran / DNA |
 | Atap | design.features[aspect=roof] | Tabel ukuran / DNA |
 | Entrance / porch / bukaan | features aspek entrance / porch / openings | DNA dan discovery |
-| Hierarki material / palet | features aspek material-hierarchy / palette | Warna-material dan DNA |
-| Cahaya / lingkungan | features aspek lighting / environment | Profil / DNA |
+| Material utama | features aspek material-hierarchy | Profil / DNA |
+| Pencahayaan / atmosfer / lingkungan | features aspek lighting / atmosphere / environment | Baris terpisah di Profil Desain |
+| Palet teks paket awal 3.0 | features aspek palette | Profil snapshot awal |
 | Konfigurasi / ciri khas / kontinuitas | features aspek spatial-configuration / distinctive-features / continuity | Profil dan DNA |
 | Area fisik dan fungsi | areas[].id / label / functions | Facet area/fungsi |
 | Visibilitas area | areas[].visible_intervals | Hubungan lintas area; tidak sama dengan route |

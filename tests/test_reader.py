@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 from . import test_generation, test_prepare
-from homeku.common import LibraryError, dumps, sha256
+from homeku.common import LibraryError, dumps, read_json, sha256
 from homeku.generation import render
 from homeku.reader import read_reference, search
 
@@ -18,6 +18,7 @@ class ReaderTests(test_prepare.VideoFixture, unittest.TestCase):
         (self.root / "data").mkdir(parents=True)
         shutil.copyfile(ROOT / "data/taxonomy.json", self.root / "data/taxonomy.json")
         self.models = [test_generation.model(name) for name in ("normal", "multi")]
+        self.models[1]["audit"]["design"]["house_type"]["value"] = "Villa"
         self.models[1]["audit"]["design"]["styles"]["influences"] = [
             {"value": "Modern Farmhouse", "state": "observed", "evidence": [0]}]
         self.models[1]["audit"]["shots"][0]["design"][0]["architecture"]["facts"][0]["value"] = "living-only layout"
@@ -52,6 +53,30 @@ class ReaderTests(test_prepare.VideoFixture, unittest.TestCase):
         self.assertEqual(search(self.root, style="cozy minimalist", style_role="interior-style")["total"], 2)
         self.assertEqual(search(self.root, style="Modern Cottage", include_uncertain=False)["total"], 0)
         self.assertEqual(search(self.root, limit=1)["next_offset"], 1)
+
+    def test_search_house_type_alias_combines_with_other_filters(self):
+        filters = {"house_type": "vila", "style": "farmhouse modern", "style_role": "style-influence",
+                   "scale": "kecil", "area": ["dapur"]}
+        result = search(self.root, **filters)
+        self.assertEqual([r["id"] for r in result["results"]], ["camera-multi"])
+        self.assertEqual(search(self.root, **filters, include_uncertain=False)["total"], 0)
+        self.assertEqual(search(self.root, **{**filters, "house_type": "Tower House"})["total"], 0)
+        self.assertEqual(search(self.root, **{**filters, "area": ["bathroom"]})["total"], 0)
+
+    def test_identity_exposes_palette_and_evidence_without_indexing_colors(self):
+        rid = "camera-multi"
+        identity = read_reference(self.root, rid, part="identity")
+        design = identity["design"]
+        self.assertEqual(design["house_type"]["value"], "Villa")
+        self.assertTrue({"spatial-configuration", "lighting", "atmosphere"} <=
+                        {row["aspect"] for row in design["features"]})
+        self.assertEqual(design["palette"][0]["hex"], "#F0E8DA")
+        for color in design["palette"]:
+            self.assertTrue({str(index) for index in color["evidence"]} <= identity["evidence"]["frames"].keys())
+        pointer = identity["provenance"]["/reference/design/palette/0"]
+        self.assertEqual(pointer, {"document": "audit", "source_pointer": "/design/palette/0"})
+        index = read_json(self.root / "data/search-index.json")
+        self.assertNotIn("#F0E8DA", dumps(index))
 
     def test_read_does_not_need_md_media_or_mp4(self):
         rid = "camera-multi"

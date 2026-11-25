@@ -2,12 +2,14 @@
 
 analysis.md hanya dihasilkan renderer dari audit.json dan metadata manifest; tidak menjadi input authoring atau sumber fakta generator. Template resmi tools/assets/templates/analysis.md memiliki enam bagian berurutan:
 
-1. Profil desain: nama, gaya utama, pengaruh, gaya interior, ciri khas, warna/material, suasana/lingkungan.
+1. Profil desain memuat nama, tipe rumah, gaya utama, pengaruh gaya, gaya interior, susunan ruang utama, ciri khas, material utama, pencahayaan, atmosfer, lingkungan, dan tabel Palet warna.
 2. Ukuran & proporsi: skala, massa, tingkat/atap, tapak, proporsi dan perkiraan luas lantai min–max.
 3. Shot Timeline: durasi, jumlah shot, Camera Pattern dan tabel shot/waktu/durasi/area/kamera.
 4. Overview: gambar wide satu baris beserta paragraf komposisi masing-masing pilihan.
 5. Storyboard: kolase seluruh shot tersusun vertikal.
 6. Shot Details: satu blok per take kontinu, gambar kolase dan A. Desain area, B. Framing & Lighting, C. Camera Movement.
+
+Palet warna memakai tabel Peran, Warna, HEX di bagian bawah Profil Desain. Detail Shot mencatat penggunaan warna dan cahaya setempat. Snapshot 3.0 awal tetap memakai template awal sesuai fingerprint manifest.
 
 Nama gaya teknis memakai bahasa Inggris; penjelasan bahasa Indonesia. Luas cukup **60–90 m²**, tanpa dasar perkiraan atau label kepastian tambahan wajib. Narasi sumber dipertahankan utuh dan di-escape untuk keamanan tampilan; renderer tidak mengarang, menerjemahkan ulang atau menyimpulkan isi.
 

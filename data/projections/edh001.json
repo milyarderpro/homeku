@@ -1,5 +1,5 @@
 {
-  "content_sha256": "536b2f7aa949b5ef3d33f09ba7098fbc4b13dd55342eac029f2d1812fecf613e",
+  "content_sha256": "04c620f3f1c3e8c5f89b13755ea9ee180f5ce234b22b97eef1d0d3f00d0c0a11",
   "derived": {
     "camera_pattern": "IN – OUT – IN – OUT – IN",
     "shots": [
@@ -235,11 +235,13 @@
       "449": 14.966666667,
       "450": 15.0,
       "475": 15.833333333,
+      "500": 16.666666667,
       "501": 16.7,
       "525": 17.5,
       "551": 18.366666667,
       "60": 2.0,
       "63": 2.1,
+      "66": 2.2,
       "71": 2.366666667,
       "83": 2.766666667
     },
@@ -1106,6 +1108,10 @@
       "document": "manifest",
       "source_pointer": "/frames/475"
     },
+    "/evidence_inventory/frames/500": {
+      "document": "manifest",
+      "source_pointer": "/frames/500"
+    },
     "/evidence_inventory/frames/501": {
       "document": "manifest",
       "source_pointer": "/frames/501"
@@ -1125,6 +1131,10 @@
     "/evidence_inventory/frames/63": {
       "document": "manifest",
       "source_pointer": "/frames/63"
+    },
+    "/evidence_inventory/frames/66": {
+      "document": "manifest",
+      "source_pointer": "/frames/66"
     },
     "/evidence_inventory/frames/71": {
       "document": "manifest",
@@ -1354,9 +1364,33 @@
       "document": "audit",
       "source_pointer": "/design/features/9"
     },
+    "/reference/design/house_type": {
+      "document": "audit",
+      "source_pointer": "/design/house_type"
+    },
     "/reference/design/name": {
       "document": "audit",
       "source_pointer": "/design/name"
+    },
+    "/reference/design/palette/0": {
+      "document": "audit",
+      "source_pointer": "/design/palette/0"
+    },
+    "/reference/design/palette/1": {
+      "document": "audit",
+      "source_pointer": "/design/palette/1"
+    },
+    "/reference/design/palette/2": {
+      "document": "audit",
+      "source_pointer": "/design/palette/2"
+    },
+    "/reference/design/palette/3": {
+      "document": "audit",
+      "source_pointer": "/design/palette/3"
+    },
+    "/reference/design/palette/4": {
+      "document": "audit",
+      "source_pointer": "/design/palette/4"
     },
     "/reference/design/size": {
       "document": "audit",
@@ -2289,18 +2323,6 @@
           "value": "Batu terang bertekstur dan bidang kayu hangat, dipertegas kusen dan logam hitam"
         },
         {
-          "aspect": "palette",
-          "evidence": [
-            0,
-            248,
-            249,
-            449,
-            501
-          ],
-          "state": "observed",
-          "value": "Putih batu, hitam, krem, kayu madu dan hijau abu pada kamar mandi"
-        },
-        {
           "aspect": "lighting",
           "evidence": [
             0,
@@ -2344,9 +2366,74 @@
           ],
           "state": "observed",
           "value": "Motif lengkung pada massa, kanopi, kaca ruang tamu, jendela kamar dan shower"
+        },
+        {
+          "aspect": "atmosphere",
+          "evidence": [
+            0,
+            248,
+            449
+          ],
+          "state": "observed",
+          "value": "Hangat dan intim, dengan aksen lampu keemasan dan kayu madu di tengah suasana musim dingin."
         }
       ],
+      "house_type": {
+        "evidence": [
+          0,
+          66
+        ],
+        "state": "observed",
+        "value": "Cottage"
+      },
       "name": "Cottage Batu Lengkung di Halaman Bersalju",
+      "palette": [
+        {
+          "evidence": [
+            0
+          ],
+          "hex": "#9B9493",
+          "role": "Dominan",
+          "state": "observed",
+          "value": "Abu batu terang"
+        },
+        {
+          "evidence": [
+            248
+          ],
+          "hex": "#C6BEB6",
+          "role": "Pendamping",
+          "state": "observed",
+          "value": "Krem lembut"
+        },
+        {
+          "evidence": [
+            248
+          ],
+          "hex": "#A17653",
+          "role": "Pendamping",
+          "state": "observed",
+          "value": "Kayu madu"
+        },
+        {
+          "evidence": [
+            66
+          ],
+          "hex": "#0A090B",
+          "role": "Aksen",
+          "state": "observed",
+          "value": "Hitam arang"
+        },
+        {
+          "evidence": [
+            500
+          ],
+          "hex": "#717062",
+          "role": "Aksen kamar mandi",
+          "state": "observed",
+          "value": "Hijau zaitun keabu-abuan"
+        }
+      ],
       "size": {
         "floor_area_m2": {
           "max": 85,
@@ -2433,7 +2520,7 @@
     },
     "id": "edh001",
     "notes": "Lengkung, material terang dan pencahayaan hangat berulang sepanjang video. Urutan cut tidak memperlihatkan koneksi fisik antararea.",
-    "revision": 1,
+    "revision": 2,
     "schema_version": "3.0",
     "shots": [
       {

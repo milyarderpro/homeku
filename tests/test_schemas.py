@@ -67,6 +67,21 @@ class SchemaTests(unittest.TestCase):
         with self.assertRaises(Exception):
             self.validate_part("design", value)
 
+    def test_design_profile_accepts_open_types_and_validates_palette(self):
+        value = self.design()
+        color = {**claim("Putih gading"), "role": "Dominan", "hex": "#F0E8DA"}
+        value.update(house_type=claim("Tower House", "uncertain"), palette=[color])
+        self.validate_part("design", value)
+        value["house_type"] = claim(None, "unknown")
+        self.validate_part("design", value)
+        for changes in ({"house_type": claim("Villa", "unknown")},
+                        {"house_type": claim(None, "observed")},
+                        {"palette": [dict(color, hex="red")]},
+                        {"palette": [dict(color, evidence=[])]},
+                        {"palette": [color] * 7}):
+            with self.subTest(changes=changes), self.assertRaises(Exception):
+                self.validate_part("design", {**value, **changes})
+
     def test_floor_area_is_required_positive_and_needs_no_basis(self):
         value = self.design()
         self.validate_part("design", value)

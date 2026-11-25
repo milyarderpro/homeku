@@ -21,7 +21,8 @@ GENERATOR_MODULES = (
     "engine", "storage", "reader", "audit_performance",
 )
 SCHEMA_PATHS = ("audit", "audit-info", "manifest", "reference-reader", "search-index")
-ASSETS = ("templates/analysis.md", "layouts/media.json", "fonts/DejaVuSans.ttf",
+ASSETS = ("templates/analysis.md", "templates/analysis-profile.md", "layouts/media.json",
+          "fonts/DejaVuSans.ttf",
           "fonts/DejaVuSans-Bold.ttf", "fonts/LICENSE.txt")
 
 
@@ -115,7 +116,7 @@ def facts_for(shot, index):
 def profile_facets(audit, groups):
     for pointer, claim, aspect in profile_claims(audit):
         group = ("styles" if aspect in {"primary-style", "style-influence", "interior-style"}
-                 else "scales" if aspect == "apparent-scale" else aspect)
+                 else {"apparent-scale": "scales", "house-type": "house_types"}.get(aspect, aspect))
         yield {**claim, "aspect": aspect, "canonical": canonical(groups, group, claim["value"]),
                "source_pointer": pointer}
 

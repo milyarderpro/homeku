@@ -3,6 +3,7 @@ import unittest
 from .test_audit_preflight import normal
 from homeku.audit_quality import validate_audit_logs, validate_frame_reviews
 from homeku.common import LibraryError
+from homeku.derivations import frame_map
 from homeku.video import selected_indices
 
 
@@ -33,6 +34,21 @@ class AuditQualityTests(unittest.TestCase):
         with self.assertRaisesRegex(LibraryError, "not actually declared viewed"):
             validate_audit_logs(logs, self.audit, None, self.info, times=self.times)
         logs["frame_reviews"].append(self.review(6, .6, .7, native=True))
+        validate_audit_logs(logs, self.audit, None, self.info, times=self.times)
+
+    def test_palette_evidence_is_in_frame_map_and_requires_viewing(self):
+        design = self.audit["design"]
+        design.update(house_type={"value": "Tower House", "state": "uncertain", "evidence": [0]},
+                      palette=[{"value": "Putih", "role": "Dominan", "hex": "#F0E8DA",
+                                "state": "observed", "evidence": [4]}])
+        logs = {"method": "Fixture", "limitations": "Fixture only",
+                "ai": {"provider": "fixture", "model": "fixture", "model_build": None},
+                "reviewed_ranges": [{"start_s": 0, "end_s": 1.2, "mode": "sampling"}],
+                "frame_reviews": [self.review(6), self.review(6, .6, .7, native=True)]}
+        self.assertEqual(frame_map(self.audit, self.times)["4"], .4)
+        with self.assertRaisesRegex(LibraryError, "not actually declared viewed"):
+            validate_audit_logs(logs, self.audit, None, self.info, times=self.times)
+        logs["frame_reviews"].append(self.review(6, .4, .5, native=True))
         validate_audit_logs(logs, self.audit, None, self.info, times=self.times)
 
     def test_adjacent_baseline_passes_cover_shot_and_gaps_do_not(self):

@@ -27,6 +27,28 @@ class PreflightTests(test_prepare.VideoFixture, unittest.TestCase):
         self.assertIn("/audit-info/method", {e["path"] for e in result["errors"]})
         probe.assert_not_called()
 
+    def test_profile_errors_precede_source_probe(self):
+        audit = normal()
+        design = audit["design"]
+        design.update(house_type={"value": None, "state": "unknown", "evidence": []},
+                      palette=[{"value": "Ivory", "role": "Dominan", "hex": "#ZZZZZZ",
+                                "state": "observed", "evidence": [0]}])
+        info = {"method": "Fixture", "limitations": "Synthetic fixture",
+                "ai": {"provider": "fixture", "model": "fixture", "model_build": None},
+                "reviewed_ranges": [{"start_s": 0, "end_s": 1, "mode": "sampling"}],
+                "frame_reviews": [{"shot_id": "shot-01", "start_s": 0, "end_s": 1, "mode": "sampling",
+                                   "sampling_fps": 6, "selected_frame_indices": [0],
+                                   "viewed_frame_indices": [0], "reason": "Fixture"}]}
+        with patch("homeku.preflight.probe_video") as probe:
+            result = check_inputs("missing.mp4", audit, info)
+            self.assertIn("/audit/design/palette/0/hex", {e["path"] for e in result["errors"]})
+            design["palette"][0]["hex"] = "#F0E8DA"
+            design["features"].append({"aspect": "palette", "value": "Ivory", "state": "observed",
+                                       "evidence": [0]})
+            result = check_inputs("missing.mp4", audit, info)
+            self.assertIn("/audit/design/palette", {e["path"] for e in result["errors"]})
+            probe.assert_not_called()
+
     def test_native_context_is_reusable_and_viewed_is_required(self):
         source = self.video("preflight")
         work = prepare(source, [], self.work / "audit")

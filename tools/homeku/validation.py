@@ -174,13 +174,13 @@ def validate_folder(folder: Path, root: Path, package_name=None, source_override
     _clean(manifest["audit"])
     if require_source:
         validate_audit_logs(manifest["audit"], audit, source, info, times=times)
-    verify_renderer(manifest["render"])
+    template_path = verify_renderer(manifest["render"], audit)
     frames = manifest["frames"]
     try:
         text = (folder / "analysis.md").read_bytes().decode("utf-8")
     except UnicodeError as error:
         raise LibraryError("analysis.md must be UTF-8") from error
-    expected_report = report if report is not None else render_report(audit, frames)
+    expected_report = report if report is not None else render_report(audit, frames, template_path=template_path)
     require(text == expected_report, "analysis.md differs from the rendered report")
     if plan is None:
         plan = list(expected_media(audit, info, manifest["render"], frames))

@@ -38,6 +38,23 @@ class ModelTests(unittest.TestCase):
         with self.assertRaisesRegex(LibraryError, "placeholder"):
             self.validate(value)
 
+    def test_structured_palette_has_one_source(self):
+        value = self.audit()
+        design = value["design"]
+        design.update(house_type={"value": "Tower House", "state": "uncertain", "evidence": [0]},
+                      palette=[{"value": "Putih gading", "role": "Dominan", "hex": "#F0E8DA",
+                                "state": "observed", "evidence": [0]}])
+        design["features"] = [f for f in design["features"] if f["aspect"] != "palette"]
+        self.validate(value)
+        design["palette"][0]["evidence"] = [12]
+        with self.assertRaisesRegex(LibraryError, "/design/palette/0: unknown native evidence"):
+            self.validate(value)
+        design["palette"][0]["evidence"] = [0]
+        design["features"].append({"aspect": "palette", "value": "Ivory", "state": "observed",
+                                   "evidence": [0]})
+        with self.assertRaisesRegex(LibraryError, "only palette source"):
+            self.validate(value)
+
     def test_wrong_area_evidence_and_override_scope_fail(self):
         value = self.audit("multi")
         fact = value["shots"][0]["design"][1]["architecture"]["facts"][0]

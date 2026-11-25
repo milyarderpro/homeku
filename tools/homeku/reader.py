@@ -29,7 +29,7 @@ def _generated(root, path):
     return read_json(file)
 
 
-def search(root, *, style=None, style_role="primary-style", style_relation=None, scale=None, area=None,
+def search(root, *, style=None, style_role="primary-style", style_relation=None, house_type=None, scale=None, area=None,
            configuration=None, tempo=None, movement=None, camera_qualifier=None, route=None,
            limit=10, offset=0, include_uncertain=True):
     require(type(limit) is int and 1 <= limit <= 50 and type(offset) is int and offset >= 0,
@@ -68,6 +68,8 @@ def search(root, *, style=None, style_role="primary-style", style_relation=None,
                 for row in reference["style_relations"])
             if not direct and not related:
                 continue
+        if house_type and not facet(reference, "house-type", house_type, "house_types"):
+            continue
         if scale and not facet(reference, "apparent-scale", scale, "scales"):
             continue
         hits = []

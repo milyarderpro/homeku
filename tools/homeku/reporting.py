@@ -4,14 +4,15 @@ from . import FORMAT_VERSION
 from .camera_pattern import video_pattern
 from .common import require
 from .derivations import camera_summary, phase_tempo_text, selections, tempo_segments
-from .render_assets import TEMPLATE, claim_text, number, require_english_style_names
+from .render_assets import PROFILE_TEMPLATE, claim_text, number, report_template, require_english_style_names
 from .report_validation import display, lines, table, validate_report
 
 
-def render_report(audit, frames):
+def render_report(audit, frames, *, template_path=None):
     require(audit.get("schema_version") == FORMAT_VERSION, "Unsupported audit format for report")
     require_english_style_names(audit)
-    template = TEMPLATE.read_text(encoding="utf-8")
+    template_path = template_path or report_template(audit)
+    template = template_path.read_text(encoding="utf-8")
     headings = re.findall(r"^## [1-6]\. .+$", template, re.M)
     groups = re.findall(r"^#### \*\*[ABC]\. .+\*\*$", template, re.M)
     require(len(headings) == 6 and len(groups) == 3, "Invalid active report template")
@@ -33,13 +34,27 @@ def render_report(audit, frames):
 
     area = size["floor_area_m2"]
     name = display(design["name"])
-    parts = [f"# {audit['id']} — {name}", '<a id="profil-dna"></a>', headings[0],
-             lines([("Nama desain", name), ("Gaya utama", f"**{display(claim_text(styles['primary']))}**"),
-                    ("Pengaruh gaya", style_list(styles["influences"])),
-                    ("Gaya interior", style_list(styles["interior"])),
-                    ("Ciri khas", feature("distinctive-features")),
+    profile = [("Nama desain", name),
+               ("Gaya utama", f"**{display(claim_text(styles['primary']))}**"),
+               ("Pengaruh gaya", style_list(styles["influences"])),
+               ("Gaya interior", style_list(styles["interior"]))]
+    palette = []
+    if template_path == PROFILE_TEMPLATE:
+        house_type = design["house_type"]["value"]
+        profile.insert(1, ("Tipe rumah", display(house_type) if house_type is not None else "—"))
+        profile.extend((label, feature(aspect)) for label, aspect in (
+            ("Susunan ruang utama", "spatial-configuration"), ("Ciri khas", "distinctive-features"),
+            ("Material utama", "material-hierarchy"), ("Pencahayaan", "lighting"),
+            ("Atmosfer", "atmosphere"), ("Lingkungan", "environment")))
+        colors = [(display(c["role"]), display(c["value"]), f"`{c['hex']}`")
+                  for c in design["palette"]]
+        palette = ["### Palet warna", table(["Peran", "Warna", "HEX"], colors) if colors else "—"]
+    else:
+        profile += [("Ciri khas", feature("distinctive-features")),
                     ("Warna & material", feature("palette", "material-hierarchy")),
-                    ("Suasana dan lingkungan", feature("environment", "lighting"))]), headings[1],
+                    ("Suasana dan lingkungan", feature("environment", "lighting"))]
+    parts = [f"# {audit['id']} — {name}", '<a id="profil-dna"></a>', headings[0],
+             lines(profile), *palette, headings[1],
              table(["Aspek", "Estimasi visual"], [(f"**{label}**", value) for label, value in [
                  ("Ukuran rumah", display(claim_text(size["scale"]))),
                  ("Bentuk bangunan", feature("massing")),
@@ -125,4 +140,4 @@ def render_report(audit, frames):
             parts.append("**Catatan:** " + display(shot["notes"]))
     if "notes" in audit:
         parts.append("**Catatan referensi:** " + display(audit["notes"]))
-    return validate_report("\n\n".join(parts) + "\n", audit, frames)
+    return validate_report("\n\n".join(parts) + "\n", audit, frames, template_path=template_path)

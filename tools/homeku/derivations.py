@@ -26,6 +26,8 @@ def resolve(value, pointer):
 
 def profile_claims(audit):
     """Yield (pointer, claim, explicit aspect), without creating a second profile."""
+    if "house_type" in audit["design"]:
+        yield "/design/house_type", audit["design"]["house_type"], "house-type"
     yield "/design/styles/primary", audit["design"]["styles"]["primary"], "primary-style"
     for group, aspect in (("influences", "style-influence"), ("interior", "interior-style")):
         for i, claim in enumerate(audit["design"]["styles"][group]):
@@ -47,6 +49,8 @@ def fact_claims(shot, shot_index):
 def claims(audit):
     for pointer, claim, aspect in profile_claims(audit):
         yield pointer, claim, [], None, aspect
+    for i, color in enumerate(audit["design"].get("palette", [])):
+        yield f"/design/palette/{i}", color, [], None, "palette-color"
     for i, relation in enumerate(audit["design"]["styles"].get("relations", [])):
         yield f"/design/styles/relations/{i}", relation, [], None, "style-relation"
     for si, shot in enumerate(audit["shots"]):

@@ -44,6 +44,8 @@ class PrepareTests(VideoFixture, unittest.TestCase):
         value = read_json(Path(result["audit"]))
         self.assertEqual(value["schema_version"], "3.0")
         self.assertNotIn("profile", value)
+        self.assertEqual(value["design"]["house_type"]["value"], "{{HOUSE_TYPE}}")
+        self.assertEqual(value["design"]["palette"], [])
         self.assertEqual(value["areas"], [])
         self.assertEqual([p["frame_index"] for p in value["shots"][0]["panels"]], [0, 6, 11])
         row = result["shots"][0]

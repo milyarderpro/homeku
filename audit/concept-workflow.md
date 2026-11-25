@@ -7,12 +7,13 @@ Gunakan audit sebagai pengetahuan visual untuk mengembangkan konsep baru atau me
 Mulai dari kebutuhan pengguna. Misalnya, tiga konsep American Cottage berukuran tiny dengan dapur dan ruang keluarga yang terhubung. Pisahkan syarat dari preferensi, lalu cari beberapa referensi aktif.
 
 ~~~sh
-python tools/library.py search --style "American Cottage" --scale tiny --area kitchen --limit 5
+python tools/library.py search --house-type Cottage --style "American Cottage" --scale tiny --area kitchen --limit 5
+python tools/library.py read rumah --part identity
 python tools/library.py read rumah --part shot --shot shot-02
 python tools/library.py read rumah --part area --shot shot-02 --area kitchen-1
 ~~~
 
-Indeks mencari gaya utama, pengaruh, gaya interior, skala, konfigurasi, rute, gerak, dan tempo. Buka identitas dan shot terpilih untuk membaca detail dan pointer sumber. Buka gambar yang membantu keputusan; gunakan [kontrak reader](contracts/reader.md) untuk mengambil panel, Overview, dan blok Storyboard. Catat keterbatasan kecocokan bila pustaka belum punya sumber yang memenuhi brief.
+Indeks mencari tipe rumah, gaya, skala, konfigurasi, rute, gerak, dan tempo. Buka identitas untuk susunan ruang, palet HEX dan atmosfer, lalu buka shot terpilih untuk detail pencahayaan serta pointer sumber. Buka gambar yang membantu keputusan; gunakan [kontrak reader](contracts/reader.md) untuk mengambil panel, Overview, dan blok Storyboard. Catat keterbatasan kecocokan bila pustaka belum punya sumber yang memenuhi brief.
 
 ## Kembangkan variasi dengan DNA yang jelas
 
@@ -23,7 +24,7 @@ Indeks mencari gaya utama, pengaruh, gaya interior, skala, konfigurasi, rute, ge
 
 | Kemampuan | Data yang dibaca |
 | --- | --- |
-| Gaya, ukuran, dan identitas | design.styles, design.size, design.features serta katalog DNA |
+| Tipe rumah, gaya, ukuran, dan palet | design.house_type, design.styles, design.size, design.features, design.palette serta katalog DNA |
 | Variasi ruang dan furnitur | Area fisik, fungsi, kategori desain, fakta dan facet konfigurasi |
 | Kontinuitas rumah | Rute, visibilitas, hubungan area, bukaan dan lingkungan yang terlihat |
 | Komposisi dan gerak | Camera Start, framing, fase, tempo, Overview serta panel native |

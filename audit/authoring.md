@@ -15,6 +15,8 @@ Workspace berisi `session.json`, kerangka `audit.json`, `audit-info.json` dan sh
 
 ## Tulis pengamatan
 
+Nilai tipe rumah, susunan ruang, pencahayaan, atmosfer, dan lingkungan. Isi palet HEX dari frame yang diperiksa dan cantumkan bukti per warna. Gunakan [contoh tipe rumah](vocabulary.md#tipe-rumah) dan [panduan pengisian profil](json-guide.md#profil-desain).
+
 Isi nama gaya dalam bahasa Inggris dan narasi dalam bahasa Indonesia. Tulis rentang luas lantai, identitas area, detail desain beserta fakta dan bukti, framing awal, Overview, serta kamera dan tempo. [Panduan JSON](json-guide.md) menjelaskan field. Contoh normal dan multi area merupakan fixture sintetis.
 
 Tulis pengamatan depth, translation dan rotation sebelum notasi tiap fase. Nilai besaran setiap komponen dan cantumkan estimasi skala atau sudut jika dapat diperkirakan secara wajar. Jika hanya sebagian komponen dapat ditaksir, tulis angka pada bagian itu. Lihat [contoh kamera](camera-cases.md).
@@ -51,6 +53,7 @@ Untuk pertanyaan visual yang masih ambigu, gunakan [bantuan statistik gerak 2D](
 
 - Cocokkan cut, scope area, pengamatan tiga sumbu, notasi, tempo, dan bukti pada shot yang sama.
 - Tinjau komponen tanpa angka dari frame yang sudah dilihat. Tambahkan estimasi yang dapat dibuat secara wajar. Gunakan frame tambahan hanya jika ada pertanyaan visual spesifik yang belum terjawab.
+- Periksa tipe rumah dan sumber buktinya. Cocokkan palet HEX dengan frame yang diperiksa serta pastikan pencahayaan, atmosfer, dan lingkungan masing-masing menyampaikan hal yang berbeda.
 - Baca narasi desain bersama fakta yang terkait. Cocokkan gaya utama dengan ciri arsitektur dominan. Periksa bentuk bukaan, material tampak, lampu, dan fungsi furnitur. Pisahkan konfigurasi yang terlihat dari tipe layout yang masih belum pasti.
 - Periksa panel awal terhadap posisi Camera Start. Pastikan Overview menjelaskan cakupan wide, sementara uraian shot memuat detail desain. Ringkas detail berulang agar tiap bagian mudah dipindai.
 - Baca laporan enam bagian dan periksa caption serta gambar pada semua kolase. Untuk penyesuaian ukuran, ubah parameter render sebelum peninjauan berikutnya.

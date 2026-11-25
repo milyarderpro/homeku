@@ -52,6 +52,20 @@ class GenerationTests(unittest.TestCase):
         self.assertNotIn("Tidak boleh menjadi fakta otomatis", "".join(
             text for name, text in outputs.items() if name.startswith("knowledge/")))
 
+    def test_house_type_keeps_source_label_and_canonical_alias(self):
+        item = model("normal")
+        audit = item["audit"]
+        for label, expected in (("vila", "Villa"), ("Tower House", "Tower House")):
+            with self.subTest(label=label):
+                audit["design"]["house_type"]["value"] = label
+                output = render(ROOT, {item["id"]: item})
+                index = json.loads(output["data/search-index.json"])
+                row = next(f for f in index["references"][0]["profile_facets"]
+                           if f["aspect"] == "house-type")
+                self.assertEqual(row["value"], label)
+                self.assertEqual(row["canonical"], expected)
+                self.assertEqual(row["source_pointer"], "/design/house_type")
+
     def test_empty_registry_output_and_explicit_profile_categories(self):
         empty = render(ROOT, {})
         self.assertEqual(json.loads(empty["data/search-index.json"])["references"], [])

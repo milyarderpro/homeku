@@ -15,7 +15,7 @@ from .common import dumps, read_json, require, sha256, snapshot_hash
 from .media import expected_media
 from .package_manifest import build_manifest
 from .preflight import require_inputs
-from .render_assets import render_config
+from .render_assets import render_config, report_template
 from .reporting import render_report
 from .storage import locked
 from .validation import extract_package, package_files, validate_folder
@@ -52,7 +52,8 @@ def draft(source, audit_path, audit_info, output_root, *, supersedes=None, purpo
         cache = context["cache"]
         info = {**context["info"], "path": f"video/{audit['id']}.mp4", "sha256": context["sha256"]}
         times = context["times"]
-        config = render_config(quality=quality, scale=scale, columns=columns,
+        template_path = report_template(audit)
+        config = render_config(template_path=template_path, quality=quality, scale=scale, columns=columns,
                                overview_scale=overview_scale, storyboard_scale=storyboard_scale)
         candidate = safe_path(output_root / audit["id"])
         require(all(not path.resolve().is_relative_to(candidate.resolve())
@@ -60,7 +61,7 @@ def draft(source, audit_path, audit_info, output_root, *, supersedes=None, purpo
                 "Source, working files and cache must stay outside candidate")
         if candidate.exists():
             _managed_candidate(candidate)
-        report = render_report(audit, times)
+        report = render_report(audit, times, template_path=template_path)
         plan = list(expected_media(audit, info, config, times))
         with tempfile.TemporaryDirectory(prefix=".draft-", dir=output_root) as scratch:
             folder = Path(scratch) / audit["id"]

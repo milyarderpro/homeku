@@ -5,7 +5,7 @@ from jsonschema import Draft202012Validator, FormatChecker
 from . import FORMAT_VERSION
 from .audit_quality import validate_audit_logs, validate_frame_reviews
 from .common import LibraryError, read_json, require, sha256
-from .models import ROOT, _clean, validate_audit
+from .models import ROOT, _clean, validate_audit, validate_profile
 from .video import frame_times, probe_video
 
 
@@ -59,6 +59,11 @@ def check_inputs(source, audit, audit_info, *, limit=100, supersedes=None, purpo
     if errors:
         return result()
     capture("/audit", "observations", lambda: _clean(audit))
+    design = audit["design"]
+    for field in ("house_type", "palette"):
+        if field not in design:
+            add("/audit/design/" + field, "profile", "New audit drafts require the standard design profile.")
+    capture("/audit", "profile", lambda: validate_profile(design))
     capture("/audit-info", "observations", lambda: _clean(audit_info))
     size = audit["design"]["size"]["floor_area_m2"]
     if size["min"] > size["max"]:

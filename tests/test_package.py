@@ -6,10 +6,11 @@ from unittest.mock import patch
 from . import test_prepare
 from homeku.audit_session import mark_viewed, add_frames
 from homeku.authoring import complete, prepare
-from homeku.common import LibraryError, dumps, read_json
+from homeku.common import LibraryError, dumps, read_json, sha256
 from homeku.derivations import referenced_frames
 from homeku.exporter import draft, review, export
 from homeku.validation import validate_folder
+from homeku.render_assets import PROFILE_TEMPLATE, TEMPLATE
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -49,6 +50,20 @@ class PackageTests(test_prepare.VideoFixture, unittest.TestCase):
             self.assertEqual(set(archive.namelist()), names)
             for name in names:
                 self.assertEqual(archive.read(name), (candidate.parent / name).read_bytes())
+
+    def test_draft_binds_the_standard_profile_template(self):
+        source, audit, logs = self.authored()
+        result = draft(source, audit, logs, self.work / "candidates", purpose="fixture")
+        candidate = Path(result["candidate"])
+        manifest_path = candidate / "manifest.json"
+        manifest = read_json(manifest_path)
+        self.assertEqual(manifest["render"]["template_sha256"], sha256(PROFILE_TEMPLATE))
+        self.assertIn("### Palet warna", (candidate / "analysis.md").read_text())
+        for fingerprint in (sha256(TEMPLATE), "a" * 64):
+            with self.subTest(fingerprint=fingerprint), self.assertRaisesRegex(LibraryError, "audit profile"):
+                manifest["render"]["template_sha256"] = fingerprint
+                manifest_path.write_text(dumps(manifest))
+                validate_folder(candidate, self.work, require_source=False)
 
     def test_each_payload_change_requires_a_fresh_review(self):
         source, audit, logs = self.authored()

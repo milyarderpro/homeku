@@ -406,6 +406,16 @@
             "$ref": "#/$defs/feature"
           },
           "minItems": 0
+        },
+        "house_type": {
+          "$ref": "#/$defs/house-type"
+        },
+        "palette": {
+          "type": "array",
+          "maxItems": 6,
+          "items": {
+            "$ref": "#/$defs/palette-color"
+          }
         }
       },
       "required": [
@@ -414,7 +424,15 @@
         "size",
         "features"
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "dependentRequired": {
+        "house_type": [
+          "palette"
+        ],
+        "palette": [
+          "house_type"
+        ]
+      }
     },
     "category": {
       "type": "object",
@@ -1004,6 +1022,88 @@
         "label",
         "functions",
         "visible_intervals"
+      ],
+      "additionalProperties": false
+    },
+    "house-type": {
+      "$ref": "#/$defs/claim",
+      "properties": {
+        "value": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "state": {
+          "enum": [
+            "observed",
+            "uncertain",
+            "unknown"
+          ]
+        }
+      },
+      "if": {
+        "properties": {
+          "state": {
+            "const": "unknown"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "value": {
+            "type": "null"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "palette-color": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "hex": {
+          "type": "string",
+          "minLength": 7,
+          "maxLength": 7,
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "state": {
+          "enum": [
+            "observed",
+            "uncertain"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "value",
+        "role",
+        "hex",
+        "state",
+        "evidence"
       ],
       "additionalProperties": false
     }

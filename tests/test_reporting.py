@@ -22,6 +22,10 @@ class ReportingTests(unittest.TestCase):
         for name in ("normal", "multi"):
             with self.subTest(name=name):
                 audit = self.audit(name)
+                design = audit["design"]
+                del design["house_type"], design["palette"]
+                design["features"].append({"aspect": "palette", "value": "Putih, kayu tampak terang dan aksen gelap."})
+                next(c for c in design["features"] if c["aspect"] == "lighting")["value"] = "unknown"
                 original = copy.deepcopy(audit)
                 report = render_report(audit, PTS)
                 golden = ROOT / "tests/fixtures/reports" / f"{name}.md"
@@ -37,6 +41,24 @@ class ReportingTests(unittest.TestCase):
                     for overview in shot["overviews"]:
                         self.assertIn(overview["composition_summary"], report)
                 self.assertEqual(audit, original)
+
+    def test_standard_profile_order_and_palette_escaping(self):
+        audit = self.audit("multi")
+        design = audit["design"]
+        design.update(house_type={"value": "Tower House", "state": "uncertain", "evidence": [0]},
+                      palette=[{"value": "Gading [hangat]", "role": "Aksen | utama", "hex": "#F0E8DA",
+                                "state": "observed", "evidence": [0]}])
+        report = render_report(audit, PTS)
+        self.assertEqual(re.findall(r"^## .+$", report, re.M), HEADINGS)
+        profile = report.split(HEADINGS[1], 1)[0]
+        labels = re.findall(r"^- \*\*(.+?):\*\*", profile, re.M)
+        self.assertEqual(labels, ["Nama desain", "Tipe rumah", "Gaya utama", "Pengaruh gaya",
+                                  "Gaya interior", "Susunan ruang utama", "Ciri khas", "Material utama",
+                                  "Pencahayaan", "Atmosfer", "Lingkungan"])
+        self.assertIn(r"| Aksen \| utama | Gading \[hangat\] | `#F0E8DA` |", profile)
+        self.assertEqual(report.count("### Palet warna"), 1)
+        with self.assertRaises(LibraryError):
+            validate_report(report.replace("### Palet warna", "### Extra"), audit, PTS)
 
     def test_damage_to_template_structure_is_rejected(self):
         audit = self.audit("normal")

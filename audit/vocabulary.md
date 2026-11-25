@@ -23,6 +23,23 @@ Pisahkan material appearance yang terlihat dari physical-material yang belum dik
 Label areas memakai fungsi eksplisit, misalnya bathroom; laundry bila keduanya tampak. Kabinet dalam bedroom bukan otomatis ruang walk-in closet. Jika variasi penting tidak cocok daftar ini, beri label baru yang spesifik dan pertahankan bukti/statusnya.
 
 
+## Tipe rumah
+
+Pilih tipe yang paling mewakili bangunan dari massa, tapak, akses, dan susunan ruang yang terlihat.
+
+| Tipe awal | Petunjuk visual |
+| --- | --- |
+| Detached House | Rumah berdiri sendiri tanpa ciri tipe yang lebih spesifik. |
+| Villa | Hunian yang ditata untuk privasi dan pemakaian ruang luar seperti teras, taman, atau area santai. |
+| Cottage | Hunian kompak dengan karakter rumah pedesaan atau peristirahatan kecil. |
+| Cabin | Hunian kecil dan sederhana yang dekat dengan lingkungan alam. |
+| Bungalow | Rumah rendah dengan ruang utama pada satu lantai dan massa cenderung melebar. |
+| Townhouse | Rumah dalam deretan yang memiliki akses masing-masing dan berbagi dinding sisi. |
+| Semi-Detached House | Satu dari sepasang rumah yang berbagi satu dinding. |
+| Duplex | Satu bangunan dengan dua unit hunian terpisah. |
+
+Daftar ini terbuka. Gunakan label yang lebih mewakili sumber seperti `Tower House` jika bentuk menara mendominasi. Catat pilihan yang masuk akal sebagai `uncertain` saat cirinya mendukung lebih dari satu tipe. Jika video terlalu terbatas untuk memperkirakan tipe apa pun, gunakan `unknown`.
+
 ## DNA, alias dan notasi
 
 Profil desain mencakup gaya/pengaruh, skala tampak, tingkat, massa/atap/entrance/porch/bukaan, material/palet/cahaya/lingkungan, konfigurasi/pembeda/kontinuitas. Nilai diskret ditulis per klaim dengan state/confidence/bukti. Gaya adalah interpretasi beralasan; tidak memastikan asal budaya/lokasi.

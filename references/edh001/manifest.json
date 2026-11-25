@@ -455,8 +455,8 @@
         ]
       }
     ],
-    "limitations": "Besaran gerak adalah estimasi visual dari perubahan proyeksi. Nama gaya dan luas merupakan interpretasi visual. Cut membatasi pembacaan hubungan denah fisik antararea.",
-    "method": "Pemeriksaan visual baseline 6 FPS pada lima shot, batas native dan midpoint. Pendalaman 10 FPS pada peralihan eksterior serta perbandingan kusen kamar tidur. Frame awal, tengah dan akhir turut dibandingkan dalam pembesaran.",
+    "limitations": "Besaran gerak adalah estimasi visual dari perubahan proyeksi. Nama gaya dan luas merupakan interpretasi visual. Cut membatasi pembacaan hubungan denah fisik antararea. HEX menggambarkan warna yang tampak pada sumber dan dipengaruhi pencahayaan.",
+    "method": "Pemeriksaan visual baseline 6 FPS pada lima shot, batas native dan midpoint. Pendalaman 10 FPS pada peralihan eksterior serta perbandingan kusen kamar tidur. Frame awal, tengah dan akhir turut dibandingkan dalam pembesaran. Revisi profil r0002 meninjau frame asli pada lima shot untuk tipe rumah, atmosfer dan palet. HEX diperkirakan dari sampel permukaan representatif pada frame yang dirujuk.",
     "reviewed_ranges": [
       {
         "end_s": 4.733333333,
@@ -520,7 +520,7 @@
       }
     ]
   },
-  "audit_sha256": "013792e50ca035bf473cffa68fb1bdbd4d861e3b1a1116339d479c7c6b5a3a42",
+  "audit_sha256": "436f42499882cef97c4e3460329d9f206324900117292398a7cffb53e10e667e",
   "contract_version": "3.0",
   "frames": {
     "0": 0.0,
@@ -545,11 +545,13 @@
     "449": 14.966666667,
     "450": 15.0,
     "475": 15.833333333,
+    "500": 16.666666667,
     "501": 16.7,
     "525": 17.5,
     "551": 18.366666667,
     "60": 2.0,
     "63": 2.1,
+    "66": 2.2,
     "71": 2.366666667,
     "83": 2.766666667
   },
@@ -1038,9 +1040,9 @@
     "overview_scale": 1,
     "panel_scale": 1,
     "storyboard_scale": 1,
-    "template_sha256": "922902a9b3431f1316ec563de8963371574d6332e9aee7a60b14f9b8038e831c"
+    "template_sha256": "d86f9bcc4f4fc8af70f58df7c7b7ae1ca11acab1aa2a626d05c8baffa89643ac"
   },
-  "revision": 1,
+  "revision": 2,
   "selections": [
     {
       "area_ids": [
@@ -1295,5 +1297,8 @@
     "video_stream_index": 0,
     "width": 720
   },
-  "supersedes": null
+  "supersedes": {
+    "content_sha256": "536b2f7aa949b5ef3d33f09ba7098fbc4b13dd55342eac029f2d1812fecf613e",
+    "revision": 1
+  }
 }

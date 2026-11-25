@@ -15,7 +15,8 @@ HOMEKU menyimpan audit video desain, komposisi, dan gerakan kamera dalam format 
 
 ~~~sh
 python tools/library.py ingest incoming/rumah-r0001.zip
-python tools/library.py search --style "American Cottage" --scale tiny --area kitchen --limit 5
+python tools/library.py search --house-type Cottage --style "American Cottage" --scale tiny --area kitchen --limit 5
+python tools/library.py read rumah --part identity
 python tools/library.py read rumah --part shot --shot shot-01
 python tools/library.py panel rumah s01-overview-01 --output /tmp/overview.png
 ~~~

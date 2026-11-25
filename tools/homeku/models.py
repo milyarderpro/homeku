@@ -26,11 +26,18 @@ def _clean(value, path=""):
                 path + ": unfilled placeholder or NUL")
 
 
+def validate_profile(design):
+    if "palette" in design:
+        require(not any(claim["aspect"] == "palette" for claim in design["features"]),
+                "/design/palette: use the structured palette as the only palette source")
+
+
 def validate_audit(audit, duration=None, times=None):
     require(isinstance(audit, dict) and audit.get("schema_version") == FORMAT_VERSION,
             "Unsupported audit format; use the current HOMEKU kit and audit again")
     schema_check(audit, "audit.schema.json")
     _clean(audit)
+    validate_profile(audit["design"])
     shots = audit["shots"]
     require([s["shot"] for s in shots] == [f"shot-{i:02d}" for i in range(1, len(shots) + 1)],
             "Shot IDs must be sequential")

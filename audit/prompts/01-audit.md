@@ -6,6 +6,8 @@ Konfirmasi cut nyata dan jalankan prepare. Periksa baseline 6 FPS serta frame ba
 
 Periksa depth, translation, dan rotation sebelum menentukan gerak. Evaluasi besaran setiap komponen per fase. Tulis estimasi ~× atau ~° yang dapat dibuat secara wajar dari frame. Angka tunggal dan rentang sama-sama sah. Hilangkan angka hanya pada komponen yang besarannya sulit diperkirakan secara wajar. Pisahkan tempo dari fase dan intensitas. Ikuti kronologi video sumber.
 
+Isi Profil Desain dari frame. Pilih tipe rumah paling sesuai dalam bahasa Inggris, termasuk label baru bila relevan. Gunakan `uncertain` untuk perkiraan yang wajar. Tulis susunan ruang, pencahayaan, atmosfer, dan lingkungan. Pilih warna utama dari bagian frame yang pencahayaannya merata, lalu isi nama, peran, HEX, dan bukti tiap warna.
+
 Tulis nama gaya dalam bahasa Inggris, luas lantai sebagai rentang angka, serta uraian arsitektur, furnitur, lingkungan, dan framing dalam bahasa Indonesia. Catat fakta eksplisit dengan bukti dan statusnya. Camera Start menjelaskan awal sumber. Overview menjelaskan frame wide yang dipilih.
 
-Deklarasikan viewed setelah melihat frame. Sebelum menampilkan laporan, ikuti checklist di `audit/authoring.md` dan tinjau kembali komponen tanpa angka dari frame yang sudah dilihat. Jalankan `complete`, `check-input`, dan `draft`. Jika kandidat lulus validasi, jalankan `review` dan langsung `export --receipt` untuk membuat ZIP tanpa MP4 dalam sesi ini.
+Deklarasikan viewed setelah melihat frame. Sebelum menampilkan laporan, ikuti checklist di `audit/authoring.md` dan tinjau kembali komponen tanpa angka dari frame yang sudah dilihat. Jalankan `complete`, `check-input`, dan `draft`. Jika kandidat lulus validasi, jalankan `review` dan langsung `export --receipt` untuk membuat ZIP tanpa MP4 dalam sesi ini. Berikan tautan unduhan ZIP bersama hasil audit.

@@ -5,12 +5,26 @@
 ## 1. Profil desain
 
 - **Nama desain:** Cottage Batu Lengkung di Halaman Bersalju
+- **Tipe rumah:** Cottage
 - **Gaya utama:** **Organic Modern Cottage**
 - **Pengaruh gaya:** Contemporary Scandinavian; Modern Farmhouse
 - **Gaya interior:** Cozy Modern
+- **Susunan ruang utama:** Dapur linear, penyimpanan terbuka kamar dan laundry bertumpuk di kamar mandi
 - **Ciri khas:** Motif lengkung pada massa, kanopi, kaca ruang tamu, jendela kamar dan shower
-- **Warna & material:** Batu terang bertekstur dan bidang kayu hangat, dipertegas kusen dan logam hitam; Putih batu, hitam, krem, kayu madu dan hijau abu pada kamar mandi
-- **Suasana dan lingkungan:** Lampu dalam bernuansa hangat dipadukan cahaya siang yang sejuk; Pemandangan musim dingin dengan salju, batang pohon tanpa daun dan beberapa rumah sekitar
+- **Material utama:** Batu terang bertekstur dan bidang kayu hangat, dipertegas kusen dan logam hitam
+- **Pencahayaan:** Lampu dalam bernuansa hangat dipadukan cahaya siang yang sejuk
+- **Atmosfer:** Hangat dan intim, dengan aksen lampu keemasan dan kayu madu di tengah suasana musim dingin.
+- **Lingkungan:** Pemandangan musim dingin dengan salju, batang pohon tanpa daun dan beberapa rumah sekitar
+
+### Palet warna
+
+| Peran | Warna | HEX |
+| --- | --- | --- |
+| Dominan | Abu batu terang | `#9B9493` |
+| Pendamping | Krem lembut | `#C6BEB6` |
+| Pendamping | Kayu madu | `#A17653` |
+| Aksen | Hitam arang | `#0A090B` |
+| Aksen kamar mandi | Hijau zaitun keabu-abuan | `#717062` |
 
 ## 2. Ukuran & proporsi
 

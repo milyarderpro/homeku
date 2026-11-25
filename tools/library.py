@@ -30,6 +30,7 @@ def main():
     finding.add_argument("--style")
     finding.add_argument("--style-role",choices=["primary-style","style-influence","interior-style"],default="primary-style")
     finding.add_argument("--style-relation",choices=["family","blend","influence"])
+    finding.add_argument("--house-type", help="Search the reference house type")
     finding.add_argument("--scale")
     finding.add_argument("--area",action="append")
     finding.add_argument("--configuration")
@@ -60,7 +61,8 @@ def main():
     try:
         if args.command == "search":
             with locked(root,recovery=False):
-                result=search(root,style=args.style,style_role=args.style_role,style_relation=args.style_relation,scale=args.scale,
+                result=search(root,style=args.style,style_role=args.style_role,style_relation=args.style_relation,
+                    house_type=args.house_type,scale=args.scale,
                     area=args.area,configuration=args.configuration,movement=args.movement,camera_qualifier=args.camera_qualifier,tempo=args.tempo,route=args.route,limit=args.limit,offset=args.offset,include_uncertain=not args.observed_only)
         elif args.command == "read":
             with locked(root,recovery=False):
