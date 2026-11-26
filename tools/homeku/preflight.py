@@ -1,16 +1,63 @@
 """Collect independent input errors before any final JPEG is rendered."""
+import copy
 import re
 from pathlib import Path
 from jsonschema import Draft202012Validator, FormatChecker
 from . import FORMAT_VERSION
-from .audit_quality import validate_audit_logs, validate_frame_reviews
-from .common import LibraryError, read_json, require, sha256
-from .models import ROOT, _clean, validate_audit, validate_profile
-from .video import frame_times, probe_video
+from .audit_session import bind_audit, load_session, require_current_camera
+from .audit_quality import camera_evidence, validate_audit_logs, validate_frame_reviews, validate_motion
+from .camera_notation import normalize, parse
+from .common import LibraryError, read_json, require
+from .models import (
+    ROOT, _clean, validate_audit, validate_camera_timeline, validate_production_start, validate_profile,
+)
+from .video_cache import FrameCache
 
 
-def check_inputs(source, audit, audit_info, *, limit=100, supersedes=None, purpose="reference",
-                 cache_dir=None, log=None):
+def canonical_notation(text):
+    return " + ".join(clause["raw"] for clause in parse(normalize(text)))
+
+
+def camera_input(shot, native, reviews, source, info, times):
+    """Check one camera block against prepared native bounds before design is authored."""
+    sid = native["shot"]
+    composition = shot.get("composition", {})
+    require(isinstance(composition, dict), f"{sid}/composition: expected an object")
+    fields = [("camera", shot.get("camera"), "#/$defs/camera")]
+    if "production_start" in composition:
+        fields.append(("composition/production_start", composition["production_start"],
+                       "#/$defs/composition/properties/production_start"))
+    defs = read_json(ROOT / "schemas/audit.schema.json")["$defs"]
+    for path, value, ref in fields:
+        error = next(Draft202012Validator({"$defs": defs, "$ref": ref}).iter_errors(value), None)
+        if error is not None:
+            suffix = "".join(f"/{part}" for part in error.path)
+            raise LibraryError(f"{sid}/{path}{suffix}: {error.message}")
+        _clean(value, f"{sid}/{path}")
+    normalized = {**native, "camera": copy.deepcopy(shot["camera"]), "composition": composition}
+    for i, phase in enumerate(normalized["camera"]["phases"]):
+        try:
+            phase["notation"] = canonical_notation(phase["notation"])
+        except ValueError as error:
+            raise LibraryError(f"{sid}/camera/phases/{i}/notation: {error}") from error
+    validate_camera_timeline(normalized)
+    validate_production_start(normalized, times, path=sid)
+    try:
+        validate_motion({"shots": [normalized]}, times)
+    except ValueError as error:
+        raise LibraryError(f"{sid}/camera: {error}") from error
+    records = [row for row in reviews if row["shot_id"] == sid]
+    completed = [row for row in records
+                 if row["selected_frame_indices"] == row["viewed_frame_indices"]]
+    validate_frame_reviews(completed, [normalized], source, info, times=times)
+    viewed = {index for row in completed for index in row["viewed_frame_indices"]}
+    missing = sorted(set(camera_evidence(normalized)) - viewed)
+    require(not missing, f"{sid}/camera: mark the evidence pass viewed for native frames {missing}")
+    return normalized["camera"]
+
+
+def check_inputs(source, audit, audit_info, *, session_path=None, limit=100, supersedes=None,
+                 purpose="reference", cache_dir=None, log=None):
     errors = []
 
     def add(path, group, message, action="Perbaiki field ini, lalu jalankan check-input kembali."):
@@ -49,7 +96,8 @@ def check_inputs(source, audit, audit_info, *, limit=100, supersedes=None, purpo
 
     require(type(limit) is int and limit > 0, "Error limit must be positive")
     if not isinstance(audit, dict) or audit.get("schema_version") != FORMAT_VERSION:
-        add("/audit/schema_version", "schema", "Unsupported audit format; use the current HOMEKU kit")
+        add("/audit/schema_version", "schema", "Unsupported audit format",
+            f"Audit ulang MP4 dengan kit HOMEKU {FORMAT_VERSION}.")
         return result()
     schema(audit, read_json(ROOT / "schemas/audit.schema.json"), "/audit")
     schema(audit_info, read_json(ROOT / "schemas/audit-info.schema.json"), "/audit-info")
@@ -60,9 +108,6 @@ def check_inputs(source, audit, audit_info, *, limit=100, supersedes=None, purpo
         return result()
     capture("/audit", "observations", lambda: _clean(audit))
     design = audit["design"]
-    for field in ("house_type", "palette"):
-        if field not in design:
-            add("/audit/design/" + field, "profile", "New audit drafts require the standard design profile.")
     capture("/audit", "profile", lambda: validate_profile(design))
     capture("/audit-info", "observations", lambda: _clean(audit_info))
     size = audit["design"]["size"]["floor_area_m2"]
@@ -78,20 +123,27 @@ def check_inputs(source, audit, audit_info, *, limit=100, supersedes=None, purpo
         add("/source", "source", "Source unavailable")
     if errors:
         return result()
-    cache = None
-    if cache_dir is not None:
-        from .video_cache import FrameCache
-        cache = capture("/source", "metadata", lambda: FrameCache(source, cache_dir, log=log))
-        if cache is None:
+    def verified_cache():
+        require(session_path is not None, "The source-bound session is required; run check-camera")
+        _, session, bound_cache = load_session(session_path)
+        require(source == bound_cache.source, "Source differs from the camera check session")
+        bind_audit(audit, session, bound_cache)
+        require_current_camera(session, audit)
+        return bound_cache
+
+    cache = capture("/session", "camera", verified_cache,
+                    "Jalankan check-camera pada sesi sumber. Jika kamera dikoreksi, periksa ulang shot terkait.")
+    if cache is None:
+        return result()
+    if cache_dir is not None and Path(cache_dir).resolve() != cache.root:
+        render_cache = capture("/source", "metadata", lambda: FrameCache(source, cache_dir, log=log))
+        if render_cache is None:
             return result()
-        info, times = cache.info, cache.times
-    else:
-        info = capture("/source", "metadata", lambda: probe_video(source))
-        if info is None:
+        if render_cache.source_hash != cache.source_hash:
+            add("/source", "camera", "Source changed after check-camera")
             return result()
-        times = capture("/source", "timestamps", lambda: frame_times(source, info=info))
-        if times is None:
-            return result()
+        cache = render_cache
+    info, times = cache.info, cache.times
     capture("/audit", "semantics", lambda: validate_audit(audit, info["duration_s"], times))
     frames_ok = True
     for i, row in enumerate(audit_info["frame_reviews"]):
@@ -105,8 +157,7 @@ def check_inputs(source, audit, audit_info, *, limit=100, supersedes=None, purpo
                 lambda: validate_audit_logs(audit_info, audit, source, info, times=times))
     if errors:
         return result()
-    digest = cache.source_hash if cache else capture("/source", "hash", lambda: sha256(source))
-    return result({"info": info, "times": times, "logs": audit_info, "sha256": digest, "cache": cache})
+    return result({"info": info, "times": times, "logs": audit_info, "sha256": cache.source_hash, "cache": cache})
 
 
 def require_inputs(source, audit, audit_info, **kwargs):

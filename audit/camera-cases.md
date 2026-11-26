@@ -1,6 +1,6 @@
-# Kasus pembacaan kamera HOMEKU 3.0
+# Kasus pembacaan kamera HOMEKU 3.1
 
-Sepuluh contoh ini berasal dari dokumen eksperimen pengguna. Gunakan tiap kasus untuk melihat tingkat detail yang dapat ditarik dari bukti, lalu nilai jenis, arah, lintasan, intensitas, profil laju, dan besaran sesuai video yang diaudit.
+Baca sebelum mengisi kamera pada fase 2. Sepuluh contoh ini berasal dari dokumen eksperimen pengguna. Gunakan tiap kasus untuk melihat tingkat detail yang dapat ditarik dari bukti, lalu nilai jenis, arah, lintasan, intensitas, profil laju, dan besaran sesuai video yang diaudit.
 
 | No | Notasi yang sah | Pemeriksaan |
 | --- | --- | --- |
@@ -20,6 +20,18 @@ Sepuluh contoh ini berasal dari dokumen eksperimen pengguna. Gunakan tiap kasus 
 - **Orbit → pendekatan.** Periksa sudut bidang pada awal, titik peralihan, dan ukuran jangkar sesudahnya. Jika sisi fasad lebih dahulu terbuka lalu tangga membesar dengan orientasi lebih stabil, beri masing-masing lintasan fase yang sesuai. Nilai skala awal sebelum memakai `Pure`.
 - **Dolly-Out + Orbit + Pan.** Bandingkan perubahan orientasi meja dekat dengan pergeseran bidang belakang. Bila meja relatif bergerak ke kiri dan sudutnya berubah sementara latar menyapu ke kanan, uji Orbit Right bersama Pan Left. Periksa juga perubahan skala akibat mundur sebelum menarik simpulan.
 - **Dolly-In → Dolly-In + Pan.** Jika jendela atau wastafel relatif terpusat di awal lalu bergerak ke kiri saat area kanan terbuka, cari frame sebelum dan sesudah Pan Right mulai. Pertahankan pendekatan pada kedua fase bila berlanjut.
+
+## Contoh awal, overlap, dan akhir komponen
+
+Pada `dreamshome01` Shot 01, pohon di kiri, sisi kanan fasad, dan tangga teras membantu membandingkan tiga interval.
+
+| Frame pembanding | Pengamatan | Gerak yang didukung |
+| --- | --- | --- |
+| F0, F15, F30 | Pohon dekat bergeser relatif terhadap rumah dan sisi kanan mulai terbuka. Ukuran jendela depan masih berubah sedikit. | Orbit Right lebih dulu |
+| F30, F45, F60, F90 | Sisi kanan terus terbuka saat jendela dan bukaan teras mulai membesar lebih jelas. | Orbit Right + Dolly-In |
+| F110, F140, F175 | Tangga dan bukaan teras membesar pesat ketika perubahan orientasi sisi rumah mereda. | Dolly-In menuju tangga dan teras |
+
+Rentang ini adalah frame pembanding dari contoh. Tentukan batas fase dengan frame di sekitar titik perubahan. Nilai Pan terpisah dengan sapuan latar dan perubahan arah pandang. Ambil estimasi skala dari jangkar yang sama dalam fase terkait.
 
 ## Memilih tingkat detail notasi
 

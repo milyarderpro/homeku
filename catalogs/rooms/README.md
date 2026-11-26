@@ -1,7 +1,7 @@
 # Ruang dan fungsi
 
-- [Bathroom & Laundry](bathroom-laundry-9fa7c5dd/README.md) · 1
 - [bathroom](bathroom-3486577c/README.md) · 1
+- [bathroom & laundry](bathroom-laundry-24d83b27/README.md) · 1
 - [bedroom](bedroom-a05e6feb/README.md) · 1
 - [entry](entry-923fe539/README.md) · 1
 - [exterior](exterior-a123a777/README.md) · 1

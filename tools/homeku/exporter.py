@@ -15,7 +15,7 @@ from .common import dumps, read_json, require, sha256, snapshot_hash
 from .media import expected_media
 from .package_manifest import build_manifest
 from .preflight import require_inputs
-from .render_assets import DEFAULT_COLUMNS, render_config, report_template
+from .render_assets import DEFAULT_COLUMNS, render_config
 from .reporting import render_report
 from .storage import locked
 from .validation import extract_package, package_files, validate_folder
@@ -36,7 +36,7 @@ def _managed_candidate(candidate):
     package_files(candidate, audit)
 
 
-def draft(source, audit_path, audit_info, output_root, *, supersedes=None, purpose="reference",
+def draft(source, audit_path, audit_info, output_root, *, session_path, supersedes=None, purpose="reference",
           quality=91, scale=1.0, columns=DEFAULT_COLUMNS, overview_scale=1.0, storyboard_scale=1.0,
           cache_dir=None):
     source, audit_path = Path(source).absolute(), workspace(audit_path)
@@ -47,21 +47,20 @@ def draft(source, audit_path, audit_info, output_root, *, supersedes=None, purpo
     cache_root = workspace(cache_dir or (audit_path.parent / ".cache" / "frames"))
     log = audit_path.parent / "performance.jsonl"
     with timed(log, "draft"), locked(output_root, recovery=False):
-        context = require_inputs(source, audit, audit_info, supersedes=supersedes,
+        context = require_inputs(source, audit, audit_info, session_path=session_path, supersedes=supersedes,
                                  purpose=purpose, cache_dir=cache_root, log=log)
         cache = context["cache"]
         info = {**context["info"], "path": f"video/{audit['id']}.mp4", "sha256": context["sha256"]}
         times = context["times"]
-        template_path = report_template(audit)
-        config = render_config(template_path=template_path, quality=quality, scale=scale, columns=columns,
+        config = render_config(quality=quality, scale=scale, columns=columns,
                                overview_scale=overview_scale, storyboard_scale=storyboard_scale)
         candidate = safe_path(output_root / audit["id"])
         require(all(not path.resolve().is_relative_to(candidate.resolve())
-                    for path in (source, audit_path, cache_root)),
+                    for path in (source, audit_path, Path(session_path).absolute(), cache_root)),
                 "Source, working files and cache must stay outside candidate")
         if candidate.exists():
             _managed_candidate(candidate)
-        report = render_report(audit, times, template_path=template_path)
+        report = render_report(audit, times)
         plan = list(expected_media(audit, info, config, times))
         with tempfile.TemporaryDirectory(prefix=".draft-", dir=output_root) as scratch:
             folder = Path(scratch) / audit["id"]
@@ -128,7 +127,7 @@ def export(candidate, output_root, receipt):
             "Invalid review receipt digest")
     require(snapshot_hash(candidate) == digest, "Candidate changed since whole-snapshot review")
     manifest = read_json(candidate / "manifest.json")
-    require(manifest.get("contract_version") == FORMAT_VERSION, "Unsupported package format")
+    require(manifest.get("contract_version") == FORMAT_VERSION, f"Unsupported package format; audit again with the current HOMEKU kit ({FORMAT_VERSION})")
     paths = package_files(candidate, read_json(candidate / "audit.json"))
     name = f"{candidate.name}-r{manifest['revision']:04d}.zip"
     output_root.mkdir(parents=True, exist_ok=True)

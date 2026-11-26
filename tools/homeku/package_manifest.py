@@ -1,9 +1,9 @@
 """Technical provenance and media inventory for a compact audit package."""
 from . import FORMAT_VERSION
 from .common import require
-from .derivations import frame_map, selections
-from .models import schema_check, validate_production_starts
-from .audit_quality import validate_production_start_viewed
+from .derivations import frame_map, referenced_frames, selections
+from .models import schema_check, validate_production_start
+from .audit_quality import validate_referenced_frames_viewed
 
 
 def build_manifest(audit, source, logs, audit_sha256, config, times, media, *,
@@ -24,11 +24,17 @@ def validate_frame_map(manifest, audit, times=None):
     if times is not None:
         require(frames == frame_map(audit, times), "Manifest PTS map differs from native referenced frames")
     else:
-        from .derivations import referenced_frames
         require(set(frames) == {str(i) for i in referenced_frames(audit)},
                 "Manifest PTS map must contain only referenced frames")
-        validate_production_starts(audit, frames)
-        validate_production_start_viewed(audit, manifest["audit"]["frame_reviews"])
+        for i, shot in enumerate(audit["shots"]):
+            path = f"/shots/{i}"
+            validate_production_start(shot, frames, path=path)
+            for group in ("panels", "overviews"):
+                for j, item in enumerate(shot[group]):
+                    pts = frames[str(item["frame_index"])]
+                    require(shot["start_s"] <= pts < shot["end_s"],
+                            f"{path}/{group}/{j}/frame_index: selection outside shot")
+        validate_referenced_frames_viewed(audit, manifest["audit"]["frame_reviews"])
     indices = sorted(map(int, frames))
     require(all(frames[str(a)] < frames[str(b)] for a, b in zip(indices, indices[1:])),
             "Manifest native PTS must increase")

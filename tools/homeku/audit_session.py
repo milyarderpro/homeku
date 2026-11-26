@@ -24,7 +24,7 @@ def load_session(path):
     value=read_json(path)
     require(isinstance(value,dict) and value.get("format_version")==FORMAT_VERSION
             and not {"contract_version", "version"}.intersection(value),
-            "Unsupported audit session; prepare a new workspace with the current kit")
+            f"Unsupported audit session; audit the MP4 in a new workspace with kit {FORMAT_VERSION}")
     require(isinstance(value.get("source"),dict) and isinstance(value["source"].get("path"),str) and isinstance(value["source"].get("sha256"),str),"Invalid session source")
     require(all(isinstance(value.get(k), list) for k in ("passes", "shots", "cuts")),
             "Invalid session cuts, passes or shots")
@@ -42,6 +42,61 @@ def load_session(path):
         require(indices==r["selected_frame_indices"] and isinstance(r["viewed_frame_indices"], list)
                 and all(type(i) is int and i in indices for i in r["viewed_frame_indices"]),"Session selection/viewed mismatch")
     return path,value,cache
+
+def bind_audit(audit, session, cache):
+    expected = [(s["shot"], s["start_s"], s["end_s"],
+                 "cut" if i + 1 < len(session["shots"]) else "end")
+                for i, s in enumerate(session["shots"])]
+    require(isinstance(audit, dict) and audit.get("schema_version") == FORMAT_VERSION
+            and audit.get("id") == cache.source.stem,
+            "Audit format or source ID differs from the session")
+    require(isinstance(audit.get("shots"), list) and
+            all(isinstance(shot, dict) for shot in audit["shots"]) and
+            [tuple(shot.get(key) for key in ("shot", "start_s", "end_s", "transition"))
+             for shot in audit["shots"]] == expected,
+            "Audit shot IDs, boundaries or transitions differ from the session; prepare a new workspace")
+    return audit
+
+
+def _digest(value):
+    return hashlib.sha256(dumps(value).encode()).hexdigest()
+
+
+def camera_binding(session):
+    return _digest({key: session[key] for key in ("format_version", "runtime_signature", "source", "cuts", "shots")})
+
+
+def shot_camera_digests(shot):
+    composition = shot.get("composition", {})
+    require(isinstance(composition, dict), f"{shot['shot']}/composition: expected an object")
+    production_start = {"production_start": composition["production_start"]} if "production_start" in composition else {}
+    return {"camera": _digest(shot.get("camera")), "production_start": _digest(production_start)}
+
+
+def checked_camera_shots(session):
+    checkpoint = session.get("camera_check")
+    require(isinstance(checkpoint, dict), "Run check-camera before continuing the audit")
+    require(checkpoint.get("binding") == camera_binding(session),
+            "Camera check source or cut mapping changed; prepare a new workspace")
+    shots = checkpoint.get("shots")
+    require(isinstance(shots, dict) and set(shots) == {row["shot"] for row in session["shots"]}
+            and all(isinstance(value, dict) and set(value) == {"camera", "production_start"}
+                    for value in shots.values()), "Invalid camera check record")
+    return shots
+
+
+def require_current_camera(session, audit):
+    checked = checked_camera_shots(session)
+    changed = [f"{shot['shot']}/{field}" for shot in audit["shots"]
+               for field, digest in shot_camera_digests(shot).items() if checked[shot["shot"]][field] != digest]
+    require(not changed, "Camera changed after check-camera: " + ", ".join(changed))
+    return checked
+
+
+def save_camera_check(path, session, shots):
+    session["camera_check"] = {"binding": camera_binding(session), "shots": shots}
+    atomic(path, dumps(session).encode())
+
 
 def make_shots(cache,cuts):
     require(isinstance(cuts,list) and all(type(i) is int and 0<i<len(cache.times) for i in cuts) and cuts==sorted(set(cuts)),

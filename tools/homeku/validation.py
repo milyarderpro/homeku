@@ -127,13 +127,13 @@ def validate_folder(folder: Path, root: Path, package_name=None, source_override
 
     manifest = read_json(require_document("manifest.json"))
     require(isinstance(manifest, dict) and manifest.get("contract_version") == FORMAT_VERSION,
-            "Unsupported package format; audit again with the current HOMEKU kit")
+            f"Unsupported package format; audit again with the current HOMEKU kit ({FORMAT_VERSION})")
     require_document("analysis.md")
     audit_path = require_document("audit.json")
     schema_check(manifest, "manifest.schema.json")
     audit = read_json(audit_path)
     require(isinstance(audit, dict) and audit.get("schema_version") == FORMAT_VERSION,
-            "Unsupported audit format; audit again with the current HOMEKU kit")
+            f"Unsupported audit format; audit again with the current HOMEKU kit ({FORMAT_VERSION})")
     require(sha256(audit_path) == manifest["audit_sha256"], "Audit SHA-256 mismatch")
     rid, revision = manifest["id"], manifest["revision"]
     require(re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,79}", rid) and folder.name == rid and
@@ -174,13 +174,13 @@ def validate_folder(folder: Path, root: Path, package_name=None, source_override
     _clean(manifest["audit"])
     if require_source:
         validate_audit_logs(manifest["audit"], audit, source, info, times=times)
-    template_path = verify_renderer(manifest["render"], audit)
+    verify_renderer(manifest["render"])
     frames = manifest["frames"]
     try:
         text = (folder / "analysis.md").read_bytes().decode("utf-8")
     except UnicodeError as error:
         raise LibraryError("analysis.md must be UTF-8") from error
-    expected_report = report if report is not None else render_report(audit, frames, template_path=template_path)
+    expected_report = report if report is not None else render_report(audit, frames)
     require(text == expected_report, "analysis.md differs from the rendered report")
     if plan is None:
         plan = list(expected_media(audit, info, manifest["render"], frames))

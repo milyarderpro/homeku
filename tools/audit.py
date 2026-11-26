@@ -46,6 +46,10 @@ def parser():
     updating.add_argument("session", type=Path)
     updating.add_argument("--shot-id", required=True)
     updating.add_argument("--patch", required=True, type=Path)
+    camera = commands.add_parser("check-camera", help="Verify camera findings before authoring design")
+    camera.add_argument("session", type=Path)
+    camera.add_argument("--shot-id", help="Recheck one deliberately corrected shot")
+
     completing = commands.add_parser("complete", help="Fill mechanical fields from the bound session")
     completing.add_argument("audit", type=Path)
     completing.add_argument("--session", required=True, type=Path)
@@ -57,6 +61,7 @@ def parser():
         command.add_argument("source", type=Path)
         command.add_argument("audit", type=Path)
         command.add_argument("--audit-info", required=True, type=Path)
+        command.add_argument("--session", required=True, type=Path)
         command.add_argument("--supersedes", type=Path, help="Previous revision and content SHA-256 JSON")
     drafting.add_argument("--output", required=True, type=Path)
     drafting.add_argument("--cache-dir", type=Path)
@@ -89,7 +94,7 @@ def parser():
 
 def run(args):
     from homeku.audit_session import add_frames, add_pass, mark_viewed
-    from homeku.authoring import complete, prepare, update_shot
+    from homeku.authoring import check_camera, complete, prepare, update_shot
     from homeku.exporter import draft, export, review
     from homeku.preflight import check_inputs
     from homeku.video import frame_times, probe_video
@@ -113,16 +118,19 @@ def run(args):
                            all_frames=args.all, all_passes=args.all_passes)
     if command == "update-shot":
         return update_shot(args.session, args.shot_id, args.patch)
+    if command == "check-camera":
+        return check_camera(args.session, shot_id=args.shot_id)
     if command == "complete":
         return complete(args.audit, session_path=args.session, info_path=args.audit_info)
     if command in {"check-input", "draft"}:
         info = read_json(args.audit_info)
         supersedes = read_json(args.supersedes) if args.supersedes else None
         if command == "check-input":
-            result = check_inputs(args.source, read_json(args.audit), info, supersedes=supersedes)
+            result = check_inputs(args.source, read_json(args.audit), info, session_path=args.session,
+                                  supersedes=supersedes)
             result.pop("context")
             return result
-        return draft(args.source, args.audit, info, args.output, supersedes=supersedes,
+        return draft(args.source, args.audit, info, args.output, session_path=args.session, supersedes=supersedes,
                      purpose="fixture" if args.fixture else "reference", cache_dir=args.cache_dir,
                      quality=args.quality, scale=args.scale, columns=args.columns,
                      overview_scale=args.overview_scale, storyboard_scale=args.storyboard_scale)

@@ -5,12 +5,25 @@
 ## 1. Profil desain
 
 - **Nama desain:** Rumah Fixture Sintetis
+- **Tipe rumah:** Cottage
 - **Gaya utama:** **Modern Cottage**
 - **Pengaruh gaya:** unknown
 - **Gaya interior:** cozy minimalist
+- **Susunan ruang utama:** unknown
 - **Ciri khas:** fixture-new-shape; Kabinet ceruk; Bukaan serong
-- **Warna & material:** unknown; Putih, kayu tampak terang dan aksen gelap.
-- **Suasana dan lingkungan:** unknown; Terang dan hangat dalam contoh sintetis.
+- **Material utama:** unknown
+- **Pencahayaan:** Cahaya dari bukaan ruang keluarga menjangkau penghubung ke dapur.
+- **Atmosfer:** Hangat dan akrab dengan tampilan kayu yang menyambung antararea.
+- **Lingkungan:** Terang dan hangat dalam contoh sintetis.
+
+### Palet warna
+
+| Peran | Warna | HEX |
+| --- | --- | --- |
+| Dominan | Putih gading | `#F0E8DA` |
+| Pendamping | Kayu terang | `#BE9A74` |
+| Pendamping | Krem | `#DBC9B0` |
+| Aksen | Arang | `#363632` |
 
 ## 2. Ukuran & proporsi
 

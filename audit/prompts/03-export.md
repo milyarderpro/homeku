@@ -1,10 +1,10 @@
-# Ekspor audit HOMEKU 3.0
+# Ekspor audit HOMEKU 3.1
 
-Setelah kandidat terbaru lulus validasi, jalankan `review` untuk menghasilkan receipt, lalu langsung ekspor snapshot tersebut.
+Lanjutkan fase 4 di `audit/authoring.md`. Jika audit kerja berubah, jalankan ulang pemeriksaan dan buat kandidat dari versi terbaru. Setelah kandidat lulus, jalankan `review` lalu langsung ekspor dengan receipt yang dihasilkan.
 
 ~~~sh
 python tools/audit.py review work/candidate/rumah --output work/review.md
 python tools/audit.py export work/candidate/rumah --receipt work/review.md.json --output work/final
 ~~~
 
-Berikan tautan unduhan ZIP `<id>-rNNNN.zip` bersama laporan dan media dalam balasan yang sama. ZIP berisi audit, laporan, manifest, serta JPEG terdaftar. MP4 asli tetap sebagai sumber terpisah untuk ingest lokal.
+Berikan laporan, media, dan tautan unduhan ZIP `<id>-rNNNN.zip` dalam balasan yang sama. MP4 asli dipakai terpisah untuk ingest.

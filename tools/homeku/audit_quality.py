@@ -7,6 +7,16 @@ from .derivations import claims, referenced_frames
 from .video import selected_indices, frame_times
 
 
+def camera_evidence(shot):
+    for phase in shot["camera"]["phases"]:
+        yield from phase["evidence"]
+        for override in phase.get("overrides", []):
+            yield from override.get("evidence", ())
+    choice = shot["composition"].get("production_start")
+    if choice is not None:
+        yield choice["frame_index"]
+
+
 def validate_motion(audit, times=None):
     for shot in audit["shots"]:
         for phase in shot["camera"]["phases"]:
@@ -95,6 +105,12 @@ def validate_production_start_viewed(audit, reviews):
                 f"/frame_reviews: frame not actually declared viewed for /shots/{i}/composition/production_start/frame_index")
 
 
+def validate_referenced_frames_viewed(audit, reviews):
+    validate_production_start_viewed(audit, reviews)
+    viewed = {index for row in reviews for index in row["viewed_frame_indices"]}
+    require(set(referenced_frames(audit)) <= viewed, "Evidence/panel/Overview not actually declared viewed")
+
+
 def validate_audit_logs(logs, audit, source, info, *, times=None):
     schema_check(logs, "audit-info.schema.json")
     times = validate_frame_reviews(logs["frame_reviews"], audit["shots"], source, info, times=times)
@@ -108,9 +124,7 @@ def validate_audit_logs(logs, audit, source, info, *, times=None):
                    "Native coverage claim lacks native viewed records")
         ranges.append((row["start_s"], row["end_s"]))
     _cover(ranges, 0, info["duration_s"], "Declared reviewed ranges do not cover source")
-    validate_production_start_viewed(audit, logs["frame_reviews"])
-    viewed = {i for r in logs["frame_reviews"] for i in r["viewed_frame_indices"]}
-    require(set(referenced_frames(audit)) <= viewed, "Evidence/panel/Overview not actually declared viewed")
+    validate_referenced_frames_viewed(audit, logs["frame_reviews"])
     return times
 
 

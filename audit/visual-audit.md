@@ -1,4 +1,4 @@
-# Metode audit visual HOMEKU 3.0
+# Metode audit visual HOMEKU 3.1
 
 Baca sebelum mengisi JSON. Periksa perjalanan utuh, lalu baseline berurutan per take kontinu. Ekstraksi bukan pengamatan. Hanya frame yang benar-benar dilihat boleh dinyatakan viewed.
 
@@ -12,10 +12,10 @@ Cut memakai indeks dan PTS native. Pergantian area tanpa cut tetap satu shot; ru
 
 Baca [camera-cases.md](camera-cases.md) sebelum menganalisis kamera. Setelah meninjau baseline, pilih sekitar 6–10 frame pembanding sesuai durasi dan kerumitan shot.
 
-1. **Temukan kandidat batas fase.** Bandingkan awal, tengah, dan akhir. Cari kapan komponen mulai, berhenti, atau berubah. Lihat frame sebelum dan sesudah dugaan batas. Perubahan area serta tempo bisa berlangsung dalam satu fase gerak.
+1. **Temukan kandidat batas fase.** Bandingkan beberapa frame berurutan pada awal shot sebelum menilai rentang yang lebih panjang. Cari kapan masing-masing komponen mulai, bertumpang tindih, atau berhenti. Untuk setiap dugaan batas, bandingkan frame sebelum dan sesudahnya memakai jangkar yang sama. Perubahan area serta tempo bisa berlangsung dalam satu fase gerak.
 2. **Nilai kedalaman.** Bandingkan ukuran bagian yang sama pada jangkar yang sama, lapisan dekat dan jauh, serta ruang yang terbuka. Uji kemungkinan Dolly dan Zoom sebelum menyimpulkan arah kedalaman. Pembesaran saja juga dapat terjadi karena Zoom.
 3. **Pisahkan lintasan badan dan arah pandang.** Bandingkan satu jangkar dekat, satu jangkar jauh, dan orientasi satu bidang pada frame yang sama. Cari komponen lateral atau vertikal serta rotasi yang berlangsung bersamaan. Gunakan panduan Pan, Orbit, dan Truck di bawah.
-4. **Tegaskan fase dan notasi.** Cocokkan dugaan batas dengan frame dan komponen yang benar-benar berubah. Pakai `+` untuk komponen simultan dalam satu fase. Ringkasan turunan memakai `→` antar fase. Baru kemudian nilai estimasi besaran, lintasan, intensitas, dan profil laju tiap komponen.
+4. **Tegaskan fase dan notasi.** Cocokkan dugaan batas dengan frame dan komponen yang benar-benar berubah. Pakai `+` hanya pada rentang saat komponen terlihat bersamaan. Ringkasan turunan memakai `→` antar fase. Jika pendekatan mulai setelah orbit, pisahkan fase awal dan fase overlap, lalu periksa apakah orbit masih tampak di akhir. Lihat [contoh perbandingan frame](camera-cases.md#contoh-awal-overlap-dan-akhir-komponen). Baru kemudian nilai estimasi besaran, lintasan, intensitas, dan profil laju tiap komponen.
 
 Catat depth, translation, dan rotation secara spesifik di `observations`. Pakai bukti temporal bersama dan override bila bukti suatu komponen berbeda. Gunakan minimal dua frame temporal pada fase atau dalam toleransi satu batas native. Jika masih ada tafsir yang bersaing, catat perbedaan yang terlihat atau batasnya di pengamatan fase dan dalami interval itu saja.
 
@@ -44,29 +44,11 @@ Cantumkan estimasi per komponen jika bisa ditaksir secara wajar. Angka tunggal d
 
 ## Kelengkapan notasi Camera Movement
 
-Sebelum review, cocokkan `notation`, `observations`, dan frame pada fase yang sama. Periksa fase yang terlewat, kemungkinan Orbit terbaca sebagai Pan, dan arah badan atau sapuan yang terbalik. Masukkan setiap komponen dan qualifier yang didukung visual ke notasi. Validator memeriksa struktur dan sintaks. Ketepatan gerak diperiksa auditor dari frame.
+Sebelum menjalankan check-camera, cocokkan `notation`, `observations`, dan frame pada fase yang sama. Periksa fase yang terlewat, kemungkinan Orbit terbaca sebagai Pan, dan arah badan atau sapuan yang terbalik. Masukkan setiap komponen dan qualifier yang didukung visual ke notasi. Validator memeriksa struktur dan sintaks. Ketepatan gerak diperiksa auditor dari frame.
 
-## Detail desain dan framing
+## Production Start
 
-Nama setiap area fisik dengan label Inggris singkat dan Title Case. Gunakan `&` pada satu area yang berbagi fungsi. Biarkan renderer menggabungkan beberapa label dengan ` / `. Catat fungsi yang terlihat secara terpisah dan pakai label teknis berbahasa Inggris untuk pencarian. Tulis narasi dalam bahasa Indonesia. Pada shot multi-area, pilih panel sesuai kronologi dan beri nama momen dalam bahasa Inggris, seperti `Doorway`, bila terlihat jelas. Lihat [aturan penamaan](vocabulary.md#area-caption-dan-kontinuitas).
-
-Nilai tipe rumah dari massa, tapak, akses dan susunan ruang. Pilih label Inggris yang paling sesuai dan gunakan `uncertain` untuk perkiraan yang wajar. [Panduan tipe rumah](vocabulary.md#tipe-rumah) memuat contoh label dan ciri visual.
-
-Ringkas susunan ruang yang terlihat. Catat pencahayaan sebagai sumber, arah atau karakter cahaya, atmosfer sebagai kesan visual singkat, dan lingkungan sebagai kondisi fisik di sekitar rumah.
-
-Pilih 4–6 warna yang mewakili desain bila cakupan video mencukupi. Amati bagian permukaan dengan pencahayaan merata dan hindari pantulan, bayangan pekat, serta area yang terlalu terang. Catat nama, peran, perkiraan HEX, dan frame bukti setiap warna. Detail Shot menjelaskan warna itu dipakai di mana.
-
-Eksterior: gaya/massa, ukuran/proporsi, atap, fasad/bukaan, akses/teras, material/cahaya tampak dan lingkungan/tapak. Interior: geometri/volume/bukaan, layout/hubungan, bentuk/posisi/orientasi furnitur, penyimpanan/properti pembeda, material/cahaya dan lingkungan melalui bukaan.
-
-Catat detail konkret, bukan daftar furnitur generik. Cocokkan text arsitektur/furnitur/lingkungan dengan fakta berkategori dan facet_roles. Tidak ada kuota fakta; validator struktural tidak membuktikan kelengkapan makna narasi.
-
-Pilih gaya utama dari ciri arsitektur dominan yang konsisten, misalnya fasad berplester, genteng lengkung, dan bukaan lengkung berulang dapat mengarah ke `Spanish Colonial Revival`. Catat ciri dari gaya lain sebagai pengaruh bila terlihat. Jika petunjuk untuk label spesifik belum cukup, gunakan label yang lebih luas atau state `uncertain`.
-
-Pisahkan bentuk yang terlihat dari tipe layout yang belum jelas. Contoh dapur: catat meja di sisi kiri dengan dua bangku sebagai fakta `observed`. Jika bagian yang memperlihatkan sambungan ke dinding atau kabinet berada di luar bingkai, catat tipe `island` atau `peninsula` sebagai `uncertain` bila perlu. Periksa hubungan meja dengan kabinet dari frame yang menunjukkan keduanya.
-
-Nama gaya Inggris, penjelasan Indonesia, estimasi luas min–max wajib. Bedakan observed/uncertain/not-visible/not-present/unknown. Urutan edit bukan bukti denah atau satu rumah fisik. Jangan menegaskan material fisik dari tampilan saja.
-
-Camera Start menjelaskan awal sumber. Untuk Overview, tulis paragraf singkat tentang posisi, arah pandang, dan bagian area yang terlihat pada frame wide, biasanya awal IN atau akhir OUT. Simpan perincian arsitektur, furnitur, dan lingkungan di uraian shot. Utamakan ciri yang membedakan area. Default produksi reverse/durasi/lima shot tidak mengubah kronologi, tempo atau pilihan audit sumber.
+Jika awal shot tertutup transisi, periksa frame di sekitar batas. Pilih frame jernih pertama yang bisa dipakai untuk mulai produksi dan catat framing-nya. Gunakan `composition.production_start` sesuai [panduan JSON](json-guide.md#seleksi-dan-metadata). Camera Start tetap menjelaskan awal sumber. Jika belum ada frame yang layak, catat keterbatasannya di `notes`.
 
 ## Bantuan statistik gerak 2D
 

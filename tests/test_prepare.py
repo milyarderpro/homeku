@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
-from homeku.authoring import complete, prepare, update_shot
+from homeku.authoring import check_camera, complete, prepare, update_shot
 from homeku.video import frame_times, selected_indices, probe_video
 from homeku.common import LibraryError, read_json
 from homeku.audit_session import load_session, mark_viewed
@@ -42,7 +42,7 @@ class PrepareTests(VideoFixture, unittest.TestCase):
         source = self.video("basic")
         result = prepare(source, [], self.work / "audit")
         value = read_json(Path(result["audit"]))
-        self.assertEqual(value["schema_version"], "3.0")
+        self.assertEqual(value["schema_version"], "3.1")
         self.assertNotIn("profile", value)
         self.assertEqual(value["design"]["house_type"]["value"], "{{HOUSE_TYPE}}")
         self.assertEqual(value["design"]["palette"], [])
@@ -59,7 +59,7 @@ class PrepareTests(VideoFixture, unittest.TestCase):
                             for p in result["passes"]))
         self.assertTrue(all(p["record"]["viewed_frame_indices"] == [] for p in result["passes"]))
         session = read_json(Path(result["session"]))
-        self.assertEqual(session["format_version"], "3.0")
+        self.assertEqual(session["format_version"], "3.1")
         self.assertNotIn("contract_version", session)
         load_session(Path(result["session"]))
 
@@ -141,7 +141,7 @@ class PrepareTests(VideoFixture, unittest.TestCase):
         audit = read_json(template)
         audit["id"] = source.stem
         phase = audit["shots"][0]["camera"]["phases"][0]
-        phase["notation"] = "Dolly-Out (~1,6x) + Orbit Left"
+        phase.update(notation="Dolly-Out (~1,6x) + Orbit Left", depth_direction="OUT")
         audit_path.write_text(json.dumps(audit))
         info_path = Path(result["audit_info"])
         info = read_json(info_path)
@@ -150,16 +150,17 @@ class PrepareTests(VideoFixture, unittest.TestCase):
         resumed = prepare(source, [], self.work / "audit", resume=True)
         self.assertTrue(resumed["resumed"])
         self.assertEqual(read_json(audit_path), audit)
+        with self.assertRaisesRegex(LibraryError, "Run check-camera"):
+            complete(audit_path, session_path=result["session"])
+        self.assertEqual(read_json(audit_path), audit)
+        self.assertEqual(read_json(info_path), info)
+        mark_viewed(result["session"], all_frames=True, all_passes=True)
+        check_camera(result["session"])
         complete(audit_path, session_path=result["session"])
-        logs = read_json(info_path)
-        self.assertEqual(logs["reviewed_ranges"], [])
-        self.assertEqual(logs["method"], info["method"])
-        self.assertTrue(all(not row["viewed_frame_indices"] for row in logs["frame_reviews"]))
         phase["notation"] = "Dolly-Out (~1.6×) + Orbit Left"
         self.assertEqual(read_json(audit_path), audit)
-        mark_viewed(result["session"], all_frames=True, all_passes=True)
-        complete(audit_path, session_path=result["session"])
         logs = read_json(info_path)
+        self.assertEqual(logs["method"], info["method"])
         self.assertTrue(logs["reviewed_ranges"])
         self.assertTrue(all(row["viewed_frame_indices"] == row["selected_frame_indices"]
                             for row in logs["frame_reviews"]))

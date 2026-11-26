@@ -1,4 +1,4 @@
-# Kontrak paket HOMEKU 3.0
+# Kontrak paket HOMEKU 3.1
 
 Audit.json adalah satu sumber keputusan isi; analysis.md hasil renderer dan manifest.json metadata teknis/provenance. Kontrak ini menggantikan pemakaian beberapa format setelah cutover selesai.
 
@@ -22,7 +22,6 @@ Audit.json adalah satu sumber keputusan isi; analysis.md hasil renderer dan mani
 | Entrance / porch / bukaan | features aspek entrance / porch / openings | DNA dan discovery |
 | Material utama | features aspek material-hierarchy | Profil / DNA |
 | Pencahayaan / atmosfer / lingkungan | features aspek lighting / atmosphere / environment | Baris terpisah di Profil Desain |
-| Palet teks paket awal 3.0 | features aspek palette | Profil snapshot awal |
 | Konfigurasi / ciri khas / kontinuitas | features aspek spatial-configuration / distinctive-features / continuity | Profil dan DNA |
 | Area fisik dan fungsi | areas[].id / label / functions | Facet area/fungsi |
 | Visibilitas area | areas[].visible_intervals | Hubungan lintas area; tidak sama dengan route |
@@ -53,11 +52,11 @@ Setiap klaim memiliki satu lokasi sumber; renderer dan generator merujuk lokasi 
 
 Profile paralel, components_parsed, camera_summary, fact_coverage/fact_ids, timestamp/shot_id selection berulang, esai basis wajib dan null pengukuran kosong dihapus dari audit final. Nilai turunan dihitung sesuai kebutuhan tanpa model legacy perantara.
 
-Frame map menyimpan indeks yang dirujuk audit dan seleksi, termasuk Production Start bila dipilih. Acuan produksi memakai shot dan deklarasi viewed yang sama dengan sumber, dengan PTS setelah Start native. JPEG tetap berasal dari seleksi panel dan Overview. Session, cache, log performa, sheet dan receipt berada di workspace. Satu take sampai cut tetap satu shot; fungsi area yang berubah tidak menjadi cut.
+Frame map menyimpan indeks yang dirujuk audit dan seleksi, termasuk Production Start bila dipilih. Acuan produksi memakai shot dan deklarasi viewed yang sama dengan sumber, dengan PTS setelah awal native shot. Pada shot biasa, Production Start juga menjadi panel Start bila dipilih. Batas shot tetap memakai PTS sumber. JPEG berasal dari seleksi panel dan Overview. Sesi, status pemeriksaan kamera, cache, log performa, sheet dan receipt berada di workspace. Satu take sampai cut tetap satu shot; fungsi area yang berubah tidak menjadi cut.
 
 ## Struktur, versi dan penyerahan
 
-Hanya format 3.0 didukung; paket/session lama ditolak tanpa konversi otomatis. Schema lokal berada di schemas/ untuk audit, audit-info, manifest, reference-reader dan search-index. Template adalah kerangka belum valid, bukan hasil pengamatan.
+Format aktif adalah 3.1. Audit ulang MP4 dengan kit 3.1 jika paket atau sesi berasal dari versi sebelumnya. Schema lokal berada di schemas/ untuk audit, audit-info, manifest, reference-reader dan search-index. Template adalah kerangka belum valid, bukan hasil pengamatan.
 
 ZIP final bernama <id>-rNNNN.zip berisi satu folder <id>/ dengan audit.json, analysis.md, manifest.json dan media/shot-NN.jpg, media/overview.jpg, media/storyboard.jpg. Tidak ada MP4, sheet, cache, session, log atau receipt. Video sumber kanonis terpisah di video/<id>.mp4 dan SHA-256 harus cocok.
 
@@ -67,6 +66,6 @@ Baseline 6 FPS ditambah batas native; sumber ≤6 FPS atau shot <1 detik seluruh
 
 Manifest menyimpan provenance, source metadata/hash, render fingerprint, frame map terbatas, selections, media/bbox/hash dan audit_sha256. Semua fakta tetap pada audit.json. Lihat report.md dan reader.md untuk tampilan manusia dan akses AI.
 
-Draft baru memakai aset `tools/assets/layouts/media-aligned.json`. Validator memilih geometri dari `render.layout_sha256` secara terpisah dari fingerprint template laporan. Paket 3.0 yang menunjuk `tools/assets/layouts/media.json` tetap diperiksa dengan layout asal. Fingerprint yang tidak dikenal ditolak.
+Template laporan dan layout media mengikuti aset kanonis runtime 3.1. Manifest menyimpan fingerprint kedua aset untuk verifikasi.
 
 Validasi menggunakan allowlist dengan nama file dan casing yang tepat serta mencocokkan hash sumber, audit dan tiap JPEG. Review menghasilkan kartu dan receipt di luar kandidat. Ekspor memeriksa receipt dan snapshot, lalu memverifikasi isi ZIP terhadap hash snapshot tanpa memanggil renderer atau membaca MP4.

@@ -6,7 +6,6 @@ from pathlib import Path
 from . import FORMAT_VERSION
 from .common import require, schema_check
 from .derivations import claims, fact_claims, CATEGORIES, tempo_segments
-from .video import nearest
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -27,28 +26,36 @@ def _clean(value, path=""):
 
 
 def validate_profile(design):
-    if "palette" in design:
-        require(not any(claim["aspect"] == "palette" for claim in design["features"]),
-                "/design/palette: use the structured palette as the only palette source")
+    require(not any(claim["aspect"] == "palette" for claim in design["features"]),
+            "/design/palette: use the structured palette as the only palette source")
 
 
-def validate_production_starts(audit, frames=None):
-    for i, shot in enumerate(audit["shots"]):
-        choice = shot["composition"].get("production_start")
-        if choice is None:
-            continue
-        index = choice["frame_index"]
-        path = f"/shots/{i}/composition/production_start/frame_index"
-        require(shot["panels"][0]["frame_index"] < index <= shot["panels"][-1]["frame_index"],
-                path + ": choose a frame after native Start in the same shot")
-        if frames is None:
-            continue
+def validate_production_start(shot, frames=None, *, path):
+    if "production_start" not in shot["composition"]:
+        return
+    index = shot["composition"]["production_start"]["frame_index"]
+    path += "/composition/production_start/frame_index"
+    require(type(index) is int and index >= 0,
+            path + ": choose a native frame index after native Start in the same shot")
+    if frames is not None:
         if isinstance(frames, dict):
             pts = frames.get(str(index))
         else:
             pts = frames[index] if index < len(frames) else None
         require(pts is not None and shot["start_s"] < pts < shot["end_s"],
                 path + ": frame PTS must be after native Start and within the shot")
+
+
+def validate_camera_timeline(shot):
+    start, end = shot["start_s"], shot["end_s"]
+    sid = shot["shot"]
+    for group in (shot["camera"]["phases"], tempo_segments(shot)):
+        cursor = start
+        for item in group:
+            require(start <= item["start_s"] < item["end_s"] <= end, sid + "/camera: invalid interval")
+            require(abs(item["start_s"] - cursor) < 1e-6, sid + ": camera timeline gap/overlap")
+            cursor = item["end_s"]
+        require(abs(cursor - end) < 1e-6, sid + ": camera timeline incomplete")
 
 
 def validate_audit(audit, duration=None, times=None):
@@ -112,13 +119,7 @@ def validate_audit(audit, duration=None, times=None):
             route_end = route["end_s"]
         for relation in shot.get("area_relations", []):
             scope([relation["from"], relation["to"]], shot["area_ids"], sid + "/area_relations")
-        for group in (shot["camera"]["phases"], tempo_segments(shot)):
-            cursor = shot["start_s"]
-            for item in group:
-                interval(item, shot["start_s"], shot["end_s"], sid + "/camera")
-                require(abs(item["start_s"] - cursor) < 1e-6, sid + ": camera timeline gap/overlap")
-                cursor = item["end_s"]
-            require(abs(cursor - shot["end_s"]) < 1e-6, sid + ": camera timeline incomplete")
+        validate_camera_timeline(shot)
         for phase in shot["camera"]["phases"]:
             scope(phase.get("area_ids", shot["area_ids"]), shot["area_ids"], sid + "/phase")
         for key in ("panels", "overviews"):
@@ -129,24 +130,28 @@ def validate_audit(audit, duration=None, times=None):
                 scope(p["area_ids"], shot["area_ids"], sid + "/" + key)
                 if times is not None:
                     i = p["frame_index"]
-                    require(i < len(times) and shot["start_s"] <= times[i] < shot["end_s"],
+                    require(type(i) is int and 0 <= i < len(times) and shot["start_s"] <= times[i] < shot["end_s"],
                             sid + ": selection outside shot")
                     require(all(visible(aid, times[i]) for aid in p["area_ids"]),
                             sid + ": selected area not visible at this frame")
         require(set(aid for p in shot["overviews"] for aid in p["area_ids"]) == set(shot["area_ids"]),
                 sid + ": Overview must cover every area")
-        if len(shot["area_ids"]) == 1:
-            require(len(shot["panels"]) == 3, sid + ": normal shot requires three panels")
+        validate_production_start(shot, times, path=f"/shots/{si}")
+        normal = len(shot["area_ids"]) == 1
+        panels = shot["panels"]
+        if normal:
+            require(len(panels) == 3, sid + ": normal shot requires three panels")
+            production_start = shot["composition"].get("production_start")
+            if production_start is not None:
+                require(panels[0]["frame_index"] == production_start["frame_index"],
+                        f"/shots/{si}/panels/0/frame_index: Start must match Production Start")
         if times is not None:
             lo = bisect.bisect_left(times, shot["start_s"])
             hi = bisect.bisect_left(times, shot["end_s"])
             require(lo < hi and abs(times[lo] - shot["start_s"]) < 1e-6, sid + ": cut must use native PTS")
-            require(shot["panels"][0]["frame_index"] == lo and shot["panels"][-1]["frame_index"] == hi - 1,
-                    sid + ": panels must retain exact native first/last frames")
-            if len(shot["area_ids"]) == 1:
-                middle = nearest(times, (shot["start_s"] + shot["end_s"]) / 2,
-                                 shot["start_s"], shot["end_s"])
-                require(shot["panels"][1]["frame_index"] == middle, sid + ": Middle must be native midpoint")
+            if not normal:
+                require(panels[0]["frame_index"] == lo and panels[-1]["frame_index"] == hi - 1,
+                        sid + ": multi-area panels must retain exact native first/last frames")
         seen = set()
         for pointer, fact, ids, category in fact_claims(shot, si):
             scope(ids, shot["design"][int(pointer.split("/")[4])]["area_ids"], pointer)
@@ -168,7 +173,6 @@ def validate_audit(audit, duration=None, times=None):
                 require(shot["start_s"] <= times[i] < shot["end_s"], pointer + ": evidence outside shot")
             if ids:
                 require(any(visible(aid, times[i]) for aid in ids), pointer + ": evidence outside area visibility")
-    validate_production_starts(audit, times)
     from .audit_quality import validate_motion
     validate_motion(audit, times)
     return audit

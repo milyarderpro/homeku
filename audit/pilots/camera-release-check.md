@@ -1,16 +1,14 @@
-# Pembanding kamera sebelum rilis HOMEKU 3.0
+# Pilot audit penuh sebelum rilis HOMEKU 3.1
 
 ## Jalankan di GPT dan Gemini
 
-Buka satu chat baru di setiap provider. Lampirkan MP4 `dreamshome01.mp4` yang sama dan [kit 3.0](../homeku-audit-kit.zip) yang sama. Salin hanya blok prompt berikut. Bandingkan hasil setelah kedua sesi selesai.
+Buka satu chat baru di setiap provider. Lampirkan [MP4 dreamshome01](../../video/dreamshome01.mp4) dan [kit 3.1](../homeku-audit-kit.zip) yang sama. Salin [prompt audit lengkap](../prompts/01-audit.md) dan jalankan empat fase sampai ZIP final. Gunakan acuan di halaman ini setelah hasil dari kedua chat tersedia.
 
-> Audit bagian kamera untuk MP4 terlampir. Ekstrak kit, jalankan `python homeku_runtime.py --output .`, lalu baca `audit/visual-audit.md`, `audit/authoring.md`, dan `audit/camera-cases.md`. Periksa cut, baseline dan frame sekitar perubahan gerak. Laporkan untuk setiap shot urutan fase, notasi, tempo, frame pembanding ber-PTS, serta alasan pendalaman bila dipakai. Jika awal shot tertutup transisi, tunjuk frame awal produksi yang jernih dan jelaskan framing-nya. Berikan tabel hasil di chat.
-
-Catat provider, model, waktu total, interval 10 FPS/native tambahan, dan apakah bantuan motion-hints dipakai. Simpan hasil lama dan baru untuk perbandingan. Halaman ini menjadi acuan baca-saja untuk menilai hasil setelah pengujian.
+Simpan ringkasan kamera fase 2 beserta keluaran `check-camera` dan ZIP final. Catat provider, model, waktu total, interval 10 FPS/native tambahan, serta penggunaan motion-hints. Cocokkan notasi per shot di fase 2 dengan `audit.json` dan `analysis.md` dalam ZIP. Jika ada koreksi setelah fase 2, sertakan hasil scoped recheck terkait.
 
 ## Acuan review `dreamshome01`
 
-Bandingkan dengan [ZIP pilot awal](../../incoming/dreamshome01-r0001.zip) dan [MP4 kanonis](../../video/dreamshome01.mp4). Waktu pada tabel mengikuti video utuh. Sudut dan skala adalah estimasi visual, sehingga kesesuaian fase, komponen, dan arah dinilai terpisah.
+Bandingkan dengan [ZIP pilot awal](../../docs/runpilot/dreamshome01-r0001.zip) dan [MP4 kanonis](../../video/dreamshome01.mp4). Waktu pada tabel mengikuti video utuh. Sudut dan skala adalah estimasi visual, sehingga kesesuaian fase, komponen, dan arah dinilai terpisah.
 
 | Shot dan interval | Pembanding dan bukti yang diperiksa |
 | --- | --- |
@@ -22,10 +20,10 @@ Bandingkan dengan [ZIP pilot awal](../../incoming/dreamshome01-r0001.zip) dan [M
 
 ## Dua cek tambahan
 
-- **`edh033` Shot 02.** Bandingkan F268, F336, dan F384 (8,93–12,80 s). Apakah ranjang dan jangkar dekat membesar secara berbeda saat kamera mendongak? Nilai dukungan untuk Dolly-In bersama Tilt-Up. [MP4](../../video/edh033.mp4) · [ZIP pilot](../../incoming/edh033-r0001.zip)
-- **`edh056` Shot 01.** Bandingkan F0, F20, F40, F60 dan F75 (0–2,50 s). Nilai arah gerak pohon dekat relatif terhadap fasad dan perubahan sudut bidang rumah. Tentukan apakah pola mendukung Orbit Left dengan Pan Right atau tafsir lain. [MP4](../../video/edh056.mp4) · [ZIP pilot](../../incoming/edh056-r0001.zip)
+- **`edh033` Shot 02.** Bandingkan F268, F336, dan F384 (8,93–12,80 s). Apakah ranjang dan jangkar dekat membesar secara berbeda saat kamera mendongak? Nilai dukungan untuk Dolly-In bersama Tilt-Up. [MP4](../../video/edh033.mp4) · [ZIP pilot](../../docs/runpilot/v3.0/edh033-r0001.zip)
+- **`edh056` Shot 01.** Bandingkan F0, F20, F40, F60 dan F75 (0–2,50 s). Nilai arah gerak pohon dekat relatif terhadap fasad dan perubahan sudut bidang rumah. Tentukan apakah pola mendukung Orbit Left dengan Pan Right atau tafsir lain. [MP4](../../video/edh056.mp4) · [ZIP pilot](../../docs/runpilot/v3.0/edh056-r0001.zip)
 
-## Verifikasi lokal sebelum uji provider
+## Pemeriksaan visual terdahulu
 
 - **`dreamshome01` Shot 01–03.** F0–F60 memperlihatkan sisi kanan teras terbuka dan perubahan skala mulai terlihat, sehingga fase orbit didukung sementara qualifier Pure masih perlu kehati-hatian. F194–F287 memperlihatkan perapian mengecil dan bergeser ke kanan relatif terhadap perubahan orientasi meja. Ini mendukung Orbit Right dan Pan Left saat mundur. Di dapur, sapuan kanan mulai terbaca setelah F348 dan paling jelas menuju F392. PTS batas persis mengikuti analisis di sekitar perubahan.
 - **`dreamshome01` Shot 04–05.** Ruang kamar tidur membuka ke kiri saat kamera mundur. Lebar bagian bawah bingkai jendela kamar mandi bertambah dari sekitar 170 menjadi 425 piksel. Dukungan untuk Dolly-In sekitar 2,5× lebih jelas daripada estimasi sudut Pan yang mengikuti perubahan arah pandang.

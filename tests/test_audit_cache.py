@@ -7,7 +7,7 @@ from . import test_prepare
 from homeku.common import LibraryError, read_json
 from homeku.media import build_media
 from homeku.media_incremental import render_missing_media
-from homeku.render_assets import LAYOUT, render_config
+from homeku.render_assets import render_config
 from homeku.video import extract_frame
 from homeku.video_cache import FrameCache, cached_media
 
@@ -53,7 +53,7 @@ class CacheTests(test_prepare.VideoFixture, unittest.TestCase):
         self.assertEqual(updated[1]["sha256"], baseline[1]["sha256"])
         self.assertNotEqual(updated[2]["sha256"], baseline[2]["sha256"])
 
-    def test_layout_and_moment_labels_invalidate_dependent_jpegs(self):
+    def test_column_count_and_moment_labels_invalidate_dependent_jpegs(self):
         source = self.video("layout")
         audit = read_json(ROOT / "audit/examples/multi/audit.json")
         cache = FrameCache(source, self.work / "cache")
@@ -63,7 +63,7 @@ class CacheTests(test_prepare.VideoFixture, unittest.TestCase):
             return cached_media(self.work / name, audit, source, cache.info, settings, cache.times)
 
         with cache.activate():
-            old = render("old", render_config(layout_path=LAYOUT, columns=4))
+            old = render("old", render_config(columns=2))
             with patch("homeku.media_incremental.render_missing_media",
                        wraps=render_missing_media) as run:
                 baseline = render("baseline", config)

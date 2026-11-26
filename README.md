@@ -1,6 +1,6 @@
 # Pustaka HOMEKU
 
-HOMEKU menyimpan audit video desain, komposisi, dan gerakan kamera dalam format 3.0. `audit.json` menyimpan isi sumber, `analysis.md` menyajikan laporan manusia, dan `manifest.json` mencatat bukti serta media.
+HOMEKU menyimpan audit video desain, komposisi, dan gerakan kamera dalam format 3.1. `audit.json` menyimpan isi sumber, `analysis.md` menyajikan laporan manusia, dan `manifest.json` mencatat bukti serta media.
 
 - Manusia mulai dari katalog, lalu membuka laporan referensi. [Katalog](catalogs/README.md)
 - AI mulai dari indeks, lalu membaca identitas, shot, atau area yang dipilih. [Indeks](data/search-index.json) · [Kontrak reader](audit/contracts/reader.md)

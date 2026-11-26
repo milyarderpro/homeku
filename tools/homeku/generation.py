@@ -21,8 +21,7 @@ GENERATOR_MODULES = (
     "engine", "storage", "reader", "audit_performance",
 )
 SCHEMA_PATHS = ("audit", "audit-info", "manifest", "reference-reader", "search-index")
-ASSETS = ("templates/analysis.md", "templates/analysis-profile.md",
-          "layouts/media.json", "layouts/media-aligned.json", "fonts/DejaVuSans.ttf",
+ASSETS = ("templates/analysis.md", "layouts/media.json", "fonts/DejaVuSans.ttf",
           "fonts/DejaVuSans-Bold.ttf", "fonts/LICENSE.txt")
 
 
@@ -85,6 +84,16 @@ def load_models(root: Path, registry, full=False):
     return models
 
 
+_AREA_WORD_SEPARATORS = str.maketrans("-‐‑", "   ")
+
+
+def _alias_key(group, value):
+    key = value.casefold()
+    if group == "areas":
+        return " ".join(key.translate(_AREA_WORD_SEPARATORS).split()) or key.strip()
+    return key
+
+
 def aliases(taxonomy):
     groups = {}
     require(isinstance(taxonomy.get("version"), int) and isinstance(taxonomy.get("areas"), dict),
@@ -96,7 +105,7 @@ def aliases(taxonomy):
         for canonical, values in sorted(entries.items()):
             require(isinstance(values, list) and all(isinstance(v, str) for v in values), "Invalid alias list")
             for value in (canonical, *values):
-                key = value.casefold()
+                key = _alias_key(group, value)
                 require(key not in labels or labels[key] == canonical, f"Ambiguous {group} alias: {value}")
                 labels[key] = canonical
         groups[group] = labels
@@ -104,7 +113,10 @@ def aliases(taxonomy):
 
 
 def canonical(groups, group, value):
-    return groups.get(group, {}).get(value.casefold(), value) if isinstance(value, str) else value
+    if not isinstance(value, str):
+        return value
+    key = _alias_key(group, value)
+    return groups.get(group, {}).get(key, key if group == "areas" else value)
 
 
 def facts_for(shot, index):

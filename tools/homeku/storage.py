@@ -39,6 +39,13 @@ def copy(source, target):
         shutil.copyfile(source, target)
 
 
+def publication_path(name):
+    relative = safe_relative(name)
+    require(relative == "incoming" or relative.split("/")[0] in
+            {"references", "video", "catalogs", "knowledge", "data"}, "Invalid publication destination")
+    return relative
+
+
 def recover(root):
     journal_path = root / ".homeku/transaction.json"
     if not journal_path.exists():
@@ -49,8 +56,7 @@ def recover(root):
     transaction = root / ".homeku" / txn_name
     if not journal["committed"]:
         for op in reversed(journal["operations"]):
-            relative = safe_relative(op["path"])
-            require(relative.split("/")[0] in {"references", "video", "catalogs", "knowledge", "data"}, "Invalid journal destination")
+            relative = publication_path(op["path"])
             target, backup = root / relative, transaction / "old" / relative
             if backup.exists():
                 remove(target)
@@ -91,7 +97,7 @@ def publish(root: Path, proposed, after_install=None):
     transaction = Path(tempfile.mkdtemp(prefix="publish-", dir=root / ".homeku"))
     operations = []
     for relative, source in sorted(changes.items(), key=lambda r: (r[0] == "data/registry.json", r[0])):
-        safe_relative(relative)
+        publication_path(relative)
         require(not any((root / relative).parents[i].is_symlink() for i in range(len((root / relative).parents))), "Symlinked destination parent")
         require(not (root / relative).is_symlink(), f"Symlinked destination: {relative}")
         copy(source, transaction / "new" / relative)

@@ -1,6 +1,6 @@
 # HOMEKU library
 
-- Mulai dari README.md, audit/README.md, dan kontrak yang relevan dalam audit/contracts/. Format aktif tunggal 3.0. Schema offline ada di schemas/ dan aset renderer di tools/assets/.
+- Mulai dari README.md, audit/README.md, dan kontrak yang relevan dalam audit/contracts/. Format aktif tunggal 3.1. Schema offline ada di schemas/ dan aset renderer di tools/assets/.
 - Referensi aktif hanya ID dalam data/registry.json. Arsip, kandidat, hasil pilot, dan fixture terisolasi dari discovery, generator, dan Knowledge. Baca arsip bila tugas memang memerlukannya.
 - audit.json adalah satu sumber isi. analysis.md dihasilkan renderer, manifest.json menyimpan metadata dan bukti teknis. Pertahankan narasi serta fakta, state, negasi, label baru, dan pointer sumber. Confidence opsional. Generator menerbitkan data eksplisit dan prinsip terkurasi.
 - Perubahan referensi melalui ZIP final dan revisi eksplisit. Receipt mengikat byte kandidat yang lulus review teknis dan tersimpan di luar ZIP. Ekspor langsung membungkus snapshot itu. Pengguna memeriksa laporan dan media di chat sebelum memilih ZIP yang akan di-ingest. Ingest memverifikasi teknis dengan MP4 kanonis terpisah.

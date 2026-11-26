@@ -34,9 +34,9 @@ def search(root, *, style=None, style_role="primary-style", style_relation=None,
            limit=10, offset=0, include_uncertain=True):
     require(type(limit) is int and 1 <= limit <= 50 and type(offset) is int and offset >= 0,
             "Search limit must be 1–50 and offset nonnegative")
+    registry = _registry(root)
     index = _generated(root, "data/search-index.json")
     require(index.get("schema_version") == FORMAT_VERSION, "Unsupported search index; run library.py build")
-    registry = _registry(root)
     require(len(index["references"]) == len(registry) and {r["id"] for r in index["references"]} == set(registry),
             "Registry/index differ; run library.py build")
     groups = aliases(read_json(root / "data/taxonomy.json"))
@@ -74,7 +74,8 @@ def search(root, *, style=None, style_role="primary-style", style_relation=None,
             continue
         hits = []
         for shot in reference["shots"]:
-            if not areas <= {v.casefold() for v in shot["areas_canonical"]}:
+            indexed_areas = {value.casefold() for value in shot["areas_canonical"]}
+            if not areas <= indexed_areas:
                 continue
             if tempo and tempo not in shot["tempos"]:
                 continue

@@ -24,7 +24,8 @@ class CapacityTests(test_prepare.VideoFixture, unittest.TestCase):
         production_registry = sha256(ROOT / "data/registry.json")
         source = make_source(self.work / "seed.mp4")
         audit_path, logs = make_inputs(self.work / "authoring", source)
-        result = draft(source, audit_path, logs, self.work / "seed-candidate", purpose="fixture")
+        result = draft(source, audit_path, logs, self.work / "seed-candidate",
+                       session_path=audit_path.with_name("session.json"), purpose="fixture")
         folder = Path(result["candidate"])
         audit = read_json(folder / "audit.json")
         template = read_json(folder / "manifest.json")
@@ -53,7 +54,7 @@ class CapacityTests(test_prepare.VideoFixture, unittest.TestCase):
                 (reference / "manifest.json").write_text(dumps(manifest))
                 digest = snapshot_hash(reference)
                 # Directly seed fixture registry entries so capacity measures build/reader.
-                registry[rid] = {"revision": 1, "contract_version": "3.0", "content_sha256": digest,
+                registry[rid] = {"revision": 1, "contract_version": "3.1", "content_sha256": digest,
                                  "package_sha256": digest, "audit_sha256": manifest["audit_sha256"],
                                  "source_sha256": manifest["source"]["sha256"],
                                  "analysis_sha256": sha256(reference / "analysis.md"),

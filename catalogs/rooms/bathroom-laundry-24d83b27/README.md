@@ -1,4 +1,4 @@
-# Bathroom & Laundry
+# bathroom & laundry
 
 1 entri tercatat.
 

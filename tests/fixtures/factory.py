@@ -4,7 +4,7 @@ import shutil
 import subprocess
 from pathlib import Path
 from homeku.audit_session import add_frames, mark_viewed
-from homeku.authoring import complete, prepare
+from homeku.authoring import check_camera, complete, prepare
 from homeku.common import dumps, read_json
 from homeku.derivations import referenced_frames
 from homeku.exporter import draft, export, review
@@ -47,6 +47,7 @@ def make_inputs(work, source, *, multi=False, revision=1, edit=None):
     if extra:
         add_frames(result["session"], extra, reason="Bukti tambahan fixture.")
     mark_viewed(result["session"], all_frames=True, all_passes=True)
+    check_camera(result["session"])
     complete(audit_path, session_path=result["session"])
     return audit_path, read_json(info_path)
 
@@ -57,7 +58,8 @@ def make_package(work, root, rid, *, revision=1, supersedes=None, multi=False, e
     if not source.is_file():
         make_source(source)
     audit, info = make_inputs(work / "authoring", source, multi=multi, revision=revision, edit=edit)
-    result = draft(source, audit, info, work / "candidates", supersedes=supersedes, purpose=purpose)
+    result = draft(source, audit, info, work / "candidates", session_path=audit.with_name("session.json"),
+                   supersedes=supersedes, purpose=purpose)
     folder = Path(result["candidate"])
     cards = review(folder, work / "review.md")
     return Path(export(folder, out or root / "incoming", cards["receipt"])["package"])

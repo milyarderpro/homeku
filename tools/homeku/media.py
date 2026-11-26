@@ -4,7 +4,7 @@ import io
 import math
 from PIL import Image, ImageDraw, ImageFont
 from .common import read_json, require, safe_relative, sha256
-from .render_assets import BOLD_FONT, FONT, MAX_BYTES, MAX_PIXELS, area_names, resolve_layout, titles, wrap
+from .render_assets import BOLD_FONT, FONT, LAYOUT, MAX_BYTES, MAX_PIXELS, area_names, titles, wrap
 from .camera_pattern import shot_pattern
 from .derivations import camera_summary, selections
 from .video import extract_frame
@@ -26,8 +26,7 @@ def layout(selections, source, title, *, spec, columns=3, scale=1.0, overview=Fa
     gap, bottom = px('margin'), px('bottom_padding')
     count = len(selections)
     cols = count if overview else min(columns, count)
-    aligned = spec.get('align_shot_blocks', False) and not overview
-    if aligned:
+    if not overview:
         width = 3 * nominal_cell + 4 * gap
         row_count = (count + cols - 1) // cols
         base, extra = divmod(count, row_count)
@@ -41,7 +40,7 @@ def layout(selections, source, title, *, spec, columns=3, scale=1.0, overview=Fa
     else:
         cell = nominal_cell
         width = cols * cell + (cols + 1) * gap
-        row_sizes = [min(cols, count - start) for start in range(0, count, cols)]
+        row_sizes = [count]
     # Reject impossible source dimensions before measuring text or allocating a bitmap.
     preflight(width, fh + 2 * gap, 'media layout')
     fonts = {key: ImageFont.truetype(str(path), px(size)) for key,path,size in [
@@ -72,12 +71,10 @@ def layout(selections, source, title, *, spec, columns=3, scale=1.0, overview=Fa
             y = max(lines(heading['title'],'heading',gap,y,room,'title'), ty+line_height('time'))
         else:
             y = lines(heading['title'],'heading',gap,y,usable,'title')
-            if timing and aligned:
+            if timing:
                 for line in wrap(timing, fonts['time'], usable):
                     add(line, 'time', width - gap - fonts['time'].getlength(line), y, 'header_time')
                     y += line_height('time')
-            elif timing:
-                y = lines(timing, 'time', gap, y, usable, 'header_time')
         header = max(y+gap,px('header_height'))
     captions = []
     for p in selections:
@@ -104,7 +101,7 @@ def layout(selections, source, title, *, spec, columns=3, scale=1.0, overview=Fa
         cap_height=max(caption_height(rows) for rows in captions[offset:stop])
         for j,p in enumerate(chunk):
             cell_x = gap + j * (cell + gap)
-            x = cell_x if aligned else cell_x + (cell - fw) // 2
+            x = cell_x + (cell - fw) // 2 if overview else cell_x
             placements.append({'selection_id':p['id'], 'bbox':[x,row_y,fw,fh], 'scale':scale})
             cy=row_y+fh+px('caption_gap')
             for row in captions[offset+j]:
@@ -118,7 +115,7 @@ def layout(selections, source, title, *, spec, columns=3, scale=1.0, overview=Fa
         offset = stop
     if camera is not None:
         y=last_bottom+px('camera_gap')
-        label = 'Camera:' if aligned else 'camera:'
+        label = 'Camera:'
         prefix = f" ({pattern or '—'}) "
         add(label,'caption_bold',gap,y,'camera_label')
         x=gap+fonts['caption_bold'].getlength(label)
@@ -147,7 +144,7 @@ def layout(selections, source, title, *, spec, columns=3, scale=1.0, overview=Fa
 
 def expected_media(audit, source, config, frames):
     labels = {a["id"]: a["label"] for a in audit["areas"]}
-    spec = read_json(resolve_layout(config["layout_sha256"]))
+    spec = read_json(LAYOUT)
     headings = titles(audit)
     all_selections = list(selections(audit, frames))
     by_shot = {shot["shot"]: [] for shot in audit["shots"]}

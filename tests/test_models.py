@@ -89,11 +89,21 @@ class ModelTests(unittest.TestCase):
         with self.assertRaisesRegex(LibraryError, "gap/overlap"):
             self.validate(value)
 
-    def test_normal_midpoint_and_multi_selection_visibility(self):
+    def test_normal_panels_can_skip_blurred_frames_but_stay_in_chronology(self):
         value = self.audit()
-        value["shots"][0]["panels"][1]["frame_index"] = 5
-        with self.assertRaisesRegex(LibraryError, "midpoint"):
+        panels = value["shots"][0]["panels"]
+        for panel, index in zip(panels, (1, 5, 10), strict=True):
+            panel["frame_index"] = index
+        self.validate(value)
+        panels[1]["frame_index"] = 0
+        with self.assertRaisesRegex(LibraryError, "source chronology"):
             self.validate(value)
+        panels[1]["frame_index"] = 5
+        panels[-1]["frame_index"] = 12
+        with self.assertRaisesRegex(LibraryError, "selection outside shot"):
+            self.validate(value)
+
+    def test_multi_selection_visibility(self):
         value = self.audit("multi")
         value["shots"][0]["overviews"][1]["frame_index"] = 0
         with self.assertRaisesRegex(LibraryError, "visible"):
@@ -104,6 +114,10 @@ class ModelTests(unittest.TestCase):
         composition = value["shots"][0]["composition"]
         choice = {"frame_index": 4, "composition_summary": "Menghadap wastafel dari dekat pintu."}
         composition["production_start"] = choice
+        panel = value["shots"][0]["panels"][0]
+        with self.assertRaisesRegex(LibraryError, "Start must match Production Start"):
+            self.validate(value)
+        panel["frame_index"] = 4
         self.validate(value)
         for index in (0, 12):
             with self.subTest(index=index), self.assertRaisesRegex(

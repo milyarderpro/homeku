@@ -34,7 +34,7 @@ class ReaderTests(test_prepare.VideoFixture, unittest.TestCase):
             folder.mkdir(parents=True)
             for filename, key in (("audit.json", "audit"), ("manifest.json", "manifest")):
                 (folder / filename).write_text(dumps(item[key]))
-            registry[rid] = {"content_sha256": item["content_sha256"], "contract_version": "3.0", "revision": 1,
+            registry[rid] = {"content_sha256": item["content_sha256"], "contract_version": "3.1", "revision": 1,
                              "source_sha256": item["manifest"]["source"]["sha256"],
                              "audit_sha256": sha256(folder / "audit.json"),
                              "manifest_sha256": sha256(folder / "manifest.json"),
@@ -44,6 +44,14 @@ class ReaderTests(test_prepare.VideoFixture, unittest.TestCase):
             target = self.root / name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(value)
+
+    def test_discovery_rejects_prior_registry_contract(self):
+        path = self.root / "data/registry.json"
+        registry = read_json(path)
+        registry["references"]["camera-normal"]["contract_version"] = "3.0"
+        path.write_text(dumps(registry))
+        with self.assertRaisesRegex(LibraryError, "Unsupported registry contract version.*HOMEKU 3.1"):
+            search(self.root)
 
     def test_explicit_filters_match_one_continuous_take(self):
         filters = {"style": "farmhouse modern", "style_role": "style-influence", "scale": "kecil",

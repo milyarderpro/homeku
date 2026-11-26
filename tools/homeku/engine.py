@@ -24,7 +24,8 @@ def registry_at(root):
         require(rid.casefold() not in folded, "Case collision in registry")
         folded.add(rid.casefold())
         require(type(entry.get("revision")) is int and 1 <= entry["revision"] <= 9999, f"Invalid registry revision: {rid}")
-        require(entry.get("contract_version") == FORMAT_VERSION,f"Unsupported registry contract version: {rid}")
+        require(entry.get("contract_version") == FORMAT_VERSION,
+                f"Unsupported registry contract version: {rid}; replace with an audit from HOMEKU {FORMAT_VERSION}")
         for key in ("content_sha256", "source_sha256", "package_sha256", "analysis_sha256", "manifest_sha256", "audit_sha256"):
             value = entry.get(key)
             require(isinstance(value, str) and re.fullmatch(r"[a-f0-9]{64}", value), f"Invalid registry {key}: {rid}")
@@ -45,6 +46,14 @@ def fixture_allowed(root, manifest):
     require(manifest["purpose"] == "reference" or
             (root.resolve() != CODE_ROOT.resolve() and (root / ".homeku-fixture-root").is_file()),
             "Synthetic fixture rejected: use an isolated root with .homeku-fixture-root for tests only")
+
+
+def registry_entry(folder, manifest, model, package_hash):
+    return {"revision": manifest["revision"], "contract_version": FORMAT_VERSION,
+            "content_sha256": model["content_sha256"], "audit_sha256": manifest["audit_sha256"],
+            "source_sha256": manifest["source"]["sha256"], "package_sha256": package_hash,
+            "analysis_sha256": sha256(folder / "analysis.md"),
+            "manifest_sha256": sha256(folder / "manifest.json")}
 
 
 def validate_package(root, package):
@@ -93,11 +102,7 @@ def ingest(root: Path, packages=None):
                         require(not (root / "references" / rid).exists(), f"Unregistered reference directory already exists: {rid}")
                     duplicate = next((key for key, entry in registry["references"].items() if key != rid and entry["source_sha256"] == manifest["source"]["sha256"]), None)
                     require(duplicate is None, f"Duplicate active source: {duplicate}")
-                    entry = {"revision": revision, "contract_version": FORMAT_VERSION,
-                             "content_sha256": model["content_sha256"], "audit_sha256": manifest["audit_sha256"],
-                             "source_sha256": manifest["source"]["sha256"], "package_sha256": package_hash,
-                             "analysis_sha256": sha256(folder / "analysis.md"),
-                             "manifest_sha256": sha256(folder / "manifest.json")}
+                    entry = registry_entry(folder, manifest, model, package_hash)
                     result = {"package": package.name, "status": "imported", "id": rid, "revision": revision}
                     # The canonical MP4 was verified above and is never a publication target.
                     proposed[f"references/{rid}"] = folder

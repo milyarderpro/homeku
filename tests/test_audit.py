@@ -1,5 +1,6 @@
 """Audit CLI regression tests on local synthetic videos."""
 import json
+import shlex
 import subprocess
 import sys
 import unittest
@@ -22,9 +23,20 @@ class AuditCLITests(test_prepare.VideoFixture, unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         return json.loads(result.stdout)
 
+    def test_authoring_phase_commands_match_the_cli(self):
+        from tools.audit import parser
+        path = ROOT / "audit/authoring.md"
+        phases = path.read_text().split("## Fase ")[1:]
+        expected_by_phase = (("inspect", "prepare"), ("sample", "mark-viewed", "check-camera"),
+                             ("update-shot", "check-camera"), ("complete", "check-input", "draft", "review", "export"))
+        self.assertEqual(len(phases), len(expected_by_phase))
+        for phase, expected in zip(phases, expected_by_phase, strict=True):
+            commands = [shlex.split(line)[2:] for line in phase.splitlines() if line.startswith("python tools/audit.py ")]
+            self.assertEqual(tuple(parser().parse_args(command).command for command in commands), expected)
+
     def test_help_exposes_only_the_current_audit_workflow(self):
         help_text = cli("--help").stdout
-        for command in ("prepare", "update-shot", "check-input", "draft", "review", "export", "motion-hints"):
+        for command in ("prepare", "update-shot", "check-camera", "check-input", "draft", "review", "export", "motion-hints"):
             self.assertIn(command, help_text)
         for name in ("draft-v2", "export-v2"):
             self.assertNotIn(name, help_text)
@@ -40,11 +52,14 @@ class AuditCLITests(test_prepare.VideoFixture, unittest.TestCase):
                 audit, _ = make_inputs(work / "writing", source, multi=name == "multi")
                 correction = work / "patch.json"
                 correction.write_text(json.dumps({"camera": {"description": "Lintasan fixture."}}))
-                self.run_json("update-shot", audit.parent / "session.json", "--shot-id", "shot-01",
-                              "--patch", correction)
+                session = audit.with_name("session.json")
+                self.assertTrue(self.run_json("update-shot", session, "--shot-id", "shot-01",
+                                              "--patch", correction)["camera_recheck_required"])
+                self.run_json("check-camera", session, "--shot-id", "shot-01")
                 info = audit.parent / "audit-info.json"
-                self.assertTrue(self.run_json("check-input", source, audit, "--audit-info", info)["ok"])
-                draft = self.run_json("draft", source, audit, "--audit-info", info,
+                self.assertTrue(self.run_json("check-input", source, audit, "--audit-info", info,
+                                              "--session", session)["ok"])
+                draft = self.run_json("draft", source, audit, "--audit-info", info, "--session", session,
                                       "--output", work / "candidate", "--fixture")
                 cards = self.run_json("review", draft["candidate"], "--output", work / "review.md")
                 result = self.run_json("export", draft["candidate"], "--receipt", cards["receipt"],
@@ -75,7 +90,13 @@ class KitInventoryTests(test_prepare.VideoFixture, unittest.TestCase):
         self.assertEqual(found, kit.OUTER_FILES.union(kit.BUNDLED))
         self.assertTrue(not any(name.startswith(("docs/", "openspec/", "audit/result/", "video/"))
                                 or "media_v" in name or "reporting_v" in name for name in found))
-        self.assertIn("update-shot", cli("--help", root=folder).stdout)
+        self.assertIn("check-camera", cli("--help", root=folder).stdout)
+        self.assertTrue((folder / "audit/design-audit.md").is_file())
+        self.assertEqual({name for name in kit.BUNDLED if name.startswith("tools/assets/templates/")},
+                         {"tools/assets/templates/analysis.md"})
+        self.assertEqual({name for name in kit.BUNDLED if name.startswith("tools/assets/layouts/")},
+                         {"tools/assets/layouts/media.json"})
+        self.assertEqual(json.loads((folder / "template-audit.json").read_text())["schema_version"], "3.1")
         (folder / "tools/audit.py").write_text("user-owned change")
         denied = subprocess.run(command, cwd=folder, capture_output=True, text=True, timeout=30)
         self.assertNotEqual(denied.returncode, 0)

@@ -1,11 +1,5 @@
-# Koreksi audit HOMEKU 3.0
+# Koreksi audit HOMEKU 3.1
 
-Terapkan koreksi saya pada `audit.json` kerja. Temukan bukti terkait lalu periksa ulang bagian yang masih ambigu dengan pendalaman 10 FPS atau native. Pertahankan catatan yang sudah cocok. Jika koreksi menyangkut kamera, baca `audit/camera-cases.md` sebelum memeriksa fase yang terdampak. Periksa batas fase lalu bandingkan jangkar dekat, jangkar jauh, dan sudut bidang untuk membedakan Pan, Orbit, serta Truck. Nilai kembali jenis, arah, intensitas, profil laju, dan besaran tiap komponen. Cantumkan rincian dan estimasi ~× atau ~° yang didukung frame di `notation`.
+Lanjutkan sesi audit yang sama. Periksa frame terkait sebelum mengoreksi `audit.json`. Gunakan `update-shot` untuk koreksi satu shot bila cocok. Jika kamera atau Production Start berubah, baca ulang `audit/visual-audit.md` dan `audit/camera-cases.md`, lihat bukti yang terdampak, lalu jalankan `check-camera --shot-id` untuk setiap shot yang dikoreksi. Untuk perubahan desain dan media, ikuti `audit/design-audit.md`.
 
-Jika koreksi menyangkut Profil Desain, perbarui klaim tipe rumah atau aspek terkait pada sumber audit. Untuk koreksi palet, perbarui entri `design.palette` dan bukti frame yang bersangkutan.
-
-Koreksi label area dan label momen di sumber audit agar laporan dan media konsisten. Pakai bahasa Inggris Title Case, `&` untuk fungsi dalam satu area, serta fungsi eksplisit di `areas[].functions`. Pemisah ` / ` ditambahkan renderer antararea. Gunakan istilah Inggris pada nilai teknis pencarian dan bahasa Indonesia pada narasi.
-
-Selaraskan fakta, narasi, komposisi, notasi, fase, dan tempo yang terdampak. Jika koreksi terpusat pada satu shot, gunakan `update-shot` dengan file patch JSON. Isi deklarasi viewed hanya untuk frame yang benar-benar sudah dilihat. Jalankan complete dan draft.
-
-Ikuti checklist isi di `audit/authoring.md`. Jika gerak dikoreksi, cocokkan `notation`, `observations`, dan frame sebelum review. Periksa fase terlewat, Orbit/Pan, dan arah badan serta sapuan. Setelah kandidat terbaru lulus validasi, jalankan `review` dan langsung `export --receipt` dengan receipt terbaru. Tampilkan ulang laporan dan tautan unduhan ZIP terbaru.
+Deklarasikan viewed setelah gambar diperiksa. Ikuti fase finalisasi di `audit/authoring.md` dan ekspor langsung dengan receipt terbaru. Berikan laporan, media, dan tautan ZIP hasil koreksi.

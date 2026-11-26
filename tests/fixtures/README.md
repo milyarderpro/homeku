@@ -1,4 +1,4 @@
-# Fixture sintetis HOMEKU 3.0
+# Fixture sintetis HOMEKU 3.1
 
 Factory membuat MP4 pola uji dengan FFmpeg, lalu mengisi audit dengan contoh sintetis normal atau multi area. Contoh normal memuat satu bathroom yang juga berfungsi sebagai laundry. Contoh multi memuat satu lintasan living–kitchen, visibilitas tumpang tindih dan perubahan tempo pada satu fase gerak. Golden laporan ada di `reports/normal.md` dan `reports/multi.md`.
 

@@ -7,7 +7,7 @@ from PIL import Image
 from . import test_prepare
 from homeku.common import LibraryError, read_json
 from homeku.media import build_media, crop_panel, crop_storyboard, expected_media, layout
-from homeku.render_assets import LAYOUT, render_config
+from homeku.render_assets import render_config
 from homeku.video import frame_times, probe_video
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -98,7 +98,7 @@ class MediaTests(test_prepare.VideoFixture, unittest.TestCase):
             (6, render_config(), [3, 3]),
             (7, render_config(), [4, 3]),
             (5, render_config(columns=3), [3, 2]),
-            (5, render_config(layout_path=LAYOUT, columns=4), [4, 1]),
+            (5, render_config(columns=4), [3, 2]),
         ):
             with self.subTest(count=count, layout=config["layout_sha256"], columns=config["columns"]):
                 shot = audit["shots"][0]
@@ -127,7 +127,7 @@ class MediaTests(test_prepare.VideoFixture, unittest.TestCase):
 
     def test_manifest_has_off_panel_evidence_without_full_pts_and_crops(self):
         from homeku.audit_session import mark_viewed
-        from homeku.authoring import complete, prepare
+        from homeku.authoring import check_camera, complete, prepare
         from homeku.common import dumps, sha256
         from homeku.media import crop_panel, crop_storyboard
         from homeku.package_manifest import build_manifest, validate_frame_map
@@ -138,6 +138,7 @@ class MediaTests(test_prepare.VideoFixture, unittest.TestCase):
                 "ai": {"provider": "fixture", "model": "fixture", "model_build": None}}
         Path(work["audit_info"]).write_text(dumps(logs))
         mark_viewed(work["session"], all_frames=True, all_passes=True)
+        check_camera(work["session"])
         complete(work["audit"], session_path=work["session"])
         config = render_config()
         folder = self.work / "candidate"
@@ -215,9 +216,6 @@ class MediaTests(test_prepare.VideoFixture, unittest.TestCase):
         self.assertAlmostEqual(regions["header_time"]["x"] +
                                design["fonts"]["time"].getlength(regions["header_time"]["text"]),
                                shot["width"] - regions["title"]["x"])
-        _, old_design = next((meta, art) for meta, _, art in
-                             expected_media(audit, info, render_config(layout_path=LAYOUT), times))
-        self.assertIn("camera:", [t["text"] for t in old_design["texts"] if t["region"] == "camera_label"])
 
         # An unusually wide timing label must still use the right margin below the title.
         compact, compact_design = layout(plan[0][1], info, {"title": "Shot", "subtitle": "00.00s " * 24},

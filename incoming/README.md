@@ -1,4 +1,4 @@
-# Menyerahkan ZIP final HOMEKU 3.0
+# Menyerahkan ZIP final HOMEKU 3.1
 
 Letakkan ZIP yang sudah dipilih dari chat di folder ini. Nama paket mengikuti `<id>-rNNNN.zip`. ZIP memuat satu folder `<id>/` berisi `audit.json`, `analysis.md`, `manifest.json`, serta JPEG kolase setiap shot, Overview, dan Storyboard di `media/`. Simpan MP4 kanonis secara terpisah di `video/<id>.mp4`. [Kontrak paket](../audit/contracts/package.md) · [Panduan MP4](../video/README.md)
 

@@ -4,9 +4,9 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 from . import test_prepare
-from homeku.common import read_json
+from homeku.common import LibraryError, read_json
 from homeku.derivations import frame_map, selections
-from homeku.generation import render
+from homeku.generation import aliases, canonical, render
 from homeku.media import expected_media
 from homeku.render_assets import render_config
 from homeku.reader import search
@@ -28,6 +28,28 @@ def model(name):
 
 
 class GenerationTests(unittest.TestCase):
+    def test_area_aliases_detect_collisions_after_word_normalization(self):
+        taxonomy = {"version": 3, "areas": {"one": ["Reading-Nook"], "two": [" reading  nook "]}}
+        with self.assertRaisesRegex(LibraryError, "Ambiguous areas alias"):
+            aliases(taxonomy)
+
+    def test_pilot_area_vocabulary_keeps_different_spaces_distinct(self):
+        groups = aliases(read_json(ROOT / "data/taxonomy.json"))
+        for canonical_name, variants in {
+            "entry": ("Entry", " Entrance "),
+            "dressing area": ("Dressing", "dressing-area"),
+            "sleeping loft": ("Sleeping Loft", "Loft Tidur"),
+            "front porch": ("front-porch", "teras depan"),
+            "front yard": ("front-yard", "halaman depan"),
+            "bathroom & laundry": ("Bathroom & Laundry", "Kamar Mandi dan Laundry"),
+        }.items():
+            for term in variants:
+                with self.subTest(term=term):
+                    self.assertEqual(canonical(groups, "areas", term), canonical_name)
+        distinct = ("Porch", "Front Porch", "Patio", "Terrace", "Balcony", "Outdoor Dining",
+                    "Dining", "Powder Room", "Full Bathroom", "Walk-In Closet", "Dressing Area")
+        self.assertEqual(len({canonical(groups, "areas", term) for term in distinct}), len(distinct))
+
     def test_facts_states_scope_notes_and_facets_come_from_source(self):
         item = model("normal")
         audit = item["audit"]

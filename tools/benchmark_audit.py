@@ -12,7 +12,7 @@ from pathlib import Path
 
 from homeku import FORMAT_VERSION
 from homeku.audit_session import add_frames, load_session, mark_viewed, workspace
-from homeku.authoring import complete, prepare, update_shot
+from homeku.authoring import check_camera, complete, prepare, update_shot
 from homeku.common import LibraryError, dumps, read_json, require
 from homeku.derivations import fact_claims, referenced_frames
 from homeku.exporter import draft, export, review
@@ -28,7 +28,7 @@ def benchmark(source, audit_path, audit_info, output, *, cuts=None, motion_shot=
     output.mkdir(parents=True, exist_ok=True)
     audit = read_json(audit_path)
     require(audit.get("schema_version") == FORMAT_VERSION and audit.get("revision") == 1,
-            "Use a complete format 3.0 r0001 fixture")
+            f"Use a complete format {FORMAT_VERSION} r0001 fixture")
     cuts = [] if cuts is None else cuts
     timings = {}
 
@@ -55,12 +55,13 @@ def benchmark(source, audit_path, audit_info, output, *, cuts=None, motion_shot=
     work_audit, work_info = Path(prepared["audit"]), Path(prepared["audit_info"])
     work_audit.write_text(dumps(audit), encoding="utf-8")
     work_info.write_text(dumps(audit_info), encoding="utf-8")
+    measure("check_camera", check_camera, session)
     measure("complete", complete, work_audit, session_path=session)
     authored, logs = read_json(work_audit), read_json(work_info)
-    valid = measure("preflight", check_inputs, source, authored, logs, purpose="fixture")
+    valid = measure("preflight", check_inputs, source, authored, logs, session_path=session, purpose="fixture")
     require(valid["ok"], "Fixture failed preflight: " + json.dumps(valid["errors"], ensure_ascii=False))
     render_paths = {"output_root": output / "candidate", "purpose": "fixture",
-                    "cache_dir": output / "render-cache" / "frames"}
+                    "cache_dir": output / "render-cache" / "frames", "session_path": session}
     cold = measure("draft_cold", draft, source, work_audit, logs, **render_paths)
     warm = measure("draft_warm", draft, source, work_audit, logs, **render_paths)
     require(cold["snapshot_sha256"] == warm["snapshot_sha256"], "Cold and warm draft bytes differ")
@@ -85,6 +86,7 @@ def benchmark(source, audit_path, audit_info, output, *, cuts=None, motion_shot=
     patch = output / "correction.json"
     patch.write_text(dumps({"camera": {"phases": phases}}), encoding="utf-8")
     update_shot(session, shot["shot"], patch)
+    measure("recheck_camera", check_camera, session, shot_id=shot["shot"])
     changed = measure("draft_correction", draft, source, work_audit, logs, **render_paths)
     corrected = read_json(folder / "manifest.json")
     previous_media = {row["path"]: row["sha256"] for row in original["media"]}

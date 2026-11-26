@@ -45,18 +45,26 @@ class LibraryTests(test_prepare.VideoFixture, unittest.TestCase):
 
     def test_search_resolves_hyphenated_area_labels(self):
         def label_areas(audit):
-            for area, label in zip(audit["areas"], ("living-room", "walk-in-closet"), strict=True):
-                area.update(label=label, functions=[label])
+            first, second = audit["areas"]
+            first.update(label="reading-nook", functions=["living-room", "walk-in-closet"])
+            second.update(label="Kitchen & Dining Area", functions=["Kitchen", "dining-area"])
 
         package = self.package("area-aliases", multi=True, edit=label_areas)
         self.assertEqual(ingest(self.root, [package])["results"][0]["status"], "imported")
-        for spelling in ("living", "living room", "living-room", "walk-in closet", "walk-in-closet"):
+        for spelling in ("living", "living room", "living-room", "walk-in closet", "walk-in-closet",
+                         "Reading Nook", "  READING  NOOK ", "reading‑nook", "dining", "dining area",
+                         "dining-area", "Kitchen & Dining"):
             with self.subTest(spelling=spelling):
                 references = search(self.root, area=[spelling])["results"]
                 self.assertEqual([reference["id"] for reference in references], ["area-aliases"])
                 shots = references[0]["shots"]
                 self.assertEqual([shot["shot"] for shot in shots], ["shot-01"])
-                self.assertEqual(shots[0]["areas"], ["living-room", "walk-in-closet"])
+                self.assertEqual(shots[0]["areas"], [
+                    "Kitchen", "Kitchen & Dining Area", "dining-area", "living-room", "reading-nook", "walk-in-closet"])
+        route = ["Reading Nook", "KITCHEN & DINING"]
+        self.assertEqual(search(self.root, area=["dining", "walk-in-closet"], route=route)["total"], 1)
+        self.assertEqual(search(self.root, area=["dining", "walk-in-closet"], route=route[::-1])["total"], 0)
+        self.assertEqual(search(self.root, area=["outdoor dining"])["total"], 0)
 
     def test_bad_supersedes_blocks_revision_and_correct_revision_clears_old_fact(self):
         first = self.package("rev")

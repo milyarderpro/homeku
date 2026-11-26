@@ -7,16 +7,10 @@ ROOT = Path(__file__).resolve().parents[2]
 FONT = ROOT / "tools/assets/fonts/DejaVuSans.ttf"
 BOLD_FONT = ROOT / "tools/assets/fonts/DejaVuSans-Bold.ttf"
 TEMPLATE = ROOT / "tools/assets/templates/analysis.md"
-PROFILE_TEMPLATE = ROOT / "tools/assets/templates/analysis-profile.md"
 LAYOUT = ROOT / "tools/assets/layouts/media.json"
-ALIGNED_LAYOUT = LAYOUT.with_name("media-aligned.json")
 DEFAULT_COLUMNS = 5
 MAX_PIXELS = 60_000_000
 MAX_BYTES = 95 * 1024 * 1024
-
-
-def report_template(audit):
-    return PROFILE_TEMPLATE if "house_type" in audit["design"] else TEMPLATE
 
 
 def number(value):
@@ -86,32 +80,22 @@ def wrap(text, font, width):
         lines.append(current)
     return lines
 
-def resolve_layout(fingerprint):
-    for path in (LAYOUT, ALIGNED_LAYOUT):
-        if sha256(path) == fingerprint:
-            return path
-    require(False, "Unknown media layout fingerprint")
-
-
-def render_config(*, template_path=TEMPLATE, layout_path=ALIGNED_LAYOUT, quality=91, scale=1.0,
+def render_config(*, quality=91, scale=1.0,
                   columns=DEFAULT_COLUMNS, overview_scale=1.0, storyboard_scale=1.0):
     require(type(quality) is int and 30 <= quality <= 100, "JPEG quality must be 30–100")
     require(type(columns) is int and 1 <= columns <= 6, "Collage columns must be 1–6")
     require(all(type(value) in {float, int} and 0 < value <= 1
                 for value in (scale, overview_scale, storyboard_scale)),
             "Media scales must be in (0, 1]")
-    return {"format_version": FORMAT_VERSION, "template_sha256": sha256(template_path),
+    return {"format_version": FORMAT_VERSION, "template_sha256": sha256(TEMPLATE),
             "font_sha256": sha256(FONT), "bold_font_sha256": sha256(BOLD_FONT),
-            "layout_sha256": sha256(layout_path), "jpeg_quality": quality, "panel_scale": scale,
+            "layout_sha256": sha256(LAYOUT), "jpeg_quality": quality, "panel_scale": scale,
             "columns": columns, "overview_scale": overview_scale, "storyboard_scale": storyboard_scale}
 
 
-def verify_renderer(config, audit):
-    template_path = report_template(audit)
-    layout_path = resolve_layout(config["layout_sha256"])
-    expected = render_config(template_path=template_path, layout_path=layout_path, quality=config["jpeg_quality"],
-                             scale=config["panel_scale"],
+def verify_renderer(config):
+    expected = render_config(quality=config["jpeg_quality"], scale=config["panel_scale"],
                              columns=config["columns"], overview_scale=config["overview_scale"],
                              storyboard_scale=config["storyboard_scale"])
+    require(config["layout_sha256"] == expected["layout_sha256"], "Unknown media layout fingerprint")
     require(config == expected, "Renderer assets or configuration differ from the audit profile")
-    return template_path

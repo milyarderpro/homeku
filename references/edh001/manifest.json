@@ -1,7 +1,7 @@
 {
   "audit": {
     "ai": {
-      "model": "Codex (GPT-6.2-sol)",
+      "model": "Codex (GPT-6)",
       "model_build": null,
       "provider": "OpenAI"
     },
@@ -373,90 +373,78 @@
         ]
       },
       {
-        "end_s": 2.8,
-        "mode": "sampling",
-        "reason": "Melokalisasi peralihan orbit ke pembesaran aksial yang konsisten.",
-        "sampling_fps": 10.0,
+        "end_s": 2.133333333,
+        "mode": "frame-by-frame",
+        "reason": "Periksa frame rujukan profil dan bukti batas fase pada MP4 sumber.",
+        "sampling_fps": null,
         "selected_frame_indices": [
-          42,
-          45,
-          48,
-          51,
-          54,
-          57,
-          60,
-          63,
-          66,
-          69,
-          72,
-          75,
-          78,
-          81,
+          63
+        ],
+        "shot_id": "shot-01",
+        "start_s": 2.1,
+        "viewed_frame_indices": [
+          63
+        ]
+      },
+      {
+        "end_s": 2.233333333,
+        "mode": "frame-by-frame",
+        "reason": "Periksa frame rujukan profil dan bukti batas fase pada MP4 sumber.",
+        "sampling_fps": null,
+        "selected_frame_indices": [
+          66
+        ],
+        "shot_id": "shot-01",
+        "start_s": 2.2,
+        "viewed_frame_indices": [
+          66
+        ]
+      },
+      {
+        "end_s": 2.8,
+        "mode": "frame-by-frame",
+        "reason": "Periksa frame rujukan profil dan bukti batas fase pada MP4 sumber.",
+        "sampling_fps": null,
+        "selected_frame_indices": [
           83
         ],
         "shot_id": "shot-01",
-        "start_s": 1.4,
+        "start_s": 2.766666667,
         "viewed_frame_indices": [
-          42,
-          45,
-          48,
-          51,
-          54,
-          57,
-          60,
-          63,
-          66,
-          69,
-          72,
-          75,
-          78,
-          81,
           83
         ]
       },
       {
-        "end_s": 13.7,
-        "mode": "sampling",
-        "reason": "Membandingkan gerak kusen dekat, sudut ranjang, dan sapuan menuju jendela bundar.",
-        "sampling_fps": 10.0,
+        "end_s": 13.033333333,
+        "mode": "frame-by-frame",
+        "reason": "Periksa frame rujukan profil dan bukti batas fase pada MP4 sumber.",
+        "sampling_fps": null,
         "selected_frame_indices": [
-          372,
-          375,
-          378,
-          381,
-          384,
-          387,
-          390,
-          393,
-          396,
-          399,
-          402,
-          405,
-          408,
+          390
+        ],
+        "shot_id": "shot-04",
+        "start_s": 13.0,
+        "viewed_frame_indices": [
+          390
+        ]
+      },
+      {
+        "end_s": 13.7,
+        "mode": "frame-by-frame",
+        "reason": "Periksa frame rujukan profil dan bukti batas fase pada MP4 sumber.",
+        "sampling_fps": null,
+        "selected_frame_indices": [
           410
         ],
         "shot_id": "shot-04",
-        "start_s": 12.4,
+        "start_s": 13.666666667,
         "viewed_frame_indices": [
-          372,
-          375,
-          378,
-          381,
-          384,
-          387,
-          390,
-          393,
-          396,
-          399,
-          402,
-          405,
-          408,
           410
         ]
       }
     ],
-    "limitations": "Besaran gerak adalah estimasi visual dari perubahan proyeksi. Nama gaya dan luas merupakan interpretasi visual. Cut membatasi pembacaan hubungan denah fisik antararea. HEX menggambarkan warna yang tampak pada sumber dan dipengaruhi pencahayaan.",
-    "method": "Pemeriksaan visual baseline 6 FPS pada lima shot, batas native dan midpoint. Pendalaman 10 FPS pada peralihan eksterior serta perbandingan kusen kamar tidur. Frame awal, tengah dan akhir turut dibandingkan dalam pembesaran. Revisi profil r0002 meninjau frame asli pada lima shot untuk tipe rumah, atmosfer dan palet. HEX diperkirakan dari sampel permukaan representatif pada frame yang dirujuk.",
+    "limitations": "Besaran gerakan, luas dan HEX merupakan estimasi visual. Urutan cut tidak memperlihatkan sambungan fisik antarruang.",
+    "method": "Audit ulang MP4 sumber oleh Codex. Empat cut diverifikasi pada frame native. Seluruh shot diperiksa pada baseline 6 FPS, dengan pendalaman batas fase eksterior, perbandingan skala ruang tamu dan kamar mandi, serta pemeriksaan frame rujukan profil dan panel. Desain revisi aktif dipakai sebagai dasar dan dicocokkan kembali dengan gambar.",
     "reviewed_ranges": [
       {
         "end_s": 4.733333333,
@@ -509,19 +497,34 @@
         "start_s": 16.7
       },
       {
+        "end_s": 2.133333333,
+        "mode": "frame-by-frame",
+        "start_s": 2.1
+      },
+      {
+        "end_s": 2.233333333,
+        "mode": "frame-by-frame",
+        "start_s": 2.2
+      },
+      {
         "end_s": 2.8,
-        "mode": "sampling",
-        "start_s": 1.4
+        "mode": "frame-by-frame",
+        "start_s": 2.766666667
+      },
+      {
+        "end_s": 13.033333333,
+        "mode": "frame-by-frame",
+        "start_s": 13.0
       },
       {
         "end_s": 13.7,
-        "mode": "sampling",
-        "start_s": 12.4
+        "mode": "frame-by-frame",
+        "start_s": 13.666666667
       }
     ]
   },
-  "audit_sha256": "436f42499882cef97c4e3460329d9f206324900117292398a7cffb53e10e667e",
-  "contract_version": "3.0",
+  "audit_sha256": "a99d0c6f859e1459a5a03770bbe617ad0f0eb0e427df877da90051c17f81d5ae",
+  "contract_version": "3.1",
   "frames": {
     "0": 0.0,
     "110": 3.666666667,
@@ -529,6 +532,7 @@
     "142": 4.733333333,
     "177": 5.9,
     "196": 6.533333333,
+    "207": 6.9,
     "222": 7.4,
     "248": 8.266666667,
     "249": 8.3,
@@ -545,8 +549,10 @@
     "449": 14.966666667,
     "450": 15.0,
     "475": 15.833333333,
+    "485": 16.166666667,
     "500": 16.666666667,
     "501": 16.7,
+    "520": 17.333333333,
     "525": 17.5,
     "551": 18.366666667,
     "60": 2.0,
@@ -569,7 +575,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s01-panel-01"
         },
         {
@@ -579,7 +585,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s01-panel-02"
         },
         {
@@ -589,12 +595,12 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s01-panel-03"
         }
       ],
       "path": "media/shot-01.jpg",
-      "sha256": "8fe1b14f9f800ca52df6ebeb3d23a37abb29efae2177015120faa6b14d4dbb76",
+      "sha256": "519f52383910e76d6992f43cec45e75c59c9309ff5275d0635bad15344bcb92a",
       "width": 2280
     },
     {
@@ -609,7 +615,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s02-panel-01"
         },
         {
@@ -619,7 +625,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s02-panel-02"
         },
         {
@@ -629,12 +635,12 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s02-panel-03"
         }
       ],
       "path": "media/shot-02.jpg",
-      "sha256": "5db773f6b852decab71baa267f21a1b6e9ab0b7c57a31e417647917bb1d1813d",
+      "sha256": "931b8f46373b7c02df4078aba8361d61b0e9e970f53889f49fa05784409658ea",
       "width": 2280
     },
     {
@@ -649,7 +655,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s03-panel-01"
         },
         {
@@ -659,7 +665,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s03-panel-02"
         },
         {
@@ -669,12 +675,12 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s03-panel-03"
         }
       ],
       "path": "media/shot-03.jpg",
-      "sha256": "a862526fdcf50d352634873d9c65ecdaafa521772d15f3ca6e758f04acb88d6b",
+      "sha256": "a4a1b27118d5d4f5d4fbbc1afb0ea7e52a079f9a367a62efd4f0b4afa1413ade",
       "width": 2280
     },
     {
@@ -689,7 +695,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s04-panel-01"
         },
         {
@@ -699,7 +705,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s04-panel-02"
         },
         {
@@ -709,12 +715,12 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s04-panel-03"
         }
       ],
       "path": "media/shot-04.jpg",
-      "sha256": "53eda497c4431327721382b4ccb7fb317f9cfc8324c2a9eee919c9cecd4b2ccf",
+      "sha256": "44c216b5a21f1422d5a2721c640fdc423e02f620434a01064fd9412fc296cc20",
       "width": 2280
     },
     {
@@ -729,7 +735,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s05-panel-01"
         },
         {
@@ -739,7 +745,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s05-panel-02"
         },
         {
@@ -749,12 +755,12 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s05-panel-03"
         }
       ],
       "path": "media/shot-05.jpg",
-      "sha256": "b7696a4f0cddfcf8a375d48832ef64abe16a16188a763819714e2051a0e58674",
+      "sha256": "a38c85fcf64cad6e01ba7ec2819bb87776ea005ed565482857e943647fa01bb9",
       "width": 2280
     },
     {
@@ -769,7 +775,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s01-overview-01"
         },
         {
@@ -779,7 +785,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s02-overview-01"
         },
         {
@@ -789,7 +795,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s03-overview-01"
         },
         {
@@ -799,7 +805,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s04-overview-01"
         },
         {
@@ -809,7 +815,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s05-overview-01"
         }
       ],
@@ -880,7 +886,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s01-panel-01"
         },
         {
@@ -890,7 +896,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s01-panel-02"
         },
         {
@@ -900,7 +906,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s01-panel-03"
         },
         {
@@ -910,7 +916,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s02-panel-01"
         },
         {
@@ -920,7 +926,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s02-panel-02"
         },
         {
@@ -930,7 +936,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s02-panel-03"
         },
         {
@@ -940,7 +946,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s03-panel-01"
         },
         {
@@ -950,7 +956,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s03-panel-02"
         },
         {
@@ -960,7 +966,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s03-panel-03"
         },
         {
@@ -970,7 +976,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s04-panel-01"
         },
         {
@@ -980,7 +986,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s04-panel-02"
         },
         {
@@ -990,7 +996,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s04-panel-03"
         },
         {
@@ -1000,7 +1006,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s05-panel-01"
         },
         {
@@ -1010,7 +1016,7 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s05-panel-02"
         },
         {
@@ -1020,29 +1026,29 @@
             720,
             1280
           ],
-          "scale": 1,
+          "scale": 1.0,
           "selection_id": "s05-panel-03"
         }
       ],
       "path": "media/storyboard.jpg",
-      "sha256": "2c1202fa8a3684b59907d5876fec623d568b645b51ed1c30dde8398f762dd136",
+      "sha256": "5f44bf318d93df0349e43603938ffe14273acbc69f9ed1d209da0e0dcac28a2d",
       "width": 2280
     }
   ],
   "purpose": "reference",
   "render": {
     "bold_font_sha256": "5c1247acef7f2b8522a31742c76d6adcb5569bacc0be7ceaa4dc39dd252ce895",
-    "columns": 4,
+    "columns": 5,
     "font_sha256": "ae7b7855e115a5966d8b1b3f80f254ccc117ec86f9965e202ee2940453837280",
-    "format_version": "3.0",
+    "format_version": "3.1",
     "jpeg_quality": 91,
-    "layout_sha256": "d68b9b5a84d6f1c336a5edf4cfa8a1848aa2c77840d503d488e2fcf3fc3ece37",
-    "overview_scale": 1,
-    "panel_scale": 1,
-    "storyboard_scale": 1,
-    "template_sha256": "d86f9bcc4f4fc8af70f58df7c7b7ae1ca11acab1aa2a626d05c8baffa89643ac"
+    "layout_sha256": "8d7f59138e617569a2986a8f2bf35ef3609344efa088366ec77b171e25b10a3f",
+    "overview_scale": 1.0,
+    "panel_scale": 1.0,
+    "storyboard_scale": 1.0,
+    "template_sha256": "66a15912eb9782b1823ba9aa4dc00e190c2a67787c716979bc1614503266e1b5"
   },
-  "revision": 2,
+  "revision": 3,
   "selections": [
     {
       "area_ids": [
@@ -1298,7 +1304,7 @@
     "width": 720
   },
   "supersedes": {
-    "content_sha256": "536b2f7aa949b5ef3d33f09ba7098fbc4b13dd55342eac029f2d1812fecf613e",
-    "revision": 1
+    "content_sha256": "04c620f3f1c3e8c5f89b13755ea9ee180f5ce234b22b97eef1d0d3f00d0c0a11",
+    "revision": 2
   }
 }

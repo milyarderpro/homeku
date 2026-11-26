@@ -1,4 +1,4 @@
-# Kontrak pembaca AI HOMEKU 3.0
+# Kontrak pembaca AI HOMEKU 3.1
 
 AI mulai dari data/search-index.json, memilih ID/shot sesuai kebutuhan, lalu memakai read untuk identity, shot, area atau full. Tampilan manusia ada di references/<id>/analysis.md; sumber isi tetap references/<id>/audit.json.
 
@@ -6,7 +6,7 @@ data/projections/<id>.json adalah keluaran generator: reference sumber ringkas, 
 
 Facet profil berasal dari tipe rumah, gaya, ukuran, dan fitur yang dinyatakan di audit. Fakta berasal dari kategori shot.design dan facet_roles yang dinyatakan. Label asli, domain khusus, state/negasi, confidence yang dinilai serta note dipertahankan. Field tidak diisi berarti tidak dinilai; tidak otomatis unknown, observed, high atau not-present. Prinsip kurasi bukan fakta video.
 
-Filter mencakup tipe rumah (`--house-type`), gaya utama/pengaruh/interior, skala, area/fungsi, konfigurasi, rute satu shot kontinu, gerak/qualifier dan tempo. Filter konfigurasi bersama filter area memeriksa scope fakta pada area yang cocok. Taksonomi hanya alias terkurasi eksplisit; label baru tetap tersedia tanpa inference prosa. Indeks tidak menyalin seluruh prosa, checks kamera, log, cache atau statistik flow.
+Filter area dan rute menormalkan kapitalisasi, spasi, dan tanda hubung antar kata serta memakai alias eksplisit dari taksonomi. Label dan fungsi asli tetap tersedia pada referensi. Filter mencakup tipe rumah (`--house-type`), gaya utama/pengaruh/interior, skala, area/fungsi, konfigurasi, rute satu shot kontinu, gerak/qualifier dan tempo. Filter konfigurasi bersama filter area memeriksa scope fakta pada area yang cocok. Taksonomi hanya alias terkurasi eksplisit; label baru tetap tersedia tanpa inference prosa. Indeks tidak menyalin seluruh prosa, checks kamera, log, cache atau statistik flow.
 
 `read --part identity` menyediakan susunan ruang, pencahayaan, atmosfer, dan palet HEX dari sumber beserta pointer dan frame bukti. Indeks membawa facet tipe untuk menyaring referensi. Pencarian biasa menyertakan perkiraan `uncertain`, dan `--observed-only` menyaringnya.
 

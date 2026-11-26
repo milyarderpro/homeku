@@ -25,11 +25,10 @@ SCHEMAS = [f"schemas/{name}.schema.json" for name in
 ASSETS = [
     "tools/assets/fonts/DejaVuSans.ttf", "tools/assets/fonts/DejaVuSans-Bold.ttf",
     "tools/assets/fonts/LICENSE.txt", "tools/assets/templates/analysis.md",
-    "tools/assets/templates/analysis-profile.md", "tools/assets/layouts/media.json",
-    "tools/assets/layouts/media-aligned.json",
+    "tools/assets/layouts/media.json",
 ]
 GUIDES = [
-    "audit/README.md", "audit/visual-audit.md", "audit/authoring.md", "audit/json-guide.md",
+    "audit/README.md", "audit/visual-audit.md", "audit/design-audit.md", "audit/authoring.md", "audit/json-guide.md",
     "audit/vocabulary.md", "audit/camera-cases.md", "audit/contracts/package.md",
     "audit/contracts/report.md", "audit/contracts/reader.md",
     "audit/prompts/01-audit.md", "audit/prompts/02-correct.md", "audit/prompts/03-export.md",
@@ -108,7 +107,19 @@ if __name__=="__main__":
 
 
 def build_bytes():
-    parts = ['# Kit audit HOMEKU 3.0\n\nSiapkan satu MP4 sumber terpisah dan ZIP kit ini. Ekstrak empat file input ke workspace chat.\n\n1. Jalankan `python homeku_runtime.py --output .` untuk memulihkan resource lokal berhash. Audit memakai Python 3.11+, Pillow, jsonschema, dan FFmpeg/ffprobe.\n2. Baca `audit/visual-audit.md` dan `audit/authoring.md`. Pastikan cut dan periksa baseline 6 FPS dengan batas native. Sumber ≤6 FPS dan shot <1 detik memakai seluruh native.\n3. Isi Profil Desain baku dan audit dari gambar yang diperiksa. Catat tipe rumah, atmosfer, dan palet HEX. Nilai besaran tiap komponen gerak dan cantumkan estimasi yang wajar dari frame. Gunakan `mark-viewed` sesudah pemeriksaan, lalu `complete`, `check-input` dan `draft`.\n4. Ikuti checklist isi di `audit/authoring.md`. Setelah kandidat lulus validasi, jalankan `review` dan langsung `export --receipt`. Tampilkan laporan enam bagian, Overview, Storyboard, semua kolase, dan tautan unduhan ZIP tanpa MP4 dalam balasan yang sama.\n5. Jika ada koreksi, ulangi draft, review, dan ekspor. Berikan tautan ZIP yang terbaru. Simpan MP4 untuk ingest lokal.\n\nGunakan `audit/prompts/01-audit.md` untuk memulai, `02-correct.md` untuk koreksi, dan `03-export.md` sebagai panduan ekspor. Contoh normal dan multi area adalah fixture sintetis.\n']
+    parts = ["""# Kit audit HOMEKU 3.1
+
+Siapkan satu MP4 sumber terpisah dan ekstrak keempat file kit ke workspace chat. Jalankan `python homeku_runtime.py --output .` untuk memulihkan resource lokal. Audit memakai Python 3.11+, Pillow, jsonschema, dan FFmpeg/ffprobe.
+
+Baca `audit/authoring.md` dan jalankan empat fase dalam satu chat memakai `audit/prompts/01-audit.md`.
+
+1. Petakan cut dan siapkan frame baseline dengan `prepare`.
+2. Audit kamera dengan `audit/visual-audit.md` dan `audit/camera-cases.md`, lalu jalankan `check-camera`.
+3. Lengkapi desain, framing, panel dan Overview dengan `audit/design-audit.md`.
+4. Jalankan `complete → check-input → draft → review → export`. Setelah lulus, berikan laporan, media dan ZIP final tanpa MP4.
+
+Gunakan `audit/prompts/02-correct.md` atau `03-export.md` untuk melanjutkan sesi yang sama. Contoh JSON berisi data sintetis.
+"""]
     parts.append("\n## Inventaris resource lokal\n\n| File | SHA-256 |\n| --- | --- |\n" +
                  "".join(f"| {name} | {sha256(ROOT / name)} |\n" for name in BUNDLED))
     files = {"README.md": "\n".join(parts).encode(), "homeku_runtime.py": bootstrap_source(),

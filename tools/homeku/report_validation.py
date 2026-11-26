@@ -2,7 +2,7 @@
 import re
 from .common import require
 from .derivations import camera_summary, selections
-from .render_assets import PROFILE_TEMPLATE, report_template
+from .render_assets import TEMPLATE
 
 HEADINGS = ["## 1. Profil desain", "## 2. Ukuran & proporsi", "## 3. Shot Timeline",
             "## 4. Overview", "## 5. Storyboard", "## 6. Shot Details"]
@@ -36,11 +36,9 @@ def table(columns, rows):
     return "\n".join([row(columns), row(["---"] * len(columns)), *(row(values) for values in rows)])
 
 
-def validate_report(text, audit, frames, *, template_path=None):
-    template_path = template_path or report_template(audit)
+def validate_report(text, audit, frames):
     profile = text.split(HEADINGS[1], 1)[0]
-    profile_headings = ["### Palet warna"] if template_path == PROFILE_TEMPLATE else []
-    require(re.findall(r"^### .+$", profile, re.M) == profile_headings,
+    require(re.findall(r"^### .+$", profile, re.M) == ["### Palet warna"],
             "analysis.md: palette heading belongs in the standard design profile")
     require(re.findall(r"^## .+$", text, re.M) == HEADINGS,
             "analysis.md: exactly six ordered template sections required")
@@ -71,7 +69,7 @@ def validate_report(text, audit, frames, *, template_path=None):
     details = text.split(HEADINGS[5], 1)[1]
     chunks = re.split(r'^<a id="shot-[0-9]+"></a>\n\n', details, flags=re.M)[1:]
     require(len(chunks) == len(audit["shots"]), "analysis.md: shot anchors mismatch")
-    template = template_path.read_text(encoding="utf-8")
+    template = TEMPLATE.read_text(encoding="utf-8")
     groups = re.findall(r"^#### .+$", template, re.M)
     require(len(groups) == 3, "Invalid report section contract")
     for s, chunk in zip(audit["shots"], chunks):
@@ -90,6 +88,6 @@ def validate_report(text, audit, frames, *, template_path=None):
                 (len(s["area_ids"]) > 1 or len(s["camera"]["phases"]) > 1),
                 f"{s['shot']}: conditional movement timeline mismatch")
     require(len(re.findall(r"^#{1,6} ", text, re.M)) ==
-            7 + len(profile_headings) + sum(4 + (len(s["design"]) if len(s["area_ids"]) > 1 else 0)
+            8 + sum(4 + (len(s["design"]) if len(s["area_ids"]) > 1 else 0)
                     for s in audit["shots"]), "analysis.md: unexpected heading")
     return text

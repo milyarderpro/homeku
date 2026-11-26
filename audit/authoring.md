@@ -1,80 +1,67 @@
-# Menyiapkan audit HOMEKU 3.0
+# Alur audit HOMEKU 3.1
 
-Baca [panduan visual](visual-audit.md). Tulis pengamatan di satu `audit.json`. Helper menyiapkan frame dan metadata dari video sumber.
+Jalankan empat fase berurutan dalam satu chat. Satu `audit.json` menyimpan isi audit dari awal sampai ekspor. Mulai dari [prompt audit](prompts/01-audit.md).
 
-## Siapkan workspace
+## Fase 1 — Pemetaan shot
 
-Jalankan `inspect` dan tentukan cut nyata pada video. Simpan indeks native **frame pertama setelah setiap cut** dalam `work/cuts.json`. Gunakan `[]` untuk satu take kontinu, termasuk jika kamera melewati beberapa area.
+Tonton perjalanan video, jalankan `inspect`, lalu konfirmasi cut sebenarnya. Simpan indeks native **frame pertama setelah setiap cut** dalam `work/cuts.json`. Gunakan `[]` untuk satu take kontinu, termasuk ketika kamera melewati beberapa area.
 
 ~~~sh
 python tools/audit.py inspect /path/rumah.mp4
 python tools/audit.py prepare /path/rumah.mp4 --cuts-file work/cuts.json --output work/audit
 ~~~
 
-Workspace berisi `session.json`, kerangka `audit.json`, `audit-info.json` dan sheet. Baseline mencakup 6 FPS dan batas native. Sumber ≤6 FPS atau shot <1 detik memakai seluruh frame native. Helper menyiapkan pula frame terdekat dari midpoint. Gunakan `--resume` pada sumber dan cut yang sama untuk mempertahankan isi serta deklarasi sebelumnya.
+Workspace berisi `session.json`, kerangka `audit.json`, `audit-info.json` dan lembar frame. Prepare menyiapkan baseline 6 FPS, batas native dan midpoint. Sumber ≤6 FPS atau shot <1 detik memakai seluruh native. Gunakan `--resume` dengan MP4 dan cut yang sama.
 
-## Tulis pengamatan
+## Fase 2 — Audit kamera
 
-Nilai tipe rumah, susunan ruang, pencahayaan, atmosfer, dan lingkungan. Isi palet HEX dari frame yang diperiksa dan cantumkan bukti per warna. Gunakan [contoh tipe rumah](vocabulary.md#tipe-rumah) dan [panduan pengisian profil](json-guide.md#profil-desain).
+Baca [metode visual](visual-audit.md) dan [contoh kamera](camera-cases.md). Periksa frame secara kronologis sebelum mengisi kamera per shot. Catat batas setiap fase, `notation`, pengamatan depth, translation, rotation, bukti, tempo, narasi Indonesia, dan Production Start jika awal sumber tertutup transisi. Tentukan label atau fungsi area yang diperlukan untuk fokus tanpa menunda analisis kamera untuk mengisi profil desain.
 
-Isi nama gaya dalam bahasa Inggris dan narasi dalam bahasa Indonesia. Tulis rentang luas lantai, identitas area, detail desain beserta fakta dan bukti, framing awal, Overview, serta kamera dan tempo. [Panduan JSON](json-guide.md) menjelaskan field. Contoh normal dan multi area merupakan fixture sintetis.
-
-Ikuti [urutan keputusan kamera](visual-audit.md#urutan-keputusan-per-fase). Tandai kandidat perubahan fase, lalu bandingkan jangkar dekat, jangkar jauh, dan sudut bidang sebelum memilih komponen. Isi pengamatan depth, translation, dan rotation. Tulis estimasi besaran yang wajar pada komponen yang terlihat.
-
-Jika frame awal tertutup transisi, periksa sekitar batas dan pilih frame jernih pertama yang layak untuk produksi. Gunakan `production_start` sesuai [panduan JSON](json-guide.md#seleksi-dan-metadata). Camera Start tetap menjelaskan awal sumber. Jika tidak ada pilihan jernih, catat keterbatasannya di `notes`.
-
-Periksa sheet lalu tandai frame yang sudah dilihat. Gunakan `--all-passes --all` setelah semua pass selesai diperiksa atau `--pass-id <ID> --frames <INDEKS...>` untuk bagian yang sudah dilihat.
+Saat pertanyaan visual belum terjawab, ambil frame tambahan pada interval terkait. Sesuaikan waktu contoh dengan PTS shot dan jelaskan apa yang diperiksa.
 
 ~~~sh
-python tools/audit.py mark-viewed work/audit/session.json --all-passes --all
 python tools/audit.py sample --session work/audit/session.json --shot-id shot-02 --fps 10 --start 2.4 --end 2.9 --reason "Perubahan oklusi kusen untuk membedakan Orbit dan Pan"
 ~~~
 
-Sesuaikan waktu pendalaman dengan PTS nyata dalam shot. Gunakan `--native` bila diperlukan, atau `sample --session work/audit/session.json --frames 24 31 --reason "Pilihan Overview tambahan"` untuk indeks tertentu. Lihat frame baru sebelum mendeklarasikan viewed.
+Gunakan `--native` jika interval tersebut perlu diperiksa lebih rapat. Untuk bukti tertentu, gunakan `sample --session work/audit/session.json --frames 24 31 --reason "Periksa frame Production Start"`. Lihat gambar lalu deklarasikan viewed. Gunakan `--all-passes --all` setelah seluruh pass dilihat atau `--pass-id <ID> --frames <INDEKS...>` sesuai pemeriksaan.
 
-Koreksi satu shot dapat dikirim lewat file berisi objek JSON, misalnya `{"camera":{"description":"Kamera mundur menuju lorong."}}`. Helper menggabungkan objek dan mengganti array utuh bila disertakan. Update area global langsung di sumber. Shot ID, batas waktu dan jenis transisi terkunci pada helper.
+~~~sh
+python tools/audit.py mark-viewed work/audit/session.json --all-passes --all
+python tools/audit.py check-camera work/audit/session.json
+~~~
+
+Sebelum menjalankan `check-camera`, cocokkan notasi dengan observasi dan frame pada masing-masing fase. Periksa arah badan, sapuan, Orbit dan Pan bersamaan, serta komponen, qualifier atau perkiraan besaran yang terlewat. Setelah pemeriksaan lulus, ringkas gerakan, tempo, dan Production Start per shot di chat. Lanjutkan ke fase 3 dalam chat yang sama.
+
+## Fase 3 — Audit desain dan kurasi media
+
+Baca [panduan desain](design-audit.md) dan [panduan JSON](json-guide.md). Isi identitas desain, proporsi, kronologi area, detail dan fakta, framing, pencahayaan, panel, serta Overview. Pilih bukti dari frame yang sudah dilihat dan tandai viewed setelah memeriksa pilihan tambahan.
+
+Jika ada koreksi kamera yang disengaja, periksa kembali shot tersebut dengan bukti terkait. File patch `update-shot` berisi objek JSON yang digabungkan ke shot. Array yang diberikan mengganti array utuh dan ID, batas, serta jenis transisi terikat pada sesi.
 
 ~~~sh
 python tools/audit.py update-shot work/audit/session.json --shot-id shot-02 --patch work/koreksi.json
+python tools/audit.py check-camera work/audit/session.json --shot-id shot-02
 ~~~
 
-## Periksa input
+Jalankan ulang pemeriksaan per shot untuk setiap perubahan kamera atau Production Start. Jika MP4 atau batas cut berubah, siapkan workspace baru dan ulangi pemetaan serta audit kamera.
 
-Isi metode, batas pemeriksaan dan identitas model yang diketahui di `audit-info.json`. Build yang tidak diketahui diisi `null`. `complete` menata notasi, menetapkan pilihan panel native yang ditentukan kontrak, dan menyalin deklarasi viewed dari sesi.
+## Fase 4 — Validasi dan ekspor
+
+Isi metode, batas pemeriksaan, dan identitas model yang diketahui di `audit-info.json`. Build model yang tidak diketahui diisi `null`. Complete mempertahankan pilihan panel shot biasa, menyamakan panel Start dengan Production Start bila dipilih, dan menyalin deklarasi viewed. Jalankan preflight sebelum render.
 
 ~~~sh
 python tools/audit.py complete work/audit/audit.json --session work/audit/session.json
-python tools/audit.py check-input /path/rumah.mp4 work/audit/audit.json --audit-info work/audit/audit-info.json
+python tools/audit.py check-input /path/rumah.mp4 work/audit/audit.json --audit-info work/audit/audit-info.json --session work/audit/session.json
+python tools/audit.py draft /path/rumah.mp4 work/audit/audit.json --audit-info work/audit/audit-info.json --session work/audit/session.json --output work/candidate
 ~~~
 
-Perbaiki field yang ditunjuk `check-input`. Untuk bukti yang belum dilihat, ambil frame yang tepat dan periksa sebelum memperbarui deklarasi. Untuk tahap peninjauan dan penyerahan, ikuti [kontrak paket](contracts/package.md).
+Untuk revisi, isi nomor baru pada audit dan berikan `--supersedes work/supersedes.json` pada `check-input` dan `draft`. File itu berisi `revision` dan `content_sha256` dari entri aktif. Jika input gagal, perbaiki path yang dilaporkan dan ulangi pemeriksaan terkait.
 
-Untuk pertanyaan visual yang masih ambigu, gunakan [bantuan statistik gerak 2D](visual-audit.md#bantuan-statistik-gerak-2d) bila lingkungan mendukungnya.
-
-## Periksa isi sebelum memperlihatkan kandidat
-
-- Cocokkan cut, scope area, dan tempo dengan kronologi shot.
-- Lakukan satu [pemeriksaan akhir kamera](visual-audit.md#kelengkapan-notasi-camera-movement). Cocokkan `notation`, `observations`, dan frame pada tiap fase. Cari fase yang terlewat, Orbit yang mungkin terbaca sebagai Pan, serta arah badan atau sapuan yang terbalik. Pastikan qualifier dan estimasi yang didukung frame masuk pada komponen yang tepat. Dalami hanya interval yang masih menyisakan pertanyaan.
-- Periksa tipe rumah dan sumber buktinya. Cocokkan palet HEX dengan frame yang diperiksa serta pastikan pencahayaan, atmosfer, dan lingkungan masing-masing menyampaikan hal yang berbeda.
-- Baca narasi desain bersama fakta yang terkait. Cocokkan gaya utama dengan ciri arsitektur dominan. Periksa bentuk bukaan, material tampak, lampu, dan fungsi furnitur. Pisahkan konfigurasi yang terlihat dari tipe layout yang masih belum pasti.
-- Periksa panel awal terhadap Camera Start. Jika awal tertutup transisi dan ada `Production Start`, cocokkan framing-nya dengan frame jernih yang dipilih. Pastikan Overview menjelaskan cakupan wide dan uraian shot memuat detail desain.
-- Cocokkan nama area Inggris Title Case di laporan dan media. Gunakan `&` untuk fungsi dalam satu area. Periksa bahwa judul shot memakai ` / ` antararea dan caption momen multi-area sesuai gambar. Baca laporan enam bagian dan periksa gambar pada semua kolase. Untuk penyesuaian ukuran, ubah parameter render sebelum peninjauan berikutnya.
-
-Draft memakai kualitas JPEG 91 dan skala 1 secara default. Gunakan `--scale`, `--overview-scale`, `--storyboard-scale` atau `--columns` jika tata letak melebihi batas. Satu JPEG dapat memuat sampai 60 juta piksel dengan sisi sampai 65.000 px. Batas file 95 MiB dan batas ZIP terurai 256 MiB.
-
-## Tinjau kandidat dan serahkan ZIP
+Cocokkan laporan dan media kandidat dengan isi audit. Periksa laporan enam bagian, urutan kolase, caption, Overview, dan Storyboard. Default JPEG memakai kualitas 91 serta skala 1. Bila dimensi perlu diperkecil, sesuaikan `--scale`, `--overview-scale`, `--storyboard-scale` atau `--columns` sebelum review. Batas tiap JPEG 60 juta piksel, sisi 65.000 px, 95 MiB. Batas ZIP terurai 256 MiB.
 
 ~~~sh
-python tools/audit.py draft /path/rumah.mp4 work/audit/audit.json --audit-info work/audit/audit-info.json --output work/candidate
 python tools/audit.py review work/candidate/rumah --output work/review.md
-~~~
-
-Setelah `review` berhasil, langsung jalankan ekspor dengan receipt kandidat tersebut. Simpan receipt di luar folder kandidat.
-
-~~~sh
 python tools/audit.py export work/candidate/rumah --receipt work/review.md.json --output work/final
 ~~~
 
-Tampilkan laporan ringkasan dari table setiap shot nya, gambar Overview dan Storyboard, serta tautan unduhan ZIP tanpa MP4 dalam balasan yang sama. Jika ada koreksi, perbarui audit kerja, ulangi draft dan review, lalu ekspor dengan receipt terbaru. Berikan tautan ke ZIP hasil koreksi.
-
-Untuk revisi referensi yang sudah aktif, gunakan nomor berikutnya pada audit dan berikan `--supersedes` dengan revision dan content_sha256 dari entri aktif.
+Langsung ekspor setelah review berhasil. Tampilkan ringkasan shot, laporan, media, dan tautan ZIP dalam satu balasan agar pengguna bisa memeriksa dan memilihnya. Berikan ZIP terbaru sesudah koreksi. [Kontrak paket](contracts/package.md)

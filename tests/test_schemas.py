@@ -30,7 +30,9 @@ class SchemaTests(unittest.TestCase):
                        [("scale", "small"), ("levels", "single story"),
                         ("footprint", "compact"), ("proportions", "horizontal")]},
                      "floor_area_m2": {"min": 60, "max": 90}},
-            "features": [dict(claim("curvilinear"), aspect="massing")]
+            "features": [dict(claim("curvilinear"), aspect="massing")],
+            "house_type": claim("Cottage"),
+            "palette": []
         }
 
     def test_all_schemas_are_valid_and_local_refs_resolve(self):
@@ -54,9 +56,21 @@ class SchemaTests(unittest.TestCase):
     def test_only_one_format_is_accepted(self):
         for name, field in [("audit", "schema_version"), ("manifest", "contract_version"),
                             ("reference-reader", "schema_version"), ("search-index", "schema_version")]:
-            for version in ("1.0", "2.5", "future"):
+            for version in ("1.0", "2.5", "3.0", "future"):
                 errors = list(Draft202012Validator(schema(name)).iter_errors({field: version}))
                 self.assertTrue(any(e.validator == "const" and list(e.path) == [field] for e in errors))
+
+    def test_both_schema_profiles_require_house_type_and_palette(self):
+        for name in ("audit", "reference-reader"):
+            spec = schema(name)
+            validator = Draft202012Validator({"$defs": spec["$defs"], **spec["$defs"]["design"]})
+            design = self.design()
+            validator.validate(design)
+            for missing in (("house_type",), ("palette",), ("house_type", "palette")):
+                with self.subTest(schema=name, missing=missing):
+                    errors = list(validator.iter_errors({k: v for k, v in design.items() if k not in missing}))
+                    self.assertEqual(len(errors), len(missing))
+                    self.assertTrue(all(error.validator == "required" for error in errors))
 
     def test_design_has_discrete_styles_and_no_fixed_profile_quota(self):
         value = self.design()

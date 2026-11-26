@@ -1,11 +1,11 @@
 {
-  "content_sha256": "04c620f3f1c3e8c5f89b13755ea9ee180f5ce234b22b97eef1d0d3f00d0c0a11",
+  "content_sha256": "2abf41457292f648ffccc5e948a2ff2b24ed1467a3fb383d36e447b7cfdd3db0",
   "derived": {
     "camera_pattern": "IN – OUT – IN – OUT – IN",
     "shots": [
       {
         "camera_pattern": "IN",
-        "camera_summary": "Orbit Right (~10°–15°) → Accelerating Dolly-In (~1.8×) toward the black entrance door.",
+        "camera_summary": "Orbit Right (~10°–15°) → Accelerating Straight Dolly-In (~1.8×) toward the black entrance door.",
         "components": [
           [
             {
@@ -27,9 +27,10 @@
               ],
               "movement": "Dolly-In",
               "qualifiers": [
-                "Accelerating"
+                "Accelerating",
+                "Straight"
               ],
-              "raw": "Accelerating Dolly-In (~1.8×) toward the black entrance door",
+              "raw": "Accelerating Straight Dolly-In (~1.8×) toward the black entrance door",
               "toward": "the black entrance door"
             }
           ]
@@ -45,17 +46,17 @@
       },
       {
         "camera_pattern": "OUT",
-        "camera_summary": "Dolly-Out (~1.6×) + Orbit Left + gentle Pan Right (~15°).",
+        "camera_summary": "Dolly-Out (~2×) + Orbit Left + Gentle Pan Right (~15°, Ease-Out).",
         "components": [
           [
             {
               "direction": "Out",
               "estimates": [
-                "~1.6×"
+                "~2×"
               ],
               "movement": "Dolly-Out",
               "qualifiers": [],
-              "raw": "Dolly-Out (~1.6×)",
+              "raw": "Dolly-Out (~2×)",
               "toward": null
             },
             {
@@ -73,9 +74,10 @@
               ],
               "movement": "Pan Right",
               "qualifiers": [
-                "gentle"
+                "Gentle",
+                "Ease-Out"
               ],
-              "raw": "gentle Pan Right (~15°)",
+              "raw": "Gentle Pan Right (~15°, Ease-Out)",
               "toward": null
             }
           ]
@@ -174,17 +176,19 @@
       },
       {
         "camera_pattern": "IN",
-        "camera_summary": "Dolly-In (~2×) + gentle Pan Right (~15°).",
+        "camera_summary": "Accelerating Dolly-In (~1.7×) + Gentle Pan Right (~15°).",
         "components": [
           [
             {
               "direction": "In",
               "estimates": [
-                "~2×"
+                "~1.7×"
               ],
               "movement": "Dolly-In",
-              "qualifiers": [],
-              "raw": "Dolly-In (~2×)",
+              "qualifiers": [
+                "Accelerating"
+              ],
+              "raw": "Accelerating Dolly-In (~1.7×)",
               "toward": null
             },
             {
@@ -194,9 +198,9 @@
               ],
               "movement": "Pan Right",
               "qualifiers": [
-                "gentle"
+                "Gentle"
               ],
-              "raw": "gentle Pan Right (~15°)",
+              "raw": "Gentle Pan Right (~15°)",
               "toward": null
             }
           ]
@@ -219,6 +223,7 @@
       "142": 4.733333333,
       "177": 5.9,
       "196": 6.533333333,
+      "207": 6.9,
       "222": 7.4,
       "248": 8.266666667,
       "249": 8.3,
@@ -235,8 +240,10 @@
       "449": 14.966666667,
       "450": 15.0,
       "475": 15.833333333,
+      "485": 16.166666667,
       "500": 16.666666667,
       "501": 16.7,
+      "520": 17.333333333,
       "525": 17.5,
       "551": 18.366666667,
       "60": 2.0,
@@ -258,7 +265,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s01-panel-01"
           },
           {
@@ -268,7 +275,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s01-panel-02"
           },
           {
@@ -278,12 +285,12 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s01-panel-03"
           }
         ],
         "path": "media/shot-01.jpg",
-        "sha256": "8fe1b14f9f800ca52df6ebeb3d23a37abb29efae2177015120faa6b14d4dbb76",
+        "sha256": "519f52383910e76d6992f43cec45e75c59c9309ff5275d0635bad15344bcb92a",
         "width": 2280
       },
       {
@@ -298,7 +305,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s02-panel-01"
           },
           {
@@ -308,7 +315,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s02-panel-02"
           },
           {
@@ -318,12 +325,12 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s02-panel-03"
           }
         ],
         "path": "media/shot-02.jpg",
-        "sha256": "5db773f6b852decab71baa267f21a1b6e9ab0b7c57a31e417647917bb1d1813d",
+        "sha256": "931b8f46373b7c02df4078aba8361d61b0e9e970f53889f49fa05784409658ea",
         "width": 2280
       },
       {
@@ -338,7 +345,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s03-panel-01"
           },
           {
@@ -348,7 +355,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s03-panel-02"
           },
           {
@@ -358,12 +365,12 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s03-panel-03"
           }
         ],
         "path": "media/shot-03.jpg",
-        "sha256": "a862526fdcf50d352634873d9c65ecdaafa521772d15f3ca6e758f04acb88d6b",
+        "sha256": "a4a1b27118d5d4f5d4fbbc1afb0ea7e52a079f9a367a62efd4f0b4afa1413ade",
         "width": 2280
       },
       {
@@ -378,7 +385,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s04-panel-01"
           },
           {
@@ -388,7 +395,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s04-panel-02"
           },
           {
@@ -398,12 +405,12 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s04-panel-03"
           }
         ],
         "path": "media/shot-04.jpg",
-        "sha256": "53eda497c4431327721382b4ccb7fb317f9cfc8324c2a9eee919c9cecd4b2ccf",
+        "sha256": "44c216b5a21f1422d5a2721c640fdc423e02f620434a01064fd9412fc296cc20",
         "width": 2280
       },
       {
@@ -418,7 +425,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s05-panel-01"
           },
           {
@@ -428,7 +435,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s05-panel-02"
           },
           {
@@ -438,12 +445,12 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s05-panel-03"
           }
         ],
         "path": "media/shot-05.jpg",
-        "sha256": "b7696a4f0cddfcf8a375d48832ef64abe16a16188a763819714e2051a0e58674",
+        "sha256": "a38c85fcf64cad6e01ba7ec2819bb87776ea005ed565482857e943647fa01bb9",
         "width": 2280
       },
       {
@@ -458,7 +465,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s01-overview-01"
           },
           {
@@ -468,7 +475,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s02-overview-01"
           },
           {
@@ -478,7 +485,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s03-overview-01"
           },
           {
@@ -488,7 +495,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s04-overview-01"
           },
           {
@@ -498,7 +505,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s05-overview-01"
           }
         ],
@@ -569,7 +576,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s01-panel-01"
           },
           {
@@ -579,7 +586,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s01-panel-02"
           },
           {
@@ -589,7 +596,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s01-panel-03"
           },
           {
@@ -599,7 +606,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s02-panel-01"
           },
           {
@@ -609,7 +616,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s02-panel-02"
           },
           {
@@ -619,7 +626,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s02-panel-03"
           },
           {
@@ -629,7 +636,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s03-panel-01"
           },
           {
@@ -639,7 +646,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s03-panel-02"
           },
           {
@@ -649,7 +656,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s03-panel-03"
           },
           {
@@ -659,7 +666,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s04-panel-01"
           },
           {
@@ -669,7 +676,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s04-panel-02"
           },
           {
@@ -679,7 +686,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s04-panel-03"
           },
           {
@@ -689,7 +696,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s05-panel-01"
           },
           {
@@ -699,7 +706,7 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s05-panel-02"
           },
           {
@@ -709,12 +716,12 @@
               720,
               1280
             ],
-            "scale": 1,
+            "scale": 1.0,
             "selection_id": "s05-panel-03"
           }
         ],
         "path": "media/storyboard.jpg",
-        "sha256": "2c1202fa8a3684b59907d5876fec623d568b645b51ed1c30dde8398f762dd136",
+        "sha256": "5f44bf318d93df0349e43603938ffe14273acbc69f9ed1d209da0e0dcac28a2d",
         "width": 2280
       }
     ],
@@ -1044,6 +1051,10 @@
       "document": "manifest",
       "source_pointer": "/frames/196"
     },
+    "/evidence_inventory/frames/207": {
+      "document": "manifest",
+      "source_pointer": "/frames/207"
+    },
     "/evidence_inventory/frames/222": {
       "document": "manifest",
       "source_pointer": "/frames/222"
@@ -1108,6 +1119,10 @@
       "document": "manifest",
       "source_pointer": "/frames/475"
     },
+    "/evidence_inventory/frames/485": {
+      "document": "manifest",
+      "source_pointer": "/frames/485"
+    },
     "/evidence_inventory/frames/500": {
       "document": "manifest",
       "source_pointer": "/frames/500"
@@ -1115,6 +1130,10 @@
     "/evidence_inventory/frames/501": {
       "document": "manifest",
       "source_pointer": "/frames/501"
+    },
+    "/evidence_inventory/frames/520": {
+      "document": "manifest",
+      "source_pointer": "/frames/520"
     },
     "/evidence_inventory/frames/525": {
       "document": "manifest",
@@ -2520,8 +2539,8 @@
     },
     "id": "edh001",
     "notes": "Lengkung, material terang dan pencahayaan hangat berulang sepanjang video. Urutan cut tidak memperlihatkan koneksi fisik antararea.",
-    "revision": 2,
-    "schema_version": "3.0",
+    "revision": 3,
+    "schema_version": "3.1",
     "shots": [
       {
         "area_ids": [
@@ -2559,7 +2578,7 @@
                 141
               ],
               "focus": "Pintu hitam dan kanopi masuk",
-              "notation": "Accelerating Dolly-In (~1.8×) toward the black entrance door",
+              "notation": "Accelerating Straight Dolly-In (~1.8×) toward the black entrance door",
               "observations": {
                 "depth": "Ambang dan tinggi bukaan pintu membesar. Paving serta anak tangga lepas dari bawah bingkai lebih cepat pada bagian akhir.",
                 "rotation": "Pintu tetap di bagian kanan-tengah. Pergeseran arah pandang kecil dan tidak membentuk sapuan terpisah.",
@@ -2805,15 +2824,16 @@
                 142,
                 177,
                 196,
+                207,
                 222,
                 248
               ],
               "focus": "Meja kopi, sofa L dan jendela melengkung",
-              "notation": "Dolly-Out (~1.6×) + Orbit Left + gentle Pan Right (~15°)",
-              "note": "Besaran dilihat dari susunan meja dan aksesori dekat. Dinding media yang lebih jauh menunjukkan perubahan skala lebih kecil.",
+              "notation": "Dolly-Out (~2×) + Orbit Left + Gentle Pan Right (~15°, Ease-Out)",
+              "note": "Skala memakai tinggi vas kuningan sebagai jangkar dekat.",
               "observations": {
-                "depth": "Meja dan aksesori menyusut secara visual. Lebih banyak rug, sofa dan perimeter kaca masuk bingkai saat kamera menjauh.",
-                "rotation": "Bidang pandang bergeser dari TV menuju kaca di kanan. TV bergeser ke kiri layar sementara cakupan modul sofa di kanan bertambah.",
+                "depth": "Vas kuningan di atas meja kopi tampak sekitar separuh tinggi awal dari F142 ke F248, sementara TV yang lebih jauh menyusut lebih sedikit. Karpet dan keseluruhan meja terbuka saat kamera mundur.",
+                "rotation": "Dinding TV bergeser ke kiri dan deret kaca terbuka di kanan. Sapuan berkurang pada bingkai akhir meski sofa masih membuka sedikit di sisi kanan.",
                 "translation": "Bantal dan sudut meja berbeda pergeseran terhadap TV dan kusen jauh. Sudut tampak meja berubah dan lapisan sofa terbuka, mendukung lintasan melengkung ke kiri."
               },
               "start_s": 4.733333333
@@ -3538,14 +3558,16 @@
               "evidence": [
                 450,
                 475,
+                485,
                 501,
+                520,
                 525,
                 551
               ],
               "focus": "Jendela bulat dan shower, dengan laundry sebagai sisi bingkai",
-              "notation": "Dolly-In (~2×) + gentle Pan Right (~15°)",
+              "notation": "Accelerating Dolly-In (~1.7×) + Gentle Pan Right (~15°)",
               "observations": {
-                "depth": "Jendela bulat kira-kira dua kali ukuran awal pada akhir shot. Wastafel dan toilet terlewati, sementara pegangan kaca dan perangkat shower membesar.",
+                "depth": "Tinggi trim luar jendela bundar membesar sekitar 1,7× dari F450 ke F551. Pembesaran pada interval akhir makin besar dan wastafel serta toilet keluar dari bingkai.",
                 "rotation": "Pandangan menyapu ke kanan. Jendela dan toilet kiri lepas, dan shower serta tepi laundry menjadi cakupan terakhir.",
                 "translation": "Arah maju terbaca dari countertop yang hilang lebih cepat daripada ubin belakang. Perubahan lateral tambahan tidak cukup jelas untuk dipisahkan."
               },
@@ -3789,7 +3811,7 @@
       }
     ]
   },
-  "schema_version": "3.0",
+  "schema_version": "3.1",
   "source": {
     "duration_s": 18.4,
     "fps": {

@@ -56,6 +56,7 @@ class AuditQualityTests(unittest.TestCase):
         shot = self.audit["shots"][0]
         shot["composition"]["production_start"] = {
             "frame_index": 4, "composition_summary": "Framing jernih setelah transisi."}
+        shot["panels"][0]["frame_index"] = 4
         reviews = [self.review(6), self.review(6, .6, .7, native=True)]
         logs = {"method": "Fixture", "limitations": "Fixture only",
                 "ai": {"provider": "fixture", "model": "fixture", "model_build": None},
@@ -64,7 +65,7 @@ class AuditQualityTests(unittest.TestCase):
         frames = frame_map(self.audit, self.times)
         manifest = {"frames": frames, "selections": list(selections(self.audit, frames)), "audit": logs}
         self.assertEqual(frames["4"], .4)
-        self.assertNotIn(4, {item["frame_index"] for item in manifest["selections"]})
+        self.assertIn(4, {item["frame_index"] for item in manifest["selections"]})
         path = "/shots/0/composition/production_start/frame_index"
         with self.assertRaisesRegex(LibraryError, "/frame_reviews: frame not actually declared viewed for " + path):
             validate_audit_logs(logs, self.audit, None, self.info, times=self.times)
@@ -75,6 +76,26 @@ class AuditQualityTests(unittest.TestCase):
         validate_frame_map(manifest, self.audit)
         frames["4"] = shot["end_s"]
         with self.assertRaisesRegex(LibraryError, path + ": frame PTS"):
+            validate_frame_map(manifest, self.audit)
+
+    def test_selected_panel_requires_viewed_in_native_and_offline_validation(self):
+        self.audit["shots"][0]["panels"][1]["frame_index"] = 4
+        reviews = [self.review(6), self.review(6, .6, .7, native=True)]
+        logs = {"method": "Fixture", "limitations": "Fixture only",
+                "ai": {"provider": "fixture", "model": "fixture", "model_build": None},
+                "reviewed_ranges": [{"start_s": 0, "end_s": 1.2, "mode": "sampling"}],
+                "frame_reviews": reviews}
+        frames = frame_map(self.audit, self.times)
+        manifest = {"frames": frames, "selections": list(selections(self.audit, frames)), "audit": logs}
+        for verify in (lambda: validate_audit_logs(logs, self.audit, None, self.info, times=self.times),
+                       lambda: validate_frame_map(manifest, self.audit)):
+            with self.assertRaisesRegex(LibraryError, "panel/Overview not actually declared viewed"):
+                verify()
+        reviews.append(self.review(6, .4, .5, native=True))
+        validate_audit_logs(logs, self.audit, None, self.info, times=self.times)
+        validate_frame_map(manifest, self.audit)
+        frames["4"] = self.audit["shots"][0]["end_s"]
+        with self.assertRaisesRegex(LibraryError, "/panels/1/frame_index: selection outside shot"):
             validate_frame_map(manifest, self.audit)
 
     def test_adjacent_baseline_passes_cover_shot_and_gaps_do_not(self):

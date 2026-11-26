@@ -1,6 +1,6 @@
-# Pengisian audit.json HOMEKU 3.0
+# Pengisian audit.json HOMEKU 3.1
 
-Baca visual-audit.md sebelum menyimpulkan gerak. Satu audit.json ringkas adalah sumber final untuk laporan dan AI. Template belum valid sebelum placeholder/area/pilihan bukti/narasi diisi auditor. Prepare dan complete hanya membantu pekerjaan mekanis.
+Gunakan [panduan kamera](visual-audit.md) pada fase 2 dan [panduan desain](design-audit.md) pada fase 3. Satu audit.json ringkas adalah sumber final untuk laporan dan AI. Template belum valid sebelum placeholder/area/pilihan bukti/narasi diisi auditor. Prepare dan complete hanya membantu pekerjaan mekanis.
 
 ## Kelompok isi
 
@@ -25,7 +25,7 @@ Baca visual-audit.md sebelum menyimpulkan gerak. Satu audit.json ringkas adalah 
 
 Klaim minimal: value, state, evidence. State eksplisit observed, uncertain, not-visible, not-present, unknown. Evidence berupa daftar indeks frame native global sumber, misalnya [142,195,248]. Confidence/note opsional, tidak ada default observed/high. Unknown dapat tanpa bukti; klaim lain perlu bukti sesuai scope. Tidak terlihat bukan tidak ada.
 
-Fakta menambahkan subject dan attribute; facet_roles eksplisit untuk struktur seperti opening, roof, massing, layout, configuration, circulation. Domain khusus dan area_ids override dipertahankan bila diperlukan. Kategori/area kontainer mengikat scope; override tidak boleh keluar dari kontainer. Bukti satu kategori tidak otomatis membuktikan seluruh fakta. Gunakan state terpisah bila objek terlihat tetapi tipe atau hubungannya belum jelas. Lihat [contoh gaya dan layout](visual-audit.md#detail-desain-dan-framing).
+Fakta menambahkan subject dan attribute; facet_roles eksplisit untuk struktur seperti opening, roof, massing, layout, configuration, circulation. Domain khusus dan area_ids override dipertahankan bila diperlukan. Kategori/area kontainer mengikat scope; override tidak boleh keluar dari kontainer. Bukti satu kategori tidak otomatis membuktikan seluruh fakta. Gunakan state terpisah bila objek terlihat tetapi tipe atau hubungannya belum jelas. Lihat [contoh gaya dan layout](design-audit.md#profil-dan-detail-per-area).
 
 Tulis text manusia secara ringkas dengan ciri pembeda di awal. Gunakan `composition_summary` untuk posisi kamera, arah pandang dan cakupan wide. Uraikan detail arsitektur, furnitur dan lingkungan di `shots.design`. Facts menyimpan informasi yang diperlukan discovery. Tidak ada kuota jumlah fakta, fact_coverage paralel atau generator yang menebak fakta dari paragraf.
 
@@ -33,7 +33,7 @@ Tulis text manusia secara ringkas dengan ciri pembeda di awal. Gunakan `composit
 
 Pilih tipe rumah yang paling sesuai dari frame. Gunakan `uncertain` untuk perkiraan yang wajar, atau `value: null` dan `state: unknown` jika tipe tidak dapat diperkirakan. Tipe di luar daftar contoh tetap sah.
 
-Untuk palet, isi `hex` dengan enam digit seperti `#F0E8DA`. Gunakan `role` seperti Dominan, Pendamping atau Aksen. Targetkan 4–6 warna yang mewakili rumah dan cantumkan bukti frame per warna. Simpan daftar di `design.palette`. Paket awal 3.0 dapat memakai palet teks dalam `design.features`.
+Untuk palet, isi `hex` dengan enam digit seperti `#F0E8DA`. Gunakan `role` seperti Dominan, Pendamping atau Aksen. Targetkan 4–6 warna yang mewakili rumah dan cantumkan bukti frame per warna. Simpan daftar di `design.palette`.
 
 Gunakan `spatial-configuration` untuk susunan ruang utama, `material-hierarchy` untuk material, `lighting` untuk kondisi cahaya, `atmosphere` untuk kesan visual dalam satu kalimat, serta `environment` untuk lingkungan fisik.
 
@@ -51,7 +51,9 @@ Tempo hanya satu sumber: label+description jika seragam; segments bertimestamp+d
 
 Satu `areas[].label` menamai satu area fisik. Gunakan `Bathroom & Laundry` untuk dua fungsi dalam satu ruang dan catat kedua fungsi di `areas[].functions`. Tulis `Open-Plan Living` dan `Sleeping Loft` sebagai dua label pada ID berbeda. Renderer menggabungkan kedua label dengan ` / ` pada judul shot. Gunakan padanan Inggris untuk nilai teknis yang dipakai filter dan bahasa Indonesia untuk narasi.
 
-Normal tiga panel `Start`, `Middle`, dan `End` pada awal, midpoint native terdekat dan akhir. Multi-area memakai jumlah panel yang sesuai dengan momen visual, dengan awal dan akhir wajib. Isi `panels[].label` pada momen antara yang bisa dinamai, misalnya `Living & Kitchen` atau `Doorway`. Overview dipilih untuk gambaran area lengkap, biasanya awal IN/akhir OUT; paragrafnya menjelaskan frame itu, Camera Start tetap awal sumber.
+Untuk shot biasa, pilih frame jernih pertama sebagai `Start` dan frame jernih terakhir sebagai `End`. Hitung midpoint dari batas shot sumber dengan `(start_s + end_s) / 2`. Untuk panel `Middle`, pilih frame native jernih dengan PTS paling dekat ke midpoint tersebut. Batasi pilihan frame `Middle` pada rentang panel `Start` sampai `End`. Hindari transition blur, motion blur berlebihan, dan artefak transisi. Isi `panels[].frame_index` dengan indeks native yang sudah dilihat. Jika Production Start dipilih, gunakan indeks yang sama sebagai panel Start. Batas native, durasi, fase, dan notasi kamera mengikuti sumber.
+
+Multi-area memakai jumlah panel yang sesuai dengan momen visual, dengan awal dan akhir wajib. Isi `panels[].label` pada momen antara yang bisa dinamai, misalnya `Living & Kitchen` atau `Doorway`. Overview dipilih untuk gambaran area lengkap, biasanya awal IN/akhir OUT; paragrafnya menjelaskan frame itu, Camera Start tetap awal sumber.
 
 Jika transisi mengaburkan awal shot, simpan frame jernih pertama yang layak di `shots[].composition.production_start`. Isi `frame_index` native dan `composition_summary` satu paragraf tentang posisi, arah, dan framing. Frame harus berada setelah Start native dalam shot yang sama dan tercatat viewed. Untuk awal yang jernih, biarkan field ini absen dan gunakan Start biasa. Jika belum ada acuan jernih, catat keterbatasan di `notes`. Panel, Overview, dan Camera Start mengikuti sumber.
 
@@ -61,4 +63,4 @@ ID selection, shot_id, PTS, duration, parsed/summary/pattern dan coverage mekani
 
 audit-info hanya method, limitations, provider/model yang diketahui, reviewed_ranges dan frame_reviews yang benar-benar dideklarasikan. Model build tidak diketahui null. Gunakan mark-viewed hanya setelah melihat gambar. Complete menggabungkan record session yang sebenarnya; ekstraksi bukan viewed.
 
-Sebelum render jalankan check-input atau draft resmi. Koreksi audit kerja, lalu render/review keseluruhan snapshot terbaru. Receipt/cache/session/flow/sheet/log tidak masuk ZIP. MP4 tetap terpisah. Kontrak lengkap: contracts/package.md, contracts/report.md dan contracts/reader.md.
+Jalankan check-camera sebelum mengisi desain. Sebelum render jalankan complete dan check-input dengan sesi yang sama. Koreksi audit kerja, lalu render/review keseluruhan snapshot terbaru. Receipt/cache/session/flow/sheet/log tidak masuk ZIP. MP4 tetap terpisah. Kontrak lengkap: contracts/package.md, contracts/report.md dan contracts/reader.md.

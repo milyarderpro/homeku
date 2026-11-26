@@ -22,10 +22,6 @@ class ReportingTests(unittest.TestCase):
         for name in ("normal", "multi"):
             with self.subTest(name=name):
                 audit = self.audit(name)
-                design = audit["design"]
-                del design["house_type"], design["palette"]
-                design["features"].append({"aspect": "palette", "value": "Putih, kayu tampak terang dan aksen gelap."})
-                next(c for c in design["features"] if c["aspect"] == "lighting")["value"] = "unknown"
                 original = copy.deepcopy(audit)
                 report = render_report(audit, PTS)
                 golden = ROOT / "tests/fixtures/reports" / f"{name}.md"

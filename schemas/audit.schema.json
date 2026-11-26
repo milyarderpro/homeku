@@ -2,7 +2,7 @@
   "type": "object",
   "properties": {
     "schema_version": {
-      "const": "3.0"
+      "const": "3.1"
     },
     "id": {
       "type": "string",
@@ -422,17 +422,11 @@
         "name",
         "styles",
         "size",
-        "features"
+        "features",
+        "house_type",
+        "palette"
       ],
-      "additionalProperties": false,
-      "dependentRequired": {
-        "house_type": [
-          "palette"
-        ],
-        "palette": [
-          "house_type"
-        ]
-      }
+      "additionalProperties": false
     },
     "category": {
       "type": "object",

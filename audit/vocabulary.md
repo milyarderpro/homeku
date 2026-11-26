@@ -49,7 +49,7 @@ Notasi kamera: Dolly-In/Out, Orbit Left/Right, Pan Left/Right, Truck Left/Right,
 ## Area, caption, dan kontinuitas
 
 - Pakai nama area pendek berbahasa Inggris dengan Title Case, misalnya `Exterior`, `Living Room`, atau `Sleeping Loft`. Pakai `&` bila dua fungsi memakai ruang yang sama, seperti `Bathroom & Laundry`. Renderer memakai ` / ` saat menggabungkan area fisik terpisah, seperti `Open-Plan Living / Sleeping Loft`.
-- Tulis setiap fungsi yang terlihat di `areas[].functions`. `Open-Plan Living` dapat mencatat `Living Room`, `Dining Area`, dan `Kitchen` bila semuanya tampak. Kabinet di kamar tidur saja belum mendukung fungsi `Walk-In Closet`.
+- Tulis setiap fungsi yang terlihat di `areas[].functions`. Indeks menyamakan variasi seperti `Dining Area` dan `dining-area` saat mencari, sambil mempertahankan tulisan sumber. `Open-Plan Living` dapat mencatat `Living Room`, `Dining Area`, dan `Kitchen` bila semuanya tampak. Kabinet di kamar tidur saja belum mendukung fungsi `Walk-In Closet`.
 - Pakai label teknis Inggris untuk nilai yang dipakai dalam filter, seperti `oblique` atau `walk-in shower`. Narasi dan uraian bukti memakai bahasa Indonesia. Gunakan label baru bila maknanya berbeda.
 - Untuk panel antara pada shot multi-area, beri caption Inggris singkat dengan Title Case bila momennya jelas, misalnya `Facade Reveal` atau `Doorway`. Panel biasa memakai `Start`, `Middle`, dan `End`.
 

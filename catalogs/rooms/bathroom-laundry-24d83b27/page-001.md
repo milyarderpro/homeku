@@ -1,4 +1,4 @@
-# Bathroom & Laundry — 1
+# bathroom & laundry — 1
 
 | Sumber | Area dan fungsi | Camera Start | Kolase |
 | --- | --- | --- | --- |

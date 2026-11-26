@@ -4,13 +4,23 @@
 
 ## 1. Profil desain
 
-- **Nama desain:** {{NAMA_DESAIN_DESKRIPTIF}}.
-- **Gaya utama:** **{{NAMA_GAYA_UTAMA_ENGLISH}}**.
-- **Pengaruh gaya:** {{NAMA_PENGARUH_GAYA_ENGLISH_DIPISAH_TITIK_KOMA}}.
-- **Gaya interior:** {{NAMA_GAYA_INTERIOR_ENGLISH}}.
+- **Nama desain:** {{NAMA_DESAIN}}.
+- **Tipe rumah:** {{TIPE_RUMAH_ENGLISH}}.
+- **Gaya utama:** {{NAMA_GAYA_ENGLISH}}.
+- **Pengaruh gaya:** {{PENGARUH_GAYA_ENGLISH}}.
+- **Gaya interior:** {{GAYA_INTERIOR_ENGLISH}}.
+- **Susunan ruang utama:** {{SUSUNAN_YANG_TERLIHAT}}.
 - **Ciri khas:** {{CIRI_PEMBEDA}}.
-- **Warna & material:** {{WARNA_DAN_MATERIAL_TAMPAK}}.
-- **Suasana dan lingkungan:** {{SUASANA_CAHAYA_DAN_LINGKUNGAN}}.
+- **Material utama:** {{MATERIAL_TAMPAK}}.
+- **Pencahayaan:** {{KONDISI_CAHAYA_UTAMA}}.
+- **Atmosfer:** {{KESAN_VISUAL_SINGKAT}}.
+- **Lingkungan:** {{LINGKUNGAN_FISIK}}.
+
+### Palet warna
+
+| Peran | Warna | HEX |
+| --- | --- | --- |
+| {{PERAN}} | {{NAMA_WARNA}} | {{HEX}} |
 
 ## 2. Ukuran & proporsi
 
@@ -85,6 +95,7 @@
 
 - **Fokus:** {{SUBJEK_DAN_PERALIHAN_FOKUS}}.
 - **Camera Start:** {{LOKASI_ARAH_SUDUT_KETINGGIAN_KEMIRINGAN_AWAL_SUMBER}}.
+- **Production Start:** {{FRAME_NATIVE_WAKTU_DAN_FRAMING_JIKA_DIPILIH}}.
 - **Framing:** {{CAKUPAN_AWAL_PERUBAHAN_PENTING_DAN_AKHIR}}.
 - **Lighting:** {{SUMBER_ARAH_KARAKTER_DAN_PERUBAHAN_CAHAYA}}.
 - **Foreground dan kedalaman:** {{ELEMEN_DEPAN_DAN_LAPISAN_KEDALAMAN}}.

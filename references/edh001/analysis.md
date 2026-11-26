@@ -45,11 +45,11 @@ Durasi 18.40s · 5 shot.
 
 | Shot | Time (s) | Duration | Area/Scene | Camera Movement |
 | --- | --- | --- | --- | --- |
-| 01 | 0.00–4.73 | 4.73s | Exterior | Orbit Right (~10°–15°) → Accelerating Dolly-In (~1.8×) toward the black entrance door. |
-| 02 | 4.73–8.30 | 3.57s | Living Room | Dolly-Out (~1.6×) + Orbit Left + gentle Pan Right (~15°). |
+| 01 | 0.00–4.73 | 4.73s | Exterior | Orbit Right (~10°–15°) → Accelerating Straight Dolly-In (~1.8×) toward the black entrance door. |
+| 02 | 4.73–8.30 | 3.57s | Living Room | Dolly-Out (~2×) + Orbit Left + Gentle Pan Right (~15°, Ease-Out). |
 | 03 | 8.30–11.57 | 3.27s | Kitchen | Accelerating Dolly-In (~1.9×) + Strong Pan Left (~25°–30°) toward the refrigerator and coffee nook. |
 | 04 | 11.57–15.00 | 3.43s | Bedroom | Dolly-Out (~1.3×) + Orbit Left + Strong Pan Right (~30°). |
-| 05 | 15.00–18.40 | 3.40s | Bathroom & Laundry | Dolly-In (~2×) + gentle Pan Right (~15°). |
+| 05 | 15.00–18.40 | 3.40s | Bathroom & Laundry | Accelerating Dolly-In (~1.7×) + Gentle Pan Right (~15°). |
 
 ## 4. Overview
 
@@ -128,9 +128,9 @@ Kamera melengkung ke kanan sambil mempertahankan fasad, kemudian maju dengan rit
 | Time (s) | Area & fokus | Camera Movement | Tempo |
 | --- | --- | --- | --- |
 | 0.00–2.10 | Exterior · Bay window, portal masuk dan muka tangga | Orbit Right (~10°–15°) | Pergeseran sudut pelan dengan fasad tetap terbaca. |
-| 2.10–4.73 | Exterior · Pintu hitam dan kanopi masuk | Accelerating Dolly-In (~1.8×) toward the black entrance door | Mulai maju dan dasar fasad membesar.; Tangga dan tepi fasad keluar dari bingkai dalam waktu lebih singkat. |
+| 2.10–4.73 | Exterior · Pintu hitam dan kanopi masuk | Accelerating Straight Dolly-In (~1.8×) toward the black entrance door | Mulai maju dan dasar fasad membesar.; Tangga dan tepi fasad keluar dari bingkai dalam waktu lebih singkat. |
 
-**Camera:** Orbit Right (~10°–15°) → Accelerating Dolly-In (~1.8×) toward the black entrance door.
+**Camera:** Orbit Right (~10°–15°) → Accelerating Straight Dolly-In (~1.8×) toward the black entrance door.
 
 ---
 
@@ -172,7 +172,7 @@ Kamera mundur melengkung ke kiri sambil menoleh lembut ke kanan. Meja kopi yang 
 
 **Tempo:** Mundur dengan tempo sedang. Bukaan ruang paling terasa di bagian tengah, lalu pergeseran melandai menjelang cut.
 
-**Camera:** Dolly-Out (~1.6×) + Orbit Left + gentle Pan Right (~15°).
+**Camera:** Dolly-Out (~2×) + Orbit Left + Gentle Pan Right (~15°, Ease-Out).
 
 ---
 
@@ -304,6 +304,6 @@ Kamera maju ke shower sambil menoleh lembut ke kanan. Wastafel, toilet dan jende
 - **15.00–16.67s · moderate:** Susunan ruang masih terbaca sementara kamera mulai mendekat.
 - **16.67–18.40s · fast:** Wastafel dan toilet lepas dari bidang, lalu jendela bulat dan perangkat shower cepat memenuhi bingkai.
 
-**Camera:** Dolly-In (~2×) + gentle Pan Right (~15°).
+**Camera:** Accelerating Dolly-In (~1.7×) + Gentle Pan Right (~15°).
 
 **Catatan referensi:** Lengkung, material terang dan pencahayaan hangat berulang sepanjang video. Urutan cut tidak memperlihatkan koneksi fisik antararea.
