@@ -27,6 +27,16 @@ class AuditPerformanceTests(unittest.TestCase):
         self.assertEqual(phases["camera"][0]["state"], "incomplete")
         self.assertNotIn("seconds", phases["camera"][0])
 
+    def test_drive_delivery_resumes_independently_of_export(self):
+        mark_phase(self.log, "validation-export", "start")
+        mark_phase(self.log, "validation-export", "finish")
+        mark_phase(self.log, "drive-delivery", "start")
+        phases = summarize(self.log)["phases"]
+        self.assertEqual(phases["validation-export"][0]["state"], "complete")
+        self.assertEqual(phases["drive-delivery"][0]["state"], "incomplete")
+        mark_phase(self.log, "drive-delivery", "finish")
+        self.assertEqual(summarize(self.log)["phases"]["drive-delivery"][0]["state"], "complete")
+
     def test_distinct_attempts_success_failure_and_interruption(self):
         event(self.log, "draft", state="started")
         event(self.log, "draft", state="complete", seconds=1)

@@ -15,7 +15,7 @@ from homeku.common import LibraryError, require, sha256
 
 MODULES = (
     "__init__", "audit_performance", "audit_quality", "audit_review", "audit_session", "audit_workflow", "authoring",
-    "camera_anchor", "camera_notation", "camera_pattern", "common", "derivations", "exporter", "media",
+    "camera_anchor", "camera_notation", "camera_pattern", "common", "delivery", "derivations", "exporter", "media",
     "media_incremental", "models", "motion_analysis", "package_manifest", "preflight",
     "render_assets", "report_validation", "reporting", "storage", "validation", "video", "video_cache",
 )
@@ -111,14 +111,15 @@ def build_bytes():
 
 Siapkan satu MP4 sumber terpisah dan ekstrak keempat file kit ke workspace chat. Jalankan `python homeku_runtime.py --output .` untuk memulihkan resource lokal. Audit memakai Python 3.11+, FFmpeg/ffprobe, serta dependensi di requirements.txt termasuk OpenCV dan NumPy.
 
-Untuk Google Drive, simpan kit di root HOMEKU, MP4 asli di HOMEKU/Video dan ZIP pilihan pengguna di HOMEKU/Hasil Audit.
+Untuk Google Drive, simpan kit di root HOMEKU dan MP4 asli di HOMEKU/Video. Hasil disimpan di HOMEKU/Audit/<nama-video-tanpa-ekstensi>/.
 
-Baca `audit/authoring.md` dan jalankan empat fase dalam satu chat memakai `audit/prompts/01-audit.md`.
+Baca `audit/authoring.md` dan jalankan lima fase dalam satu chat memakai `audit/prompts/01-audit.md`.
 
 1. Petakan cut dan siapkan frame baseline dengan `prepare`.
 2. Audit kamera dengan `audit/visual-audit.md` dan `audit/camera-cases.md`, lalu jalankan `check-camera`.
 3. Lengkapi desain, framing, panel dan Overview dengan `audit/design-audit.md`.
-4. Jalankan `complete → check-input → draft → review → export`. Setelah lulus, berikan laporan, media dan ZIP final tanpa MP4.
+4. Jalankan `complete → check-input → draft → review → export` untuk menghasilkan ZIP final tanpa MP4.
+5. Simpan `analysis.md`, `media/`, dan ZIP itu ke Drive, lalu verifikasi hasilnya. Tampilkan laporan, media, unduhan ZIP, dan status penyimpanan di chat.
 
 Gunakan `audit/prompts/02-correct.md` atau `03-export.md` untuk melanjutkan sesi yang sama. Contoh JSON berisi data sintetis.
 """]

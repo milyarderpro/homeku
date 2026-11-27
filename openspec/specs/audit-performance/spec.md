@@ -6,13 +6,14 @@ Menyediakan pengukuran durasi audit dan percobaan yang dapat dibandingkan antara
 
 ## Requirements
 
-### Requirement: Durasi empat fase audit
+### Requirement: Durasi lima fase audit
 
-Kit SHALL mencatat awal dan akhir setiap fase audit berdasarkan penanda sesi serta menampilkan durasi fase yang selesai. Durasi fase SHALL menunjukkan waktu berlalu, termasuk kegiatan antara perintah, dan tersedia terpisah dari durasi perintah.
+Kit SHALL mencatat awal dan akhir setiap fase audit berdasarkan penanda sesi serta menampilkan durasi fase yang selesai. Kit SHALL mencatat `validation-export` hingga ZIP selesai diekspor dan `drive-delivery` sejak penyimpanan dimulai hingga hasil Drive selesai diverifikasi. Durasi fase SHALL menunjukkan waktu berlalu, termasuk kegiatan antara perintah, dan tersedia terpisah dari durasi perintah.
 
-#### Scenario: Fase validasi dan ekspor diselesaikan
-- **WHEN** penanda mulai dan selesai tersedia untuk suatu fase
-- **THEN** ringkasan menampilkan durasi antara kedua penanda tersebut secara terpisah dari durasi masing-masing perintah
+#### Scenario: Ekspor lalu penyimpanan di Drive
+- **WHEN** ekspor selesai dan penyerahan ke Drive dimulai dalam sesi yang sama
+- **THEN** ringkasan menampilkan fase ekspor sebagai selesai
+- **AND** fase penyimpanan menjadi selesai setelah file di Drive terverifikasi dan penanda selesai dicatat
 
 #### Scenario: Fase terputus
 - **WHEN** suatu fase punya penanda mulai dan belum punya penanda selesai

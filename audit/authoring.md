@@ -1,12 +1,12 @@
 # Alur audit HOMEKU 3.1
 
-Jalankan empat fase berurutan dalam satu chat. Satu `audit.json` menyimpan isi audit dari awal sampai ekspor. Mulai dari [prompt audit](prompts/01-audit.md).
+Jalankan lima fase berurutan dalam satu chat. Satu `audit.json` menyimpan isi audit dari awal sampai ekspor. Mulai dari [prompt audit](prompts/01-audit.md).
 
 Periksa runtime dan MP4 dengan `python tools/audit.py readiness /path/rumah.mp4 --workspace work/audit`. Pasang dependensi dari `requirements.txt` jika pemeriksaan modul gagal. Lanjutkan setelah semua cek lulus.
 
 ## Waktu audit
 
-Catat `start` sebelum memulai tiap fase dan `finish` setelah fasenya selesai. Gunakan workspace audit yang sama, termasuk sebelum `prepare`. Empat nama fase CLI secara berurutan adalah `shot-mapping`, `camera`, `design-media`, dan `validation-export`. Akhiri fase kamera setelah `check-camera` lulus dan fase terakhir setelah ekspor ZIP selesai. Saat melanjutkan fase yang terputus, periksa ringkasan dan gunakan penanda yang sudah dibuka.
+Catat `start` sebelum memulai tiap fase dan `finish` setelah fasenya selesai. Gunakan workspace audit yang sama, termasuk sebelum `prepare`. Nama fase CLI secara berurutan adalah `shot-mapping`, `camera`, `design-media`, `validation-export`, dan `drive-delivery`. Akhiri fase kamera setelah `check-camera` lulus. Akhiri fase 4 saat ekspor mengembalikan ZIP dan SHA-256. Akhiri fase 5 setelah verifikasi di Drive. Saat melanjutkan fase yang terputus, periksa ringkasan dan gunakan penanda yang sudah dibuka.
 
 ~~~sh
 python tools/audit.py phase work/audit shot-mapping start
@@ -84,4 +84,20 @@ python tools/audit.py review work/candidate/rumah --output work/review.md --sess
 python tools/audit.py export work/candidate/rumah --receipt work/review.md.json --output work/final --session work/audit/session.json
 ~~~
 
-Gunakan Markdown dari field `checklist` untuk menelusuri hasil validasi teknis dan membuka gambar kandidat yang sudah dirender. Review dengan `--session` memeriksa metadata sumber, PTS native, dan deklarasi viewed terhadap MP4 sesi. Centang pemeriksaan visual setelah melihat laporan dan media. Gunakan sesi yang sama untuk setiap `review` agar lembar menampilkan perubahan notasi, bukti, panel termasuk cakupan areanya, dan media dibanding snapshot berbeda yang terakhir direview. Langsung ekspor setelah review berhasil. Ambil tautan laporan dan gambar dari checklist snapshot yang dikembalikan `review`. Ambil tautan ZIP dari field `package` keluaran `export`. Tampilkan ringkasan shot, laporan, media, dan tautan ZIP dalam satu balasan agar pengguna bisa memeriksa dan memilihnya. Berikan ZIP terbaru sesudah koreksi. [Kontrak paket](contracts/package.md)
+Gunakan Markdown dari field `checklist` untuk menelusuri hasil validasi teknis dan membuka gambar kandidat yang sudah dirender. Review dengan `--session` memeriksa metadata sumber, PTS native, dan deklarasi viewed terhadap MP4 sesi. Centang pemeriksaan visual setelah melihat laporan dan media. Gunakan sesi yang sama untuk setiap `review` agar lembar menampilkan perubahan notasi, bukti, panel termasuk cakupan areanya, dan media dibanding snapshot berbeda yang terakhir direview. Langsung ekspor setelah review berhasil. Ambil tautan laporan dan gambar dari checklist snapshot yang dikembalikan `review`. Ambil tautan ZIP dari field `package` keluaran `export`. Simpan tautan tersebut untuk ditampilkan bersama status pengiriman di balasan akhir. Langsung lanjutkan ke fase 5 sesudah setiap ekspor, termasuk setelah koreksi. [Kontrak paket](contracts/package.md)
+
+## Fase 5 — Penyimpanan dan verifikasi di Google Drive
+
+Gunakan keluaran `package` dan `package_sha256` dari fase 4 sebagai `PACKAGE` dan `PACKAGE_SHA256`. Isi `VIDEO_NAME` dengan nama MP4 asli persis seperti di Drive, termasuk ekstensi. Jalankan `start` sekali untuk ekspor ini.
+
+~~~sh
+python tools/audit.py phase work/audit drive-delivery start
+python tools/audit.py delivery-plan "$PACKAGE" --sha256 "$PACKAGE_SHA256" --workspace work/audit --video-name "$VIDEO_NAME"
+~~~
+
+Ikuti [prosedur penyimpanan](prompts/03-export.md) untuk memilih folder yang tepat, memeriksa ZIP sebelumnya bila ada, mengunggah hasil, dan membaca ulang ZIP dari Drive. Jika semua verifikasi lulus, tandai fase selesai dan tampilkan ringkasan. Jika pengiriman terputus, laporkan langkah yang tertunda dan jalankan hanya `performance`. Gunakan workspace, ZIP, dan penanda fase yang sama saat melanjutkan.
+
+~~~sh
+python tools/audit.py phase work/audit drive-delivery finish
+python tools/audit.py performance work/audit
+~~~

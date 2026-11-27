@@ -103,6 +103,13 @@ def parser():
     for command in (reviewing, exporting):
         command.add_argument("--session", type=Path, help="Audit session for workspace performance logging")
 
+    delivery = commands.add_parser("delivery-plan", help="Prepare files for Drive from the verified exported ZIP")
+    delivery.add_argument("package", type=Path)
+    delivery.add_argument("--sha256", required=True, help="package_sha256 returned by export")
+    delivery.add_argument("--workspace", required=True, type=Path)
+    delivery.add_argument("--video-name", required=True, help="Exact original MP4 name in Drive")
+    delivery.add_argument("--previous", type=Path, help="Latest ZIP downloaded from the target Drive folder")
+
     phase = commands.add_parser("phase", help="Record the start or finish of an audit phase")
     phase.add_argument("workspace", type=Path)
     phase.add_argument("phase", choices=PHASES)
@@ -145,6 +152,9 @@ def run(args, *, attempt=None):
         if command == "phase":
             return mark_phase(log, args.phase, args.action)
         return summarize(log)
+    if command == "delivery-plan":
+        from homeku.delivery import delivery_plan
+        return delivery_plan(args.package, args.sha256, args.workspace, args.video_name, previous=args.previous)
     if command == "inspect":
         info = probe_video(args.source)
         times = frame_times(args.source, info=info)

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Membantu auditor memeriksa kandidat dan menyerahkan ZIP yang dipilih pengguna tanpa kehilangan hubungan antara paket dan snapshot yang ditampilkan.
+Membantu auditor memeriksa kandidat dan menyimpan hasil audit yang sudah diekspor tanpa kehilangan hubungan antara paket dan snapshot yang ditampilkan.
 
 ## Requirements
 
@@ -41,20 +41,25 @@ Lembar review SHALL menunjukkan perubahan notasi, frame dan cakupan bukti, kompo
 
 ### Requirement: Penyerahan melalui folder Google Drive HOMEKU
 
-Panduan SHALL mendukung satu chat per MP4 dengan kit dari root Drive HOMEKU yang ditentukan pengguna dan MP4 asli dari subfolder Video. Setelah pengguna memeriksa laporan dan media di chat serta memilih ZIP, ChatGPT SHALL menggunakan subfolder Hasil Audit sebagai tujuan bila aksi unggah tersedia.
+Panduan SHALL mendukung satu chat per MP4 dengan kit dari root Drive HOMEKU dan MP4 asli dari subfolder Video. Setelah ekspor lulus, ChatGPT SHALL langsung menyimpan laporan, media, dan ZIP dari ekspor yang sama di `HOMEKU/Audit/<nama-video-tanpa-ekstensi>/` bila aksi Drive tersedia. ChatGPT SHALL mempertahankan jalur media relatif dan memverifikasi SHA-256 ZIP dengan mengunduh kembali byte dari Drive.
 
-#### Scenario: ZIP pilihan pengguna terunggah
-- **WHEN** pengguna memilih hasil di chat dan konektor menyediakan unggah ke folder tujuan
-- **THEN** ChatGPT mengunggah ZIP ekspor dengan nama `<id>-rNNNN.zip`, memeriksa kembali file dari tujuan, dan memberikan tautan Drive bersama unduhan di chat
-- **AND** ChatGPT menyatakan transfer terverifikasi setelah SHA-256 file dari Drive cocok dengan ZIP ekspor
+#### Scenario: Ekspor pertama tersimpan
+- **WHEN** ZIP selesai diekspor dan konektor menyediakan penyimpanan ke folder tujuan
+- **THEN** ChatGPT menyimpan `analysis.md`, file dalam `media/`, lalu ZIP dengan nama kanonis
+- **AND** ChatGPT memverifikasi hasil dan memberikan tautan folder serta ZIP Drive bersama unduhan di chat
 
-#### Scenario: Aksi unggah atau verifikasi tidak tersedia
-- **WHEN** sesi ChatGPT tidak dapat mengunggah ZIP ke folder tujuan atau memastikan hasil transfer
-- **THEN** ChatGPT melaporkan status tersebut dan tetap menyediakan ZIP ekspor di chat untuk disimpan ke Drive
+#### Scenario: Koreksi pada sumber yang sama
+- **WHEN** sesi menghasilkan ekspor koreksi dan ID audit serta SHA-256 sumber cocok dengan ZIP Drive sebelumnya
+- **THEN** ChatGPT memperbarui byte file bernama sama dengan ID Drive yang sama, melewati berkas yang masih identik, dan membuat berkas yang belum ada
+- **AND** ChatGPT melaporkan media terdahulu yang sudah keluar dari inventaris tanpa menghapusnya
 
-#### Scenario: Percobaan unggah diulang
-- **WHEN** ZIP dengan nama yang sama sudah ada pada tujuan
-- **THEN** ChatGPT memakai tautan yang sudah ada jika SHA-256 sama dan menunjukkan konflik jika isinya berbeda
+#### Scenario: Folder tujuan bertabrakan
+- **WHEN** folder dengan nama yang sama merujuk sumber berbeda atau tujuan ambigu
+- **THEN** ChatGPT melaporkan konflik sebelum mengubah hasil yang ada
+
+#### Scenario: Aksi penyimpanan atau verifikasi terputus
+- **WHEN** sesi tidak dapat menyelesaikan penyimpanan atau verifikasi
+- **THEN** ChatGPT melaporkan langkah yang tertunda, mempertahankan unduhan ZIP, dan melanjutkan dari ekspor serta folder yang sudah terikat bila transfer bisa diteruskan
 
 #### Scenario: Pengguna melanjutkan ke ingest
 - **WHEN** pengguna menyerahkan ZIP pilihan dari Drive ke alur ingest

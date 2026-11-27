@@ -11,7 +11,7 @@ HOMEKU menyimpan audit video desain, komposisi, dan gerakan kamera dalam format 
 
 1. Di ChatGPT, berikan tautan root Drive `HOMEKU`, lalu sebutkan satu MP4 asli dari subfolder `Video`. Kit berada di root. Kit dan MP4 juga dapat dilampirkan langsung. Jalankan bootstrap dan ikuti prompt mulai. [Kit](audit/homeku-audit-kit.zip) · [Panduan audit](audit/README.md)
 2. Setelah kandidat lulus validasi, AI menjalankan review dan ekspor, lalu menampilkan laporan enam bagian, Overview, Storyboard, seluruh kolase, dan tautan ZIP tanpa MP4 dalam balasan yang sama. Koreksi menghasilkan ZIP terbaru.
-3. Periksa hasil di chat, lalu unduh ZIP yang Anda pilih atau simpan ke `HOMEKU/Hasil Audit` lewat alur ekspor. Simpan MP4 kanonis di `video/<id>.mp4` dan taruh ZIP di `incoming/`. Jalankan ingest untuk menerima revisi dan memperbarui turunan.
+3. Auditor menyimpan ZIP, laporan, dan media di `HOMEKU/Audit/<nama-video-tanpa-ekstensi>/` pada chat yang sama. Periksa hasil di chat dan pilih ZIP untuk dijadikan referensi. Simpan MP4 kanonis di `video/<id>.mp4`, taruh ZIP di `incoming/`, lalu jalankan ingest untuk menerima revisi dan memperbarui turunan.
 
 ~~~sh
 python tools/library.py ingest incoming/rumah-r0001.zip

@@ -9,7 +9,7 @@ from uuid import uuid4
 
 from .common import LibraryError, require
 
-PHASES = ("shot-mapping", "camera", "design-media", "validation-export")
+PHASES = ("shot-mapping", "camera", "design-media", "validation-export", "drive-delivery")
 TRACKED_COMMANDS = frozenset({"check-camera", "complete", "check-input", "draft", "review", "export"})
 
 

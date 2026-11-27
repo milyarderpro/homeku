@@ -2,7 +2,7 @@
 
 ## Jalankan di ChatGPT dengan Google Drive
 
-Buka satu chat ChatGPT untuk [MP4 dreamshome01](../../video/dreamshome01.mp4). Berikan tautan root Drive `HOMEKU`. Ambil MP4 asli dari `Video` dan [kit 3.1](../homeku-audit-kit.zip) dari root. Gunakan [prompt audit lengkap](../prompts/01-audit.md) dan jalankan empat fase sampai ZIP final. Tampilkan laporan, media, dan ZIP di chat. Setelah pengguna memilih paket, verifikasi byte ZIP di Drive sesuai [panduan ekspor](../prompts/03-export.md).
+Buka satu chat ChatGPT untuk [MP4 dreamshome01](../../video/dreamshome01.mp4). Berikan tautan root Drive `HOMEKU`. Ambil MP4 asli dari `Video` dan [kit 3.1](../homeku-audit-kit.zip) dari root. Gunakan [prompt audit lengkap](../prompts/01-audit.md) dan jalankan lima fase dalam satu chat. Simpan laporan, media, dan ZIP di `Audit/dreamshome01/` lalu verifikasi byte ZIP di Drive. Ulangi dengan satu koreksi untuk menguji pembaruan file di folder yang sama. Tampilkan hasil dan tautan di chat. [Panduan ekspor](../prompts/03-export.md)
 
 Simpan ringkasan kamera fase 2 beserta keluaran `check-camera` dan ZIP final. Catat provider dan model yang diketahui, ringkasan `performance` per fase dan percobaan, interval 10 FPS/native tambahan, serta penggunaan `motion-hints` dan pengukuran jangkar. Cocokkan notasi per shot di fase 2 dengan `audit.json` dan `analysis.md` dalam ZIP. Jika ada koreksi setelah fase 2, sertakan hasil scoped recheck terkait.
 
@@ -72,3 +72,11 @@ Shot 05 memakai `Dolly-In (~2.7×) (Ease-Out)`. Pengukuran tepi bawah daun jende
 - **Ekspor.** Paket r0001 dari sesi pilot berukuran 8.945.135 byte.
 - **Transfer.** Paket tersimpan di `HOMEKU/Hasil Audit`. Baca kembali dari Drive menghasilkan SHA-256 `e8779f7e84ec331f88a368ce2f454f5e21e1e1fe39ed3a65a2e6fc14e72dbc0f`, cocok dengan ekspor. [ZIP final terkoreksi](https://drive.google.com/file/d/1IYIQLCJXKp8GRWsBPky5m2KyOUJuWJyU/view)
 - **Verifikasi di ChatGPT.** Chat pilot membaca struktur HOMEKU dan melaporkan bahwa byte ZIP dari Drive identik dengan hasil koreksi. [Chat pilot dreamshome01](https://chatgpt.com/g/g-p-6b07e31e53dc8191b48648575e8a7984-home-drive/c/6b080488-6858-83ec-a266-e84708b381a3)
+
+## Pilot fase 5 pada 27 November 2026
+
+ChatGPT menjalankan lima fase terhadap `dreamshome01.mp4`, lalu menyimpan sembilan file ke `HOMEKU/Audit/dreamshome01/` dalam chat yang sama. Pembacaan ulang dari Drive mengonfirmasi bahwa laporan, Overview, Storyboard, dan lima kolase identik dengan isi ZIP ekspor awal. SHA-256 ZIP awal adalah `09c5d934d9079994674f1169b875d81e5233dbf626fe2ab8dea9aa8e60724b79`. [Chat pilot](https://chatgpt.com/g/g-p-6b084c5580dc81919d040b2b65fab388-hmd2/c/6b08fe09-7ecc-83ec-8fbc-d0074268f514)
+
+Koreksi Shot 05 di chat yang sama menghasilkan `Dolly-In (~2.7×)` setelah pemeriksaan F497, F532, F566, dan F600. Drive mempertahankan ID folder dan sembilan file. `analysis.md`, `media/shot-05.jpg`, `media/storyboard.jpg`, dan ZIP r0001 diperbarui. Overview dan kolase Shot 01–04 mempertahankan hash dan waktu modifikasi awal. ZIP ditulis setelah laporan dan media, lalu diunduh ulang. Pemeriksaan independen memverifikasi ZIP terhadap MP4 kanonis dan mencocokkan kedelapan file terpisah dengan isi ZIP. SHA-256 ZIP terkoreksi adalah `1d66ea2becc60bc595c13013ed6206300cb12eba9511a6230b64370647d8e0ca`. [Folder hasil di Drive](https://drive.google.com/drive/folders/1OHb40W42W33hz5nZknbBDYo1WsCgHBxq) · [ZIP terkoreksi](https://drive.google.com/file/d/1ag10rxOuFMvCmSGw7iC_CedrhNCwaZnX/view)
+
+Fase 5 tercatat 125,36 detik pada audit awal dan 108,68 detik pada koreksi. Chat melaporkan 7 menit 55 detik untuk seluruh respons awal. Penanda fase desain pada audit awal dibuka setelah sebagian penalaran, sehingga 2,18 detik pada fase itu belum mewakili durasi desain. Tidak ada transfer Drive yang terputus pada pilot ini.

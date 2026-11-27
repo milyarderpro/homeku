@@ -28,7 +28,8 @@ class AuditCLITests(test_prepare.VideoFixture, unittest.TestCase):
         path = ROOT / "audit/authoring.md"
         phases = path.read_text().split("## Fase ")[1:]
         expected_by_phase = (("inspect", "prepare"), ("sample", "mark-viewed", "check-camera"),
-                             ("update-shot", "check-camera"), ("complete", "check-input", "draft", "review", "export"))
+                             ("update-shot", "check-camera"), ("complete", "check-input", "draft", "review", "export"),
+                             ("phase", "delivery-plan", "phase", "performance"))
         self.assertEqual(len(phases), len(expected_by_phase))
         for phase, expected in zip(phases, expected_by_phase, strict=True):
             commands = [shlex.split(line)[2:] for line in phase.splitlines() if line.startswith("python tools/audit.py ")]
@@ -123,6 +124,13 @@ class AuditCLITests(test_prepare.VideoFixture, unittest.TestCase):
                 for command in ("draft", "review", "export"):
                     self.assertEqual(commands[command]["runs"][-1]["snapshot_sha256"], result["snapshot_sha256"])
                 self.assertEqual(result["snapshot_sha256"], draft["snapshot_sha256"])
+                self.run_json("phase", audit.parent, "drive-delivery", "start")
+                delivery = self.run_json("delivery-plan", result["package"], "--sha256", result["package_sha256"],
+                                         "--workspace", audit.parent, "--video-name", "Rumah Contoh.MP4")
+                self.assertEqual(delivery["drive_path"], ["Audit", "Rumah Contoh"])
+                self.assertEqual(delivery["files"][-1]["sha256"], result["package_sha256"])
+                self.assertEqual(self.run_json("performance", audit.parent)["phases"]["drive-delivery"][0]["state"],
+                                 "incomplete")
                 with zipfile.ZipFile(result["package"]) as archive:
                     self.assertEqual(len(archive.namelist()), 6)
                     self.assertFalse(any(path.lower().endswith(".mp4") for path in archive.namelist()))

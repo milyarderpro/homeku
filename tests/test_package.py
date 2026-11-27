@@ -4,10 +4,12 @@ import zipfile
 from pathlib import Path
 from unittest.mock import patch
 from . import test_prepare
+from .fixtures.factory import make_package, make_source
 from homeku.audit_review import review_changes, reviewed_summary
 from homeku.audit_session import mark_viewed, add_frames
 from homeku.authoring import check_camera, complete, prepare
 from homeku.common import LibraryError, dumps, read_json, sha256
+from homeku.delivery import delivery_plan
 from homeku.derivations import referenced_frames
 from homeku.exporter import draft, review, export
 from homeku.models import validate_audit
@@ -127,12 +129,54 @@ class PackageTests(test_prepare.VideoFixture, unittest.TestCase):
         for package in (first_export, final):
             self.assertEqual(sha256(Path(package["package"])), package["package_sha256"])
         self.assertEqual(export(candidate, self.work / "exports", current["receipt"]), final)
+        initial_delivery = delivery_plan(Path(first_export["package"]), first_export["package_sha256"],
+                                         session.parent, "Rumah Drive.mp4")
+        latest_package = Path(final["package"])
+        latest_delivery = delivery_plan(latest_package, final["package_sha256"], session.parent, "Rumah Drive.mp4",
+                                        previous=Path(first_export["package"]))
+        self.assertEqual(latest_delivery["drive_path"], initial_delivery["drive_path"])
+        self.assertEqual(latest_delivery["source_sha256"], sha256(source))
+        self.assertEqual(latest_delivery["previous_package_sha256"], first_export["package_sha256"])
+        self.assertEqual(latest_delivery["obsolete_media"], [])
+        files = {entry["relative_path"]: entry for entry in latest_delivery["files"]}
+        self.assertEqual(list(files)[-1], latest_package.name)
+        self.assertEqual(files[latest_package.name]["comparison"], "changed")
+        self.assertEqual(files["analysis.md"]["comparison"], "changed")
+        self.assertEqual(files["media/overview.jpg"]["comparison"], "identical")
+        self.assertEqual(files["media/shot-01.jpg"]["comparison"], "changed")
+        with zipfile.ZipFile(latest_package) as archive:
+            self.assertEqual(set(files), {"analysis.md", "media/overview.jpg", "media/storyboard.jpg",
+                                          "media/shot-01.jpg", latest_package.name})
+            for name, entry in files.items():
+                local = Path(entry["path"])
+                self.assertEqual(entry["sha256"], sha256(local))
+                if name != latest_package.name:
+                    self.assertEqual(local.read_bytes(), archive.read(f"{candidate.name}/{name}"))
+        self.assertEqual(delivery_plan(latest_package, final["package_sha256"], session.parent, "Rumah Drive.mp4",
+                                       previous=Path(first_export["package"])), latest_delivery)
+        self.assertEqual(read_json(Path(latest_delivery["plan"])), latest_delivery)
+        with self.assertRaisesRegex(LibraryError, "Exported ZIP SHA-256 mismatch"):
+            delivery_plan(latest_package, first_export["package_sha256"], session.parent, "Rumah Drive.mp4")
         for pointer, before, after in (("/design/house_type", "F0", "F2"),
                                        ("/design/palette/0", "F0", "F2"),
                                        ("/shots/0/area_relations/0", "F4", "F5")):
             self.assertIn(f"**Bukti** `{pointer}` · {before} → {after}", sheet)
         repeated = review(candidate, output, session_path=session)
         self.assertEqual(Path(repeated["checklist"]).read_text(), sheet)
+
+    def test_delivery_refuses_same_drive_folder_for_different_video_bytes(self):
+        package_root = self.work / "initial"
+        source = make_source(package_root / "video" / "camera-normal.mp4", stamp="original")
+        initial = make_package(self.work / "initial-work", package_root, source.stem)
+        new_root = self.work / "different"
+        different = make_source(new_root / "video" / source.name, stamp="different")
+        current_work = self.work / "current-work"
+        current = make_package(current_work, new_root, source.stem)
+        work = current_work / "authoring"
+        self.assertNotEqual(sha256(source), sha256(different))
+        with self.assertRaisesRegex(LibraryError, "different video source"):
+            delivery_plan(current, sha256(current), work, "Rumah.mp4", previous=initial)
+        self.assertFalse((work / "delivery" / sha256(current) / "plan.json").exists())
 
     def test_review_reports_panel_scope_change_with_identical_media(self):
         source, audit_path, logs = self.authored("multi")
