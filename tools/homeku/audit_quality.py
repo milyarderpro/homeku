@@ -17,15 +17,18 @@ def camera_evidence(shot):
         yield choice["frame_index"]
 
 
-def validate_motion(audit, times=None):
+def validate_motion(audit, times=None, *, allow_placeholder=False):
     for shot in audit["shots"]:
         for phase in shot["camera"]["phases"]:
-            parsed = parse(phase["notation"])
-            validate_direction(phase)
+            notation = phase["notation"]
+            parsed = None if allow_placeholder and "{{" in notation else parse(notation)
+            if parsed is not None:
+                validate_direction(phase)
             overrides = phase.get("overrides", [])
             indices = [o["component_index"] for o in overrides]
             require(len(indices) == len(set(indices)) and
-                    all(i < len(parsed) for i in indices), "Invalid/duplicate component override")
+                    all(type(i) is int and (parsed is None or i < len(parsed)) for i in indices),
+                    "Invalid/duplicate component override")
             if times is None:
                 continue
 
@@ -43,10 +46,10 @@ def validate_motion(audit, times=None):
                 require(not unique or any(lo <= i < hi for i in unique),
                         "At least one camera evidence frame must be within the phase")
 
-            temporal(phase["evidence"], any(c["movement"] != "Uncertain" for c in parsed))
+            temporal(phase["evidence"], parsed is not None and any(c["movement"] != "Uncertain" for c in parsed))
             for override in overrides:
                 temporal(override.get("evidence", phase["evidence"]),
-                         parsed[override["component_index"]]["movement"] != "Uncertain")
+                         parsed is not None and parsed[override["component_index"]]["movement"] != "Uncertain")
 
 
 def _cover(intervals, start, end, message):

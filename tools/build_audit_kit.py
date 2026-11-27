@@ -14,8 +14,8 @@ sys.path.insert(0, str(ROOT / "tools"))
 from homeku.common import LibraryError, require, sha256
 
 MODULES = (
-    "__init__", "audit_performance", "audit_quality", "audit_session", "authoring",
-    "camera_notation", "camera_pattern", "common", "derivations", "exporter", "media",
+    "__init__", "audit_performance", "audit_quality", "audit_review", "audit_session", "audit_workflow", "authoring",
+    "camera_anchor", "camera_notation", "camera_pattern", "common", "derivations", "exporter", "media",
     "media_incremental", "models", "motion_analysis", "package_manifest", "preflight",
     "render_assets", "report_validation", "reporting", "storage", "validation", "video", "video_cache",
 )
@@ -34,7 +34,7 @@ GUIDES = [
     "audit/prompts/01-audit.md", "audit/prompts/02-correct.md", "audit/prompts/03-export.md",
     "audit/template-audit.json", "audit/template-audit-info.json",
     "audit/examples/normal/audit.json", "audit/examples/multi/audit.json",
-    "requirements.txt", "requirements-audit-motion.txt",
+    "requirements.txt",
 ]
 BUNDLED = RUNTIME + SCHEMAS + ASSETS + GUIDES
 OUTER_FILES = {"README.md", "homeku_runtime.py", "template-audit.json", "template-audit-info.json"}
@@ -109,7 +109,9 @@ if __name__=="__main__":
 def build_bytes():
     parts = ["""# Kit audit HOMEKU 3.1
 
-Siapkan satu MP4 sumber terpisah dan ekstrak keempat file kit ke workspace chat. Jalankan `python homeku_runtime.py --output .` untuk memulihkan resource lokal. Audit memakai Python 3.11+, Pillow, jsonschema, dan FFmpeg/ffprobe.
+Siapkan satu MP4 sumber terpisah dan ekstrak keempat file kit ke workspace chat. Jalankan `python homeku_runtime.py --output .` untuk memulihkan resource lokal. Audit memakai Python 3.11+, FFmpeg/ffprobe, serta dependensi di requirements.txt termasuk OpenCV dan NumPy.
+
+Untuk Google Drive, simpan kit di root HOMEKU, MP4 asli di HOMEKU/Video dan ZIP pilihan pengguna di HOMEKU/Hasil Audit.
 
 Baca `audit/authoring.md` dan jalankan empat fase dalam satu chat memakai `audit/prompts/01-audit.md`.
 

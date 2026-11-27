@@ -7,11 +7,13 @@ import tempfile
 import zipfile
 from contextlib import nullcontext
 from pathlib import Path
+from urllib.parse import quote
 from . import FORMAT_VERSION
-from .audit_performance import safe_path, timed
+from .audit_performance import safe_path
 from .audit_quality import fact_inventory
-from .audit_session import workspace
-from .common import dumps, read_json, require, sha256, snapshot_hash
+from .audit_review import checklist, review_changes, reviewed_summary
+from .audit_session import bind_audit, camera_binding, load_session, pass_id, read_session_metadata, workspace
+from .common import LibraryError, dumps, read_json, require, sha256, snapshot_hash
 from .media import expected_media
 from .package_manifest import build_manifest
 from .preflight import require_inputs
@@ -46,7 +48,7 @@ def draft(source, audit_path, audit_info, output_root, *, session_path, supersed
     audit = read_json(audit_path)
     cache_root = workspace(cache_dir or (audit_path.parent / ".cache" / "frames"))
     log = audit_path.parent / "performance.jsonl"
-    with timed(log, "draft"), locked(output_root, recovery=False):
+    with locked(output_root, recovery=False):
         context = require_inputs(source, audit, audit_info, session_path=session_path, supersedes=supersedes,
                                  purpose=purpose, cache_dir=cache_root, log=log)
         cache = context["cache"]
@@ -91,31 +93,120 @@ def draft(source, audit_path, audit_info, output_root, *, session_path, supersed
             "cache": cache.stats, "performance_log": str(log)}
 
 
-def review(candidate, output, source=None):
+def _retain_review_payload(candidate, destination, digest):
+    """Keep the exact reviewed bytes available after a replacement draft."""
+    destination = safe_path(destination)
+    if not destination.exists():
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(prefix=".review-", dir=destination.parent) as scratch:
+            copy = Path(scratch) / candidate.name
+            shutil.copytree(candidate, copy, symlinks=True)
+            require(snapshot_hash(copy) == digest, "Candidate changed during review")
+            os.rename(copy, destination)
+    require(snapshot_hash(destination) == digest, "Saved review payload differs from the reviewed snapshot")
+
+
+def review(candidate, output, source=None, *, attempt=None, session_path=None):
     candidate, output = safe_path(candidate), workspace(output)
-    require(not output.resolve().is_relative_to(candidate.resolve()), "Keep review outside candidate")
+    require(not output.is_relative_to(candidate), "Keep review outside candidate")
     require(output.suffix == ".md", "Use a Markdown path for the review")
-    receipt = output.with_suffix(".md.json")
-    inventory = output.with_suffix(".md.facts.json")
-    digest = snapshot_hash(candidate)
-    overrides = {candidate.name: Path(source)} if source else None
-    manifest, model, _ = validate_folder(candidate, candidate.parent, source_overrides=overrides,
-                                          require_source=source is not None)
-    body = (candidate / "analysis.md").read_text(encoding="utf-8")
+    history_path = None
+    with locked(candidate.parent, recovery=False):
+        digest = snapshot_hash(candidate)
+        if attempt is not None:
+            attempt["snapshot_sha256"] = digest
+        context = None
+        if session_path is not None:
+            path, session, cache = load_session(session_path)
+            if source is None:
+                source = cache.source
+            if Path(source).resolve() == cache.source:
+                context = {"sha256": cache.source_hash, "info": cache.info, "times": cache.times}
+            history_path = workspace(path.parent / ".homeku" / "reviews" / f"{camera_binding(session)}.json")
+        overrides = {candidate.name: Path(source)} if source is not None else None
+        manifest, model, _ = validate_folder(candidate, candidate.parent, source_overrides=overrides,
+                                             require_source=source is not None, context=context)
+        if session_path is not None:
+            bind_audit(model["audit"], session)
+            require(manifest["source"]["sha256"] == cache.source_hash, "Review candidate differs from session source")
+            viewed = {row["id"]: row["record"]["viewed_frame_indices"] for row in session["passes"]}
+            for record in manifest["audit"]["frame_reviews"]:
+                require(viewed.get(pass_id(session, record)) == record["viewed_frame_indices"],
+                        "Review candidate includes frame declarations absent from the supplied session")
+            cache.ensure_source()
+        report = workspace(output.with_suffix(".snapshots") / digest / output.name)
+        payload = report.parent / "payload" / candidate.name
+        _retain_review_payload(candidate, payload, digest)
+
+    body = (payload / "analysis.md").read_text(encoding="utf-8")
     for row in manifest["media"]:
         rel = row["path"]
-        path = (candidate / rel).as_posix()
-        body = body.replace(f"]({rel})", f"](<{path}>)")
-    require(snapshot_hash(candidate) == digest, "Candidate changed during review")
-    atomic(output, body.encode())
-    atomic(inventory, dumps(fact_inventory(model["audit"])).encode())
-    atomic(receipt, dumps({"candidate": str(candidate.resolve()), "snapshot_sha256": digest,
-                           "report": str(output)}).encode())
-    return {"review": str(output), "receipt": str(receipt), "snapshot_sha256": digest,
-            "fact_inventory": str(inventory)}
+        media_path = quote((payload / rel).as_posix(), safe="/:")
+        body = body.replace(f"]({rel})", f"](<{media_path}>)")
+
+    receipt = report.with_suffix(".md.json")
+    inventory = report.with_suffix(".md.facts.json")
+    sheet = report.with_suffix(".checklist.md")
+    lock = locked(path.parent, recovery=False) if history_path is not None else nullcontext()
+    with lock:
+        changes = ()
+        if history_path is not None:
+            current = reviewed_summary(model["audit"], manifest, digest)
+            previous = None
+            if history_path.is_file():
+                history = read_json(history_path)
+                latest = history["current"]
+                previous = history["previous"] if latest["snapshot_sha256"] == digest else latest
+            changes = review_changes(previous, current)
+        checks = checklist(payload, report, model["audit"], manifest, digest, source_verified=source is not None,
+                           changes=changes)
+        require(snapshot_hash(candidate) == digest, "Candidate changed during review")
+        facts = dumps(fact_inventory(model["audit"])).encode()
+        receipt_data = {"candidate": str(candidate.resolve()), "snapshot_sha256": digest, "report": str(report)}
+        if history_path is not None:
+            receipt_data["session"] = str(path.resolve())
+        receipt_bytes = dumps(receipt_data).encode()
+        for target in (report, output):
+            atomic(target, body.encode())
+            atomic(target.with_suffix(".md.facts.json"), facts)
+            atomic(target.with_suffix(".checklist.md"), checks.encode())
+        if history_path is not None:
+            atomic(history_path, dumps({"current": current, "previous": previous}).encode())
+        atomic(receipt, receipt_bytes)
+        atomic(output.with_suffix(".md.json"), receipt_bytes)
+    return {"review": str(report), "receipt": str(receipt), "snapshot_sha256": digest,
+            "fact_inventory": str(inventory), "checklist": str(sheet)}
 
 
-def export(candidate, output_root, receipt):
+def export_session_path(candidate, receipt, session_path):
+    """Validate the logging destination using stored metadata, without the MP4."""
+    path, session = read_session_metadata(session_path)
+    path = path.resolve()
+    candidate, receipt = safe_path(candidate), safe_path(receipt)
+    try:
+        reviewed = read_json(receipt)
+    except (LibraryError, OSError):
+        reviewed = None
+    if isinstance(reviewed, dict) and "session" in reviewed:
+        require(reviewed["session"] == str(path), "Review receipt belongs to another session")
+        return path
+
+    # Receipts from earlier kits have no session path. Check any available source binding
+    # and let export report missing or corrupt inputs within the correct performance log.
+    try:
+        manifest = read_json(safe_path(candidate / "manifest.json"))
+        audit = read_json(safe_path(candidate / "audit.json"))
+    except (LibraryError, OSError):
+        return path
+    source = manifest.get("source") if isinstance(manifest, dict) else None
+    if isinstance(source, dict) and isinstance(source.get("sha256"), str):
+        require(source["sha256"] == session["source"]["sha256"], "Export candidate differs from session source")
+    if isinstance(audit, dict) and isinstance(audit.get("shots"), list) and isinstance(audit.get("id"), str):
+        bind_audit(audit, session)
+    return path
+
+
+def export(candidate, output_root, receipt, *, attempt=None):
     candidate, output_root, receipt = safe_path(candidate), workspace(output_root), safe_path(receipt)
     require(not any(path.resolve().is_relative_to(candidate.resolve()) for path in (output_root, receipt)),
             "Receipt and ZIP must stay outside candidate")
@@ -125,7 +216,10 @@ def export(candidate, output_root, receipt):
     digest = reviewed.get("snapshot_sha256")
     require(isinstance(digest, str) and re.fullmatch(r"[a-f0-9]{64}", digest),
             "Invalid review receipt digest")
-    require(snapshot_hash(candidate) == digest, "Candidate changed since whole-snapshot review")
+    current = snapshot_hash(candidate)
+    if attempt is not None:
+        attempt["snapshot_sha256"] = current
+    require(current == digest, "Candidate changed since whole-snapshot review")
     manifest = read_json(candidate / "manifest.json")
     require(manifest.get("contract_version") == FORMAT_VERSION, f"Unsupported package format; audit again with the current HOMEKU kit ({FORMAT_VERSION})")
     paths = package_files(candidate, read_json(candidate / "audit.json"))
@@ -144,6 +238,16 @@ def export(candidate, output_root, receipt):
         unpacked = extract_package(temp, Path(scratch) / "roundtrip")
         require(snapshot_hash(unpacked) == digest and snapshot_hash(candidate) == digest,
                 "Export snapshot mismatch")
-        os.replace(temp, destination)
+        package_sha256 = sha256(temp)
+        package_bytes = temp.stat().st_size
+        with locked(output_root, recovery=False):
+            if destination.exists() and (not destination.is_file() or sha256(destination) != package_sha256):
+                destination = safe_path(output_root / digest / name)
+            if destination.exists():
+                require(destination.is_file() and sha256(destination) == package_sha256,
+                        "The saved ZIP differs from this export")
+            else:
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                os.replace(temp, destination)
     return {"mode": "reviewed-export", "package": str(destination), "snapshot_sha256": digest,
-            "package_sha256": sha256(destination), "package_bytes": destination.stat().st_size}
+            "package_sha256": package_sha256, "package_bytes": package_bytes}

@@ -1,5 +1,6 @@
 """Mechanical authoring helpers; observations are written by the auditor."""
 import copy
+import hashlib
 import re
 from pathlib import Path
 from jsonschema import Draft202012Validator
@@ -11,8 +12,13 @@ from .audit_session import (
     bind_audit, checked_camera_shots, load_session, make_shots, materialize, record_for, require_current_camera,
     save_camera_check, shot_camera_digests, workspace,
 )
-from .derivations import camera_summary
-from .preflight import camera_input
+from .derivations import CATEGORIES, camera_summary, fact_claims
+from .audit_quality import validate_motion
+from .camera_notation import parse
+from .models import _clean, validate_claim_evidence
+from .preflight import camera_input, canonical_notation
+from .storage import locked
+from .motion_analysis import require_backend
 
 ROOT=Path(__file__).resolve().parents[2]
 
@@ -31,6 +37,7 @@ def _baseline_records(cache, shots):
 
 
 def prepare(source, cuts, output, *, resume=False):
+    require_backend()
     output = workspace(output)
     output.mkdir(parents=True, exist_ok=True)
     session_path, audit_path, info_path = (output / name for name in
@@ -40,7 +47,7 @@ def prepare(source, cuts, output, *, resume=False):
         path, session, cache = load_session(session_path)
         require(Path(source).resolve() == cache.source and cuts == session["cuts"],
                 "Source/cuts differ; prepare a new workspace")
-        bind_audit(read_json(audit_path), session, cache)
+        bind_audit(read_json(audit_path), session)
         require(info_path.is_file(), "Missing working audit-info.json")
         materialize(path, session, cache, _baseline_records(cache, session["shots"]))
         return {"session": str(path), "audit": str(audit_path), "audit_info": str(info_path),
@@ -89,7 +96,7 @@ def check_camera(session_path, *, shot_id=None):
     path, session, cache = load_session(session_path)
     target = workspace(path.parent / "audit.json")
     original = target.read_bytes()
-    audit = bind_audit(read_json(target), session, cache)
+    audit = bind_audit(read_json(target), session)
     pairs = list(zip(audit["shots"], session["shots"], strict=True))
     if shot_id is None:
         if "camera_check" in session:
@@ -100,8 +107,30 @@ def check_camera(session_path, *, shot_id=None):
         pairs = [(shot, native) for shot, native in pairs if shot["shot"] == shot_id]
         require(pairs, f"Unknown session shot: {shot_id}")
     records = [item["record"] for item in session["passes"]]
+    visibility = {}
+    areas = audit.get("areas")
+    if isinstance(areas, list):
+        for area in areas:
+            if not isinstance(area, dict) or not isinstance(area.get("id"), str):
+                continue
+            intervals = area.get("visible_intervals")
+            if isinstance(intervals, list) and intervals and all(
+                isinstance(interval, dict) and type(interval.get("start_s")) in (int, float)
+                and type(interval.get("end_s")) in (int, float) and interval["start_s"] < interval["end_s"]
+                for interval in intervals
+            ):
+                visibility[area["id"]] = intervals
+
+    def visible(area_id, pts):
+        return any(interval["start_s"] <= pts < interval["end_s"] for interval in visibility[area_id])
+
     for shot, native in pairs:
         shot["camera"] = camera_input(shot, native, records, cache.source, cache.info, cache.times)
+        for index, phase in enumerate(shot["camera"]["phases"]):
+            ids = phase.get("area_ids", shot.get("area_ids"))
+            if isinstance(ids, list) and ids and all(isinstance(aid, str) and aid in visibility for aid in ids):
+                pointer = f"{shot['shot']}/camera/phases/{index}"
+                validate_claim_evidence(phase, ids, shot, cache.times, visible, pointer, camera=True)
         checkpoints[shot["shot"]] = shot_camera_digests(shot)
     cache.ensure_source()
     require(path.read_bytes() == session_bytes and target.read_bytes() == original,
@@ -118,43 +147,158 @@ def check_camera(session_path, *, shot_id=None):
     ]}
 
 
+def _merge_record(old, patch):
+    result = dict(old)
+    for key, value in patch.items():
+        previous = result.get(key)
+        result[key] = _merge_record(previous, value) if isinstance(previous, dict) and isinstance(value, dict) else value
+    return result
+
+
+def _edit_shot(session_path, shot_id, transform, *, expected_audit_sha256=None):
+    path = workspace(session_path)
+    target = workspace(path.with_name("audit.json"))
+    workspace(path.parent / ".homeku" / "lock")
+    with locked(path.parent, recovery=False):
+        session_bytes, audit_bytes = path.read_bytes(), target.read_bytes()
+        if expected_audit_sha256 is not None:
+            require(hashlib.sha256(audit_bytes).hexdigest() == expected_audit_sha256,
+                    "Working audit changed since it was read. Reload it and verify the target index.")
+        _, session, cache = load_session(path)
+        audit = bind_audit(read_json(target), session)
+        index = next((i for i, shot in enumerate(audit["shots"]) if shot["shot"] == shot_id), None)
+        require(index is not None, f"Unknown session shot: {shot_id}")
+        original = audit["shots"][index]
+        defs = read_json(ROOT / "schemas/audit.schema.json")["$defs"]
+        updated, details = transform(original, audit, cache, defs, f"/shots/{index}")
+        validator = Draft202012Validator({"$defs": defs, "$ref": "#/$defs/shot"})
+
+        # A prepared skeleton may contain existing schema errors outside the edit.
+        def error_key(error):
+            return tuple(error.path), error.message
+
+        existing = {error_key(error) for error in validator.iter_errors(original)}
+        for error in validator.iter_errors(updated):
+            suffix = "/".join(str(part) for part in error.path)
+            require(error_key(error) in existing, f"{shot_id}/{suffix}: {error.message}")
+        needs_camera_check = ("camera_check" in session
+                              and checked_camera_shots(session)[shot_id] != shot_camera_digests(updated))
+        audit["shots"][index] = updated
+        cache.ensure_source()
+        require(path.read_bytes() == session_bytes and target.read_bytes() == audit_bytes,
+                "Session or audit changed during edit. Reload the target and retry.")
+        atomic(target, dumps(audit).encode())
+    return {"audit": str(target), "shot": shot_id, "camera_recheck_required": needs_camera_check, **details}
+
+
 def update_shot(session_path, shot_id, patch_path):
     """Merge a JSON object into one working shot; replace arrays as a unit."""
-    path, session, cache = load_session(session_path)
-    target = workspace(path.parent / "audit.json")
     patch = read_json(Path(patch_path))
     require(isinstance(patch, dict) and patch, "Shot patch must be a nonempty JSON object")
-    locked = {"shot", "start_s", "end_s", "transition"}
-    require(not (locked & patch.keys()), "Shot ID, boundaries and transition are locked")
-    audit = bind_audit(read_json(target), session, cache)
-    index = next((i for i, shot in enumerate(audit["shots"]) if shot["shot"] == shot_id), None)
-    require(index is not None, f"Unknown session shot: {shot_id}")
+    require(not ({"shot", "start_s", "end_s", "transition"} & patch.keys()),
+            "Shot ID, boundaries and transition are locked")
+    return _edit_shot(session_path, shot_id, lambda shot, *_: (_merge_record(shot, patch), {}))
 
-    def merge(old, changes):
-        result = dict(old)
-        for key, value in changes.items():
-            previous = result.get(key)
-            result[key] = merge(previous, value) if isinstance(previous, dict) and isinstance(value, dict) else value
-        return result
 
-    schema = read_json(ROOT / "schemas/audit.schema.json")
-    validator = Draft202012Validator({"$defs": schema["$defs"], "$ref": "#/$defs/shot"})
-    original = audit["shots"][index]
-    updated = merge(original, patch)
-    # The prepared skeleton can be incomplete. Reject new schema errors without
-    # requiring observations in untouched fields or other shots.
-    def error_key(error):
-        return tuple(error.path), error.message
+def _check_override_targets(previous, updated, pointer):
+    before = parse(previous["notation"])
+    after = parse(updated["notation"])
+    before_keys = [(item["movement"], item["toward"]) for item in before]
+    after_keys = [(item["movement"], item["toward"]) for item in after]
+    for override in previous["overrides"]:
+        index = override["component_index"]
+        require(index < min(len(before), len(after)),
+                pointer + ": supply overrides for the new component order")
+        identity = before_keys[index]
+        unambiguous = (identity[0] != "other" and before_keys.count(identity) == 1
+                       and after_keys.count(identity) == 1)
+        require(before[index]["raw"] == after[index]["raw"] or (unambiguous and identity == after_keys[index]),
+                pointer + ": supply overrides for the new component order")
 
-    existing = {error_key(error) for error in validator.iter_errors(original)}
-    for error in validator.iter_errors(updated):
-        suffix = "/".join(str(part) for part in error.path)
-        require(error_key(error) in existing, f"{shot_id}/{suffix}: {error.message}")
-    needs_camera_check = ("camera_check" in session
-                          and checked_camera_shots(session)[shot_id] != shot_camera_digests(updated))
-    audit["shots"][index] = updated
-    atomic(target, dumps(audit).encode())
-    return {"audit": str(target), "shot": shot_id, "camera_recheck_required": needs_camera_check}
+
+def edit_record(session_path, shot_id, kind, patch_path, *, record_index=None, block_index=None,
+                category=None, expected_audit_sha256=None):
+    """Append a complete entry or patch one zero-based record in the working audit."""
+    patch = read_json(Path(patch_path))
+    require(isinstance(patch, dict) and patch, "Record patch must be a nonempty JSON object")
+    require(kind in {"phase", "fact"}, "Select a phase or fact")
+    if record_index is not None or kind == "fact" or expected_audit_sha256 is not None:
+        require(isinstance(expected_audit_sha256, str) and re.fullmatch(r"[a-f0-9]{64}", expected_audit_sha256),
+                "Selecting an existing record or design block requires --expect-audit-sha256 from the working audit you read")
+    if kind == "phase":
+        require(block_index is None and category is None, "Design block and category are only for facts")
+    else:
+        require(type(block_index) is int and block_index >= 0 and category in CATEGORIES,
+                "A fact requires a zero-based design block and category")
+
+    def transform(original, audit, cache, defs, prefix):
+        shot = copy.deepcopy(original)
+        if kind == "phase":
+            records = shot["camera"]["phases"]
+            container = shot["area_ids"]
+            pointer = prefix + "/camera/phases"
+        else:
+            require(block_index < len(shot["design"]), prefix + "/design: unknown block index")
+            block = shot["design"][block_index]
+            records = block[category]["facts"]
+            container = block["area_ids"]
+            pointer = f"{prefix}/design/{block_index}/{category}/facts"
+            require(container and set(container) <= set(shot["area_ids"]), pointer + ": invalid design area scope")
+
+        index = len(records) if record_index is None else record_index
+        require(type(index) is int and (record_index is None or 0 <= index < len(records)),
+                pointer + ": unknown record index")
+        pointer += f"/{index}"
+        value = patch if record_index is None else _merge_record(records[index], patch)
+        error = next(Draft202012Validator({"$defs": defs, "$ref": f"#/$defs/{kind}"}).iter_errors(value), None)
+        if error:
+            suffix = "".join(f"/{part}" for part in error.path)
+            raise LibraryError(f"{pointer}{suffix}: {error.message}")
+        _clean(patch, pointer)
+        if kind == "fact":
+            _clean(value, pointer)
+        ids = value.get("area_ids", container)
+        require(set(ids) <= set(container), pointer + ": unknown/out-of-scope area")
+        area_map = {area["id"]: area["visible_intervals"] for area in audit["areas"]}
+        require(set(ids) <= set(area_map), pointer + ": unknown area")
+
+        def visible(aid, pts):
+            return any(v["start_s"] <= pts < v["end_s"] for v in area_map[aid])
+
+        validate_claim_evidence(value, ids, shot, cache.times, visible, pointer, camera=kind == "phase")
+        if kind == "phase":
+            require(shot["start_s"] <= value["start_s"] < value["end_s"] <= shot["end_s"],
+                    pointer + ": invalid phase interval")
+            if index:
+                require(value["start_s"] >= records[index - 1]["end_s"] - 1e-6,
+                        pointer + ": overlaps previous phase")
+            if index + 1 < len(records):
+                require(value["end_s"] <= records[index + 1]["start_s"] + 1e-6,
+                        pointer + ": overlaps next phase")
+            try:
+                if "{{" not in value["notation"]:
+                    value["notation"] = canonical_notation(value["notation"])
+                if (record_index is not None and "notation" in patch and "overrides" not in patch
+                        and value.get("overrides") and records[index]["notation"] != value["notation"]):
+                    _check_override_targets(records[index], value, pointer)
+                validate_motion({"shots": [{**shot, "camera": {"phases": [value]}}]}, cache.times,
+                                allow_placeholder=True)
+            except ValueError as error:
+                raise LibraryError(f"{pointer}: {error}") from error
+
+        if record_index is None:
+            records.append(value)
+        else:
+            records[index] = value
+        if kind == "fact":
+            key = (set(ids), value["subject"], value["attribute"], repr(value["value"]), value["state"])
+            for existing, fact, scope, _ in fact_claims(shot, int(prefix.rsplit("/", 1)[1])):
+                other = (set(scope), fact["subject"], fact["attribute"], repr(fact["value"]), fact["state"])
+                require(existing == pointer or other != key, pointer + ": duplicate fact content")
+        return shot, {"source_pointer": pointer, "record": value}
+
+    return _edit_shot(session_path, shot_id, transform, expected_audit_sha256=expected_audit_sha256)
+
 
 def complete(audit_path, *, session_path=None, info_path=None):
     """Fill mechanical values and copy explicit declarations from the session."""
@@ -164,7 +308,7 @@ def complete(audit_path, *, session_path=None, info_path=None):
     info_target = workspace(info_path or path.parent / "audit-info.json")
     require(len({audit_path.resolve(), path.resolve(), info_target.resolve()}) == 3,
             "Audit, session and audit-info must be separate files")
-    audit = bind_audit(read_json(audit_path), session, cache)
+    audit = bind_audit(read_json(audit_path), session)
     require_current_camera(session, audit)
     info = read_json(info_target)
     require(isinstance(info, dict), "Working audit-info must be a JSON object")
@@ -176,38 +320,37 @@ def complete(audit_path, *, session_path=None, info_path=None):
             changes.append(f"{pointer}/{key}")
 
     log = path.parent / "performance.jsonl"
-    with timed(log, "complete"):
-        for i, (shot, row) in enumerate(zip(audit["shots"], session["shots"])):
-            pointer = f"/shots/{i}"
-            panels = shot["panels"]
-            require(len(panels) >= 2, f"{pointer}/panels: retain first and last panels")
-            if len(shot["area_ids"]) == 1:
-                require(len(panels) == 3, f"{pointer}/panels: normal shot requires three panels")
-                production_start = shot["composition"].get("production_start")
-                if production_start is not None:
-                    assign(panels[0], "frame_index", production_start["frame_index"], f"{pointer}/panels/0")
-            else:
-                assign(panels[0], "frame_index", row["first"], f"{pointer}/panels/0")
-                assign(panels[-1], "frame_index", row["last"], f"{pointer}/panels/{len(panels)-1}")
-            for group in ("panels", "overviews"):
-                for j, item in enumerate(shot[group]):
-                    frame = item.get("frame_index")
-                    require(type(frame) is int and row["first"] <= frame <= row["last"],
-                            f"{pointer}/{group}/{j}/frame_index: select a native frame within this shot")
-                indices = [item["frame_index"] for item in shot[group]]
-                require(indices == sorted(indices), f"{pointer}/{group}: selections must follow source chronology")
-        records = [item["record"] for item in session["passes"]]
-        info["frame_reviews"] = records
-        info["reviewed_ranges"] = [
-            {key: record[key] for key in ("start_s", "end_s", "mode")}
-            for record in records if record["selected_frame_indices"] == record["viewed_frame_indices"]
-            and record["viewed_frame_indices"]
-        ]
-        audit_bytes, info_bytes = dumps(audit).encode(), dumps(info).encode()
-        cache.ensure_source()
-        if changes:
-            atomic(audit_path, audit_bytes)
-        atomic(info_target, info_bytes)
-        event(log, "complete-changes", paths=changes)
+    for i, (shot, row) in enumerate(zip(audit["shots"], session["shots"])):
+        pointer = f"/shots/{i}"
+        panels = shot["panels"]
+        require(len(panels) >= 2, f"{pointer}/panels: retain first and last panels")
+        if len(shot["area_ids"]) == 1:
+            require(len(panels) == 3, f"{pointer}/panels: normal shot requires three panels")
+            production_start = shot["composition"].get("production_start")
+            if production_start is not None:
+                assign(panels[0], "frame_index", production_start["frame_index"], f"{pointer}/panels/0")
+        else:
+            assign(panels[0], "frame_index", row["first"], f"{pointer}/panels/0")
+            assign(panels[-1], "frame_index", row["last"], f"{pointer}/panels/{len(panels)-1}")
+        for group in ("panels", "overviews"):
+            for j, item in enumerate(shot[group]):
+                frame = item.get("frame_index")
+                require(type(frame) is int and row["first"] <= frame <= row["last"],
+                        f"{pointer}/{group}/{j}/frame_index: select a native frame within this shot")
+            indices = [item["frame_index"] for item in shot[group]]
+            require(indices == sorted(indices), f"{pointer}/{group}: selections must follow source chronology")
+    records = [item["record"] for item in session["passes"]]
+    info["frame_reviews"] = records
+    info["reviewed_ranges"] = [
+        {key: record[key] for key in ("start_s", "end_s", "mode")}
+        for record in records if record["selected_frame_indices"] == record["viewed_frame_indices"]
+        and record["viewed_frame_indices"]
+    ]
+    audit_bytes, info_bytes = dumps(audit).encode(), dumps(info).encode()
+    cache.ensure_source()
+    if changes:
+        atomic(audit_path, audit_bytes)
+    atomic(info_target, info_bytes)
+    event(log, "complete-changes", paths=changes)
     return {"audit": str(audit_path), "audit_info": str(info_target),
             "changes": changes, "next": "Run check-input with the completed working files."}

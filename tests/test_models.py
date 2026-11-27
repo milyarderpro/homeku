@@ -67,6 +67,16 @@ class ModelTests(unittest.TestCase):
         with self.assertRaisesRegex(LibraryError, "area"):
             self.validate(value)
 
+    def test_camera_override_evidence_must_be_visible_in_the_phase_area(self):
+        audit = self.audit("multi")
+        phase = audit["shots"][0]["camera"]["phases"][0]
+        phase.update(area_ids=["kitchen-1"], evidence=[4, 11])
+        phase["overrides"] = [{"component_index": 0, "evidence": [0, 11]}]
+        with self.assertRaisesRegex(LibraryError, r"/camera/phases/0/overrides/0: evidence outside area visibility"):
+            self.validate(audit)
+        phase["overrides"][0]["evidence"] = [4, 11]
+        self.validate(audit)
+
     def test_camera_needs_two_frames_and_consistent_explicit_depth(self):
         value = self.audit()
         phase = value["shots"][0]["camera"]["phases"][0]

@@ -58,6 +58,24 @@ def validate_camera_timeline(shot):
         require(abs(cursor - end) < 1e-6, sid + ": camera timeline incomplete")
 
 
+def validate_claim_evidence(claim, ids, shot, times, visible, pointer, *, camera=False):
+    require(claim.get("evidence") or claim.get("state") == "unknown" or camera,
+            pointer + ": claim requires evidence unless unknown")
+    if times is None:
+        return
+    evidence_sets = [(pointer, claim.get("evidence", []))]
+    if camera:
+        evidence_sets.extend((f"{pointer}/overrides/{number}", override["evidence"])
+                             for number, override in enumerate(claim.get("overrides", ())) if "evidence" in override)
+    for location, evidence in evidence_sets:
+        for index in evidence:
+            require(type(index) is int and 0 <= index < len(times), location + ": unknown native evidence")
+            if shot is not None:
+                require(shot["start_s"] <= times[index] < shot["end_s"], location + ": evidence outside shot")
+            if ids:
+                require(any(visible(aid, times[index]) for aid in ids), location + ": evidence outside area visibility")
+
+
 def validate_audit(audit, duration=None, times=None):
     require(isinstance(audit, dict) and audit.get("schema_version") == FORMAT_VERSION,
             "Unsupported audit format; use the current HOMEKU kit and audit again")
@@ -162,17 +180,7 @@ def validate_audit(audit, duration=None, times=None):
     for relation in audit.get("relations", []):
         require(relation["from"] in shot_map and relation["to"] in shot_map, "Unknown related shot")
     for pointer, claim, ids, sid, category in claims(audit):
-        require(claim.get("evidence") or claim.get("state") == "unknown" or category == "camera",
-                pointer + ": claim requires evidence unless unknown")
-        if times is None:
-            continue
-        for i in claim.get("evidence", []):
-            require(i < len(times), pointer + ": unknown native evidence")
-            if sid is not None:
-                shot = shot_map[sid]
-                require(shot["start_s"] <= times[i] < shot["end_s"], pointer + ": evidence outside shot")
-            if ids:
-                require(any(visible(aid, times[i]) for aid in ids), pointer + ": evidence outside area visibility")
+        validate_claim_evidence(claim, ids, shot_map.get(sid), times, visible, pointer, camera=category == "camera")
     from .audit_quality import validate_motion
     validate_motion(audit, times)
     return audit

@@ -14,7 +14,7 @@ Untuk penilaian kamera sebelum rilis, jalankan pilot penuh dengan kit 3.1. Tabel
 
 ## Pembanding rilis kamera
 
-Enam paket pilot baru telah diperiksa secara teknis. Gunakan [pembanding kamera](camera-release-check.md) untuk audit penuh di ChatGPT dan Gemini, termasuk kasus awal yang tertutup transisi.
+Enam paket pilot baru telah diperiksa secara teknis. Gunakan [pembanding kamera](camera-release-check.md) untuk pilot rilis di ChatGPT, termasuk kasus awal yang tertutup transisi dan penyerahan ZIP pilihan ke Drive.
 
 ## Menjalankan satu pilot
 

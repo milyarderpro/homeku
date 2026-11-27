@@ -1,10 +1,10 @@
-"""Optional 2D statistics use correct composition and explicit coverage."""
+"""Bounded 2D statistics use correct composition and explicit coverage."""
 import unittest
 from unittest.mock import patch
 from PIL import Image
 from . import test_prepare
 from homeku.common import LibraryError
-from homeku.motion_analysis import dependencies, interval, macro_transform, summarize, transform_metrics
+from homeku.motion_analysis import interval, macro_transform, require_backend, summarize, transform_metrics
 
 
 class MotionMathTests(unittest.TestCase):
@@ -68,11 +68,11 @@ class MotionMathTests(unittest.TestCase):
             self.assertEqual(segment["zone_coverage_fraction"], 0)
 
 
-class MotionFallbackTests(unittest.TestCase):
-    def test_missing_dependency_is_nonfatal(self):
-        with Image.new("RGB", (100, 100)) as image, patch(
-                "homeku.motion_analysis.dependencies", return_value=None):
-            self.assertEqual(interval(image, image, .2)["status"], "unavailable")
+class MotionInputTests(unittest.TestCase):
+    def test_missing_dependency_is_actionable(self):
+        with Image.new("RGB", (100, 100)) as image, patch.dict("sys.modules", {"cv2": None}):
+            with self.assertRaisesRegex(LibraryError, "Install requirements.txt"):
+                interval(image, image, .2)
 
     def test_invalid_pts_is_rejected_before_tracking(self):
         with Image.new("RGB", (100, 100)) as image:
@@ -98,7 +98,7 @@ class MotionCacheTests(test_prepare.VideoFixture, unittest.TestCase):
             return {"status": "ok", "image_size": list(first.size), "matrix": [[1, 0, 2], [0, 1, 0]],
                     "lower_minus_upper_fraction": .03 * dt}
 
-        with (patch("homeku.motion_analysis.dependencies", return_value=backend),
+        with (patch("homeku.motion_analysis.require_backend", return_value=backend),
               patch("homeku.motion_analysis.interval", side_effect=tracked) as estimator):
             hints = motion_hints(session, "shot-01", max_frames=4, width=100)
             self.assertNotIn("intervals", hints)
@@ -120,19 +120,20 @@ class MotionCacheTests(test_prepare.VideoFixture, unittest.TestCase):
                 motion_hints(session, "shot-01", max_frames=1000)
         self.assertEqual((session.read_bytes(), audit.read_bytes()), original)
 
-    def test_missing_dependencies_allow_a_prepared_session_to_continue(self):
+    def test_missing_dependencies_block_motion_and_preparation(self):
         from homeku.authoring import prepare
         from homeku.motion_analysis import motion_hints
         result = prepare(self.video("fallback"), [], self.work / "authoring")
-        with patch("homeku.motion_analysis.dependencies", return_value=None):
-            hints = motion_hints(result["session"], "shot-01")
-        self.assertEqual(hints["status"], "unavailable")
+        with patch.dict("sys.modules", {"numpy": None}):
+            with self.assertRaisesRegex(LibraryError, "OpenCV and NumPy"):
+                motion_hints(result["session"], "shot-01")
+            with self.assertRaisesRegex(LibraryError, "OpenCV and NumPy"):
+                prepare(self.video("missing"), [], self.work / "missing")
 
 
-@unittest.skipUnless(dependencies() is not None, "Optional OpenCV/NumPy unavailable")
 class RealTrackingTests(unittest.TestCase):
     def test_known_affine_transform_and_native_delta(self):
-        cv, np = dependencies()
+        cv, np = require_backend()
         values = np.random.default_rng(45).integers(0, 256, (240, 320), dtype=np.uint8)
         converted = cv.warpAffine(values, np.array([[1.02, 0, 4], [0, 1.02, -3]]), (320, 240))
         with Image.fromarray(values) as first, Image.fromarray(converted) as second:

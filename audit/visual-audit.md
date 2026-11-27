@@ -32,6 +32,9 @@ Bandingkan pergeseran relatif setelah mempertimbangkan perubahan skala akibat Do
 Untuk arah vertikal, periksa rotasi yang disengaja dan berkelanjutan sebelum menulis Tilt. Bandingkan dengan perpindahan tinggi kamera dan drift tipis akibat jalan atau proyeksi wide.
 
 ## Arah, notasi dan tempo
+**Prinsip kelengkapan audit kamera — Wajib dinilai, tidak wajib dipaksakan.**
+
+Setiap aspek gerakan kamera wajib diperiksa dan diupayakan estimasinya. Cantumkan komponen, qualifier, dan estimasi besaran sesuai dukungan visual. Estimasi besaran bersifat opsional. Wajib dinilai, opsional dicantumkan, tidak boleh dipaksakan.
 
 Tentukan `depth_direction` per fase sebagai IN, OUT, NO IN/OUT, atau null jika ambigu. Camera Pattern mengikuti arah fase. Gunakan pola `[Komponen Utama] ([Skala]) [+ / →] [Komponen Sekunder] ([Intensitas / Kurva])`.
 
@@ -40,11 +43,36 @@ Tentukan `depth_direction` per fase sebagai IN, OUT, NO IN/OUT, atau null jika a
 - **Sudut (~°).** Taksir Pan atau Tilt dari perubahan arah pandang, serta Orbit dari perubahan sisi yang terlihat sepanjang lintasan. Saat Pan mengimbangi Orbit, pisahkan tafsir putaran tiap komponen sebelum menaksir sudutnya.
 - **Profil laju.** Bandingkan beberapa interval PTS setara. Gunakan `Constant`, `Accelerating`, `Decelerating`, `Ease-In`, atau `Ease-Out` saat didukung perubahan laju setelah mempertimbangkan perspektif. Nilai tempo shot tersendiri. Semua shot boleh `moderate` jika pengamatan mendukungnya.
 
-Cantumkan estimasi per komponen jika bisa ditaksir secara wajar. Angka tunggal dan rentang sama-sama sah. Gunakan angka tunggal jika perkiraannya berdekatan. Perkiraan visual wajar diterima tanpa pengukuran piksel atau kalibrasi wajib.
+Auditor wajib mengupayakan estimasi besaran setiap komponen gerakan yang teridentifikasi. Gunakan penilaian visual berdasarkan perubahan perspektif, orientasi bidang, paralaks, oklusi, arah pandang, dan perubahan ukuran jangkar.
+
+Estimasi sudut (~°) dan skala (~×) merupakan perkiraan visual untuk membantu reproduksi gerakan kamera, bukan tuntutan pengukuran presisi atau kalibrasi kamera 3D.
+
+Nilai besaran setiap komponen secara independen. Angka tunggal, rentang, dan tanpa estimasi sama-sama sah tanpa urutan prioritas. Pilih bentuk yang paling sesuai dengan karakter gerakan dan bukti visual. Gunakan pembulatan yang wajar serta hindari presisi semu. Simbol `~` menyatakan perkiraan visual.
+
+Besaran boleh tidak dicantumkan hanya setelah auditor mengupayakan estimasi melalui pemeriksaan visual yang memadai tetapi bukti tetap tidak memungkinkan perkiraan yang bertanggung jawab. Catat alasan spesifiknya dalam observations.
 
 ## Kelengkapan notasi Camera Movement
 
-Sebelum menjalankan check-camera, cocokkan `notation`, `observations`, dan frame pada fase yang sama. Periksa fase yang terlewat, kemungkinan Orbit terbaca sebagai Pan, dan arah badan atau sapuan yang terbalik. Masukkan setiap komponen dan qualifier yang didukung visual ke notasi. Validator memeriksa struktur dan sintaks. Ketepatan gerak diperiksa auditor dari frame.
+Sebelum menjalankan check-camera, lakukan pemeriksaan mandiri terhadap setiap fase dengan mencocokkan notation, observations, dan frame.
+
+Periksa kelengkapan berikut:
+
+- Jenis dan arah setiap komponen gerakan.
+- Awal, overlap, akhir, dan urutan fase.
+- Lintasan translasi: Straight, Diagonal, atau karakter lain yang didukung visual.
+- Intensitas setiap komponen.
+- Estimasi skala (~×) untuk perubahan kedalaman atau Zoom.
+- Estimasi sudut (~°) untuk Pan, Orbit, Tilt, dan rotasi lain yang relevan.
+- Profil laju, akselerasi, deselerasi, dan easing.
+- Kemungkinan tafsir alternatif serta bukti yang membedakannya.
+
+Setiap aspek wajib dinilai meskipun tidak semuanya harus muncul dalam notasi. Masukkan semua komponen, qualifier, dan estimasi yang didukung visual.
+
+Jika suatu rincian belum dapat ditentukan, periksa kembali frame pada interval terkait. Jika tetap tidak dapat diperkirakan, catat alasannya dalam observations.
+
+Utamakan ketepatan interpretasi visual. Statistik OpenCV membantu pemilihan interval, pengukuran, dan verifikasi, tetapi tidak menggantikan penilaian auditor.
+
+Kelulusan check-camera merupakan validasi teknis, bukan jaminan ketepatan interpretasi kamera. Auditor bertanggung jawab atas kualitas dan kelengkapan notasi sebelum menyelesaikan fase kamera.
 
 ## Production Start
 
@@ -57,8 +85,24 @@ python tools/audit.py motion-hints work/audit/session.json --shot-id shot-02
 python tools/audit.py motion-hints work/audit/session.json --shot-id shot-02 --details
 ~~~
 
-Helper opsional memakai 32 frame dan lebar analisis 320 px secara default. Batasnya 64 frame dan 640 px. Keluaran ringkas memuat cakupan tracking, gap, rentang valid, dan tren awal, tengah, serta akhir menurut PTS. Opsi `--details` menampilkan matriks setiap interval. `total` berlaku pada rentang PTS yang diukur dan berisi `null` saat rantai tracking terputus.
+Helper memakai 32 frame dan lebar analisis 320 px secara default. Batasnya 64 frame dan 640 px. Keluaran ringkas memuat cakupan tracking, gap, rentang valid, dan tren awal, tengah, serta akhir menurut PTS. Opsi `--details` menampilkan matriks setiap interval. `total` berlaku pada rentang PTS yang diukur dan berisi `null` saat rantai tracking terputus.
 
 Setiap segmen tren memuat `lower_minus_upper_fraction_per_s`, yaitu selisih laju geser horizontal zona bawah terhadap zona atas dalam fraksi lebar gambar per detik. Nilai positif berarti zona bawah bergeser lebih ke kanan relatif terhadap zona atas, dan nilai negatif berarti lebih ke kiri. `zone_coverage_fraction` menunjukkan bagian durasi segmen yang memiliki data kedua zona, dari 0 sampai 1. Laju `null` berarti data kedua zona tidak tersedia pada segmen itu. Laju `0` berarti selisih neto terukur nol.
 
-Upper dan lower merujuk zona gambar. Gunakan selisih ini untuk memilih bagian yang perlu diperiksa lebih dekat, lalu nilai depth, translation, dan rotation dari frame untuk membedakan Pan, Orbit, dan Truck. Jika OpenCV atau NumPy tidak tersedia, lanjutkan audit visual. Helper menyimpan statistik di cache kerja dan deklarasi viewed tetap dilakukan setelah pemeriksaan frame.
+Upper dan lower merujuk zona gambar. Gunakan selisih ini untuk memilih bagian yang perlu diperiksa lebih dekat, lalu nilai depth, translation, dan rotation dari frame untuk membedakan Pan, Orbit, dan Truck. OpenCV dan NumPy wajib tersedia di workspace audit. Helper menyimpan statistik di cache kerja dan deklarasi viewed tetap dilakukan setelah pemeriksaan frame.
+
+## Pengukuran dimensi jangkar
+
+Gunakan tren dan gap dari `motion-hints` untuk memilih interval yang perlu diperiksa. Pilih tepi fisik yang sama pada dua frame native dalam satu fase. Gunakan koordinat dari gambar native dengan titik asal di kiri atas. Contoh berikut meminta OpenCV mengusulkan lokasi titik akhir.
+
+~~~sh
+python tools/audit.py measure-anchor work/audit/session.json --shot-id shot-02 --frames 24 31 --start-points 20 40 50 40 --output work/anchors
+~~~
+
+Buka kedua gambar dari field `preview`. Konfirmasi bahwa garis mengikuti bagian yang sama pada kedua frame. Salin koordinat akhir dari `points_px` atau tentukan ulang jika titik bergeser, lalu jalankan pengukuran dengan `--end-points`.
+
+~~~sh
+python tools/audit.py measure-anchor work/audit/session.json --shot-id shot-02 --frames 24 31 --start-points 20 40 50 40 --end-points 25 44 70 44 --output work/anchors
+~~~
+
+Tracking memakai maksimal 64 frame native berurutan. Jika tracking terputus karena blur atau oklusi, pilih titik akhir secara manual atau gunakan interval yang lebih pendek. Hasil pengukuran mencatat panjang piksel dan PTS kedua frame, serta rasio skala gambar. Bandingkan jangkar dekat dan jauh, oklusi, serta perubahan sudut untuk menilai komponen gerak. Simpan penafsiran di observasi dan notasi audit, lalu deklarasikan viewed hanya setelah memeriksa gambar.

@@ -14,7 +14,6 @@ on:
       - 'sources/**'
       - '.github/workflows/**'
       - 'requirements.txt'
-      - 'requirements-audit-motion.txt'
   push:
     paths:
       - 'tools/**'
@@ -28,7 +27,6 @@ on:
       - 'sources/**'
       - '.github/workflows/**'
       - 'requirements.txt'
-      - 'requirements-audit-motion.txt'
   workflow_dispatch:
 
 permissions:
@@ -44,9 +42,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
-          cache-dependency-path: |
-            requirements.txt
-            requirements-audit-motion.txt
+          cache-dependency-path: requirements.txt
       - name: Install dependencies
         run: |
           python -m pip install -r requirements.txt
@@ -58,8 +54,3 @@ jobs:
         run: python tools/library.py check
       - name: Verify reusable chat input kit
         run: python tools/build_audit_kit.py --check
-
-      - name: Test optional motion helper
-        run: |
-          python -m pip install -r requirements-audit-motion.txt
-          python -m unittest tests.test_motion_analysis -v

@@ -1,25 +1,27 @@
-"""Optional bounded 2D statistics. Never labels physical camera motion or edits audit."""
+"""Bounded 2D statistics. Never labels physical camera motion or edits audit."""
 import hashlib
 import io
 import json
 import math
 from pathlib import Path
 from PIL import Image
-from .common import dumps, require, sha256
-from .audit_performance import timed,safe_path
+from .common import LibraryError, dumps, require, sha256
+from .audit_performance import safe_path, timed
 from .audit_session import load_session
 from .video_cache import atomic
 from .render_assets import MAX_PIXELS
 
 MOTION_CACHE_LIMIT = 32 * 1024 * 1024
 
-def dependencies():
+
+def require_backend():
     try:
         import cv2
         import numpy
-        return cv2, numpy
-    except (ImportError, OSError):
-        return None
+    except (ImportError, OSError) as error:
+        raise LibraryError("OpenCV and NumPy are required for audit. Install requirements.txt") from error
+    return cv2, numpy
+
 
 def compose(first, second):
     """Combine two 2×3 affine matrices in temporal order."""
@@ -50,23 +52,35 @@ def macro_transform(rows):
     return {"matrix": matrix, "image_size": size, **transform_metrics(matrix, size)}
 
 
+def track_points(first, second, pts, backend, *, max_level=3):
+    """Return proposed positions with a forward-backward validity mask."""
+    cv, np = backend
+    following, status, _ = cv.calcOpticalFlowPyrLK(first, second, pts, None, winSize=(21, 21), maxLevel=max_level)
+    if following is None or status is None:
+        return None
+    mask = (status.ravel() == 1) & np.isfinite(following).all(axis=(1, 2))
+    if mask.any():
+        backwards, backstatus, _ = cv.calcOpticalFlowPyrLK(second, first, following[mask], None,
+                                                            winSize=(21, 21), maxLevel=max_level)
+        if backwards is None or backstatus is None:
+            return None
+        mask[mask] = (backstatus.ravel() == 1) & (np.max(np.abs(pts[mask] - backwards), axis=(1, 2)) < 1.5)
+    return following, mask
+
+
 def interval(first, second, dt, *, backend=None):
     require(math.isfinite(dt) and dt>0, "Motion interval needs positive native PTS delta")
-    backend=backend or dependencies()
-    if backend is None:
-        return {"status":"unavailable","reason":"Optional OpenCV/NumPy unavailable; continue visual inspection"}
-    cv,np=backend
+    backend = backend or require_backend()
+    cv, np = backend
     a=np.asarray(first.convert("L"));b=np.asarray(second.convert("L"))
     require(a.shape==b.shape and a.size>0,"Motion pictures must share dimensions")
     result={"status":"insufficient","dt_s":dt,"tracked":0,"inliers":0}
     pts=cv.goodFeaturesToTrack(a,maxCorners=250,qualityLevel=.01,minDistance=6)
     if pts is None or len(pts)<8:return result
-    following,status,_=cv.calcOpticalFlowPyrLK(a,b,pts,None,winSize=(21,21),maxLevel=3)
-    if following is None or status is None:return result
-    backwards,backstatus,_=cv.calcOpticalFlowPyrLK(b,a,following,None,winSize=(21,21),maxLevel=3)
-    if backwards is None or backstatus is None:return result
-    mask=(status.ravel()==1)&(backstatus.ravel()==1)&np.isfinite(following).all(axis=(1,2))
-    mask&=np.max(np.abs(pts-backwards),axis=(1,2))<1.5
+    tracked = track_points(a, b, pts, backend)
+    if tracked is None:
+        return result
+    following, mask = tracked
     p=pts[mask].reshape(-1,2);q=following[mask].reshape(-1,2)
     result["tracked"]=len(p)
     if len(p)<8:return result
@@ -164,10 +178,8 @@ def motion_hints(session_path,shot_id,*,start=None,end=None,max_frames=32,width=
     require(shot is not None,"Unknown motion shot")
     start=shot["start_s"] if start is None else start;end=shot["end_s"] if end is None else end
     require(shot["start_s"]<=start<end<=shot["end_s"],"Motion interval outside shot")
-    backend=dependencies()
-    if backend is None:
-        return {"status":"unavailable","reason":"Optional OpenCV/NumPy unavailable; continue visual inspection","reused":False}
-    cv,np=backend
+    backend = require_backend()
+    cv, np = backend
     ids=sorted({i for p in session["passes"] if p["record"]["shot_id"]==shot_id
                 for i in p["record"]["selected_frame_indices"] if start<=cache.times[i]<end})
     require(len(ids)>=2,"Prepare at least two frames in this interval")

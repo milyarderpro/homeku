@@ -127,7 +127,7 @@ def check_inputs(source, audit, audit_info, *, session_path=None, limit=100, sup
         require(session_path is not None, "The source-bound session is required; run check-camera")
         _, session, bound_cache = load_session(session_path)
         require(source == bound_cache.source, "Source differs from the camera check session")
-        bind_audit(audit, session, bound_cache)
+        bind_audit(audit, session)
         require_current_camera(session, audit)
         return bound_cache
 

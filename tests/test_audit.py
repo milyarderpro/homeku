@@ -57,13 +57,71 @@ class AuditCLITests(test_prepare.VideoFixture, unittest.TestCase):
                                               "--patch", correction)["camera_recheck_required"])
                 self.run_json("check-camera", session, "--shot-id", "shot-01")
                 info = audit.parent / "audit-info.json"
+                self.run_json("complete", audit, "--session", session)
+                invalid = work / "invalid.json"
+                invalid.write_text("{}")
+                failure = cli("check-input", source, audit, "--audit-info", invalid, "--session", session)
+                self.assertEqual(failure.returncode, 1)
+                self.assertFalse(json.loads(failure.stdout)["ok"])
                 self.assertTrue(self.run_json("check-input", source, audit, "--audit-info", info,
                                               "--session", session)["ok"])
                 draft = self.run_json("draft", source, audit, "--audit-info", info, "--session", session,
                                       "--output", work / "candidate", "--fixture")
-                cards = self.run_json("review", draft["candidate"], "--output", work / "review.md")
-                result = self.run_json("export", draft["candidate"], "--receipt", cards["receipt"],
-                                       "--output", work / "exports")
+                session_alias = session.parent / ".." / session.parent.name / session.name
+                cards = self.run_json("review", draft["candidate"], "--output", work / "review.md",
+                                      "--session", session_alias)
+                checklist = Path(cards["checklist"]).read_text()
+                self.assertIn("[ ] Periksa framing", checklist)
+                self.assertIn("media/overview.jpg", checklist)
+                self.assertIn("media/storyboard.jpg", checklist)
+                self.assertIn("media/shot-01.jpg", checklist)
+                self.assertIn(draft["snapshot_sha256"], checklist)
+                missing = cli("export", draft["candidate"], "--receipt", work / "missing.json",
+                              "--output", work / "exports", "--session", session)
+                self.assertEqual(missing.returncode, 1)
+                self.assertEqual(json.loads(missing.stderr)["status"], "failed")
+                damaged_receipt = work / "damaged.json"
+                damaged_receipt.write_text("{")
+                damaged = cli("export", draft["candidate"], "--receipt", damaged_receipt,
+                              "--output", work / "exports", "--session", session)
+                self.assertEqual(damaged.returncode, 1)
+                manifest = Path(draft["candidate"]) / "manifest.json"
+                saved_manifest = manifest.read_bytes()
+                manifest.unlink()
+                incomplete = cli("export", draft["candidate"], "--receipt", cards["receipt"],
+                                 "--output", work / "exports", "--session", session)
+                self.assertEqual(incomplete.returncode, 1)
+                manifest.write_bytes(saved_manifest)
+                wrong = work / "wrong/session.json"
+                args = ("export", draft["candidate"], "--receipt", cards["receipt"], "--output", work / "exports")
+                self.assertEqual(cli(*args, "--session", wrong).returncode, 1)
+                self.assertFalse(wrong.parent.exists())
+                wrong.parent.mkdir()
+                wrong.write_bytes(session.read_bytes())
+                (wrong.parent / "audit.json").write_bytes(audit.read_bytes())
+                for selected_session, expected in ((session, "matches"), (wrong, "stale")):
+                    status = self.run_json("status", selected_session, "--candidate", draft["candidate"],
+                                           "--receipt", cards["receipt"])
+                    self.assertEqual(status["receipt"]["state"], expected)
+                self.assertEqual(status["receipt"]["reason"], "different-session")
+                denied = cli(*args, "--session", wrong)
+                self.assertEqual(denied.returncode, 1)
+                self.assertIn("Review receipt belongs to another session", denied.stderr)
+                self.assertFalse(wrong.with_name("performance.jsonl").exists())
+                source.rename(source.with_suffix(".offline"))
+                result = self.run_json(*args, "--session", session)
+                commands = self.run_json("performance", audit.parent)["commands"]
+                self.assertEqual(commands["check-camera"]["runs"][0]["shot"], "shot-01")
+                self.assertEqual(commands["complete"]["attempts"], 1)
+                self.assertEqual(commands["check-input"]["attempts"], 2)
+                self.assertEqual([row["state"] for row in commands["check-input"]["runs"]],
+                                 ["failed", "complete"])
+                self.assertEqual(commands["draft"]["attempts"], 1)
+                self.assertEqual(commands["export"]["attempts"], 4)
+                self.assertEqual([row["state"] for row in commands["export"]["runs"]],
+                                 ["failed", "failed", "failed", "complete"])
+                for command in ("draft", "review", "export"):
+                    self.assertEqual(commands[command]["runs"][-1]["snapshot_sha256"], result["snapshot_sha256"])
                 self.assertEqual(result["snapshot_sha256"], draft["snapshot_sha256"])
                 with zipfile.ZipFile(result["package"]) as archive:
                     self.assertEqual(len(archive.namelist()), 6)
@@ -91,6 +149,14 @@ class KitInventoryTests(test_prepare.VideoFixture, unittest.TestCase):
         self.assertTrue(not any(name.startswith(("docs/", "openspec/", "audit/result/", "video/"))
                                 or "media_v" in name or "reporting_v" in name for name in found))
         self.assertIn("check-camera", cli("--help", root=folder).stdout)
+        from tools.audit import parser
+        visual = (folder / "audit/visual-audit.md").read_text()
+        commands = [shlex.split(line)[2:] for line in visual.splitlines()
+                    if line.startswith("python tools/audit.py measure-anchor ")]
+        self.assertEqual(len(commands), 2)
+        for args in commands:
+            self.assertEqual(parser().parse_args(args).command, "measure-anchor")
+        self.assertIn("--end-points", cli("measure-anchor", "--help", root=folder).stdout)
         self.assertTrue((folder / "audit/design-audit.md").is_file())
         self.assertEqual({name for name in kit.BUNDLED if name.startswith("tools/assets/templates/")},
                          {"tools/assets/templates/analysis.md"})

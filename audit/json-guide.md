@@ -29,6 +29,25 @@ Fakta menambahkan subject dan attribute; facet_roles eksplisit untuk struktur se
 
 Tulis text manusia secara ringkas dengan ciri pembeda di awal. Gunakan `composition_summary` untuk posisi kamera, arah pandang dan cakupan wide. Uraikan detail arsitektur, furnitur dan lingkungan di `shots.design`. Facts menyimpan informasi yang diperlukan discovery. Tidak ada kuota jumlah fakta, fact_coverage paralel atau generator yang menebak fakta dari paragraf.
 
+## Mengisi satu fase atau fakta
+
+Gunakan `edit-record` pada audit kerja untuk menambah satu entri atau mengoreksi field yang dipilih. Tanpa `--record-index`, file patch harus berisi satu entri yang lengkap. Untuk koreksi, pilih indeks mulai dari nol dan sertakan field yang ingin diubah. Saat membaca audit kerja untuk memilih indeks entri atau blok desain, catat SHA-256 dari byte JSON yang sama sebagai `AUDIT_SHA256`. Jika hash sudah berubah, baca ulang audit dan pastikan indeks masih menunjuk ke entri yang benar. Field lain pada entri yang sama tetap dipakai dari audit kerja.
+
+Contoh koreksi notasi fase pertama yang bukti dan observasinya sudah terisi. Simpan objek seperti `{"notation":"Dolly-In (~1.5×)"}` di `work/fase.json` dan sesuaikan dengan pengamatan.
+
+~~~sh
+python tools/audit.py edit-record work/audit/session.json --shot-id shot-02 --kind phase --record-index 0 --expect-audit-sha256 "$AUDIT_SHA256" --patch work/fase.json
+python tools/audit.py check-camera work/audit/session.json --shot-id shot-02
+~~~
+
+Untuk menambah fakta, beri scope area pada blok desain lalu simpan satu objek fakta yang memuat `subject`, `attribute`, `value`, `state`, dan `evidence`. Contoh ini menambahkan entri ke kategori arsitektur pada blok desain pertama.
+
+~~~sh
+python tools/audit.py edit-record work/audit/session.json --shot-id shot-02 --kind fact --block-index 0 --category architecture --expect-audit-sha256 "$AUDIT_SHA256" --patch work/fakta.json
+~~~
+
+Keluaran mencantumkan `source_pointer` entri serta `camera_recheck_required` bila perubahan membuat pemeriksaan kamera sebelumnya usang. Periksa frame terkait dan ulangi `check-camera --shot-id` untuk shot itu. `update-shot` tersedia untuk perubahan beberapa field shot sekaligus.
+
 ## Profil Desain
 
 Pilih tipe rumah yang paling sesuai dari frame. Gunakan `uncertain` untuk perkiraan yang wajar, atau `value: null` dan `state: unknown` jika tipe tidak dapat diperkirakan. Tipe di luar daftar contoh tetap sah.
@@ -39,7 +58,7 @@ Gunakan `spatial-configuration` untuk susunan ruang utama, `material-hierarchy` 
 
 ## Kamera
 
-Fase memiliki start_s/end_s, notation, depth_direction, focus, evidence temporal dan observations depth/translation/rotation. Tulis pengamatan singkat spesifik interval; evidence bersama tidak disalin tiga kali. Overrides per komponen hanya bila berbeda bukti/ambiguitas.
+Fase memiliki start_s/end_s, notation, depth_direction, focus, evidence temporal dan observations depth/translation/rotation. Tulis pengamatan singkat spesifik interval; evidence bersama tidak disalin tiga kali. Isi override per komponen jika bukti atau ambiguitasnya berbeda. Saat urutan komponen yang memakai override berubah, sertakan array `overrides` dengan indeks baru yang sesuai dengan gerak dan bukti masing-masing.
 
 Notation memakai + simultan; → hanya pada summary turunan antar fase. Nilai besaran tiap komponen dan tulis estimasi ~× atau ~° yang dapat dibuat secara wajar dari frame. Angka tunggal dan rentang sama-sama sah. Estimasi tetap di `notation`. Lihat [panduan visual](visual-audit.md#arah-notasi-dan-tempo).
 

@@ -16,10 +16,11 @@ def workspace(path):
     code=Path(__file__).resolve().parents[2]
     for name in ("references","video","data","catalogs","knowledge","archive"):
         require(not path.resolve().is_relative_to((code/name).resolve()),"Use a separate audit workspace")
-    require(not (path.parent/"manifest.json").exists(),"Do not edit a rendered candidate; use its source working files")
+    require(not any((parent / "manifest.json").exists() for parent in path.parents),
+            "Do not edit a rendered candidate; use its source working files")
     return path
 
-def load_session(path):
+def read_session_metadata(path):
     path=workspace(path)
     value=read_json(path)
     require(isinstance(value,dict) and value.get("format_version")==FORMAT_VERSION
@@ -28,6 +29,10 @@ def load_session(path):
     require(isinstance(value.get("source"),dict) and isinstance(value["source"].get("path"),str) and isinstance(value["source"].get("sha256"),str),"Invalid session source")
     require(all(isinstance(value.get(k), list) for k in ("passes", "shots", "cuts")),
             "Invalid session cuts, passes or shots")
+    return path, value
+
+def load_session(path):
+    path, value = read_session_metadata(path)
     cache=FrameCache(Path(value["source"]["path"]),path.parent/".cache"/"frames",log=path.parent/"performance.jsonl")
     require(value.get("runtime_signature")==cache.signature,"Session runtime differs; prepare a new workspace")
     require(cache.source_hash==value["source"]["sha256"],"Source changed; prepare a new workspace/session")
@@ -43,12 +48,14 @@ def load_session(path):
                 and all(type(i) is int and i in indices for i in r["viewed_frame_indices"]),"Session selection/viewed mismatch")
     return path,value,cache
 
-def bind_audit(audit, session, cache):
+def bind_audit(audit, session):
+    require(all(isinstance(s, dict) and {"shot", "start_s", "end_s"} <= s.keys() for s in session["shots"]),
+            "Invalid session shot metadata")
     expected = [(s["shot"], s["start_s"], s["end_s"],
                  "cut" if i + 1 < len(session["shots"]) else "end")
                 for i, s in enumerate(session["shots"])]
     require(isinstance(audit, dict) and audit.get("schema_version") == FORMAT_VERSION
-            and audit.get("id") == cache.source.stem,
+            and audit.get("id") == Path(session["source"]["path"]).stem,
             "Audit format or source ID differs from the session")
     require(isinstance(audit.get("shots"), list) and
             all(isinstance(shot, dict) for shot in audit["shots"]) and

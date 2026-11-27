@@ -9,9 +9,9 @@ HOMEKU menyimpan audit video desain, komposisi, dan gerakan kamera dalam format 
 
 ## Audit dan ingest
 
-1. Lampirkan satu MP4 asli dan kit audit pada satu chat. Jalankan bootstrap dan ikuti prompt mulai. [Kit](audit/homeku-audit-kit.zip) · [Panduan audit](audit/README.md)
+1. Di ChatGPT, berikan tautan root Drive `HOMEKU`, lalu sebutkan satu MP4 asli dari subfolder `Video`. Kit berada di root. Kit dan MP4 juga dapat dilampirkan langsung. Jalankan bootstrap dan ikuti prompt mulai. [Kit](audit/homeku-audit-kit.zip) · [Panduan audit](audit/README.md)
 2. Setelah kandidat lulus validasi, AI menjalankan review dan ekspor, lalu menampilkan laporan enam bagian, Overview, Storyboard, seluruh kolase, dan tautan ZIP tanpa MP4 dalam balasan yang sama. Koreksi menghasilkan ZIP terbaru.
-3. Periksa hasil di chat, lalu unduh ZIP yang Anda pilih. Simpan MP4 kanonis di `video/<id>.mp4` dan taruh ZIP di `incoming/`. Jalankan ingest untuk menerima revisi dan memperbarui turunan.
+3. Periksa hasil di chat, lalu unduh ZIP yang Anda pilih atau simpan ke `HOMEKU/Hasil Audit` lewat alur ekspor. Simpan MP4 kanonis di `video/<id>.mp4` dan taruh ZIP di `incoming/`. Jalankan ingest untuk menerima revisi dan memperbarui turunan.
 
 ~~~sh
 python tools/library.py ingest incoming/rumah-r0001.zip
@@ -27,7 +27,7 @@ Referensi aktif mengikuti `data/registry.json`. Katalog, Knowledge, proyeksi, da
 
 ## Pengembangan
 
-Gunakan Python 3.11+, FFmpeg/ffprobe, dan dependensi `requirements.txt`. Helper gerak 2D bersifat opsional dan memakai `requirements-audit-motion.txt`.
+Gunakan Python 3.11+, FFmpeg/ffprobe, dan dependensi `requirements.txt`, termasuk OpenCV dan NumPy.
 
 ~~~sh
 python -m unittest discover -s tests -t . -v

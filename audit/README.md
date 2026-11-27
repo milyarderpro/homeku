@@ -1,8 +1,8 @@
 # Audit HOMEKU 3.1 di ChatGPT atau Gemini
 
-Lampirkan MP4 asli dan `homeku-audit-kit.zip`, satu video per chat. Gunakan [prompt mulai](prompts/01-audit.md).
+Untuk ChatGPT dengan Google Drive, berikan tautan root `HOMEKU` dan sebutkan satu nama video per chat. Simpan `homeku-audit-kit.zip` di root, MP4 asli di `Video`, dan ZIP final pilihan di `Hasil Audit`. Kit dan satu MP4 asli juga dapat dilampirkan langsung. Gunakan [prompt mulai](prompts/01-audit.md).
 
-Gunakan workspace yang dapat menjalankan Python dan FFmpeg, membuka frame hasil ekstraksi, serta menyediakan file ZIP. Catat provider dan model yang diketahui. Jika operasi gagal, sebutkan langkah dan error yang terjadi agar audit dapat dilanjutkan dari workspace yang sesuai.
+Gunakan workspace dengan Python 3.11+, FFmpeg/ffprobe, serta dependensi dari `requirements.txt` termasuk OpenCV dan NumPy. Workspace juga harus bisa membuka frame hasil ekstraksi dan menyediakan file ZIP. Catat provider dan model yang diketahui. Jika operasi gagal, sebutkan langkah dan error yang terjadi agar audit dapat dilanjutkan dari workspace yang sesuai.
 
 Ekstrak kit, jalankan `python homeku_runtime.py --output .`, lalu ikuti [alur audit](authoring.md).
 
@@ -11,7 +11,7 @@ Ekstrak kit, jalankan `python homeku_runtime.py --output .`, lalu ikuti [alur au
 3. **Audit desain dan kurasi media.** Ikuti [panduan desain](design-audit.md) untuk melengkapi profil, detail area, framing, panel dan Overview.
 4. **Validasi dan ekspor.** Jalankan `complete`, `check-input`, `draft`, `review`, lalu `export`. Laporan, media, dan ZIP final tersedia dalam chat yang sama.
 
-Periksa hasil di chat dan unduh ZIP yang Anda pilih. Taruh di `incoming/`, simpan MP4 kanonis di `video/<id>.mp4`, dan jalankan `python tools/library.py ingest`.
+Periksa hasil di chat dan pilih ZIP untuk diunduh atau disimpan ke `HOMEKU/Hasil Audit`. Ikuti [panduan ekspor](prompts/03-export.md) untuk transfer dan verifikasi SHA-256. Taruh di `incoming/`, simpan MP4 kanonis di `video/<id>.mp4`, dan jalankan `python tools/library.py ingest`.
 
 ## Susunan media
 

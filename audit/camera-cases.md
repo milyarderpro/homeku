@@ -40,7 +40,16 @@ Rentang ini adalah frame pembanding dari contoh. Tentukan batas fase dengan fram
 - Gunakan `Dolly-Out (~1.6×) + Orbit Left + Pan Right` jika ukuran jangkar mendukung skala mundur dan tiga komponen terlihat, sementara rincian lintasan, intensitas, profil laju, serta sudut putaran sulit diperkirakan.
 - Gunakan `Dolly-Out (~1.6×) + Orbit Left + Subtle Pan Right (Ease-Out)` jika bukti juga menunjukkan pan ringan yang mereda menjelang akhir. Tulis kedua qualifier pada `Pan Right` meski sudutnya belum bisa ditaksir secara wajar.
 
-Nilai besaran tiap komponen. Angka tunggal dan rentang sama-sama sah. Baseline tetap 6 FPS. Flow 2D membantu memilih interval yang perlu ditinjau secara visual. Zona bawah dan atas menunjukkan posisi pada gambar. Skala global saja belum cukup untuk menyimpulkan Dolly, dan oklusi saja belum cukup untuk menyimpulkan Orbit. Bandingkan perspektif, oklusi, dan lapisan dekat/jauh untuk membedakan Dolly, Orbit, Pan, serta Truck. Tilt yang terlihat berkelanjutan perlu dibedakan dari Crane atau Pedestal.
+Contoh dengan qualifier atau estimasi yang tidak lengkap menunjukkan batas informasi yang masih dapat diterima ketika bukti visual terbatas, bukan target kelengkapan notasi.
+
+Gunakan tingkat detail tertinggi yang dapat didukung oleh frame. Upayakan estimasi sudut, skala, intensitas, lintasan, dan profil laju setiap komponen secara independen.
+
+Contoh merupakan referensi cara membaca gerakan dan tingkat detail notasi, bukan template jawaban yang harus disalin. Kesimpulan setiap shot harus berasal dari pemeriksaan video yang sedang diaudit.
+
+Angka tunggal, rentang, dan tanpa estimasi merupakan pilihan yang setara. Tentukan bentuk estimasi berdasarkan bukti visual masing-masing komponen, bukan berdasarkan keseragaman notasi.
+
+Baseline tetap 6 FPS. Flow 2D membantu memilih interval yang perlu ditinjau secara visual. Zona bawah dan atas menunjukkan posisi pada gambar. Skala global saja belum cukup untuk menyimpulkan Dolly, dan oklusi saja belum cukup untuk menyimpulkan Orbit. Bandingkan perspektif, oklusi, dan lapisan dekat/jauh untuk membedakan Dolly, Orbit, Pan, serta Truck. Tilt yang terlihat berkelanjutan perlu dibedakan dari Crane atau Pedestal.
+
 
 ## Pembanding saat tafsir masih ambigu
 
