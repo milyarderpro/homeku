@@ -1,41 +1,42 @@
-# edh001 — Cottage Batu Lengkung di Halaman Bersalju
+# edh001 — Rounded Modern Cottage — Winter Retreat
 
 <a id="profil-dna"></a>
 
 ## 1. Profil desain
 
-- **Nama desain:** Cottage Batu Lengkung di Halaman Bersalju
-- **Tipe rumah:** Cottage
-- **Gaya utama:** **Organic Modern Cottage**
-- **Pengaruh gaya:** Contemporary Scandinavian; Modern Farmhouse
-- **Gaya interior:** Cozy Modern
-- **Susunan ruang utama:** Dapur linear, penyimpanan terbuka kamar dan laundry bertumpuk di kamar mandi
-- **Ciri khas:** Motif lengkung pada massa, kanopi, kaca ruang tamu, jendela kamar dan shower
-- **Material utama:** Batu terang bertekstur dan bidang kayu hangat, dipertegas kusen dan logam hitam
-- **Pencahayaan:** Lampu dalam bernuansa hangat dipadukan cahaya siang yang sejuk
-- **Atmosfer:** Hangat dan intim, dengan aksen lampu keemasan dan kayu madu di tengah suasana musim dingin.
-- **Lingkungan:** Pemandangan musim dingin dengan salju, batang pohon tanpa daun dan beberapa rumah sekitar
+- **Nama desain:** Rounded Modern Cottage — Winter Retreat
+- **Tipe rumah:** Single-Storey Detached House
+- **Gaya utama:** **Contemporary Modern**
+- **Pengaruh gaya:** Streamline Moderne
+- **Gaya interior:** Modern Rustic; Contemporary Cozy
+- **Susunan ruang utama:** Area tinggal, dapur linear, kamar tidur dan kamar mandi bersama laundry ditampilkan; koneksi denah antar-cut belum diketahui
+- **Ciri khas:** Motif lengkung berulang pada fasad, kaca living, jendela bedroom dan shower melengkung
+- **Material utama:** Tampilan batu susun pucat, kayu hangat, kaca, logam gelap dan ubin sage
+- **Pencahayaan:** Cahaya siang difus melalui jendela, dipadukan lampu aksen hangat dan downlight
+- **Atmosfer:** Hangat, nyaman dan intim dengan kontras lanskap musim dingin
+- **Lingkungan:** Salju, pohon gugur tanpa daun dan rumah tetangga terlihat dari bukaan
 
 ### Palet warna
 
 | Peran | Warna | HEX |
 | --- | --- | --- |
-| Dominan | Abu batu terang | `#9B9493` |
-| Pendamping | Krem lembut | `#C6BEB6` |
-| Pendamping | Kayu madu | `#A17653` |
-| Aksen | Hitam arang | `#0A090B` |
-| Aksen kamar mandi | Hijau zaitun keabu-abuan | `#717062` |
+| Dominan | Ivory | `#E8E1D4` |
+| Pendamping | Warm Beige | `#C9B9A4` |
+| Pendamping | Honey Oak | `#B38451` |
+| Aksen | Charcoal Black | `#242424` |
+| Aksen | Muted Sage | `#899B91` |
+| Pendamping | Soft White | `#F1EDE6` |
 
 ## 2. Ukuran & proporsi
 
 | Aspek | Estimasi visual |
 | --- | --- |
 | **Ukuran rumah** | small |
-| **Bentuk bangunan** | Massa kompak berlapis dengan bay window dan portal membulat |
-| **Lantai & bentuk atap** | Satu tingkat utama yang terlihat · Tepi atap hitam mengikuti lengkung setiap massa |
-| **Tapak bangunan** | compact |
-| **Proporsi utama** | Fasad rendah melebar dengan massa tengah yang lebih tinggi |
-| **Perkiraan luas lantai** | **60–85 m²** |
+| **Bentuk bangunan** | Volume rendah dengan bay window membulat, massa tengah lebih tinggi dan kanopi entrance melengkung |
+| **Lantai & bentuk atap** | Satu tingkat terlihat · Parapet hitam horizontal dengan tepi membulat; bidang atap di belakang tidak terlihat |
+| **Tapak bangunan** | Massa depan kompak dengan tonjolan membulat |
+| **Proporsi utama** | Fasad lebih lebar daripada tinggi, volume tengah sedikit lebih tinggi |
+| **Perkiraan luas lantai** | **55–90 m²** |
 
 ## 3. Shot Timeline
 
@@ -45,11 +46,11 @@ Durasi 18.40s · 5 shot.
 
 | Shot | Time (s) | Duration | Area/Scene | Camera Movement |
 | --- | --- | --- | --- | --- |
-| 01 | 0.00–4.73 | 4.73s | Exterior | Orbit Right (~10°–15°) → Accelerating Straight Dolly-In (~1.8×) toward the black entrance door. |
-| 02 | 4.73–8.30 | 3.57s | Living Room | Dolly-Out (~2×) + Orbit Left + Gentle Pan Right (~15°, Ease-Out). |
-| 03 | 8.30–11.57 | 3.27s | Kitchen | Accelerating Dolly-In (~1.9×) + Strong Pan Left (~25°–30°) toward the refrigerator and coffee nook. |
-| 04 | 11.57–15.00 | 3.43s | Bedroom | Dolly-Out (~1.3×) + Orbit Left + Strong Pan Right (~30°). |
-| 05 | 15.00–18.40 | 3.40s | Bathroom & Laundry | Accelerating Dolly-In (~1.7×) + Gentle Pan Right (~15°). |
+| 01 | 0.00–4.73 | 4.73s | Exterior | Gentle Orbit Right (~10°–15°) → Accelerating Dolly-In (~1.2×) + Mild Orbit Right (~5°–10°) → Accelerating Straight Dolly-In (~1.6×–1.7×). |
+| 02 | 4.73–8.30 | 3.57s | Living Room | Dolly-Out (~1.5×–1.7×, Ease-Out) + Gentle Orbit Left (~10°–15°) + Moderate Pan Right (~15°–25°, Ease-Out). |
+| 03 | 8.30–11.57 | 3.27s | Kitchen | Accelerating Diagonal Dolly-In (~2.2×–2.5×) + Accelerating Pan Left (~20°–30°). |
+| 04 | 11.57–15.00 | 3.43s | Bedroom | Diagonal Dolly-Out (~1.3×–1.5×, Ease-Out) + Moderate Pan Right (~25°–35°, Ease-Out). |
+| 05 | 15.00–18.40 | 3.40s | Bathroom & Laundry | Accelerating Dolly-In (~1.8×–2.0×) + Subtle Pan Right (~8°–12°). |
 
 ## 4. Overview
 
@@ -57,23 +58,23 @@ Durasi 18.40s · 5 shot.
 
 **Shot 01 · Exterior · 0.00s**
 
-> Dari jalur bersalju sebelum tangga, kamera setinggi mata menghadap fasad hampir lurus dengan sedikit sudut serong. Jalur paving membawa mata ke tangga dan portal putih di kanan, sementara bay window serta massa tengah yang lebih tinggi tetap masuk bingkai. Pepohonan tanpa daun membentuk latar yang kontras dengan lampu hangat di sekitar pintu.
+> Dari jalur depan pada tinggi mata, kamera menghadap agak serong ke fasad. Wide F0 memperlihatkan volume membulat, bay window kiri, teras kanan, tangga dan lingkungan bersalju.
 
 **Shot 02 · Living Room · 8.27s**
 
-> Kamera di belakang sisi sofa menghadap serong ke dinding TV di kiri dan jendela lengkung di belakang. Dari posisi agak lebih jauh ini seluruh meja, sebagian besar sofa L, karpet dan jalur lantai dekat dinding terbaca bersamaan. Bantal serta selimut berada di sisi kanan depan, salju terlihat melalui kaca dan lampu hangat menyorot dinding media.
+> Dari sisi depan area duduk pada F248, arah serong ke TV kiri dan bay window kanan. Wide akhir menunjukkan sofa sectional, meja kopi, rug, konsol dan jendela tinggi.
 
 **Shot 03 · Kitchen · 8.30s**
 
-> Dari ujung kanan baris kabinet, kamera setinggi mata melihat serong sepanjang meja. Ujung kabinet mengisi depan kanan, kompor berada di tengah, sedangkan ceruk kopi, kulkas dan bukaan melengkung menyusun kedalaman ke kiri. Lampu rak dan cahaya salju dari jendela rectangular memperlihatkan hampir seluruh susunan kerja sejak awal.
+> Dari ujung lorong dapur F249, kamera serong menyusuri kabinet kanan. Wide awal memuat kulkas kiri, range, counter, rak, jendela persegi dan sebagian bukaan bulat.
 
 **Shot 04 · Bedroom · 14.97s**
 
-> Dilihat dari posisi yang sudah mundur ke ambang, kamera menghadap serong ke ranjang dan jendela. Kusen tersisa di tepi kiri, ranjang rendah dan karpet terbaca hampir utuh di tengah, serta jendela bundar dengan pemandangan salju mendominasi kanan. Rak dan gantungan menjaga kedalaman di belakang bantal.
+> Dari ambang kamar pada F449, kamera menghadap serong ke ranjang dan jendela bulat. Wide akhir menunjukkan platform, rug, storage terbuka, kolom foto dan tirai.
 
 **Shot 05 · Bathroom & Laundry · 15.00s**
 
-> Dari dekat pintu dan sisi wastafel, kamera setinggi mata menghadap serong ke shower dan laundry. Countertop dan toilet mendahului shower kaca di tengah, dengan menara mesin cuci di kanan serta dua bentuk jendela yang tampil bersamaan. Cahaya luar dingin mengimbangi lampu hangat yang memantul pada ubin.
+> Dari dekat wastafel F450, kamera menghadap serong ke shower sudut. Wide awal mencakup wastafel, kloset, dua bukaan, shower kaca dan laundry bertumpuk.
 
 ## 5. Storyboard
 
@@ -93,44 +94,45 @@ Durasi 18.40s · 5 shot.
 
 **Arsitektur**
 
-> Fasad kompak tersusun dari beberapa massa melengkung dengan dinding berpenampilan batu terang dan tepian atap hitam yang tegas. Di kiri, kaca tinggi berbingkai hitam mengikuti tonjolan dinding melengkung. Massa tengah naik di belakangnya. Pintu hitam dengan kaca atas dan panel kaca di kanan berada di balik portal putih berundak yang melengkung, dengan kanopi hitam dan lampu tanam. Beberapa anak tangga menyambungkan teras pendek dengan jalur berpaving.
+> Fasad satu lantai tampak memiliki tiga volume membulat; bidang tengah lebih tinggi dengan batu susun pucat dan pita parapet hitam. Bay window tinggi berbingkai hitam di kiri, pintu hitam berglasir di kanan dengan kanopi kurva dan lampu tanam. Tangga pendek menghubungkan paving ke teras kecil, diapit dinding rendah.
 
 **Furnitur & dekorasi**
 
-> Karangan hias berlampu menempel di daun pintu. Cemara kecil berlampu mengapit area masuk dan semak rendah mengikuti dasar fasad serta sisi tangga. Dari kaca besar di kiri terlihat sebagian lampu gantung, kap lampu dan isi ruang yang bernuansa hangat.
+> Dua pohon dekoratif kecil berlampu mengapit pintu; wreath di pintu, lampu dinding hitam hangat, semak rendah di tepi fasad.
 
 **Lingkungan**
 
-> Salju menutup halaman dan bagian tepi jalur masuk. Pohon besar tanpa daun berada di belakang rumah, dan bagian bangunan sekitar terlihat di sisi kiri. Cahaya luar mendung membuat batu terang dan tepian hitam terbaca jelas.
+> Halaman bersalju, pohon tinggi tanpa daun dan jalur paving abu-abu menuju tangga. Cahaya luar difus; lampu teras dan interior berwarna hangat.
 
 #### **B. Framing & Lighting**
 
-- **Fokus:** Hubungan bay window melengkung dan pintu hitam.
-- **Camera Start:** Di jalur masuk sebelum tangga teras. · Menghadap fasad dengan pintu di sisi kanan bingkai. · Hampir frontal, sedikit serong ke bidang masuk. · Sekitar tinggi mata terhadap jalur. · Hampir datar.
-- **Framing:** Wide fasad dengan jalur masuk utuh. → Medium wide pada pintu hitam, portal dan sebagian bay window.
-- **Lighting:** Cahaya mendung sejuk dengan lampu dinding dan kanopi hangat.
-- **Foreground dan kedalaman:** Jalur paving dan tepi salju. · Jalur, tangga, portal, lalu pintu yang lebih dalam di bawah kanopi.
-- **Reveal:** Sisi kanan portal dan detail pintu semakin terbuka.
-- **Kesesuaian gerak:** Mulai cukup lebar untuk memberi ruang gerak ke kanan, dengan tangga sebagai garis masuk menuju pintu.
+- **Fokus:** Pintu masuk dengan bay window sebagai konteks
+- **Camera Start:** Di jalur paving depan rumah · Menghadap fasad dan pintu di kanan tengah · oblique · Sekitar tinggi mata · Hampir datar
+- **Framing:** Wide fasad dengan kaca kiri, pintu kanan dan jalur di bawah → Close menuju pintu dan tangga
+- **Lighting:** Cahaya luar difus, sconce dan downlight hangat
+- **Foreground dan kedalaman:** Paving dan salju · Jalur–tangga–pintu–massa belakang
+- **Reveal:** Orbit membuka sisi kanan lalu dolly memperbesar pintu
+- **Kesesuaian gerak:** Wide memberi ruang orbit; pendekatan akhir mengisolasi entrance
 
 #### **C. Camera Movement**
 
-Kamera melengkung ke kanan sambil mempertahankan fasad, kemudian maju dengan ritme yang menguat menuju pintu hitam sampai jalur dan sisi kiri fasad keluar dari bingkai.
+Kamera mengitari fasad ke kanan dengan pintu sebagai jangkar, lalu maju semakin cepat ke teras dan pintu.
 
-**Tempo:** Pelan saat melengkung, lalu berkembang dari sedang menjadi cepat ketika mendekati pintu.
+**Tempo:** Lambat ketika mengitari, sedang saat mulai maju, cepat menjelang pintu.
 
-- **0.00–2.10s · slow:** Pergeseran sudut pelan dengan fasad tetap terbaca.
-- **2.10–3.17s · moderate:** Mulai maju dan dasar fasad membesar.
-- **3.17–4.73s · fast:** Tangga dan tepi fasad keluar dari bingkai dalam waktu lebih singkat.
+- **0.00–1.50s · slow:** Sapuan orbit ringan.
+- **1.50–3.33s · moderate:** Pendekatan bertambah.
+- **3.33–4.73s · fast:** Ekspansi cepat menuju pintu.
 
 **Movement Timeline**
 
 | Time (s) | Area & fokus | Camera Movement | Tempo |
 | --- | --- | --- | --- |
-| 0.00–2.10 | Exterior · Bay window, portal masuk dan muka tangga | Orbit Right (~10°–15°) | Pergeseran sudut pelan dengan fasad tetap terbaca. |
-| 2.10–4.73 | Exterior · Pintu hitam dan kanopi masuk | Accelerating Straight Dolly-In (~1.8×) toward the black entrance door | Mulai maju dan dasar fasad membesar.; Tangga dan tepi fasad keluar dari bingkai dalam waktu lebih singkat. |
+| 0.00–1.50 | Exterior · Fasad dan pintu | Gentle Orbit Right (~10°–15°) | Sapuan orbit ringan. |
+| 1.50–2.67 | Exterior · Tangga dan pintu | Accelerating Dolly-In (~1.2×) + Mild Orbit Right (~5°–10°) | Pendekatan bertambah. |
+| 2.67–4.73 | Exterior · Pintu masuk | Accelerating Straight Dolly-In (~1.6×–1.7×) | Pendekatan bertambah.; Ekspansi cepat menuju pintu. |
 
-**Camera:** Orbit Right (~10°–15°) → Accelerating Straight Dolly-In (~1.8×) toward the black entrance door.
+**Camera:** Gentle Orbit Right (~10°–15°) → Accelerating Dolly-In (~1.2×) + Mild Orbit Right (~5°–10°) → Accelerating Straight Dolly-In (~1.6×–1.7×).
 
 ---
 
@@ -146,33 +148,33 @@ Kamera melengkung ke kanan sambil mempertahankan fasad, kemudian maju dengan rit
 
 **Arsitektur**
 
-> Dinding media bertekstur batu terang mengikat TV hitam dengan perapian linear di bawahnya. Ambalan kayu rendah memanjang dengan ceruk terbuka. Pada sisi kanan, kaca tinggi berbingkai gelap mengikuti bidang melengkung. Plafon mengikuti lengkung area kaca dengan tingkat putih dan titik lampu tanam. Lantai berpenampilan papan kayu abu kecokelatan terlihat di luar tepi karpet.
+> Dinding fokus bertekstur batu terang menampung TV dan perapian linear hitam; bay window melengkung dengan mullion hitam membuka pandangan ke salju. Plafon mengikuti kurva bukaan dengan downlight dan pencahayaan tidak langsung. Lantai terang berlapis rug besar.
 
 **Furnitur & dekorasi**
 
-> Sofa krem berbentuk L membingkai sisi kanan dan belakang area duduk, dengan modul chaise dekat jendela. Meja kopi balok kayu bertapak rendah berada di tengah karpet bermotif netral. Buku dan benda dekoratif berwarna kuningan serta gelap tersusun di atas meja. Ada bantal bertekstur, selimut rajut, tanaman dalam pot beralur dekat jendela, dan dekorasi kecil di ambalan bawah TV.
+> Sofa sectional krem di kanan dan depan jendela menghadap TV; meja kopi kayu tebal berbentuk persegi panjang berada di tengah rug. Konsol kayu rendah dengan ceruk di bawah TV/perapian; bantal, throw dan tanaman pot menambah tekstur.
 
 **Lingkungan**
 
-> Di balik kaca terlihat salju, pohon tanpa daun, tanaman hijau gelap dan bangunan tetangga. Cahaya siang dari jendela mengisi area duduk, dengan lapisan cahaya hangat pada dinding media dan sisi jendela.
+> Jendela memperlihatkan pohon gundul, salju dan bangunan tetangga. Cahaya siang dari kaca kanan berpadu dengan lampu dinding dan plafon hangat.
 
 #### **B. Framing & Lighting**
 
-- **Fokus:** Susunan sofa dan meja terhadap TV serta jendela.
-- **Camera Start:** Di sisi dalam area duduk dekat sofa dan meja kopi. · Serong dari sofa menuju pertemuan dinding TV dan kaca melengkung. · Serong lintas ruang. · Di atas sandaran dan permukaan meja, sekitar tinggi mata. · Sedikit mengarah ke bawah, tetap stabil.
-- **Framing:** Medium wide terpotong bantal dan meja kopi. → Wide seluruh susunan sofa, meja, dinding TV dan jendela lengkung.
-- **Lighting:** Siang dingin dari kaca dengan lampu dinding dan plafon yang hangat.
-- **Foreground dan kedalaman:** Bantal sofa dan bagian meja kopi di tepi depan. · Sofa dekat, meja tengah, dinding media dan kaca ke halaman.
-- **Reveal:** Meja utuh, lengkung kaca dan susunan sofa L.
-- **Kesesuaian gerak:** Letakkan kamera cukup dekat dengan tepi sofa untuk memberi ruang reveal saat mundur dan memutar ke kanan.
+- **Fokus:** Dinding TV dan konfigurasi duduk
+- **Camera Start:** Dekat meja kopi dan ujung sofa · Menghadap serong ke TV dan jendela kanan · oblique · Sekitar tinggi mata duduk/berdiri rendah · Hampir datar
+- **Framing:** Medium-wide TV kiri, meja depan, jendela kanan → Wide sectional dan seluruh area duduk
+- **Lighting:** Cahaya siang kanan dengan sconce, downlight hangat
+- **Foreground dan kedalaman:** Meja kopi dan ujung sofa · Meja–sofa–TV/jendela–luar
+- **Reveal:** Dolly-out membuka sectional, orbit dan pan menjaga hubungan bidang
+- **Kesesuaian gerak:** Gerak OUT memperluas cakupan area duduk
 
 #### **C. Camera Movement**
 
-Kamera mundur melengkung ke kiri sambil menoleh lembut ke kanan. Meja kopi yang terpotong menjadi utuh, lalu sofa L dan bidang jendela melengkung terbuka dalam satu komposisi.
+Kamera mundur dari meja dan sofa, membuka ruang duduk dengan pergeseran perspektif ke kiri dan pandangan ke kanan yang mereda.
 
-**Tempo:** Mundur dengan tempo sedang. Bukaan ruang paling terasa di bagian tengah, lalu pergeseran melandai menjelang cut.
+**Tempo:** Sedang, pergeseran melandai pada sepertiga akhir.
 
-**Camera:** Dolly-Out (~2×) + Orbit Left + Gentle Pan Right (~15°, Ease-Out).
+**Camera:** Dolly-Out (~1.5×–1.7×, Ease-Out) + Gentle Orbit Left (~10°–15°) + Moderate Pan Right (~15°–25°, Ease-Out).
 
 ---
 
@@ -188,36 +190,33 @@ Kamera mundur melengkung ke kiri sambil menoleh lembut ke kanan. Meja kopi yang 
 
 **Arsitektur**
 
-> Dapur kompak mengikuti satu dinding. Kabinet putih berpanel dan pegangan hitam mengapit kompor serta kulkas di ujung kiri. Countertop putih bercorak abu menyerupai marmer, di depan backsplash ubin putih persegi panjang bersusun bata. Jendela persegi panjang berada di atas kompor dan bukaan besar melengkung terlihat di kiri kulkas. Ceruk terbuka putih di kiri jendela dan rak hitam di kanan mendapat cahaya aksen. Lantai tampak seperti papan kayu abu kecokelatan.
+> Dapur kompak dengan run kabinet putih di sisi kanan lorong, kulkas tinggi di ujung kiri, range di bawah jendela persegi. Countertop terang berpola batu, backsplash ubin terang, kabinet atas dan rak terbuka gelap; jendela bulat besar pada dinding ujung kiri. Lantai berpola papan kayu.
 
 **Furnitur & dekorasi**
 
-> Kompor dengan kisi hitam dan oven berpenampilan stainless berada di bawah jendela. Teko logam bernuansa kuningan di atasnya. Kulkas dua pintu atas dengan laci bawah ditemani mesin kopi hitam di countertop. Ada kaktus dalam pot putih, alat masak kayu, talenan sandar, piring bertumpuk, tanaman menjuntai dan runner beige pendek di lantai.
+> Kulkas stainless tinggi, kompor/range dengan oven, mesin kopi di counter ujung, kabinet pintu putih dengan handle hitam dan laci. Rak kayu gelap memuat wadah dan tanaman; lampu gantung tabung hangat dekat jendela.
 
 **Lingkungan**
 
-> Dari jendela tampak halaman bersalju dengan batang pohon dekat rumah, pagar kayu dan bangunan terang di belakang. Pohon cemara gelap ikut terbaca dari bukaan melengkung ketika kamera mendekati kulkas.
+> Dua bukaan memperlihatkan salju dan rumah sekitar; cahaya luar dari kiri dan kanan area kerja, lampu bawah kabinet dan plafon memberi aksen hangat.
 
 #### **B. Framing & Lighting**
 
-- **Fokus:** Kompor di bawah jendela, beralih ke ceruk kopi dan kulkas.
-- **Camera Start:** Di dekat ujung kanan kabinet, sebelum area kompor. · Serong menyusuri baris meja menuju kompor dan kulkas di kiri. · Serong dari ujung susunan satu dinding. · Sekitar tinggi mata, permukaan countertop terlihat. · Sedikit melihat ke bawah pada meja kerja.
-- **Framing:** Wide baris dapur dengan kulkas, kompor dan rak kanan. → Bidang lebih rapat pada kulkas dan ceruk kopi.
-- **Lighting:** Cahaya siang bersalju di jendela dengan lampu tanam, aksen ceruk dan rak hangat.
-- **Foreground dan kedalaman:** Ujung kabinet kanan, rak dan tepian runner. · Countertop dekat menuju kompor, ceruk kopi lalu kulkas.
-- **Reveal:** Ceruk kopi, detail kabinet dan fasad kulkas.
-- **Kesesuaian gerak:** Awal yang serong memberi kedalaman di sepanjang countertop dan memungkinkan sapuan kiri saat maju.
+- **Fokus:** Ujung kabinet dan coffee station
+- **Camera Start:** Di ujung lorong dapur menghadap kabinet · Serong ke ujung run kabinet dan kulkas · oblique · Sekitar tinggi mata · Hampir datar
+- **Framing:** Wide sepanjang kabinet dan kedua bukaan → Close pada coffee station dan kulkas
+- **Lighting:** Cahaya siang jendela, pendant dan lampu kabinet
+- **Foreground dan kedalaman:** Counter dan range · Counter depan–range–coffee station–kulkas
+- **Reveal:** Dolly-in dan pan kiri mengisolasi ujung dapur
+- **Kesesuaian gerak:** Wide awal menetapkan layout, IN mengungkap detail
 
 #### **C. Camera Movement**
 
-Kamera maju sepanjang baris kabinet dan menyapu ke kiri. Kompor membesar terlebih dahulu, lalu bergerak ke kanan bingkai saat fokus beralih ke kulkas dan ceruk kopi.
+Kamera mendekat sepanjang kabinet ke arah kulkas dan sudut kopi, disertai sapuan kiri yang makin terasa.
 
-**Tempo:** Sedang saat mendekati kompor dan lebih cepat saat pandangan berpindah ke kulkas.
+**Tempo:** Sedang dengan percepatan nyata, paling cepat secara visual pada bagian akhir.
 
-- **8.30–9.80s · moderate:** Mendekat dengan perubahan framing bertahap.
-- **9.80–11.57s · fast:** Rak kanan lepas dan fokus cepat berpindah ke ceruk kopi serta kulkas.
-
-**Camera:** Accelerating Dolly-In (~1.9×) + Strong Pan Left (~25°–30°) toward the refrigerator and coffee nook.
+**Camera:** Accelerating Diagonal Dolly-In (~2.2×–2.5×) + Accelerating Pan Left (~20°–30°).
 
 ---
 
@@ -233,33 +232,33 @@ Kamera maju sepanjang baris kabinet dan menyapu ke kiri. Kompor membesar terlebi
 
 **Arsitektur**
 
-> Kusen kayu gelap membingkai akses ke kamar dengan lantai papan kayu hangat. Di belakang ranjang ada ceruk rak berlapis kayu dan rak pakaian terbuka yang dipisahkan bidang putih sempit. Simpanan atas memakai kotak dan keranjang. Bagian plafon di atas ranjang berpanel putih dengan lampu tanam. Jendela besar berbingkai hitam membentuk lengkung bundar, dengan batang gorden gelap dan kain krem di sampingnya.
+> Kamar tidur kompak dilihat melalui kusen kayu. Jendela besar berbentuk lingkaran dengan rangka hitam di belakang kanan, tirai krem dan plafon putih dengan bagian berbilah. Ceruk penyimpanan terbuka di belakang ranjang, dipisah kolom putih berbingkai gambar; lantai kayu hangat.
 
 **Furnitur & dekorasi**
 
-> Ranjang rendah bertumpu pada platform kayu. Sprei dan selimut gading dipadukan dengan bantal serta runner kotak gelap. Meja samping bulat bertekstur kayu memuat tanaman kecil di bawah lampu hitam berlengan tipis. Rak menyimpan dekorasi dan wadah, serta dua bingkai gambar tersusun vertikal di antara ceruk rak dan gantungan pakaian. Karpet garis mengikuti dasar ranjang.
+> Ranjang platform kayu rendah dengan linen putih gading, bantal dan throw motif plaid; rug garis di bawah kaki ranjang. Meja samping bulat bertekstur kayu dengan lampu hitam; shelving dan pakaian gantung terbuka di belakang, rak atas berisi keranjang.
 
 **Lingkungan**
 
-> Di balik jendela lengkung terlihat salju, rumah tetangga dan batang pohon. Tanaman tegak dekat kaca memperjelas kedalaman. Cahaya dingin dari jendela datang dari kanan, sedangkan rak dan lampu samping ranjang memberi cahaya hangat.
+> Jendela bulat menampilkan pepohonan tanpa daun, salju dan rumah sekitar. Cahaya siang kanan bercampur lampu meja, lampu ceruk dan downlight hangat.
 
 #### **B. Framing & Lighting**
 
-- **Fokus:** Ranjang dan ceruk rak, bergeser menuju jendela bundar.
-- **Camera Start:** Di tepi bukaan kamar dengan kusen di kiri depan. · Serong ke sisi kiri ranjang, rak dan gantungan pakaian. · Serong dari ambang. · Sekitar tinggi mata terhadap kamar. · Hampir datar dengan sedikit lantai terlihat.
-- **Framing:** Medium wide pada sisi ranjang dan area simpan. → Wide pada ranjang, karpet dan jendela bundar.
-- **Lighting:** Aksen rak dan lampu samping hangat dengan cahaya bersalju dari kanan.
-- **Foreground dan kedalaman:** Kusen kayu dan tepi bukaan di kiri. · Kusen, nakas dan ranjang, lalu rak serta kaca di sisi kanan.
-- **Reveal:** Ujung ranjang, karpet, jendela bundar dan pandangan luar.
-- **Kesesuaian gerak:** Awal dekat kusen memberi jangkar depan sementara gerak mundur membuka sisi kanan kamar.
+- **Fokus:** Ranjang dan jendela bulat
+- **Camera Start:** Pada ambang pintu kamar · Serong ke ranjang dan sisi penyimpanan · oblique · Sekitar tinggi mata · Hampir datar
+- **Framing:** Medium-wide melalui kusen, ranjang terpotong → Wide ranjang, storage, jendela bulat
+- **Lighting:** Cahaya kanan dari jendela, lampu ceruk hangat
+- **Foreground dan kedalaman:** Kusen kayu dan tepi ranjang · Kusen–ranjang–storage–jendela
+- **Reveal:** Dolly-out dan pan kanan membuka ranjang dan jendela
+- **Kesesuaian gerak:** Framing OUT membuka konteks ruangan tanpa memastikan denah luar
 
 #### **C. Camera Movement**
 
-Kamera mundur dari sisi ranjang sambil melengkung ke kiri dan menoleh ke kanan. Kusen menjadi bingkai kiri, lalu ujung ranjang, karpet, dan jendela bundar terlihat semakin lengkap.
+Kamera mundur diagonal dari ambang kamar sambil menyapu ke kanan, membuka ranjang utuh dan jendela bulat.
 
-**Tempo:** Tempo sedang dan mengalir. Bukaan jendela mulai terasa di pertengahan shot dan terus bertambah sampai akhir.
+**Tempo:** Sedang di awal/tengah, melambat lembut hingga akhir.
 
-**Camera:** Dolly-Out (~1.3×) + Orbit Left + Strong Pan Right (~30°).
+**Camera:** Diagonal Dolly-Out (~1.3×–1.5×, Ease-Out) + Moderate Pan Right (~25°–35°, Ease-Out).
 
 ---
 
@@ -275,35 +274,32 @@ Kamera mundur dari sisi ranjang sambil melengkung ke kiri dan menoleh ke kanan. 
 
 **Arsitektur**
 
-> Kamar mandi memadukan wastafel di kiri, toilet di bawah jendela persegi panjang, shower kaca melengkung di tengah dan laundry bertumpuk di kanan. Shower berdiri pada alas terang yang sedikit terangkat dengan rel, tarikan pintu dan perangkat shower hitam. Ubin persegi panjang bernuansa hijau abu di bawah beralih ke krem mengilap di atas. Jendela kecil bulat dan ceruk perlengkapan menempel pada dinding shower. Lantai berpenampilan papan abu terang.
+> Ruang kompak menggabungkan kamar mandi dan laundry: wastafel di depan kiri, kloset di bawah jendela persegi kiri, shower sudut berpintu kaca melengkung di tengah, mesin laundry bertumpuk kanan. Ubin persegi sage di bawah dan bidang terang di atas; jendela bulat di dinding shower, ceruk sabun, lantai papan abu-abu dan balok/trim gelap di atas.
 
 **Furnitur & dekorasi**
 
-> Wastafel persegi menyatu dengan countertop terang yang tebal. Toilet putih berada di sela wastafel dan shower. Mesin cuci dan pengering bukaan depan disusun vertikal, dengan handuk lipat di atas rak kayu. Botol dan wadah kecil berada di ceruk shower; saluran kotak gelap terlihat pada alas shower.
+> Wastafel persegi terang dengan faucet gelap, kloset putih, shower head dan kontrol hitam, dua mesin front-load putih bertumpuk dengan rak handuk di atas. Botol toiletries di niche.
 
 **Lingkungan**
 
-> Jendela persegi panjang dan jendela bulat membawa cahaya dingin dari halaman bersalju dan pepohonan tanpa daun. Lampu tanam serta garis cahaya hangat di tepi plafon terpantul pada ubin mengilap dan kaca shower.
+> Salju dan pohon terlihat melalui bukaan. Cahaya siang difus dengan downlight dan strip hangat pada pertemuan dinding-plafon.
 
 #### **B. Framing & Lighting**
 
-- **Fokus:** Shower melengkung dan jendela bulat, dengan laundry di kanan.
-- **Camera Start:** Dekat pintu dan sisi wastafel, sebelum susunan shower dan laundry. · Serong dari kiri depan ke shower di tengah dan laundry di kanan. · Serong ringan. · Sekitar tinggi mata dengan bagian atas wastafel terlihat. · Sedikit mengarah ke bawah pada awal.
-- **Framing:** Wide wastafel, toilet, shower dan laundry. → Rapat pada jendela bulat dan perangkat shower, dengan tepi laundry masih terlihat.
-- **Lighting:** Cahaya siang dari dua jendela dan pantulan lampu tanam serta cahaya tepi plafon yang hangat.
-- **Foreground dan kedalaman:** Countertop wastafel di kiri bawah. · Wastafel dan toilet dekat, shower di tengah, dinding ubin dan laundry di sisi kanan.
-- **Reveal:** Bukaan bulat, ceruk perlengkapan dan rel shower.
-- **Kesesuaian gerak:** Wastafel di depan memberi lapisan awal dan keluar dari bingkai saat kamera maju serta menoleh ke kanan.
+- **Fokus:** Shower melengkung dan laundry
+- **Camera Start:** Di dekat wastafel pada pintu masuk ruang · Serong ke shower dan mesin laundry · oblique · Sekitar tinggi mata · Hampir datar
+- **Framing:** Wide wastafel, kloset, shower dan laundry → Close jendela bulat, shower dan tepi mesin
+- **Lighting:** Cahaya jendela kiri dan bulat, downlight serta aksen hangat
+- **Foreground dan kedalaman:** Wastafel dan tepi kloset · Wastafel–kloset–shower–laundry
+- **Reveal:** Dolly-in memperbesar shower, pan kanan kecil mengikuti pusat perhatian
+- **Kesesuaian gerak:** Wide awal menjelaskan fungsi gabungan sebelum detail
 
 #### **C. Camera Movement**
 
-Kamera maju ke shower sambil menoleh lembut ke kanan. Wastafel, toilet dan jendela kiri keluar bertahap. Jendela bulat dan perangkat shower membesar, dengan sisi mesin laundry masih terbaca.
+Kamera maju ke area shower dengan framing sedikit menyapu kanan, hingga porthole dan perlengkapan shower mendominasi.
 
-**Tempo:** Sedang pada awal, lalu perubahan framing lebih cepat ketika kamera berada dekat kaca shower.
+**Tempo:** Sedang dan menguat progresif; pembesaran paling jelas pada sepertiga akhir.
 
-- **15.00–16.67s · moderate:** Susunan ruang masih terbaca sementara kamera mulai mendekat.
-- **16.67–18.40s · fast:** Wastafel dan toilet lepas dari bidang, lalu jendela bulat dan perangkat shower cepat memenuhi bingkai.
+**Camera:** Accelerating Dolly-In (~1.8×–2.0×) + Subtle Pan Right (~8°–12°).
 
-**Camera:** Accelerating Dolly-In (~1.7×) + Gentle Pan Right (~15°).
-
-**Catatan referensi:** Lengkung, material terang dan pencahayaan hangat berulang sepanjang video. Urutan cut tidak memperlihatkan koneksi fisik antararea.
+**Catatan referensi:** Estimasi luas 55–90 m² adalah perkiraan visual berketidakpastian tinggi dari proporsi pintu, furnitur dan cakupan ruang; bukan pengukuran denah. Label gaya bersifat interpretatif. Material hanya tampilan visual, bukan spesifikasi fisik. Kronologi cut tidak membuktikan hubungan ruang atau identitas satu rumah. Kamera disalin tanpa perubahan dari checkpoint yang disetujui pengguna.

@@ -1,11 +1,11 @@
 {
-  "content_sha256": "2abf41457292f648ffccc5e948a2ff2b24ed1467a3fb383d36e447b7cfdd3db0",
+  "content_sha256": "97553aa04d0436e4e927258148646375f65f8a615ba2610319a3b9e51709e66b",
   "derived": {
     "camera_pattern": "IN – OUT – IN – OUT – IN",
     "shots": [
       {
         "camera_pattern": "IN",
-        "camera_summary": "Orbit Right (~10°–15°) → Accelerating Straight Dolly-In (~1.8×) toward the black entrance door.",
+        "camera_summary": "Gentle Orbit Right (~10°–15°) → Accelerating Dolly-In (~1.2×) + Mild Orbit Right (~5°–10°) → Accelerating Straight Dolly-In (~1.6×–1.7×).",
         "components": [
           [
             {
@@ -14,8 +14,10 @@
                 "~10°–15°"
               ],
               "movement": "Orbit Right",
-              "qualifiers": [],
-              "raw": "Orbit Right (~10°–15°)",
+              "qualifiers": [
+                "Gentle"
+              ],
+              "raw": "Gentle Orbit Right (~10°–15°)",
               "toward": null
             }
           ],
@@ -23,15 +25,41 @@
             {
               "direction": "In",
               "estimates": [
-                "~1.8×"
+                "~1.2×"
+              ],
+              "movement": "Dolly-In",
+              "qualifiers": [
+                "Accelerating"
+              ],
+              "raw": "Accelerating Dolly-In (~1.2×)",
+              "toward": null
+            },
+            {
+              "direction": "Right",
+              "estimates": [
+                "~5°–10°"
+              ],
+              "movement": "Orbit Right",
+              "qualifiers": [
+                "Mild"
+              ],
+              "raw": "Mild Orbit Right (~5°–10°)",
+              "toward": null
+            }
+          ],
+          [
+            {
+              "direction": "In",
+              "estimates": [
+                "~1.6×"
               ],
               "movement": "Dolly-In",
               "qualifiers": [
                 "Accelerating",
                 "Straight"
               ],
-              "raw": "Accelerating Straight Dolly-In (~1.8×) toward the black entrance door",
-              "toward": "the black entrance door"
+              "raw": "Accelerating Straight Dolly-In (~1.6×–1.7×)",
+              "toward": null
             }
           ]
         ],
@@ -41,43 +69,50 @@
         ],
         "phase_tempos": [
           "slow",
+          "moderate",
           "variable"
         ]
       },
       {
         "camera_pattern": "OUT",
-        "camera_summary": "Dolly-Out (~2×) + Orbit Left + Gentle Pan Right (~15°, Ease-Out).",
+        "camera_summary": "Dolly-Out (~1.5×–1.7×, Ease-Out) + Gentle Orbit Left (~10°–15°) + Moderate Pan Right (~15°–25°, Ease-Out).",
         "components": [
           [
             {
               "direction": "Out",
               "estimates": [
-                "~2×"
+                "~1.5×"
               ],
               "movement": "Dolly-Out",
-              "qualifiers": [],
-              "raw": "Dolly-Out (~2×)",
+              "qualifiers": [
+                "Ease-Out"
+              ],
+              "raw": "Dolly-Out (~1.5×–1.7×, Ease-Out)",
               "toward": null
             },
             {
               "direction": "Left",
-              "estimates": [],
+              "estimates": [
+                "~10°–15°"
+              ],
               "movement": "Orbit Left",
-              "qualifiers": [],
-              "raw": "Orbit Left",
+              "qualifiers": [
+                "Gentle"
+              ],
+              "raw": "Gentle Orbit Left (~10°–15°)",
               "toward": null
             },
             {
               "direction": "Right",
               "estimates": [
-                "~15°"
+                "~15°–25°"
               ],
               "movement": "Pan Right",
               "qualifiers": [
-                "Gentle",
+                "Moderate",
                 "Ease-Out"
               ],
-              "raw": "Gentle Pan Right (~15°, Ease-Out)",
+              "raw": "Moderate Pan Right (~15°–25°, Ease-Out)",
               "toward": null
             }
           ]
@@ -92,32 +127,33 @@
       },
       {
         "camera_pattern": "IN",
-        "camera_summary": "Accelerating Dolly-In (~1.9×) + Strong Pan Left (~25°–30°) toward the refrigerator and coffee nook.",
+        "camera_summary": "Accelerating Diagonal Dolly-In (~2.2×–2.5×) + Accelerating Pan Left (~20°–30°).",
         "components": [
           [
             {
               "direction": "In",
               "estimates": [
-                "~1.9×"
+                "~2.2×"
               ],
               "movement": "Dolly-In",
               "qualifiers": [
-                "Accelerating"
+                "Accelerating",
+                "Diagonal"
               ],
-              "raw": "Accelerating Dolly-In (~1.9×)",
+              "raw": "Accelerating Diagonal Dolly-In (~2.2×–2.5×)",
               "toward": null
             },
             {
               "direction": "Left",
               "estimates": [
-                "~25°–30°"
+                "~20°–30°"
               ],
               "movement": "Pan Left",
               "qualifiers": [
-                "Strong"
+                "Accelerating"
               ],
-              "raw": "Strong Pan Left (~25°–30°) toward the refrigerator and coffee nook",
-              "toward": "the refrigerator and coffee nook"
+              "raw": "Accelerating Pan Left (~20°–30°)",
+              "toward": null
             }
           ]
         ],
@@ -126,12 +162,12 @@
           "/shots/2/camera/tempo"
         ],
         "phase_tempos": [
-          "variable"
+          "moderate"
         ]
       },
       {
         "camera_pattern": "OUT",
-        "camera_summary": "Dolly-Out (~1.3×) + Orbit Left + Strong Pan Right (~30°).",
+        "camera_summary": "Diagonal Dolly-Out (~1.3×–1.5×, Ease-Out) + Moderate Pan Right (~25°–35°, Ease-Out).",
         "components": [
           [
             {
@@ -140,28 +176,24 @@
                 "~1.3×"
               ],
               "movement": "Dolly-Out",
-              "qualifiers": [],
-              "raw": "Dolly-Out (~1.3×)",
-              "toward": null
-            },
-            {
-              "direction": "Left",
-              "estimates": [],
-              "movement": "Orbit Left",
-              "qualifiers": [],
-              "raw": "Orbit Left",
+              "qualifiers": [
+                "Diagonal",
+                "Ease-Out"
+              ],
+              "raw": "Diagonal Dolly-Out (~1.3×–1.5×, Ease-Out)",
               "toward": null
             },
             {
               "direction": "Right",
               "estimates": [
-                "~30°"
+                "~25°–35°"
               ],
               "movement": "Pan Right",
               "qualifiers": [
-                "Strong"
+                "Moderate",
+                "Ease-Out"
               ],
-              "raw": "Strong Pan Right (~30°)",
+              "raw": "Moderate Pan Right (~25°–35°, Ease-Out)",
               "toward": null
             }
           ]
@@ -176,31 +208,31 @@
       },
       {
         "camera_pattern": "IN",
-        "camera_summary": "Accelerating Dolly-In (~1.7×) + Gentle Pan Right (~15°).",
+        "camera_summary": "Accelerating Dolly-In (~1.8×–2.0×) + Subtle Pan Right (~8°–12°).",
         "components": [
           [
             {
               "direction": "In",
               "estimates": [
-                "~1.7×"
+                "~1.8×"
               ],
               "movement": "Dolly-In",
               "qualifiers": [
                 "Accelerating"
               ],
-              "raw": "Accelerating Dolly-In (~1.7×)",
+              "raw": "Accelerating Dolly-In (~1.8×–2.0×)",
               "toward": null
             },
             {
               "direction": "Right",
               "estimates": [
-                "~15°"
+                "~8°–12°"
               ],
               "movement": "Pan Right",
               "qualifiers": [
-                "Gentle"
+                "Subtle"
               ],
-              "raw": "Gentle Pan Right (~15°)",
+              "raw": "Subtle Pan Right (~8°–12°)",
               "toward": null
             }
           ]
@@ -210,7 +242,7 @@
           "/shots/4/camera/tempo"
         ],
         "phase_tempos": [
-          "variable"
+          "moderate"
         ]
       }
     ]
@@ -218,44 +250,57 @@
   "evidence_inventory": {
     "frames": {
       "0": 0.0,
-      "110": 3.666666667,
+      "105": 3.5,
+      "120": 4.0,
+      "135": 4.5,
       "141": 4.7,
       "142": 4.733333333,
+      "15": 0.5,
+      "157": 5.233333333,
       "177": 5.9,
+      "192": 6.4,
       "196": 6.533333333,
-      "207": 6.9,
-      "222": 7.4,
+      "212": 7.066666667,
+      "232": 7.733333333,
       "248": 8.266666667,
       "249": 8.3,
+      "259": 8.633333333,
       "279": 9.3,
+      "294": 9.8,
       "298": 9.933333333,
       "30": 1.0,
-      "319": 10.633333333,
+      "314": 10.466666667,
+      "329": 10.966666667,
       "346": 11.533333333,
       "347": 11.566666667,
-      "372": 12.4,
-      "390": 13.0,
+      "362": 12.066666667,
+      "377": 12.566666667,
+      "397": 13.233333333,
       "398": 13.266666667,
-      "410": 13.666666667,
+      "40": 1.333333333,
+      "412": 13.733333333,
+      "432": 14.4,
       "449": 14.966666667,
+      "45": 1.5,
       "450": 15.0,
-      "475": 15.833333333,
-      "485": 16.166666667,
-      "500": 16.666666667,
+      "465": 15.5,
+      "480": 16.0,
+      "495": 16.5,
       "501": 16.7,
-      "520": 17.333333333,
-      "525": 17.5,
+      "515": 17.166666667,
+      "535": 17.833333333,
+      "55": 1.833333333,
       "551": 18.366666667,
-      "60": 2.0,
-      "63": 2.1,
-      "66": 2.2,
+      "65": 2.166666667,
       "71": 2.366666667,
-      "83": 2.766666667
+      "75": 2.5,
+      "80": 2.666666667,
+      "90": 3.0
     },
     "media": [
       {
         "blocks": [],
-        "height": 1696,
+        "height": 1705,
         "kind": "shot-collage",
         "panels": [
           {
@@ -265,7 +310,7 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s01-panel-01"
           },
           {
@@ -275,7 +320,7 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s01-panel-02"
           },
           {
@@ -285,17 +330,17 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s01-panel-03"
           }
         ],
         "path": "media/shot-01.jpg",
-        "sha256": "519f52383910e76d6992f43cec45e75c59c9309ff5275d0635bad15344bcb92a",
+        "sha256": "98466d4edc5ad8c9f2dd83120ea4d099468c2273049a56cb76dc150f72f33874",
         "width": 2280
       },
       {
         "blocks": [],
-        "height": 1639,
+        "height": 1705,
         "kind": "shot-collage",
         "panels": [
           {
@@ -305,7 +350,7 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s02-panel-01"
           },
           {
@@ -315,7 +360,7 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s02-panel-02"
           },
           {
@@ -325,17 +370,17 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s02-panel-03"
           }
         ],
         "path": "media/shot-02.jpg",
-        "sha256": "931b8f46373b7c02df4078aba8361d61b0e9e970f53889f49fa05784409658ea",
+        "sha256": "bd1c2e939e1eee3feebb7867cf63c2ebb072e0bad7c1f9753bf1e1c06c769268",
         "width": 2280
       },
       {
         "blocks": [],
-        "height": 1696,
+        "height": 1639,
         "kind": "shot-collage",
         "panels": [
           {
@@ -345,7 +390,7 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s03-panel-01"
           },
           {
@@ -355,7 +400,7 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s03-panel-02"
           },
           {
@@ -365,17 +410,17 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s03-panel-03"
           }
         ],
         "path": "media/shot-03.jpg",
-        "sha256": "a4a1b27118d5d4f5d4fbbc1afb0ea7e52a079f9a367a62efd4f0b4afa1413ade",
+        "sha256": "37e227939d1394578b203e19219d4d9b1a5047eab5b1efa7f8d1ad33dfdbae3c",
         "width": 2280
       },
       {
         "blocks": [],
-        "height": 1639,
+        "height": 1702,
         "kind": "shot-collage",
         "panels": [
           {
@@ -385,7 +430,7 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s04-panel-01"
           },
           {
@@ -395,7 +440,7 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s04-panel-02"
           },
           {
@@ -405,12 +450,12 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s04-panel-03"
           }
         ],
         "path": "media/shot-04.jpg",
-        "sha256": "44c216b5a21f1422d5a2721c640fdc423e02f620434a01064fd9412fc296cc20",
+        "sha256": "e4edf8b1dc86d2d9ab4a9dd54cb927e5bc693ea52165014eac3a9d487431ccc5",
         "width": 2280
       },
       {
@@ -425,7 +470,7 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s05-panel-01"
           },
           {
@@ -435,7 +480,7 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s05-panel-02"
           },
           {
@@ -445,12 +490,12 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s05-panel-03"
           }
         ],
         "path": "media/shot-05.jpg",
-        "sha256": "a38c85fcf64cad6e01ba7ec2819bb87776ea005ed565482857e943647fa01bb9",
+        "sha256": "303cc59884d9413615ec67cd997e68a8a5009a03165eec65da9b27f0052a811c",
         "width": 2280
       },
       {
@@ -465,7 +510,7 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s01-overview-01"
           },
           {
@@ -475,7 +520,7 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s02-overview-01"
           },
           {
@@ -485,7 +530,7 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s03-overview-01"
           },
           {
@@ -495,7 +540,7 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s04-overview-01"
           },
           {
@@ -505,12 +550,12 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s05-overview-01"
           }
         ],
         "path": "media/overview.jpg",
-        "sha256": "596b3199aaf33370284dd19a6516d8d417cd9d9089acda943fb0ba4396b76f34",
+        "sha256": "8074991c4c5bf755f2b5d3e6ae550f420eba7df4814922a966c873f34684e517",
         "width": 3780
       },
       {
@@ -520,7 +565,7 @@
               0,
               132,
               2280,
-              1696
+              1705
             ],
             "derived_from": "media/shot-01.jpg",
             "shot_id": "shot-01"
@@ -528,9 +573,9 @@
           {
             "bbox": [
               0,
-              1888,
+              1897,
               2280,
-              1639
+              1705
             ],
             "derived_from": "media/shot-02.jpg",
             "shot_id": "shot-02"
@@ -538,9 +583,9 @@
           {
             "bbox": [
               0,
-              3587,
+              3662,
               2280,
-              1696
+              1639
             ],
             "derived_from": "media/shot-03.jpg",
             "shot_id": "shot-03"
@@ -548,9 +593,9 @@
           {
             "bbox": [
               0,
-              5343,
+              5361,
               2280,
-              1639
+              1702
             ],
             "derived_from": "media/shot-04.jpg",
             "shot_id": "shot-04"
@@ -558,7 +603,7 @@
           {
             "bbox": [
               0,
-              7042,
+              7123,
               2280,
               1639
             ],
@@ -566,7 +611,7 @@
             "shot_id": "shot-05"
           }
         ],
-        "height": 8681,
+        "height": 8762,
         "kind": "storyboard",
         "panels": [
           {
@@ -576,7 +621,7 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s01-panel-01"
           },
           {
@@ -586,7 +631,7 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s01-panel-02"
           },
           {
@@ -596,139 +641,139 @@
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s01-panel-03"
           },
           {
             "bbox": [
               30,
-              2029,
+              2038,
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s02-panel-01"
           },
           {
             "bbox": [
               780,
-              2029,
+              2038,
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s02-panel-02"
           },
           {
             "bbox": [
               1530,
-              2029,
+              2038,
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s02-panel-03"
           },
           {
             "bbox": [
               30,
-              3728,
+              3803,
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s03-panel-01"
           },
           {
             "bbox": [
               780,
-              3728,
+              3803,
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s03-panel-02"
           },
           {
             "bbox": [
               1530,
-              3728,
+              3803,
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s03-panel-03"
           },
           {
             "bbox": [
               30,
-              5484,
+              5502,
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s04-panel-01"
           },
           {
             "bbox": [
               780,
-              5484,
+              5502,
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s04-panel-02"
           },
           {
             "bbox": [
               1530,
-              5484,
+              5502,
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s04-panel-03"
           },
           {
             "bbox": [
               30,
-              7183,
+              7264,
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s05-panel-01"
           },
           {
             "bbox": [
               780,
-              7183,
+              7264,
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s05-panel-02"
           },
           {
             "bbox": [
               1530,
-              7183,
+              7264,
               720,
               1280
             ],
-            "scale": 1.0,
+            "scale": 1,
             "selection_id": "s05-panel-03"
           }
         ],
         "path": "media/storyboard.jpg",
-        "sha256": "5f44bf318d93df0349e43603938ffe14273acbc69f9ed1d209da0e0dcac28a2d",
+        "sha256": "a38b08b65ec0be7a190c8040734527246b16fb390543b90b651f850d6131c226",
         "width": 2280
       }
     ],
     "selections": [
       {
         "area_ids": [
-          "exterior-01"
+          "exterior"
         ],
         "frame_index": 0,
         "id": "s01-panel-01",
@@ -740,7 +785,7 @@
       },
       {
         "area_ids": [
-          "exterior-01"
+          "exterior"
         ],
         "frame_index": 71,
         "id": "s01-panel-02",
@@ -752,7 +797,7 @@
       },
       {
         "area_ids": [
-          "exterior-01"
+          "exterior"
         ],
         "frame_index": 141,
         "id": "s01-panel-03",
@@ -764,7 +809,7 @@
       },
       {
         "area_ids": [
-          "exterior-01"
+          "exterior"
         ],
         "frame_index": 0,
         "id": "s01-overview-01",
@@ -776,7 +821,7 @@
       },
       {
         "area_ids": [
-          "living-01"
+          "living"
         ],
         "frame_index": 142,
         "id": "s02-panel-01",
@@ -788,7 +833,7 @@
       },
       {
         "area_ids": [
-          "living-01"
+          "living"
         ],
         "frame_index": 196,
         "id": "s02-panel-02",
@@ -800,7 +845,7 @@
       },
       {
         "area_ids": [
-          "living-01"
+          "living"
         ],
         "frame_index": 248,
         "id": "s02-panel-03",
@@ -812,7 +857,7 @@
       },
       {
         "area_ids": [
-          "living-01"
+          "living"
         ],
         "frame_index": 248,
         "id": "s02-overview-01",
@@ -824,7 +869,7 @@
       },
       {
         "area_ids": [
-          "kitchen-01"
+          "kitchen"
         ],
         "frame_index": 249,
         "id": "s03-panel-01",
@@ -836,7 +881,7 @@
       },
       {
         "area_ids": [
-          "kitchen-01"
+          "kitchen"
         ],
         "frame_index": 298,
         "id": "s03-panel-02",
@@ -848,7 +893,7 @@
       },
       {
         "area_ids": [
-          "kitchen-01"
+          "kitchen"
         ],
         "frame_index": 346,
         "id": "s03-panel-03",
@@ -860,7 +905,7 @@
       },
       {
         "area_ids": [
-          "kitchen-01"
+          "kitchen"
         ],
         "frame_index": 249,
         "id": "s03-overview-01",
@@ -872,7 +917,7 @@
       },
       {
         "area_ids": [
-          "bedroom-01"
+          "bedroom"
         ],
         "frame_index": 347,
         "id": "s04-panel-01",
@@ -884,7 +929,7 @@
       },
       {
         "area_ids": [
-          "bedroom-01"
+          "bedroom"
         ],
         "frame_index": 398,
         "id": "s04-panel-02",
@@ -896,7 +941,7 @@
       },
       {
         "area_ids": [
-          "bedroom-01"
+          "bedroom"
         ],
         "frame_index": 449,
         "id": "s04-panel-03",
@@ -908,7 +953,7 @@
       },
       {
         "area_ids": [
-          "bedroom-01"
+          "bedroom"
         ],
         "frame_index": 449,
         "id": "s04-overview-01",
@@ -920,7 +965,7 @@
       },
       {
         "area_ids": [
-          "bath-laundry-01"
+          "bath"
         ],
         "frame_index": 450,
         "id": "s05-panel-01",
@@ -932,7 +977,7 @@
       },
       {
         "area_ids": [
-          "bath-laundry-01"
+          "bath"
         ],
         "frame_index": 501,
         "id": "s05-panel-02",
@@ -944,7 +989,7 @@
       },
       {
         "area_ids": [
-          "bath-laundry-01"
+          "bath"
         ],
         "frame_index": 551,
         "id": "s05-panel-03",
@@ -956,7 +1001,7 @@
       },
       {
         "area_ids": [
-          "bath-laundry-01"
+          "bath"
         ],
         "frame_index": 450,
         "id": "s05-overview-01",
@@ -1031,9 +1076,17 @@
       "document": "manifest",
       "source_pointer": "/frames/0"
     },
-    "/evidence_inventory/frames/110": {
+    "/evidence_inventory/frames/105": {
       "document": "manifest",
-      "source_pointer": "/frames/110"
+      "source_pointer": "/frames/105"
+    },
+    "/evidence_inventory/frames/120": {
+      "document": "manifest",
+      "source_pointer": "/frames/120"
+    },
+    "/evidence_inventory/frames/135": {
+      "document": "manifest",
+      "source_pointer": "/frames/135"
     },
     "/evidence_inventory/frames/141": {
       "document": "manifest",
@@ -1043,21 +1096,33 @@
       "document": "manifest",
       "source_pointer": "/frames/142"
     },
+    "/evidence_inventory/frames/15": {
+      "document": "manifest",
+      "source_pointer": "/frames/15"
+    },
+    "/evidence_inventory/frames/157": {
+      "document": "manifest",
+      "source_pointer": "/frames/157"
+    },
     "/evidence_inventory/frames/177": {
       "document": "manifest",
       "source_pointer": "/frames/177"
+    },
+    "/evidence_inventory/frames/192": {
+      "document": "manifest",
+      "source_pointer": "/frames/192"
     },
     "/evidence_inventory/frames/196": {
       "document": "manifest",
       "source_pointer": "/frames/196"
     },
-    "/evidence_inventory/frames/207": {
+    "/evidence_inventory/frames/212": {
       "document": "manifest",
-      "source_pointer": "/frames/207"
+      "source_pointer": "/frames/212"
     },
-    "/evidence_inventory/frames/222": {
+    "/evidence_inventory/frames/232": {
       "document": "manifest",
-      "source_pointer": "/frames/222"
+      "source_pointer": "/frames/232"
     },
     "/evidence_inventory/frames/248": {
       "document": "manifest",
@@ -1067,9 +1132,17 @@
       "document": "manifest",
       "source_pointer": "/frames/249"
     },
+    "/evidence_inventory/frames/259": {
+      "document": "manifest",
+      "source_pointer": "/frames/259"
+    },
     "/evidence_inventory/frames/279": {
       "document": "manifest",
       "source_pointer": "/frames/279"
+    },
+    "/evidence_inventory/frames/294": {
+      "document": "manifest",
+      "source_pointer": "/frames/294"
     },
     "/evidence_inventory/frames/298": {
       "document": "manifest",
@@ -1079,9 +1152,13 @@
       "document": "manifest",
       "source_pointer": "/frames/30"
     },
-    "/evidence_inventory/frames/319": {
+    "/evidence_inventory/frames/314": {
       "document": "manifest",
-      "source_pointer": "/frames/319"
+      "source_pointer": "/frames/314"
+    },
+    "/evidence_inventory/frames/329": {
+      "document": "manifest",
+      "source_pointer": "/frames/329"
     },
     "/evidence_inventory/frames/346": {
       "document": "manifest",
@@ -1091,77 +1168,97 @@
       "document": "manifest",
       "source_pointer": "/frames/347"
     },
-    "/evidence_inventory/frames/372": {
+    "/evidence_inventory/frames/362": {
       "document": "manifest",
-      "source_pointer": "/frames/372"
+      "source_pointer": "/frames/362"
     },
-    "/evidence_inventory/frames/390": {
+    "/evidence_inventory/frames/377": {
       "document": "manifest",
-      "source_pointer": "/frames/390"
+      "source_pointer": "/frames/377"
+    },
+    "/evidence_inventory/frames/397": {
+      "document": "manifest",
+      "source_pointer": "/frames/397"
     },
     "/evidence_inventory/frames/398": {
       "document": "manifest",
       "source_pointer": "/frames/398"
     },
-    "/evidence_inventory/frames/410": {
+    "/evidence_inventory/frames/40": {
       "document": "manifest",
-      "source_pointer": "/frames/410"
+      "source_pointer": "/frames/40"
+    },
+    "/evidence_inventory/frames/412": {
+      "document": "manifest",
+      "source_pointer": "/frames/412"
+    },
+    "/evidence_inventory/frames/432": {
+      "document": "manifest",
+      "source_pointer": "/frames/432"
     },
     "/evidence_inventory/frames/449": {
       "document": "manifest",
       "source_pointer": "/frames/449"
     },
+    "/evidence_inventory/frames/45": {
+      "document": "manifest",
+      "source_pointer": "/frames/45"
+    },
     "/evidence_inventory/frames/450": {
       "document": "manifest",
       "source_pointer": "/frames/450"
     },
-    "/evidence_inventory/frames/475": {
+    "/evidence_inventory/frames/465": {
       "document": "manifest",
-      "source_pointer": "/frames/475"
+      "source_pointer": "/frames/465"
     },
-    "/evidence_inventory/frames/485": {
+    "/evidence_inventory/frames/480": {
       "document": "manifest",
-      "source_pointer": "/frames/485"
+      "source_pointer": "/frames/480"
     },
-    "/evidence_inventory/frames/500": {
+    "/evidence_inventory/frames/495": {
       "document": "manifest",
-      "source_pointer": "/frames/500"
+      "source_pointer": "/frames/495"
     },
     "/evidence_inventory/frames/501": {
       "document": "manifest",
       "source_pointer": "/frames/501"
     },
-    "/evidence_inventory/frames/520": {
+    "/evidence_inventory/frames/515": {
       "document": "manifest",
-      "source_pointer": "/frames/520"
+      "source_pointer": "/frames/515"
     },
-    "/evidence_inventory/frames/525": {
+    "/evidence_inventory/frames/535": {
       "document": "manifest",
-      "source_pointer": "/frames/525"
+      "source_pointer": "/frames/535"
+    },
+    "/evidence_inventory/frames/55": {
+      "document": "manifest",
+      "source_pointer": "/frames/55"
     },
     "/evidence_inventory/frames/551": {
       "document": "manifest",
       "source_pointer": "/frames/551"
     },
-    "/evidence_inventory/frames/60": {
+    "/evidence_inventory/frames/65": {
       "document": "manifest",
-      "source_pointer": "/frames/60"
-    },
-    "/evidence_inventory/frames/63": {
-      "document": "manifest",
-      "source_pointer": "/frames/63"
-    },
-    "/evidence_inventory/frames/66": {
-      "document": "manifest",
-      "source_pointer": "/frames/66"
+      "source_pointer": "/frames/65"
     },
     "/evidence_inventory/frames/71": {
       "document": "manifest",
       "source_pointer": "/frames/71"
     },
-    "/evidence_inventory/frames/83": {
+    "/evidence_inventory/frames/75": {
       "document": "manifest",
-      "source_pointer": "/frames/83"
+      "source_pointer": "/frames/75"
+    },
+    "/evidence_inventory/frames/80": {
+      "document": "manifest",
+      "source_pointer": "/frames/80"
+    },
+    "/evidence_inventory/frames/90": {
+      "document": "manifest",
+      "source_pointer": "/frames/90"
     },
     "/evidence_inventory/media/0": {
       "document": "manifest",
@@ -1351,6 +1448,14 @@
       "document": "audit",
       "source_pointer": "/design/features/1"
     },
+    "/reference/design/features/10": {
+      "document": "audit",
+      "source_pointer": "/design/features/10"
+    },
+    "/reference/design/features/11": {
+      "document": "audit",
+      "source_pointer": "/design/features/11"
+    },
     "/reference/design/features/2": {
       "document": "audit",
       "source_pointer": "/design/features/2"
@@ -1411,6 +1516,10 @@
       "document": "audit",
       "source_pointer": "/design/palette/4"
     },
+    "/reference/design/palette/5": {
+      "document": "audit",
+      "source_pointer": "/design/palette/5"
+    },
     "/reference/design/size": {
       "document": "audit",
       "source_pointer": "/design/size"
@@ -1443,13 +1552,13 @@
       "document": "audit",
       "source_pointer": "/design/styles/influences/0"
     },
-    "/reference/design/styles/influences/1": {
-      "document": "audit",
-      "source_pointer": "/design/styles/influences/1"
-    },
     "/reference/design/styles/interior/0": {
       "document": "audit",
       "source_pointer": "/design/styles/interior/0"
+    },
+    "/reference/design/styles/interior/1": {
+      "document": "audit",
+      "source_pointer": "/design/styles/interior/1"
     },
     "/reference/design/styles/primary": {
       "document": "audit",
@@ -1503,6 +1612,22 @@
       "document": "audit",
       "source_pointer": "/shots/0/camera/phases/1/observations"
     },
+    "/reference/shots/0/camera/phases/2": {
+      "document": "audit",
+      "source_pointer": "/shots/0/camera/phases/2"
+    },
+    "/reference/shots/0/camera/phases/2/depth_direction": {
+      "document": "audit",
+      "source_pointer": "/shots/0/camera/phases/2/depth_direction"
+    },
+    "/reference/shots/0/camera/phases/2/notation": {
+      "document": "audit",
+      "source_pointer": "/shots/0/camera/phases/2/notation"
+    },
+    "/reference/shots/0/camera/phases/2/observations": {
+      "document": "audit",
+      "source_pointer": "/shots/0/camera/phases/2/observations"
+    },
     "/reference/shots/0/camera/tempo": {
       "document": "audit",
       "source_pointer": "/shots/0/camera/tempo"
@@ -1550,10 +1675,6 @@
     "/reference/shots/0/design/0/architecture/facts/2": {
       "document": "audit",
       "source_pointer": "/shots/0/design/0/architecture/facts/2"
-    },
-    "/reference/shots/0/design/0/architecture/facts/2/facet_roles": {
-      "document": "audit",
-      "source_pointer": "/shots/0/design/0/architecture/facts/2/facet_roles"
     },
     "/reference/shots/0/design/0/architecture/facts/3": {
       "document": "audit",
@@ -1679,6 +1800,10 @@
       "document": "audit",
       "source_pointer": "/shots/1/design/0/architecture/facts/1"
     },
+    "/reference/shots/1/design/0/architecture/facts/1/facet_roles": {
+      "document": "audit",
+      "source_pointer": "/shots/1/design/0/architecture/facts/1/facet_roles"
+    },
     "/reference/shots/1/design/0/architecture/facts/2": {
       "document": "audit",
       "source_pointer": "/shots/1/design/0/architecture/facts/2"
@@ -1690,18 +1815,6 @@
     "/reference/shots/1/design/0/architecture/facts/3": {
       "document": "audit",
       "source_pointer": "/shots/1/design/0/architecture/facts/3"
-    },
-    "/reference/shots/1/design/0/architecture/facts/3/facet_roles": {
-      "document": "audit",
-      "source_pointer": "/shots/1/design/0/architecture/facts/3/facet_roles"
-    },
-    "/reference/shots/1/design/0/architecture/facts/4": {
-      "document": "audit",
-      "source_pointer": "/shots/1/design/0/architecture/facts/4"
-    },
-    "/reference/shots/1/design/0/architecture/facts/4/facet_roles": {
-      "document": "audit",
-      "source_pointer": "/shots/1/design/0/architecture/facts/4/facet_roles"
     },
     "/reference/shots/1/design/0/environment": {
       "document": "audit",
@@ -1791,14 +1904,6 @@
       "document": "audit",
       "source_pointer": "/shots/2/camera/tempo"
     },
-    "/reference/shots/2/camera/tempo/segments/0": {
-      "document": "audit",
-      "source_pointer": "/shots/2/camera/tempo/segments/0"
-    },
-    "/reference/shots/2/camera/tempo/segments/1": {
-      "document": "audit",
-      "source_pointer": "/shots/2/camera/tempo/segments/1"
-    },
     "/reference/shots/2/composition": {
       "document": "audit",
       "source_pointer": "/shots/2/composition"
@@ -1835,33 +1940,9 @@
       "document": "audit",
       "source_pointer": "/shots/2/design/0/architecture/facts/3"
     },
-    "/reference/shots/2/design/0/architecture/facts/3/facet_roles": {
-      "document": "audit",
-      "source_pointer": "/shots/2/design/0/architecture/facts/3/facet_roles"
-    },
     "/reference/shots/2/design/0/architecture/facts/4": {
       "document": "audit",
       "source_pointer": "/shots/2/design/0/architecture/facts/4"
-    },
-    "/reference/shots/2/design/0/architecture/facts/4/facet_roles": {
-      "document": "audit",
-      "source_pointer": "/shots/2/design/0/architecture/facts/4/facet_roles"
-    },
-    "/reference/shots/2/design/0/architecture/facts/5": {
-      "document": "audit",
-      "source_pointer": "/shots/2/design/0/architecture/facts/5"
-    },
-    "/reference/shots/2/design/0/architecture/facts/5/facet_roles": {
-      "document": "audit",
-      "source_pointer": "/shots/2/design/0/architecture/facts/5/facet_roles"
-    },
-    "/reference/shots/2/design/0/architecture/facts/6": {
-      "document": "audit",
-      "source_pointer": "/shots/2/design/0/architecture/facts/6"
-    },
-    "/reference/shots/2/design/0/architecture/facts/6/facet_roles": {
-      "document": "audit",
-      "source_pointer": "/shots/2/design/0/architecture/facts/6/facet_roles"
     },
     "/reference/shots/2/design/0/environment": {
       "document": "audit",
@@ -1879,10 +1960,6 @@
       "document": "audit",
       "source_pointer": "/shots/2/design/0/furnishings/facts/0"
     },
-    "/reference/shots/2/design/0/furnishings/facts/0/facet_roles": {
-      "document": "audit",
-      "source_pointer": "/shots/2/design/0/furnishings/facts/0/facet_roles"
-    },
     "/reference/shots/2/design/0/furnishings/facts/1": {
       "document": "audit",
       "source_pointer": "/shots/2/design/0/furnishings/facts/1"
@@ -1891,17 +1968,21 @@
       "document": "audit",
       "source_pointer": "/shots/2/design/0/furnishings/facts/2"
     },
-    "/reference/shots/2/design/0/furnishings/facts/2/facet_roles": {
-      "document": "audit",
-      "source_pointer": "/shots/2/design/0/furnishings/facts/2/facet_roles"
-    },
     "/reference/shots/2/design/0/furnishings/facts/3": {
       "document": "audit",
       "source_pointer": "/shots/2/design/0/furnishings/facts/3"
     },
+    "/reference/shots/2/design/0/furnishings/facts/3/facet_roles": {
+      "document": "audit",
+      "source_pointer": "/shots/2/design/0/furnishings/facts/3/facet_roles"
+    },
     "/reference/shots/2/design/0/furnishings/facts/4": {
       "document": "audit",
       "source_pointer": "/shots/2/design/0/furnishings/facts/4"
+    },
+    "/reference/shots/2/design/0/furnishings/facts/5": {
+      "document": "audit",
+      "source_pointer": "/shots/2/design/0/furnishings/facts/5"
     },
     "/reference/shots/2/overviews/0": {
       "document": "audit",
@@ -1983,10 +2064,6 @@
       "document": "audit",
       "source_pointer": "/shots/3/design/0/architecture/facts/2"
     },
-    "/reference/shots/3/design/0/architecture/facts/2/facet_roles": {
-      "document": "audit",
-      "source_pointer": "/shots/3/design/0/architecture/facts/2/facet_roles"
-    },
     "/reference/shots/3/design/0/architecture/facts/3": {
       "document": "audit",
       "source_pointer": "/shots/3/design/0/architecture/facts/3"
@@ -1994,6 +2071,10 @@
     "/reference/shots/3/design/0/architecture/facts/4": {
       "document": "audit",
       "source_pointer": "/shots/3/design/0/architecture/facts/4"
+    },
+    "/reference/shots/3/design/0/architecture/facts/4/facet_roles": {
+      "document": "audit",
+      "source_pointer": "/shots/3/design/0/architecture/facts/4/facet_roles"
     },
     "/reference/shots/3/design/0/environment": {
       "document": "audit",
@@ -2019,10 +2100,6 @@
       "document": "audit",
       "source_pointer": "/shots/3/design/0/furnishings/facts/1"
     },
-    "/reference/shots/3/design/0/furnishings/facts/1/facet_roles": {
-      "document": "audit",
-      "source_pointer": "/shots/3/design/0/furnishings/facts/1/facet_roles"
-    },
     "/reference/shots/3/design/0/furnishings/facts/2": {
       "document": "audit",
       "source_pointer": "/shots/3/design/0/furnishings/facts/2"
@@ -2030,6 +2107,10 @@
     "/reference/shots/3/design/0/furnishings/facts/3": {
       "document": "audit",
       "source_pointer": "/shots/3/design/0/furnishings/facts/3"
+    },
+    "/reference/shots/3/design/0/furnishings/facts/3/facet_roles": {
+      "document": "audit",
+      "source_pointer": "/shots/3/design/0/furnishings/facts/3/facet_roles"
     },
     "/reference/shots/3/design/0/furnishings/facts/4": {
       "document": "audit",
@@ -2083,14 +2164,6 @@
       "document": "audit",
       "source_pointer": "/shots/4/camera/tempo"
     },
-    "/reference/shots/4/camera/tempo/segments/0": {
-      "document": "audit",
-      "source_pointer": "/shots/4/camera/tempo/segments/0"
-    },
-    "/reference/shots/4/camera/tempo/segments/1": {
-      "document": "audit",
-      "source_pointer": "/shots/4/camera/tempo/segments/1"
-    },
     "/reference/shots/4/composition": {
       "document": "audit",
       "source_pointer": "/shots/4/composition"
@@ -2131,25 +2204,9 @@
       "document": "audit",
       "source_pointer": "/shots/4/design/0/architecture/facts/3"
     },
-    "/reference/shots/4/design/0/architecture/facts/3/facet_roles": {
-      "document": "audit",
-      "source_pointer": "/shots/4/design/0/architecture/facts/3/facet_roles"
-    },
     "/reference/shots/4/design/0/architecture/facts/4": {
       "document": "audit",
       "source_pointer": "/shots/4/design/0/architecture/facts/4"
-    },
-    "/reference/shots/4/design/0/architecture/facts/4/facet_roles": {
-      "document": "audit",
-      "source_pointer": "/shots/4/design/0/architecture/facts/4/facet_roles"
-    },
-    "/reference/shots/4/design/0/architecture/facts/5": {
-      "document": "audit",
-      "source_pointer": "/shots/4/design/0/architecture/facts/5"
-    },
-    "/reference/shots/4/design/0/architecture/facts/5/facet_roles": {
-      "document": "audit",
-      "source_pointer": "/shots/4/design/0/architecture/facts/5/facet_roles"
     },
     "/reference/shots/4/design/0/environment": {
       "document": "audit",
@@ -2167,10 +2224,6 @@
       "document": "audit",
       "source_pointer": "/shots/4/design/0/furnishings/facts/0"
     },
-    "/reference/shots/4/design/0/furnishings/facts/0/facet_roles": {
-      "document": "audit",
-      "source_pointer": "/shots/4/design/0/furnishings/facts/0/facet_roles"
-    },
     "/reference/shots/4/design/0/furnishings/facts/1": {
       "document": "audit",
       "source_pointer": "/shots/4/design/0/furnishings/facts/1"
@@ -2179,17 +2232,21 @@
       "document": "audit",
       "source_pointer": "/shots/4/design/0/furnishings/facts/2"
     },
-    "/reference/shots/4/design/0/furnishings/facts/2/facet_roles": {
-      "document": "audit",
-      "source_pointer": "/shots/4/design/0/furnishings/facts/2/facet_roles"
-    },
     "/reference/shots/4/design/0/furnishings/facts/3": {
       "document": "audit",
       "source_pointer": "/shots/4/design/0/furnishings/facts/3"
     },
+    "/reference/shots/4/design/0/furnishings/facts/3/facet_roles": {
+      "document": "audit",
+      "source_pointer": "/shots/4/design/0/furnishings/facts/3/facet_roles"
+    },
     "/reference/shots/4/design/0/furnishings/facts/4": {
       "document": "audit",
       "source_pointer": "/shots/4/design/0/furnishings/facts/4"
+    },
+    "/reference/shots/4/design/0/furnishings/facts/5": {
+      "document": "audit",
+      "source_pointer": "/shots/4/design/0/furnishings/facts/5"
     },
     "/reference/shots/4/overviews/0": {
       "document": "audit",
@@ -2221,9 +2278,10 @@
       {
         "functions": [
           "exterior",
-          "entry"
+          "entrance",
+          "porch"
         ],
-        "id": "exterior-01",
+        "id": "exterior",
         "label": "Exterior",
         "visible_intervals": [
           {
@@ -2234,9 +2292,9 @@
       },
       {
         "functions": [
-          "living"
+          "living room"
         ],
-        "id": "living-01",
+        "id": "living",
         "label": "Living Room",
         "visible_intervals": [
           {
@@ -2249,7 +2307,7 @@
         "functions": [
           "kitchen"
         ],
-        "id": "kitchen-01",
+        "id": "kitchen",
         "label": "Kitchen",
         "visible_intervals": [
           {
@@ -2260,10 +2318,9 @@
       },
       {
         "functions": [
-          "bedroom",
-          "storage"
+          "bedroom"
         ],
-        "id": "bedroom-01",
+        "id": "bedroom",
         "label": "Bedroom",
         "visible_intervals": [
           {
@@ -2277,7 +2334,7 @@
           "bathroom",
           "laundry"
         ],
-        "id": "bath-laundry-01",
+        "id": "bath",
         "label": "Bathroom & Laundry",
         "visible_intervals": [
           {
@@ -2293,65 +2350,84 @@
           "aspect": "massing",
           "evidence": [
             0,
-            63
+            45,
+            80
           ],
           "state": "observed",
-          "value": "Massa kompak berlapis dengan bay window dan portal membulat"
+          "value": "Volume rendah dengan bay window membulat, massa tengah lebih tinggi dan kanopi entrance melengkung"
         },
         {
           "aspect": "roof",
           "evidence": [
             0,
-            63,
-            141
+            45
           ],
           "state": "observed",
-          "value": "Tepi atap hitam mengikuti lengkung setiap massa"
+          "value": "Parapet hitam horizontal dengan tepi membulat; bidang atap di belakang tidak terlihat"
         },
         {
           "aspect": "entrance",
           "evidence": [
             0,
+            80,
             141
           ],
           "state": "observed",
-          "value": "Pintu hitam berkarangan hias, teras kecil dan tangga pendek"
+          "value": "Pintu hitam berglasir di bawah kanopi, tangga pendek dan jalur paving"
+        },
+        {
+          "aspect": "porch",
+          "evidence": [
+            0,
+            80
+          ],
+          "state": "observed",
+          "value": "Teras kecil beratap dengan tangga dan dinding samping rendah"
         },
         {
           "aspect": "openings",
           "evidence": [
-            0,
+            45,
             248,
             249,
-            449,
-            501
-          ],
-          "state": "observed",
-          "value": "Bay window tinggi, bukaan lengkung besar di dapur dan kamar, serta jendela bulat pada shower"
-        },
-        {
-          "aspect": "material-hierarchy",
-          "evidence": [
-            0,
-            248,
-            249,
-            449,
-            501
-          ],
-          "state": "observed",
-          "value": "Batu terang bertekstur dan bidang kayu hangat, dipertegas kusen dan logam hitam"
-        },
-        {
-          "aspect": "lighting",
-          "evidence": [
-            0,
-            248,
-            298,
             449,
             450
           ],
           "state": "observed",
-          "value": "Lampu dalam bernuansa hangat dipadukan cahaya siang yang sejuk"
+          "value": "Kaca tinggi melengkung, jendela bulat dan bukaan besar dengan rangka gelap"
+        },
+        {
+          "aspect": "material-hierarchy",
+          "evidence": [
+            45,
+            248,
+            449,
+            450
+          ],
+          "state": "observed",
+          "value": "Tampilan batu susun pucat, kayu hangat, kaca, logam gelap dan ubin sage"
+        },
+        {
+          "aspect": "lighting",
+          "evidence": [
+            45,
+            248,
+            249,
+            449,
+            450
+          ],
+          "state": "observed",
+          "value": "Cahaya siang difus melalui jendela, dipadukan lampu aksen hangat dan downlight"
+        },
+        {
+          "aspect": "atmosphere",
+          "evidence": [
+            0,
+            248,
+            449
+          ],
+          "state": "observed",
+          "value": "Hangat, nyaman dan intim dengan kontras lanskap musim dingin"
         },
         {
           "aspect": "environment",
@@ -2363,132 +2439,146 @@
             450
           ],
           "state": "observed",
-          "value": "Pemandangan musim dingin dengan salju, batang pohon tanpa daun dan beberapa rumah sekitar"
+          "value": "Salju, pohon gugur tanpa daun dan rumah tetangga terlihat dari bukaan"
         },
         {
           "aspect": "spatial-configuration",
           "evidence": [
+            248,
             249,
-            398,
+            449,
             450
           ],
-          "state": "observed",
-          "value": "Dapur linear, penyimpanan terbuka kamar dan laundry bertumpuk di kamar mandi"
+          "state": "uncertain",
+          "value": "Area tinggal, dapur linear, kamar tidur dan kamar mandi bersama laundry ditampilkan; koneksi denah antar-cut belum diketahui"
         },
         {
           "aspect": "distinctive-features",
           "evidence": [
-            0,
+            45,
             248,
             449,
             450
           ],
           "state": "observed",
-          "value": "Motif lengkung pada massa, kanopi, kaca ruang tamu, jendela kamar dan shower"
+          "value": "Motif lengkung berulang pada fasad, kaca living, jendela bedroom dan shower melengkung"
         },
         {
-          "aspect": "atmosphere",
+          "aspect": "continuity",
           "evidence": [
             0,
             248,
-            449
+            249,
+            449,
+            450
           ],
-          "state": "observed",
-          "value": "Hangat dan intim, dengan aksen lampu keemasan dan kayu madu di tengah suasana musim dingin."
+          "state": "uncertain",
+          "value": "Palet dan lingkungan tampak konsisten, tetapi urutan edit bukan bukti satu bangunan fisik"
         }
       ],
       "house_type": {
         "evidence": [
           0,
-          66
+          45,
+          80
         ],
-        "state": "observed",
-        "value": "Cottage"
+        "note": "Massa satu tingkat tampak berdiri sendiri; sisi belakang dan batas tapak tidak terlihat.",
+        "state": "uncertain",
+        "value": "Single-Storey Detached House"
       },
-      "name": "Cottage Batu Lengkung di Halaman Bersalju",
+      "name": "Rounded Modern Cottage — Winter Retreat",
       "palette": [
         {
           "evidence": [
-            0
+            45
           ],
-          "hex": "#9B9493",
+          "hex": "#E8E1D4",
           "role": "Dominan",
           "state": "observed",
-          "value": "Abu batu terang"
+          "value": "Ivory"
         },
         {
           "evidence": [
             248
           ],
-          "hex": "#C6BEB6",
+          "hex": "#C9B9A4",
           "role": "Pendamping",
           "state": "observed",
-          "value": "Krem lembut"
+          "value": "Warm Beige"
         },
         {
           "evidence": [
-            248
+            449
           ],
-          "hex": "#A17653",
+          "hex": "#B38451",
           "role": "Pendamping",
           "state": "observed",
-          "value": "Kayu madu"
+          "value": "Honey Oak"
         },
         {
           "evidence": [
-            66
+            80
           ],
-          "hex": "#0A090B",
+          "hex": "#242424",
           "role": "Aksen",
           "state": "observed",
-          "value": "Hitam arang"
+          "value": "Charcoal Black"
         },
         {
           "evidence": [
-            500
+            450
           ],
-          "hex": "#717062",
-          "role": "Aksen kamar mandi",
+          "hex": "#899B91",
+          "role": "Aksen",
           "state": "observed",
-          "value": "Hijau zaitun keabu-abuan"
+          "value": "Muted Sage"
+        },
+        {
+          "evidence": [
+            249
+          ],
+          "hex": "#F1EDE6",
+          "role": "Pendamping",
+          "state": "observed",
+          "value": "Soft White"
         }
       ],
       "size": {
         "floor_area_m2": {
-          "max": 85,
-          "min": 60
+          "max": 90,
+          "min": 55
         },
         "footprint": {
           "evidence": [
             0,
-            63,
-            249,
-            450
+            45,
+            80
           ],
           "state": "uncertain",
-          "value": "compact"
+          "value": "Massa depan kompak dengan tonjolan membulat"
         },
         "levels": {
           "evidence": [
             0,
-            63
+            45
           ],
           "state": "observed",
-          "value": "Satu tingkat utama yang terlihat"
+          "value": "Satu tingkat terlihat"
         },
         "proportions": {
           "evidence": [
             0,
-            63
+            45
           ],
           "state": "observed",
-          "value": "Fasad rendah melebar dengan massa tengah yang lebih tinggi"
+          "value": "Fasad lebih lebar daripada tinggi, volume tengah sedikit lebih tinggi"
         },
         "scale": {
           "evidence": [
             0,
-            249,
-            450
+            45,
+            248,
+            449
           ],
           "state": "uncertain",
           "value": "small"
@@ -2498,133 +2588,158 @@
         "influences": [
           {
             "evidence": [
-              248,
-              449
+              0,
+              45
             ],
+            "note": "Kurva horizontal dan pita parapet hitam mengingatkan pada bahasa streamline, bukan atribusi historis.",
             "state": "uncertain",
-            "value": "Contemporary Scandinavian"
-          },
-          {
-            "evidence": [
-              249,
-              298
-            ],
-            "state": "uncertain",
-            "value": "Modern Farmhouse"
+            "value": "Streamline Moderne"
           }
         ],
         "interior": [
           {
             "evidence": [
+              142,
               248,
-              298,
-              449,
-              501
+              347,
+              449
             ],
             "state": "uncertain",
-            "value": "Cozy Modern"
+            "value": "Modern Rustic"
+          },
+          {
+            "evidence": [
+              249,
+              450
+            ],
+            "state": "uncertain",
+            "value": "Contemporary Cozy"
           }
         ],
         "primary": {
           "evidence": [
             0,
-            63,
-            248,
-            449
+            45,
+            80
           ],
+          "note": "Volume melengkung, parapet hitam mendatar, bidang kaca tinggi dan fasad batu terang.",
           "state": "uncertain",
-          "value": "Organic Modern Cottage"
+          "value": "Contemporary Modern"
         }
       }
     },
     "id": "edh001",
-    "notes": "Lengkung, material terang dan pencahayaan hangat berulang sepanjang video. Urutan cut tidak memperlihatkan koneksi fisik antararea.",
-    "revision": 3,
+    "notes": "Estimasi luas 55–90 m² adalah perkiraan visual berketidakpastian tinggi dari proporsi pintu, furnitur dan cakupan ruang; bukan pengukuran denah. Label gaya bersifat interpretatif. Material hanya tampilan visual, bukan spesifikasi fisik. Kronologi cut tidak membuktikan hubungan ruang atau identitas satu rumah. Kamera disalin tanpa perubahan dari checkpoint yang disetujui pengguna.",
+    "revision": 4,
     "schema_version": "3.1",
     "shots": [
       {
         "area_ids": [
-          "exterior-01"
+          "exterior"
         ],
         "camera": {
-          "description": "Kamera melengkung ke kanan sambil mempertahankan fasad, kemudian maju dengan ritme yang menguat menuju pintu hitam sampai jalur dan sisi kiri fasad keluar dari bingkai.",
+          "description": "Kamera mengitari fasad ke kanan dengan pintu sebagai jangkar, lalu maju semakin cepat ke teras dan pintu.",
           "phases": [
             {
               "confidence": "medium",
               "depth_direction": "NO IN/OUT",
-              "end_s": 2.1,
+              "end_s": 1.5,
               "evidence": [
                 0,
+                15,
                 30,
-                60
+                40,
+                45
               ],
-              "focus": "Bay window, portal masuk dan muka tangga",
-              "notation": "Orbit Right (~10°–15°)",
+              "focus": "Fasad dan pintu",
+              "notation": "Gentle Orbit Right (~10°–15°)",
               "observations": {
-                "depth": "Ukuran kaca dan pintu berubah sedikit. Pergeseran lapisan terlihat lebih kuat daripada penambahan ukuran.",
-                "rotation": "Fasad tetap terbaca saat sudut berubah. Arah pandang mengimbangi lintasan melengkung untuk menahan fasad dalam bingkai.",
-                "translation": "Arah jalur dan sisi tangga berubah terhadap bay window dan pepohonan. Sisi kanan portal semakin terbuka."
+                "depth": "Tinggi pintu pada lembar 360 px berubah sekitar 135 menjadi 145 px; kecil dibanding pendekatan berikutnya.",
+                "rotation": "Pintu relatif tertahan di kanan tengah; perubahan sudut bidang mendukung orbit. Pan kompensasi melekat pada orbit dan tidak terpisah secara meyakinkan; tidak ada tilt/pedestal terpisah.",
+                "translation": "Jalur paving dekat bergeser ke kiri terhadap pintu, sisi kanan teras semakin terlihat; mendukung badan ke kanan."
               },
-              "start_s": 0.0
+              "start_s": 0
+            },
+            {
+              "confidence": "medium",
+              "depth_direction": "IN",
+              "end_s": 2.6666666666666665,
+              "evidence": [
+                45,
+                55,
+                65,
+                75,
+                80
+              ],
+              "focus": "Tangga dan pintu",
+              "notation": "Accelerating Dolly-In (~1.2×) + Mild Orbit Right (~5°–10°)",
+              "observations": {
+                "depth": "Pintu membesar sekitar 145 ke 169 px; tangga membesar lebih cepat daripada pepohonan jauh.",
+                "rotation": "Sudut bidang terus berubah ringan; tidak cukup bukti untuk pan independen atau tilt.",
+                "translation": "Sisi kanan teras masih membuka, tetapi pergeseran relatif paving mulai didominasi ekspansi pendekatan."
+              },
+              "start_s": 1.5
             },
             {
               "confidence": "medium",
               "depth_direction": "IN",
               "end_s": 4.733333333,
               "evidence": [
-                63,
-                83,
-                110,
+                80,
+                90,
+                105,
+                120,
+                135,
                 141
               ],
-              "focus": "Pintu hitam dan kanopi masuk",
-              "notation": "Accelerating Straight Dolly-In (~1.8×) toward the black entrance door",
+              "focus": "Pintu masuk",
+              "notation": "Accelerating Straight Dolly-In (~1.6×–1.7×)",
               "observations": {
-                "depth": "Ambang dan tinggi bukaan pintu membesar. Paving serta anak tangga lepas dari bawah bingkai lebih cepat pada bagian akhir.",
-                "rotation": "Pintu tetap di bagian kanan-tengah. Pergeseran arah pandang kecil dan tidak membentuk sapuan terpisah.",
-                "translation": "Pintu, batu dekat dan semak di tangga membesar dengan laju berbeda. Lintasan terasa maju menuju landing."
+                "depth": "Tinggi pintu sekitar 169 ke 280 px; tangga dan lampu dekat membesar, area samping keluar dari frame.",
+                "rotation": "Perubahan orientasi pintu mereda; tidak ada rotasi atau tilt berkelanjutan yang bisa dipisahkan.",
+                "translation": "Pintu bertahan di kanan-tengah, jalur pendekatan cenderung lurus ke pintu; gerak lateral sisa tidak terpisah dari perspektif."
               },
-              "start_s": 2.1
+              "start_s": 2.6666666666666665
             }
           ],
           "tempo": {
-            "description": "Pelan saat melengkung, lalu berkembang dari sedang menjadi cepat ketika mendekati pintu.",
+            "description": "Lambat ketika mengitari, sedang saat mulai maju, cepat menjelang pintu.",
             "segments": [
               {
-                "description": "Pergeseran sudut pelan dengan fasad tetap terbaca.",
-                "end_s": 2.1,
+                "description": "Sapuan orbit ringan.",
+                "end_s": 1.5,
                 "label": "slow",
-                "start_s": 0.0
+                "start_s": 0
               },
               {
-                "description": "Mulai maju dan dasar fasad membesar.",
-                "end_s": 3.166666667,
+                "description": "Pendekatan bertambah.",
+                "end_s": 3.333333333,
                 "label": "moderate",
-                "start_s": 2.1
+                "start_s": 1.5
               },
               {
-                "description": "Tangga dan tepi fasad keluar dari bingkai dalam waktu lebih singkat.",
+                "description": "Ekspansi cepat menuju pintu.",
                 "end_s": 4.733333333,
                 "label": "fast",
-                "start_s": 3.166666667
+                "start_s": 3.333333333
               }
             ]
           }
         },
         "composition": {
-          "camera_direction": "Menghadap fasad dengan pintu di sisi kanan bingkai.",
-          "camera_height": "Sekitar tinggi mata terhadap jalur.",
-          "camera_position": "Di jalur masuk sebelum tangga teras.",
-          "camera_tilt": "Hampir datar.",
-          "depth": "Jalur, tangga, portal, lalu pintu yang lebih dalam di bawah kanopi.",
-          "end_composition": "Medium wide pada pintu hitam, portal dan sebagian bay window.",
-          "focus": "Hubungan bay window melengkung dan pintu hitam.",
-          "foreground": "Jalur paving dan tepi salju.",
-          "lighting": "Cahaya mendung sejuk dengan lampu dinding dan kanopi hangat.",
-          "motion_compatibility": "Mulai cukup lebar untuk memberi ruang gerak ke kanan, dengan tangga sebagai garis masuk menuju pintu.",
-          "reveal": "Sisi kanan portal dan detail pintu semakin terbuka.",
-          "start_composition": "Wide fasad dengan jalur masuk utuh.",
-          "view_angle": "Hampir frontal, sedikit serong ke bidang masuk."
+          "camera_direction": "Menghadap fasad dan pintu di kanan tengah",
+          "camera_height": "Sekitar tinggi mata",
+          "camera_position": "Di jalur paving depan rumah",
+          "camera_tilt": "Hampir datar",
+          "depth": "Jalur–tangga–pintu–massa belakang",
+          "end_composition": "Close menuju pintu dan tangga",
+          "focus": "Pintu masuk dengan bay window sebagai konteks",
+          "foreground": "Paving dan salju",
+          "lighting": "Cahaya luar difus, sconce dan downlight hangat",
+          "motion_compatibility": "Wide memberi ruang orbit; pendekatan akhir mengisolasi entrance",
+          "reveal": "Orbit membuka sisi kanan lalu dolly memperbesar pintu",
+          "start_composition": "Wide fasad dengan kaca kiri, pintu kanan dan jalur di bawah",
+          "view_angle": "oblique"
         },
         "design": [
           {
@@ -2634,144 +2749,144 @@
                   "attribute": "massing",
                   "evidence": [
                     0,
-                    63
+                    45
                   ],
                   "facet_roles": [
                     "massing"
                   ],
                   "state": "observed",
-                  "subject": "Facade",
-                  "value": "Rounded bay, raised central mass and curved entry portal"
+                  "subject": "house",
+                  "value": "rounded projecting volumes"
                 },
                 {
-                  "attribute": "finish appearance",
+                  "attribute": "profile",
                   "evidence": [
                     0,
-                    141
+                    45
                   ],
                   "facet_roles": [
-                    "material-hierarchy"
+                    "roof"
                   ],
                   "state": "observed",
-                  "subject": "Facade",
-                  "value": "Pale stone cladding with black roof bands"
+                  "subject": "roof",
+                  "value": "horizontal curved black parapet"
                 },
                 {
-                  "attribute": "opening",
+                  "attribute": "appearance",
                   "evidence": [
-                    0,
-                    63
-                  ],
-                  "facet_roles": [
-                    "opening"
+                    45,
+                    80
                   ],
                   "state": "observed",
-                  "subject": "Front bay",
-                  "value": "Tall curved bay glazing with black mullions"
+                  "subject": "facade",
+                  "value": "pale stacked stone appearance"
                 },
                 {
                   "attribute": "configuration",
                   "evidence": [
-                    63,
-                    141
+                    0,
+                    45
                   ],
                   "facet_roles": [
-                    "configuration",
                     "opening"
                   ],
                   "state": "observed",
-                  "subject": "Entry",
-                  "value": "Black door with glazed transom and right sidelight under a curved canopy"
+                  "subject": "window",
+                  "value": "curved full-height bay glazing with dark mullions"
                 },
                 {
-                  "attribute": "circulation",
+                  "attribute": "configuration",
                   "evidence": [
-                    0,
-                    63
-                  ],
-                  "facet_roles": [
-                    "circulation"
-                  ],
-                  "state": "observed",
-                  "subject": "Entry approach",
-                  "value": "Paved path rising to a short flight of steps and landing"
-                },
-                {
-                  "attribute": "placement",
-                  "evidence": [
-                    63,
+                    80,
                     141
                   ],
                   "facet_roles": [
-                    "lighting"
+                    "opening",
+                    "circulation"
                   ],
                   "state": "observed",
-                  "subject": "Entry lighting",
-                  "value": "Black up-down wall sconce between glazing and door, plus recessed canopy spots"
+                  "subject": "entrance",
+                  "value": "black glazed door beneath curved canopy"
+                },
+                {
+                  "attribute": "access",
+                  "evidence": [
+                    0,
+                    80
+                  ],
+                  "facet_roles": [
+                    "circulation",
+                    "layout"
+                  ],
+                  "state": "observed",
+                  "subject": "porch",
+                  "value": "short stair with low side walls and paved path"
                 }
               ],
-              "text": "Fasad kompak tersusun dari beberapa massa melengkung dengan dinding berpenampilan batu terang dan tepian atap hitam yang tegas. Di kiri, kaca tinggi berbingkai hitam mengikuti tonjolan dinding melengkung. Massa tengah naik di belakangnya. Pintu hitam dengan kaca atas dan panel kaca di kanan berada di balik portal putih berundak yang melengkung, dengan kanopi hitam dan lampu tanam. Beberapa anak tangga menyambungkan teras pendek dengan jalur berpaving."
+              "text": "Fasad satu lantai tampak memiliki tiga volume membulat; bidang tengah lebih tinggi dengan batu susun pucat dan pita parapet hitam. Bay window tinggi berbingkai hitam di kiri, pintu hitam berglasir di kanan dengan kanopi kurva dan lampu tanam. Tangga pendek menghubungkan paving ke teras kecil, diapit dinding rendah."
             },
             "area_ids": [
-              "exterior-01"
+              "exterior"
             ],
             "environment": {
               "facts": [
                 {
-                  "attribute": "surface condition",
+                  "attribute": "ground-cover",
                   "evidence": [
-                    0
+                    0,
+                    45
                   ],
                   "state": "observed",
-                  "subject": "Front yard",
-                  "value": "Snow-covered yard with partly cleared paving"
+                  "subject": "site",
+                  "value": "snow-covered yard"
                 },
                 {
                   "attribute": "vegetation",
                   "evidence": [
                     0,
-                    63
+                    45
                   ],
                   "state": "observed",
-                  "subject": "Site",
-                  "value": "Leafless branches behind the rounded roof"
+                  "subject": "landscape",
+                  "value": "leafless mature trees and low shrubs"
                 }
               ],
-              "text": "Salju menutup halaman dan bagian tepi jalur masuk. Pohon besar tanpa daun berada di belakang rumah, dan bagian bangunan sekitar terlihat di sisi kiri. Cahaya luar mendung membuat batu terang dan tepian hitam terbaca jelas."
+              "text": "Halaman bersalju, pohon tinggi tanpa daun dan jalur paving abu-abu menuju tangga. Cahaya luar difus; lampu teras dan interior berwarna hangat."
             },
             "furnishings": {
               "facts": [
                 {
                   "attribute": "decoration",
                   "evidence": [
+                    80,
                     141
                   ],
                   "state": "observed",
-                  "subject": "Front door",
-                  "value": "Illuminated wreath with red accent"
+                  "subject": "door",
+                  "value": "seasonal wreath"
                 },
                 {
                   "attribute": "decoration",
                   "evidence": [
-                    0,
+                    45,
+                    80
+                  ],
+                  "state": "observed",
+                  "subject": "porch",
+                  "value": "paired illuminated miniature trees"
+                },
+                {
+                  "attribute": "appearance",
+                  "evidence": [
+                    80,
                     141
                   ],
                   "state": "observed",
-                  "subject": "Entry landing",
-                  "value": "Small illuminated conifers around the door and steps"
-                },
-                {
-                  "attribute": "visible interior",
-                  "evidence": [
-                    0,
-                    63
-                  ],
-                  "state": "observed",
-                  "subject": "Bay glazing",
-                  "value": "Warm pendant lights and furnishings seen through glass"
+                  "subject": "wall light",
+                  "value": "warm black wall sconces"
                 }
               ],
-              "text": "Karangan hias berlampu menempel di daun pintu. Cemara kecil berlampu mengapit area masuk dan semak rendah mengikuti dasar fasad serta sisi tangga. Dari kaca besar di kiri terlihat sebagian lampu gantung, kap lampu dan isi ruang yang bernuansa hangat."
+              "text": "Dua pohon dekoratif kecil berlampu mengapit pintu; wreath di pintu, lampu dinding hitam hangat, semak rendah di tepi fasad."
             }
           }
         ],
@@ -2779,28 +2894,28 @@
         "overviews": [
           {
             "area_ids": [
-              "exterior-01"
+              "exterior"
             ],
-            "composition_summary": "Dari jalur bersalju sebelum tangga, kamera setinggi mata menghadap fasad hampir lurus dengan sedikit sudut serong. Jalur paving membawa mata ke tangga dan portal putih di kanan, sementara bay window serta massa tengah yang lebih tinggi tetap masuk bingkai. Pepohonan tanpa daun membentuk latar yang kontras dengan lampu hangat di sekitar pintu.",
+            "composition_summary": "Dari jalur depan pada tinggi mata, kamera menghadap agak serong ke fasad. Wide F0 memperlihatkan volume membulat, bay window kiri, teras kanan, tangga dan lingkungan bersalju.",
             "frame_index": 0
           }
         ],
         "panels": [
           {
             "area_ids": [
-              "exterior-01"
+              "exterior"
             ],
             "frame_index": 0
           },
           {
             "area_ids": [
-              "exterior-01"
+              "exterior"
             ],
             "frame_index": 71
           },
           {
             "area_ids": [
-              "exterior-01"
+              "exterior"
             ],
             "frame_index": 141
           }
@@ -2811,10 +2926,10 @@
       },
       {
         "area_ids": [
-          "living-01"
+          "living"
         ],
         "camera": {
-          "description": "Kamera mundur melengkung ke kiri sambil menoleh lembut ke kanan. Meja kopi yang terpotong menjadi utuh, lalu sofa L dan bidang jendela melengkung terbuka dalam satu komposisi.",
+          "description": "Kamera mundur dari meja dan sofa, membuka ruang duduk dengan pergeseran perspektif ke kiri dan pandangan ke kanan yang mereda.",
           "phases": [
             {
               "confidence": "medium",
@@ -2822,47 +2937,73 @@
               "end_s": 8.3,
               "evidence": [
                 142,
+                157,
                 177,
-                196,
-                207,
-                222,
+                192,
+                212,
+                232,
                 248
               ],
-              "focus": "Meja kopi, sofa L dan jendela melengkung",
-              "notation": "Dolly-Out (~2×) + Orbit Left + Gentle Pan Right (~15°, Ease-Out)",
-              "note": "Skala memakai tinggi vas kuningan sebagai jangkar dekat.",
+              "focus": "Meja kopi, sofa, dinding TV dan jendela",
+              "notation": "Dolly-Out (~1.5×–1.7×, Ease-Out) + Gentle Orbit Left (~10°–15°) + Moderate Pan Right (~15°–25°, Ease-Out)",
               "observations": {
-                "depth": "Vas kuningan di atas meja kopi tampak sekitar separuh tinggi awal dari F142 ke F248, sementara TV yang lebih jauh menyusut lebih sedikit. Karpet dan keseluruhan meja terbuka saat kamera mundur.",
-                "rotation": "Dinding TV bergeser ke kiri dan deret kaca terbuka di kanan. Sapuan berkurang pada bingkai akhir meski sofa masih membuka sedikit di sisi kanan.",
-                "translation": "Bantal dan sudut meja berbeda pergeseran terhadap TV dan kusen jauh. Sudut tampak meja berubah dan lapisan sofa terbuka, mendukung lintasan melengkung ke kiri."
+                "depth": "TV menyusut (tinggi sekitar 88 ke 63 px; lebar 127 ke 75 px); meja dan bantal dekat mengecil lebih nyata, lebih banyak lantai terlihat.",
+                "rotation": "TV dan kusen menyapu kiri sementara jendela kanan terbuka; pan kanan mengimbangi lintasan. Estimasi sudut visual kasar; tidak terlihat tilt terpisah.",
+                "translation": "Meja bergeser relatif ke kanan terhadap TV, muka pendek meja makin terbuka dan sisi panjang makin foreshortened; mendukung orbit kiri sambil mundur. Diagonal/kelengkungan tidak bisa dipastikan secara metrik."
               },
               "start_s": 4.733333333
             }
           ],
           "tempo": {
-            "description": "Mundur dengan tempo sedang. Bukaan ruang paling terasa di bagian tengah, lalu pergeseran melandai menjelang cut.",
+            "description": "Sedang, pergeseran melandai pada sepertiga akhir.",
             "label": "moderate"
           }
         },
         "composition": {
-          "camera_direction": "Serong dari sofa menuju pertemuan dinding TV dan kaca melengkung.",
-          "camera_height": "Di atas sandaran dan permukaan meja, sekitar tinggi mata.",
-          "camera_position": "Di sisi dalam area duduk dekat sofa dan meja kopi.",
-          "camera_tilt": "Sedikit mengarah ke bawah, tetap stabil.",
-          "depth": "Sofa dekat, meja tengah, dinding media dan kaca ke halaman.",
-          "end_composition": "Wide seluruh susunan sofa, meja, dinding TV dan jendela lengkung.",
-          "focus": "Susunan sofa dan meja terhadap TV serta jendela.",
-          "foreground": "Bantal sofa dan bagian meja kopi di tepi depan.",
-          "lighting": "Siang dingin dari kaca dengan lampu dinding dan plafon yang hangat.",
-          "motion_compatibility": "Letakkan kamera cukup dekat dengan tepi sofa untuk memberi ruang reveal saat mundur dan memutar ke kanan.",
-          "reveal": "Meja utuh, lengkung kaca dan susunan sofa L.",
-          "start_composition": "Medium wide terpotong bantal dan meja kopi.",
-          "view_angle": "Serong lintas ruang."
+          "camera_direction": "Menghadap serong ke TV dan jendela kanan",
+          "camera_height": "Sekitar tinggi mata duduk/berdiri rendah",
+          "camera_position": "Dekat meja kopi dan ujung sofa",
+          "camera_tilt": "Hampir datar",
+          "depth": "Meja–sofa–TV/jendela–luar",
+          "end_composition": "Wide sectional dan seluruh area duduk",
+          "focus": "Dinding TV dan konfigurasi duduk",
+          "foreground": "Meja kopi dan ujung sofa",
+          "lighting": "Cahaya siang kanan dengan sconce, downlight hangat",
+          "motion_compatibility": "Gerak OUT memperluas cakupan area duduk",
+          "reveal": "Dolly-out membuka sectional, orbit dan pan menjaga hubungan bidang",
+          "start_composition": "Medium-wide TV kiri, meja depan, jendela kanan",
+          "view_angle": "oblique"
         },
         "design": [
           {
             "architecture": {
               "facts": [
+                {
+                  "attribute": "layout",
+                  "evidence": [
+                    142,
+                    248
+                  ],
+                  "facet_roles": [
+                    "layout"
+                  ],
+                  "state": "observed",
+                  "subject": "living room",
+                  "value": "seating faces media and fireplace wall beside curved bay window"
+                },
+                {
+                  "attribute": "configuration",
+                  "evidence": [
+                    142,
+                    248
+                  ],
+                  "facet_roles": [
+                    "opening"
+                  ],
+                  "state": "observed",
+                  "subject": "window",
+                  "value": "curved tall bay glazing"
+                },
                 {
                   "attribute": "configuration",
                   "evidence": [
@@ -2873,116 +3014,8 @@
                     "configuration"
                   ],
                   "state": "observed",
-                  "subject": "Media wall",
-                  "value": "Black TV above a recessed linear fireplace"
-                },
-                {
-                  "attribute": "finish appearance",
-                  "evidence": [
-                    142,
-                    196
-                  ],
-                  "state": "observed",
-                  "subject": "Media wall",
-                  "value": "Pale textured masonry"
-                },
-                {
-                  "attribute": "storage",
-                  "evidence": [
-                    142,
-                    248
-                  ],
-                  "facet_roles": [
-                    "configuration"
-                  ],
-                  "state": "observed",
-                  "subject": "Low media shelf",
-                  "value": "Long wood-look shelf with visible open cubbies"
-                },
-                {
-                  "attribute": "opening",
-                  "evidence": [
-                    196,
-                    248
-                  ],
-                  "facet_roles": [
-                    "opening"
-                  ],
-                  "state": "observed",
-                  "subject": "Window bay",
-                  "value": "Tall black-framed glazing following a curved wall"
-                },
-                {
-                  "attribute": "shape",
-                  "evidence": [
-                    196,
-                    248
-                  ],
-                  "facet_roles": [
-                    "shape"
-                  ],
-                  "state": "observed",
-                  "subject": "Ceiling",
-                  "value": "Curved recessed ceiling following the window bay"
-                }
-              ],
-              "text": "Dinding media bertekstur batu terang mengikat TV hitam dengan perapian linear di bawahnya. Ambalan kayu rendah memanjang dengan ceruk terbuka. Pada sisi kanan, kaca tinggi berbingkai gelap mengikuti bidang melengkung. Plafon mengikuti lengkung area kaca dengan tingkat putih dan titik lampu tanam. Lantai berpenampilan papan kayu abu kecokelatan terlihat di luar tepi karpet."
-            },
-            "area_ids": [
-              "living-01"
-            ],
-            "environment": {
-              "facts": [
-                {
-                  "attribute": "visible setting",
-                  "evidence": [
-                    196,
-                    248
-                  ],
-                  "state": "observed",
-                  "subject": "View from living",
-                  "value": "Snow, bare winter trees and neighboring houses"
-                }
-              ],
-              "text": "Di balik kaca terlihat salju, pohon tanpa daun, tanaman hijau gelap dan bangunan tetangga. Cahaya siang dari jendela mengisi area duduk, dengan lapisan cahaya hangat pada dinding media dan sisi jendela."
-            },
-            "furnishings": {
-              "facts": [
-                {
-                  "attribute": "layout",
-                  "evidence": [
-                    196,
-                    248
-                  ],
-                  "facet_roles": [
-                    "layout"
-                  ],
-                  "state": "observed",
-                  "subject": "Sectional sofa",
-                  "value": "Cream L-shaped sectional with chaise at the glazing"
-                },
-                {
-                  "attribute": "shape",
-                  "evidence": [
-                    196,
-                    248
-                  ],
-                  "facet_roles": [
-                    "shape"
-                  ],
-                  "state": "observed",
-                  "subject": "Coffee table",
-                  "value": "Low rectangular block showing wood grain"
-                },
-                {
-                  "attribute": "placement",
-                  "evidence": [
-                    196,
-                    248
-                  ],
-                  "state": "observed",
-                  "subject": "Rug",
-                  "value": "Large neutral patterned rug under the seating group"
+                  "subject": "ceiling",
+                  "value": "curved recessed ceiling with downlights"
                 },
                 {
                   "attribute": "appearance",
@@ -2991,21 +3024,90 @@
                     248
                   ],
                   "state": "observed",
-                  "subject": "Sofa textiles",
-                  "value": "Textured cushions and knitted throws"
-                },
-                {
-                  "attribute": "placement",
-                  "evidence": [
-                    142,
-                    196
-                  ],
-                  "state": "observed",
-                  "subject": "Window-side plant",
-                  "value": "Broad-leaf plant in a ribbed pot beside the bay glazing"
+                  "subject": "wall",
+                  "value": "pale stone-textured feature wall"
                 }
               ],
-              "text": "Sofa krem berbentuk L membingkai sisi kanan dan belakang area duduk, dengan modul chaise dekat jendela. Meja kopi balok kayu bertapak rendah berada di tengah karpet bermotif netral. Buku dan benda dekoratif berwarna kuningan serta gelap tersusun di atas meja. Ada bantal bertekstur, selimut rajut, tanaman dalam pot beralur dekat jendela, dan dekorasi kecil di ambalan bawah TV."
+              "text": "Dinding fokus bertekstur batu terang menampung TV dan perapian linear hitam; bay window melengkung dengan mullion hitam membuka pandangan ke salju. Plafon mengikuti kurva bukaan dengan downlight dan pencahayaan tidak langsung. Lantai terang berlapis rug besar."
+            },
+            "area_ids": [
+              "living"
+            ],
+            "environment": {
+              "facts": [
+                {
+                  "attribute": "environment",
+                  "evidence": [
+                    142,
+                    248
+                  ],
+                  "state": "observed",
+                  "subject": "window view",
+                  "value": "snow, bare trees and neighboring house"
+                }
+              ],
+              "text": "Jendela memperlihatkan pohon gundul, salju dan bangunan tetangga. Cahaya siang dari kaca kanan berpadu dengan lampu dinding dan plafon hangat."
+            },
+            "furnishings": {
+              "facts": [
+                {
+                  "attribute": "configuration",
+                  "evidence": [
+                    177,
+                    248
+                  ],
+                  "facet_roles": [
+                    "configuration"
+                  ],
+                  "state": "observed",
+                  "subject": "sofa",
+                  "value": "cream sectional oriented toward TV"
+                },
+                {
+                  "attribute": "configuration",
+                  "evidence": [
+                    177,
+                    248
+                  ],
+                  "facet_roles": [
+                    "configuration"
+                  ],
+                  "state": "observed",
+                  "subject": "coffee table",
+                  "value": "rectangular block wood table centered on rug"
+                },
+                {
+                  "attribute": "storage",
+                  "evidence": [
+                    142,
+                    248
+                  ],
+                  "state": "observed",
+                  "subject": "media console",
+                  "value": "low wood console with open cubbies"
+                },
+                {
+                  "attribute": "appearance",
+                  "evidence": [
+                    142,
+                    248
+                  ],
+                  "state": "observed",
+                  "subject": "fireplace",
+                  "value": "linear black insert under television"
+                },
+                {
+                  "attribute": "position",
+                  "evidence": [
+                    142,
+                    248
+                  ],
+                  "state": "observed",
+                  "subject": "plant",
+                  "value": "potted greenery by window"
+                }
+              ],
+              "text": "Sofa sectional krem di kanan dan depan jendela menghadap TV; meja kopi kayu tebal berbentuk persegi panjang berada di tengah rug. Konsol kayu rendah dengan ceruk di bawah TV/perapian; bantal, throw dan tanaman pot menambah tekstur."
             }
           }
         ],
@@ -3013,28 +3115,28 @@
         "overviews": [
           {
             "area_ids": [
-              "living-01"
+              "living"
             ],
-            "composition_summary": "Kamera di belakang sisi sofa menghadap serong ke dinding TV di kiri dan jendela lengkung di belakang. Dari posisi agak lebih jauh ini seluruh meja, sebagian besar sofa L, karpet dan jalur lantai dekat dinding terbaca bersamaan. Bantal serta selimut berada di sisi kanan depan, salju terlihat melalui kaca dan lampu hangat menyorot dinding media.",
+            "composition_summary": "Dari sisi depan area duduk pada F248, arah serong ke TV kiri dan bay window kanan. Wide akhir menunjukkan sofa sectional, meja kopi, rug, konsol dan jendela tinggi.",
             "frame_index": 248
           }
         ],
         "panels": [
           {
             "area_ids": [
-              "living-01"
+              "living"
             ],
             "frame_index": 142
           },
           {
             "area_ids": [
-              "living-01"
+              "living"
             ],
             "frame_index": 196
           },
           {
             "area_ids": [
-              "living-01"
+              "living"
             ],
             "frame_index": 248
           }
@@ -3045,10 +3147,10 @@
       },
       {
         "area_ids": [
-          "kitchen-01"
+          "kitchen"
         ],
         "camera": {
-          "description": "Kamera maju sepanjang baris kabinet dan menyapu ke kiri. Kompor membesar terlebih dahulu, lalu bergerak ke kanan bingkai saat fokus beralih ke kulkas dan ceruk kopi.",
+          "description": "Kamera mendekat sepanjang kabinet ke arah kulkas dan sudut kopi, disertai sapuan kiri yang makin terasa.",
           "phases": [
             {
               "confidence": "medium",
@@ -3056,53 +3158,42 @@
               "end_s": 11.566666667,
               "evidence": [
                 249,
+                259,
                 279,
-                298,
-                319,
+                294,
+                314,
+                329,
                 346
               ],
-              "focus": "Kompor, lalu ceruk kopi dan kulkas",
-              "notation": "Accelerating Dolly-In (~1.9×) + Strong Pan Left (~25°–30°) toward the refrigerator and coffee nook",
+              "focus": "Kulkas dan sudut kopi",
+              "notation": "Accelerating Diagonal Dolly-In (~2.2×–2.5×) + Accelerating Pan Left (~20°–30°)",
               "observations": {
-                "depth": "Kompor, mesin kopi dan pintu kulkas membesar. Rak kanan serta ujung meja lepas dari bingkai saat kamera mendekat.",
-                "rotation": "Kompor dan jendela utama bergeser ke kanan sementara kulkas berpindah ke tengah-kiri. Sapuan kiri menguat di bagian akhir.",
-                "translation": "Sudut sisi kabinet depan berubah terhadap ceruk di belakang. Kamera menyusuri baris dapur dengan perubahan perspektif yang tampak pada pertemuan kulkas dan countertop."
+                "depth": "Mesin kopi bertambah dari sekitar 40 ke 90 px; kulkas dan tepi kabinet tumbuh lebih besar, oven keluar kanan. Parallax dan ekspansi berbeda mendukung dolly, bukan sekadar zoom.",
+                "rotation": "Kulkas dan sudut kopi yang semula kiri bergerak ke kanan sementara sisi kanan meja keluar. Pan kiri meningkat, tidak ada tilt/pedestal yang jelas.",
+                "translation": "Kamera bergerak maju secara diagonal menuju sisi kiri jajaran kabinet; tepi meja dekat bergerak keluar lebih cepat. Tidak ada bukti cukup untuk orbit tersendiri."
               },
               "start_s": 8.3
             }
           ],
           "tempo": {
-            "description": "Sedang saat mendekati kompor dan lebih cepat saat pandangan berpindah ke kulkas.",
-            "segments": [
-              {
-                "description": "Mendekat dengan perubahan framing bertahap.",
-                "end_s": 9.8,
-                "label": "moderate",
-                "start_s": 8.3
-              },
-              {
-                "description": "Rak kanan lepas dan fokus cepat berpindah ke ceruk kopi serta kulkas.",
-                "end_s": 11.566666667,
-                "label": "fast",
-                "start_s": 9.8
-              }
-            ]
+            "description": "Sedang dengan percepatan nyata, paling cepat secara visual pada bagian akhir.",
+            "label": "moderate"
           }
         },
         "composition": {
-          "camera_direction": "Serong menyusuri baris meja menuju kompor dan kulkas di kiri.",
-          "camera_height": "Sekitar tinggi mata, permukaan countertop terlihat.",
-          "camera_position": "Di dekat ujung kanan kabinet, sebelum area kompor.",
-          "camera_tilt": "Sedikit melihat ke bawah pada meja kerja.",
-          "depth": "Countertop dekat menuju kompor, ceruk kopi lalu kulkas.",
-          "end_composition": "Bidang lebih rapat pada kulkas dan ceruk kopi.",
-          "focus": "Kompor di bawah jendela, beralih ke ceruk kopi dan kulkas.",
-          "foreground": "Ujung kabinet kanan, rak dan tepian runner.",
-          "lighting": "Cahaya siang bersalju di jendela dengan lampu tanam, aksen ceruk dan rak hangat.",
-          "motion_compatibility": "Awal yang serong memberi kedalaman di sepanjang countertop dan memungkinkan sapuan kiri saat maju.",
-          "reveal": "Ceruk kopi, detail kabinet dan fasad kulkas.",
-          "start_composition": "Wide baris dapur dengan kulkas, kompor dan rak kanan.",
-          "view_angle": "Serong dari ujung susunan satu dinding."
+          "camera_direction": "Serong ke ujung run kabinet dan kulkas",
+          "camera_height": "Sekitar tinggi mata",
+          "camera_position": "Di ujung lorong dapur menghadap kabinet",
+          "camera_tilt": "Hampir datar",
+          "depth": "Counter depan–range–coffee station–kulkas",
+          "end_composition": "Close pada coffee station dan kulkas",
+          "focus": "Ujung kabinet dan coffee station",
+          "foreground": "Counter dan range",
+          "lighting": "Cahaya siang jendela, pendant dan lampu kabinet",
+          "motion_compatibility": "Wide awal menetapkan layout, IN mengungkap detail",
+          "reveal": "Dolly-in dan pan kiri mengisolasi ujung dapur",
+          "start_composition": "Wide sepanjang kabinet dan kedua bukaan",
+          "view_angle": "oblique"
         },
         "design": [
           {
@@ -3112,172 +3203,146 @@
                   "attribute": "layout",
                   "evidence": [
                     249,
-                    298
+                    279
                   ],
                   "facet_roles": [
-                    "layout",
-                    "configuration"
+                    "layout"
                   ],
                   "state": "observed",
-                  "subject": "Kitchen cabinets",
-                  "value": "Compact single-wall run with framed white doors and black pulls"
-                },
-                {
-                  "attribute": "finish appearance",
-                  "evidence": [
-                    298,
-                    346
-                  ],
-                  "facet_roles": [
-                    "material-hierarchy"
-                  ],
-                  "state": "observed",
-                  "subject": "Countertop",
-                  "value": "White surface with grey marble-like veining"
-                },
-                {
-                  "attribute": "appearance",
-                  "evidence": [
-                    249,
-                    346
-                  ],
-                  "state": "observed",
-                  "subject": "Backsplash",
-                  "value": "White rectangular tiles laid in running bond"
-                },
-                {
-                  "attribute": "opening",
-                  "evidence": [
-                    249,
-                    298
-                  ],
-                  "facet_roles": [
-                    "opening"
-                  ],
-                  "state": "observed",
-                  "subject": "Cooking window",
-                  "value": "Rectangular window over range"
-                },
-                {
-                  "attribute": "opening",
-                  "evidence": [
-                    249,
-                    346
-                  ],
-                  "facet_roles": [
-                    "opening"
-                  ],
-                  "state": "observed",
-                  "subject": "Fridge-side window",
-                  "value": "Large curved opening left of the refrigerator"
+                  "subject": "kitchen",
+                  "value": "single-wall cabinet run along narrow aisle; opposite side not established"
                 },
                 {
                   "attribute": "configuration",
                   "evidence": [
                     249,
-                    298
+                    279
                   ],
                   "facet_roles": [
-                    "configuration"
+                    "opening"
                   ],
                   "state": "observed",
-                  "subject": "Shelving",
-                  "value": "Lit white niche shelves on left and dark floating shelves on right"
-                },
-                {
-                  "attribute": "placement",
-                  "evidence": [
-                    249,
-                    298
-                  ],
-                  "facet_roles": [
-                    "lighting"
-                  ],
-                  "state": "observed",
-                  "subject": "Kitchen lights",
-                  "value": "Recessed ceiling spots, niche lights and warm metal fixtures above the window"
-                }
-              ],
-              "text": "Dapur kompak mengikuti satu dinding. Kabinet putih berpanel dan pegangan hitam mengapit kompor serta kulkas di ujung kiri. Countertop putih bercorak abu menyerupai marmer, di depan backsplash ubin putih persegi panjang bersusun bata. Jendela persegi panjang berada di atas kompor dan bukaan besar melengkung terlihat di kiri kulkas. Ceruk terbuka putih di kiri jendela dan rak hitam di kanan mendapat cahaya aksen. Lantai tampak seperti papan kayu abu kecokelatan."
-            },
-            "area_ids": [
-              "kitchen-01"
-            ],
-            "environment": {
-              "facts": [
-                {
-                  "attribute": "visible setting",
-                  "evidence": [
-                    249,
-                    298
-                  ],
-                  "state": "observed",
-                  "subject": "View from kitchen",
-                  "value": "Snow-covered yard and wooden fence with houses beyond"
-                }
-              ],
-              "text": "Dari jendela tampak halaman bersalju dengan batang pohon dekat rumah, pagar kayu dan bangunan terang di belakang. Pohon cemara gelap ikut terbaca dari bukaan melengkung ketika kamera mendekati kulkas."
-            },
-            "furnishings": {
-              "facts": [
-                {
-                  "attribute": "placement",
-                  "evidence": [
-                    249,
-                    298
-                  ],
-                  "facet_roles": [
-                    "configuration"
-                  ],
-                  "state": "observed",
-                  "subject": "Range",
-                  "value": "Gas-style grates and stainless-look oven below the window"
-                },
-                {
-                  "attribute": "type",
-                  "evidence": [
-                    298,
-                    346
-                  ],
-                  "state": "observed",
-                  "subject": "Refrigerator",
-                  "value": "Double upper doors with a lower drawer"
-                },
-                {
-                  "attribute": "placement",
-                  "evidence": [
-                    298,
-                    346
-                  ],
-                  "facet_roles": [
-                    "configuration"
-                  ],
-                  "state": "observed",
-                  "subject": "Coffee station",
-                  "value": "Black coffee machine on counter beside refrigerator"
+                  "subject": "window",
+                  "value": "rectangular window above range and round end window"
                 },
                 {
                   "attribute": "appearance",
                   "evidence": [
                     249,
-                    298
+                    314
                   ],
                   "state": "observed",
-                  "subject": "Kitchen props",
-                  "value": "Metal kettle, potted cactus, wood utensils and cutting boards"
+                  "subject": "countertop",
+                  "value": "light stone-patterned work surface"
                 },
                 {
-                  "attribute": "placement",
+                  "attribute": "appearance",
                   "evidence": [
                     249,
-                    298
+                    314
                   ],
                   "state": "observed",
-                  "subject": "Runner",
-                  "value": "Short beige runner facing the range"
+                  "subject": "backsplash",
+                  "value": "light rectangular tiles"
+                },
+                {
+                  "attribute": "appearance",
+                  "evidence": [
+                    249,
+                    279
+                  ],
+                  "state": "observed",
+                  "subject": "floor",
+                  "value": "wood-look planks"
                 }
               ],
-              "text": "Kompor dengan kisi hitam dan oven berpenampilan stainless berada di bawah jendela. Teko logam bernuansa kuningan di atasnya. Kulkas dua pintu atas dengan laci bawah ditemani mesin kopi hitam di countertop. Ada kaktus dalam pot putih, alat masak kayu, talenan sandar, piring bertumpuk, tanaman menjuntai dan runner beige pendek di lantai."
+              "text": "Dapur kompak dengan run kabinet putih di sisi kanan lorong, kulkas tinggi di ujung kiri, range di bawah jendela persegi. Countertop terang berpola batu, backsplash ubin terang, kabinet atas dan rak terbuka gelap; jendela bulat besar pada dinding ujung kiri. Lantai berpola papan kayu."
+            },
+            "area_ids": [
+              "kitchen"
+            ],
+            "environment": {
+              "facts": [
+                {
+                  "attribute": "environment",
+                  "evidence": [
+                    249,
+                    279
+                  ],
+                  "state": "observed",
+                  "subject": "window view",
+                  "value": "snow and neighboring buildings"
+                }
+              ],
+              "text": "Dua bukaan memperlihatkan salju dan rumah sekitar; cahaya luar dari kiri dan kanan area kerja, lampu bawah kabinet dan plafon memberi aksen hangat."
+            },
+            "furnishings": {
+              "facts": [
+                {
+                  "attribute": "position",
+                  "evidence": [
+                    249,
+                    346
+                  ],
+                  "state": "observed",
+                  "subject": "refrigerator",
+                  "value": "tall stainless-look fridge beside end window"
+                },
+                {
+                  "attribute": "position",
+                  "evidence": [
+                    249,
+                    314
+                  ],
+                  "state": "observed",
+                  "subject": "range",
+                  "value": "freestanding range below rectangular window"
+                },
+                {
+                  "attribute": "position",
+                  "evidence": [
+                    249,
+                    346
+                  ],
+                  "state": "observed",
+                  "subject": "coffee station",
+                  "value": "coffee machine on counter adjacent to fridge"
+                },
+                {
+                  "attribute": "storage",
+                  "evidence": [
+                    249,
+                    346
+                  ],
+                  "facet_roles": [
+                    "configuration"
+                  ],
+                  "state": "observed",
+                  "subject": "cabinet",
+                  "value": "white doors and drawers with black bar pulls"
+                },
+                {
+                  "attribute": "storage",
+                  "evidence": [
+                    249,
+                    279
+                  ],
+                  "state": "observed",
+                  "subject": "shelf",
+                  "value": "open dark shelves with containers and plants"
+                },
+                {
+                  "attribute": "appearance",
+                  "evidence": [
+                    249,
+                    279
+                  ],
+                  "state": "observed",
+                  "subject": "pendant",
+                  "value": "warm cylindrical hanging lights"
+                }
+              ],
+              "text": "Kulkas stainless tinggi, kompor/range dengan oven, mesin kopi di counter ujung, kabinet pintu putih dengan handle hitam dan laci. Rak kayu gelap memuat wadah dan tanaman; lampu gantung tabung hangat dekat jendela."
             }
           }
         ],
@@ -3285,28 +3350,28 @@
         "overviews": [
           {
             "area_ids": [
-              "kitchen-01"
+              "kitchen"
             ],
-            "composition_summary": "Dari ujung kanan baris kabinet, kamera setinggi mata melihat serong sepanjang meja. Ujung kabinet mengisi depan kanan, kompor berada di tengah, sedangkan ceruk kopi, kulkas dan bukaan melengkung menyusun kedalaman ke kiri. Lampu rak dan cahaya salju dari jendela rectangular memperlihatkan hampir seluruh susunan kerja sejak awal.",
+            "composition_summary": "Dari ujung lorong dapur F249, kamera serong menyusuri kabinet kanan. Wide awal memuat kulkas kiri, range, counter, rak, jendela persegi dan sebagian bukaan bulat.",
             "frame_index": 249
           }
         ],
         "panels": [
           {
             "area_ids": [
-              "kitchen-01"
+              "kitchen"
             ],
             "frame_index": 249
           },
           {
             "area_ids": [
-              "kitchen-01"
+              "kitchen"
             ],
             "frame_index": 298
           },
           {
             "area_ids": [
-              "kitchen-01"
+              "kitchen"
             ],
             "frame_index": 346
           }
@@ -3317,10 +3382,10 @@
       },
       {
         "area_ids": [
-          "bedroom-01"
+          "bedroom"
         ],
         "camera": {
-          "description": "Kamera mundur dari sisi ranjang sambil melengkung ke kiri dan menoleh ke kanan. Kusen menjadi bingkai kiri, lalu ujung ranjang, karpet, dan jendela bundar terlihat semakin lengkap.",
+          "description": "Kamera mundur diagonal dari ambang kamar sambil menyapu ke kanan, membuka ranjang utuh dan jendela bulat.",
           "phases": [
             {
               "confidence": "medium",
@@ -3328,84 +3393,72 @@
               "end_s": 15.0,
               "evidence": [
                 347,
-                372,
-                390,
-                410,
+                362,
+                377,
+                397,
+                412,
+                432,
                 449
               ],
-              "focus": "Sisi ranjang, lalu bentuk utuh ranjang dan jendela",
-              "notation": "Dolly-Out (~1.3×) + Orbit Left + Strong Pan Right (~30°)",
+              "focus": "Ranjang, ambang pintu dan jendela",
+              "notation": "Diagonal Dolly-Out (~1.3×–1.5×, Ease-Out) + Moderate Pan Right (~25°–35°, Ease-Out)",
               "observations": {
-                "depth": "Bingkai gambar dan isi rak mengecil, sementara lebih banyak lantai dan seluruh ujung ranjang terbuka.",
-                "rotation": "Pandangan menyapu ke kanan dari ceruk rak menuju jendela bundar. Rak dan bingkai di kiri turun dominansinya sepanjang reveal.",
-                "translation": "Kusen tetap di tepi dekat, dengan perpindahan relatif yang berbeda dari rak, dua bingkai gambar dan lampu nakas. Tampilan bidang ranjang berubah ketika kamera mundur sedikit melengkung ke kiri."
+                "depth": "Bingkai foto di kolom mengecil sekitar 49 ke 38 px; bedside table dan ranjang mengecil, ambang atas serta lantai lebih banyak masuk frame.",
+                "rotation": "Kolom foto menyapu ke kiri (x sekitar 282 menjadi 109 pada lembar 360 px), jendela bulat masuk dari kanan. Sapuan melambat; tilt tidak terpisah dari perspektif dan retreat.",
+                "translation": "Kusen dekat kiri bergeser berbeda dari kolom foto jauh, menguatkan mundur diagonal. Perubahan sudut ranjang ada, tetapi tidak cukup membedakan orbit dari lintasan diagonal."
               },
               "start_s": 11.566666667
             }
           ],
           "tempo": {
-            "description": "Tempo sedang dan mengalir. Bukaan jendela mulai terasa di pertengahan shot dan terus bertambah sampai akhir.",
+            "description": "Sedang di awal/tengah, melambat lembut hingga akhir.",
             "label": "moderate"
           }
         },
         "composition": {
-          "camera_direction": "Serong ke sisi kiri ranjang, rak dan gantungan pakaian.",
-          "camera_height": "Sekitar tinggi mata terhadap kamar.",
-          "camera_position": "Di tepi bukaan kamar dengan kusen di kiri depan.",
-          "camera_tilt": "Hampir datar dengan sedikit lantai terlihat.",
-          "depth": "Kusen, nakas dan ranjang, lalu rak serta kaca di sisi kanan.",
-          "end_composition": "Wide pada ranjang, karpet dan jendela bundar.",
-          "focus": "Ranjang dan ceruk rak, bergeser menuju jendela bundar.",
-          "foreground": "Kusen kayu dan tepi bukaan di kiri.",
-          "lighting": "Aksen rak dan lampu samping hangat dengan cahaya bersalju dari kanan.",
-          "motion_compatibility": "Awal dekat kusen memberi jangkar depan sementara gerak mundur membuka sisi kanan kamar.",
-          "reveal": "Ujung ranjang, karpet, jendela bundar dan pandangan luar.",
-          "start_composition": "Medium wide pada sisi ranjang dan area simpan.",
-          "view_angle": "Serong dari ambang."
+          "camera_direction": "Serong ke ranjang dan sisi penyimpanan",
+          "camera_height": "Sekitar tinggi mata",
+          "camera_position": "Pada ambang pintu kamar",
+          "camera_tilt": "Hampir datar",
+          "depth": "Kusen–ranjang–storage–jendela",
+          "end_composition": "Wide ranjang, storage, jendela bulat",
+          "focus": "Ranjang dan jendela bulat",
+          "foreground": "Kusen kayu dan tepi ranjang",
+          "lighting": "Cahaya kanan dari jendela, lampu ceruk hangat",
+          "motion_compatibility": "Framing OUT membuka konteks ruangan tanpa memastikan denah luar",
+          "reveal": "Dolly-out dan pan kanan membuka ranjang dan jendela",
+          "start_composition": "Medium-wide melalui kusen, ranjang terpotong",
+          "view_angle": "oblique"
         },
         "design": [
           {
             "architecture": {
               "facts": [
                 {
-                  "attribute": "opening",
+                  "attribute": "layout",
                   "evidence": [
                     347,
-                    398
+                    449
                   ],
                   "facet_roles": [
-                    "opening"
+                    "layout"
                   ],
                   "state": "observed",
-                  "subject": "Bedroom access",
-                  "value": "Wood jamb visible at the left foreground"
+                  "subject": "bedroom",
+                  "value": "bed facing doorway with open storage behind headboard zone"
                 },
                 {
                   "attribute": "configuration",
                   "evidence": [
-                    347,
-                    398
-                  ],
-                  "facet_roles": [
-                    "configuration",
-                    "layout"
-                  ],
-                  "state": "observed",
-                  "subject": "Bedroom storage",
-                  "value": "Lit recessed shelves next to an open clothes rail with overhead baskets"
-                },
-                {
-                  "attribute": "opening",
-                  "evidence": [
-                    398,
+                    412,
                     449
                   ],
                   "facet_roles": [
                     "opening"
                   ],
                   "state": "observed",
-                  "subject": "Bedroom glazing",
-                  "value": "Large round-curved black-framed window with beige drapes"
+                  "subject": "window",
+                  "value": "large circular window with dark frame and curtains"
                 },
                 {
                   "attribute": "appearance",
@@ -3414,99 +3467,114 @@
                     449
                   ],
                   "state": "observed",
-                  "subject": "Bedroom ceiling",
-                  "value": "White panelled ceiling strip with recessed lighting"
+                  "subject": "ceiling",
+                  "value": "white ceiling with slatted section"
                 },
                 {
-                  "attribute": "finish appearance",
+                  "attribute": "appearance",
                   "evidence": [
-                    398,
+                    347,
                     449
                   ],
                   "state": "observed",
-                  "subject": "Bedroom floor",
-                  "value": "Warm-toned plank floor revealed around bed"
+                  "subject": "floor",
+                  "value": "warm timber-look planks"
+                },
+                {
+                  "attribute": "appearance",
+                  "evidence": [
+                    347,
+                    377
+                  ],
+                  "facet_roles": [
+                    "opening",
+                    "circulation"
+                  ],
+                  "state": "observed",
+                  "subject": "doorway",
+                  "value": "wooden jamb in near foreground"
                 }
               ],
-              "text": "Kusen kayu gelap membingkai akses ke kamar dengan lantai papan kayu hangat. Di belakang ranjang ada ceruk rak berlapis kayu dan rak pakaian terbuka yang dipisahkan bidang putih sempit. Simpanan atas memakai kotak dan keranjang. Bagian plafon di atas ranjang berpanel putih dengan lampu tanam. Jendela besar berbingkai hitam membentuk lengkung bundar, dengan batang gorden gelap dan kain krem di sampingnya."
+              "text": "Kamar tidur kompak dilihat melalui kusen kayu. Jendela besar berbentuk lingkaran dengan rangka hitam di belakang kanan, tirai krem dan plafon putih dengan bagian berbilah. Ceruk penyimpanan terbuka di belakang ranjang, dipisah kolom putih berbingkai gambar; lantai kayu hangat."
             },
             "area_ids": [
-              "bedroom-01"
+              "bedroom"
             ],
             "environment": {
               "facts": [
                 {
-                  "attribute": "visible setting",
+                  "attribute": "environment",
                   "evidence": [
+                    412,
                     449
                   ],
                   "state": "observed",
-                  "subject": "View from bedroom",
-                  "value": "Snowy yard, neighboring home and bare trees"
+                  "subject": "window view",
+                  "value": "snowy neighborhood and bare trees"
                 }
               ],
-              "text": "Di balik jendela lengkung terlihat salju, rumah tetangga dan batang pohon. Tanaman tegak dekat kaca memperjelas kedalaman. Cahaya dingin dari jendela datang dari kanan, sedangkan rak dan lampu samping ranjang memberi cahaya hangat."
+              "text": "Jendela bulat menampilkan pepohonan tanpa daun, salju dan rumah sekitar. Cahaya siang kanan bercampur lampu meja, lampu ceruk dan downlight hangat."
             },
             "furnishings": {
               "facts": [
                 {
                   "attribute": "configuration",
                   "evidence": [
-                    398,
+                    347,
                     449
                   ],
                   "facet_roles": [
                     "configuration"
                   ],
                   "state": "observed",
-                  "subject": "Bed",
-                  "value": "Low wood platform with ivory bedding and plaid runner"
+                  "subject": "bed",
+                  "value": "low wooden platform with ivory bedding and plaid throw"
                 },
                 {
-                  "attribute": "shape",
+                  "attribute": "position",
                   "evidence": [
-                    347,
-                    398
-                  ],
-                  "facet_roles": [
-                    "shape"
-                  ],
-                  "state": "observed",
-                  "subject": "Nightstand",
-                  "value": "Round cylindrical wood-look side table"
-                },
-                {
-                  "attribute": "type",
-                  "evidence": [
-                    347,
-                    398
-                  ],
-                  "state": "observed",
-                  "subject": "Bedside light",
-                  "value": "Black small shade on a thin arm above side table"
-                },
-                {
-                  "attribute": "placement",
-                  "evidence": [
-                    347,
-                    398
-                  ],
-                  "state": "observed",
-                  "subject": "Wall art",
-                  "value": "Two vertically stacked frames on the narrow white divider"
-                },
-                {
-                  "attribute": "placement",
-                  "evidence": [
-                    398,
+                    412,
                     449
                   ],
                   "state": "observed",
-                  "subject": "Area rug",
-                  "value": "Striped rug extending beyond the foot of the bed"
+                  "subject": "rug",
+                  "value": "striped rug beneath foot of bed"
+                },
+                {
+                  "attribute": "configuration",
+                  "evidence": [
+                    347,
+                    377
+                  ],
+                  "state": "observed",
+                  "subject": "nightstand",
+                  "value": "round wood-look table with black task lamp"
+                },
+                {
+                  "attribute": "storage",
+                  "evidence": [
+                    347,
+                    449
+                  ],
+                  "facet_roles": [
+                    "configuration"
+                  ],
+                  "state": "observed",
+                  "subject": "wardrobe",
+                  "value": "open hanging rail and upper basket storage"
+                },
+                {
+                  "attribute": "storage",
+                  "evidence": [
+                    347,
+                    449
+                  ],
+                  "state": "observed",
+                  "subject": "shelf",
+                  "value": "illuminated shelving behind bed"
                 }
               ],
-              "text": "Ranjang rendah bertumpu pada platform kayu. Sprei dan selimut gading dipadukan dengan bantal serta runner kotak gelap. Meja samping bulat bertekstur kayu memuat tanaman kecil di bawah lampu hitam berlengan tipis. Rak menyimpan dekorasi dan wadah, serta dua bingkai gambar tersusun vertikal di antara ceruk rak dan gantungan pakaian. Karpet garis mengikuti dasar ranjang."
+              "text": "Ranjang platform kayu rendah dengan linen putih gading, bantal dan throw motif plaid; rug garis di bawah kaki ranjang. Meja samping bulat bertekstur kayu dengan lampu hitam; shelving dan pakaian gantung terbuka di belakang, rak atas berisi keranjang."
             }
           }
         ],
@@ -3514,28 +3582,28 @@
         "overviews": [
           {
             "area_ids": [
-              "bedroom-01"
+              "bedroom"
             ],
-            "composition_summary": "Dilihat dari posisi yang sudah mundur ke ambang, kamera menghadap serong ke ranjang dan jendela. Kusen tersisa di tepi kiri, ranjang rendah dan karpet terbaca hampir utuh di tengah, serta jendela bundar dengan pemandangan salju mendominasi kanan. Rak dan gantungan menjaga kedalaman di belakang bantal.",
+            "composition_summary": "Dari ambang kamar pada F449, kamera menghadap serong ke ranjang dan jendela bulat. Wide akhir menunjukkan platform, rug, storage terbuka, kolom foto dan tirai.",
             "frame_index": 449
           }
         ],
         "panels": [
           {
             "area_ids": [
-              "bedroom-01"
+              "bedroom"
             ],
             "frame_index": 347
           },
           {
             "area_ids": [
-              "bedroom-01"
+              "bedroom"
             ],
             "frame_index": 398
           },
           {
             "area_ids": [
-              "bedroom-01"
+              "bedroom"
             ],
             "frame_index": 449
           }
@@ -3546,10 +3614,10 @@
       },
       {
         "area_ids": [
-          "bath-laundry-01"
+          "bath"
         ],
         "camera": {
-          "description": "Kamera maju ke shower sambil menoleh lembut ke kanan. Wastafel, toilet dan jendela kiri keluar bertahap. Jendela bulat dan perangkat shower membesar, dengan sisi mesin laundry masih terbaca.",
+          "description": "Kamera maju ke area shower dengan framing sedikit menyapu kanan, hingga porthole dan perlengkapan shower mendominasi.",
           "phases": [
             {
               "confidence": "medium",
@@ -3557,55 +3625,42 @@
               "end_s": 18.4,
               "evidence": [
                 450,
-                475,
-                485,
-                501,
-                520,
-                525,
+                465,
+                480,
+                495,
+                515,
+                535,
                 551
               ],
-              "focus": "Jendela bulat dan shower, dengan laundry sebagai sisi bingkai",
-              "notation": "Accelerating Dolly-In (~1.7×) + Gentle Pan Right (~15°)",
+              "focus": "Porthole, shower dan laundry",
+              "notation": "Accelerating Dolly-In (~1.8×–2.0×) + Subtle Pan Right (~8°–12°)",
               "observations": {
-                "depth": "Tinggi trim luar jendela bundar membesar sekitar 1,7× dari F450 ke F551. Pembesaran pada interval akhir makin besar dan wastafel serta toilet keluar dari bingkai.",
-                "rotation": "Pandangan menyapu ke kanan. Jendela dan toilet kiri lepas, dan shower serta tepi laundry menjadi cakupan terakhir.",
-                "translation": "Arah maju terbaca dari countertop yang hilang lebih cepat daripada ubin belakang. Perubahan lateral tambahan tidak cukup jelas untuk dipisahkan."
+                "depth": "Diameter luar porthole tumbuh sekitar 78 ke 150 px. Wastafel dan kloset dekat keluar kiri; mesin cuci kanan semakin terpotong; parallax mendukung maju fisik.",
+                "rotation": "Porthole bergeser dari x sekitar 160 ke 64, jendela persegi keluar kiri. Sebagian adalah ekspansi dari pusat kanan; sapuan kanan ringan merupakan tafsir visual, bukan sudut terkalibrasi. Tidak ada tilt berkelanjutan yang terpisah.",
+                "translation": "Arah pendekatan cenderung menuju shower di kanan-tengah. Diagonal/truck tidak bisa diisolasi karena ekspansi dan sapuan saling terkait."
               },
               "start_s": 15.0
             }
           ],
           "tempo": {
-            "description": "Sedang pada awal, lalu perubahan framing lebih cepat ketika kamera berada dekat kaca shower.",
-            "segments": [
-              {
-                "description": "Susunan ruang masih terbaca sementara kamera mulai mendekat.",
-                "end_s": 16.666666667,
-                "label": "moderate",
-                "start_s": 15.0
-              },
-              {
-                "description": "Wastafel dan toilet lepas dari bidang, lalu jendela bulat dan perangkat shower cepat memenuhi bingkai.",
-                "end_s": 18.4,
-                "label": "fast",
-                "start_s": 16.666666667
-              }
-            ]
+            "description": "Sedang dan menguat progresif; pembesaran paling jelas pada sepertiga akhir.",
+            "label": "moderate"
           }
         },
         "composition": {
-          "camera_direction": "Serong dari kiri depan ke shower di tengah dan laundry di kanan.",
-          "camera_height": "Sekitar tinggi mata dengan bagian atas wastafel terlihat.",
-          "camera_position": "Dekat pintu dan sisi wastafel, sebelum susunan shower dan laundry.",
-          "camera_tilt": "Sedikit mengarah ke bawah pada awal.",
-          "depth": "Wastafel dan toilet dekat, shower di tengah, dinding ubin dan laundry di sisi kanan.",
-          "end_composition": "Rapat pada jendela bulat dan perangkat shower, dengan tepi laundry masih terlihat.",
-          "focus": "Shower melengkung dan jendela bulat, dengan laundry di kanan.",
-          "foreground": "Countertop wastafel di kiri bawah.",
-          "lighting": "Cahaya siang dari dua jendela dan pantulan lampu tanam serta cahaya tepi plafon yang hangat.",
-          "motion_compatibility": "Wastafel di depan memberi lapisan awal dan keluar dari bingkai saat kamera maju serta menoleh ke kanan.",
-          "reveal": "Bukaan bulat, ceruk perlengkapan dan rel shower.",
-          "start_composition": "Wide wastafel, toilet, shower dan laundry.",
-          "view_angle": "Serong ringan."
+          "camera_direction": "Serong ke shower dan mesin laundry",
+          "camera_height": "Sekitar tinggi mata",
+          "camera_position": "Di dekat wastafel pada pintu masuk ruang",
+          "camera_tilt": "Hampir datar",
+          "depth": "Wastafel–kloset–shower–laundry",
+          "end_composition": "Close jendela bulat, shower dan tepi mesin",
+          "focus": "Shower melengkung dan laundry",
+          "foreground": "Wastafel dan tepi kloset",
+          "lighting": "Cahaya jendela kiri dan bulat, downlight serta aksen hangat",
+          "motion_compatibility": "Wide awal menjelaskan fungsi gabungan sebelum detail",
+          "reveal": "Dolly-in memperbesar shower, pan kanan kecil mengikuti pusat perhatian",
+          "start_composition": "Wide wastafel, kloset, shower dan laundry",
+          "view_angle": "oblique"
         },
         "design": [
           {
@@ -3615,163 +3670,150 @@
                   "attribute": "layout",
                   "evidence": [
                     450,
-                    501
+                    480
                   ],
                   "facet_roles": [
                     "layout",
                     "configuration"
                   ],
                   "state": "observed",
-                  "subject": "Bathroom with laundry",
-                  "value": "Single room with vanity and toilet left, curved shower center and laundry tower right"
+                  "subject": "bathroom",
+                  "value": "vanity left, toilet at window, curved corner shower center, stacked laundry right"
                 },
                 {
-                  "attribute": "shape",
+                  "attribute": "configuration",
                   "evidence": [
                     450,
-                    501
-                  ],
-                  "facet_roles": [
-                    "shape",
-                    "configuration"
-                  ],
-                  "state": "observed",
-                  "subject": "Shower",
-                  "value": "Curved glazed enclosure on raised pale tray"
-                },
-                {
-                  "attribute": "finish appearance",
-                  "evidence": [
-                    501,
-                    551
-                  ],
-                  "facet_roles": [
-                    "material-hierarchy"
-                  ],
-                  "state": "observed",
-                  "subject": "Shower wall",
-                  "value": "Muted sage-grey lower tiles with glossy light upper tile"
-                },
-                {
-                  "attribute": "opening",
-                  "evidence": [
-                    501,
-                    551
-                  ],
-                  "facet_roles": [
-                    "opening",
-                    "configuration"
-                  ],
-                  "state": "observed",
-                  "subject": "Shower wall",
-                  "value": "Round porthole above inset storage niches"
-                },
-                {
-                  "attribute": "opening",
-                  "evidence": [
-                    450,
-                    501
+                    515
                   ],
                   "facet_roles": [
                     "opening"
                   ],
                   "state": "observed",
-                  "subject": "Toilet-side window",
-                  "value": "Tall rectangular window with dark trim above toilet"
+                  "subject": "window",
+                  "value": "rectangular black frame and round porthole above shower niche"
                 },
                 {
-                  "attribute": "placement",
+                  "attribute": "configuration",
+                  "evidence": [
+                    450,
+                    515
+                  ],
+                  "facet_roles": [
+                    "configuration"
+                  ],
+                  "state": "observed",
+                  "subject": "shower",
+                  "value": "curved glass enclosure with raised tray"
+                },
+                {
+                  "attribute": "appearance",
                   "evidence": [
                     450,
                     551
                   ],
-                  "facet_roles": [
-                    "lighting"
+                  "state": "observed",
+                  "subject": "wall",
+                  "value": "muted sage square tile below pale tile"
+                },
+                {
+                  "attribute": "appearance",
+                  "evidence": [
+                    450,
+                    480
                   ],
                   "state": "observed",
-                  "subject": "Bath lighting",
-                  "value": "Recessed spots and perimeter light washing glossy tiles"
+                  "subject": "floor",
+                  "value": "gray wood-look planks"
                 }
               ],
-              "text": "Kamar mandi memadukan wastafel di kiri, toilet di bawah jendela persegi panjang, shower kaca melengkung di tengah dan laundry bertumpuk di kanan. Shower berdiri pada alas terang yang sedikit terangkat dengan rel, tarikan pintu dan perangkat shower hitam. Ubin persegi panjang bernuansa hijau abu di bawah beralih ke krem mengilap di atas. Jendela kecil bulat dan ceruk perlengkapan menempel pada dinding shower. Lantai berpenampilan papan abu terang."
+              "text": "Ruang kompak menggabungkan kamar mandi dan laundry: wastafel di depan kiri, kloset di bawah jendela persegi kiri, shower sudut berpintu kaca melengkung di tengah, mesin laundry bertumpuk kanan. Ubin persegi sage di bawah dan bidang terang di atas; jendela bulat di dinding shower, ceruk sabun, lantai papan abu-abu dan balok/trim gelap di atas."
             },
             "area_ids": [
-              "bath-laundry-01"
+              "bath"
             ],
             "environment": {
               "facts": [
                 {
-                  "attribute": "visible setting",
+                  "attribute": "environment",
                   "evidence": [
                     450,
-                    501
+                    480
                   ],
                   "state": "observed",
-                  "subject": "View from bathroom",
-                  "value": "Snow, leafless trees and part of a nearby house"
+                  "subject": "window view",
+                  "value": "snow and leafless trees"
                 }
               ],
-              "text": "Jendela persegi panjang dan jendela bulat membawa cahaya dingin dari halaman bersalju dan pepohonan tanpa daun. Lampu tanam serta garis cahaya hangat di tepi plafon terpantul pada ubin mengilap dan kaca shower."
+              "text": "Salju dan pohon terlihat melalui bukaan. Cahaya siang difus dengan downlight dan strip hangat pada pertemuan dinding-plafon."
             },
             "furnishings": {
               "facts": [
                 {
                   "attribute": "configuration",
                   "evidence": [
-                    450
-                  ],
-                  "facet_roles": [
-                    "configuration"
+                    450,
+                    480
                   ],
                   "state": "observed",
-                  "subject": "Vanity",
-                  "value": "Integrated squared basin with thick pale counter"
+                  "subject": "vanity",
+                  "value": "rectangular light basin with dark faucet"
                 },
                 {
-                  "attribute": "placement",
+                  "attribute": "position",
                   "evidence": [
                     450,
-                    501
+                    480
                   ],
                   "state": "observed",
-                  "subject": "Toilet",
-                  "value": "White toilet directly beneath the tall window"
+                  "subject": "toilet",
+                  "value": "white toilet below rectangular window"
+                },
+                {
+                  "attribute": "fixtures",
+                  "evidence": [
+                    450,
+                    551
+                  ],
+                  "state": "observed",
+                  "subject": "shower",
+                  "value": "black overhead shower and hand shower"
                 },
                 {
                   "attribute": "configuration",
                   "evidence": [
                     450,
-                    501
+                    551
                   ],
                   "facet_roles": [
                     "configuration"
                   ],
                   "state": "observed",
-                  "subject": "Laundry tower",
-                  "value": "White front-loading appliances vertically stacked beneath a towel shelf"
+                  "subject": "laundry",
+                  "value": "stacked white front-load washer and dryer"
                 },
                 {
-                  "attribute": "appearance",
+                  "attribute": "storage",
                   "evidence": [
-                    501,
+                    450,
                     551
                   ],
                   "state": "observed",
-                  "subject": "Shower hardware",
-                  "value": "Black wall-mounted fittings and a vertical black door pull"
+                  "subject": "niche",
+                  "value": "recessed toiletries shelf beneath round window"
                 },
                 {
-                  "attribute": "shape",
+                  "attribute": "storage",
                   "evidence": [
                     450,
-                    501
+                    551
                   ],
                   "state": "observed",
-                  "subject": "Drain",
-                  "value": "Dark square drain on raised shower tray"
+                  "subject": "shelf",
+                  "value": "folded towels above laundry stack"
                 }
               ],
-              "text": "Wastafel persegi menyatu dengan countertop terang yang tebal. Toilet putih berada di sela wastafel dan shower. Mesin cuci dan pengering bukaan depan disusun vertikal, dengan handuk lipat di atas rak kayu. Botol dan wadah kecil berada di ceruk shower; saluran kotak gelap terlihat pada alas shower."
+              "text": "Wastafel persegi terang dengan faucet gelap, kloset putih, shower head dan kontrol hitam, dua mesin front-load putih bertumpuk dengan rak handuk di atas. Botol toiletries di niche."
             }
           }
         ],
@@ -3779,28 +3821,28 @@
         "overviews": [
           {
             "area_ids": [
-              "bath-laundry-01"
+              "bath"
             ],
-            "composition_summary": "Dari dekat pintu dan sisi wastafel, kamera setinggi mata menghadap serong ke shower dan laundry. Countertop dan toilet mendahului shower kaca di tengah, dengan menara mesin cuci di kanan serta dua bentuk jendela yang tampil bersamaan. Cahaya luar dingin mengimbangi lampu hangat yang memantul pada ubin.",
+            "composition_summary": "Dari dekat wastafel F450, kamera menghadap serong ke shower sudut. Wide awal mencakup wastafel, kloset, dua bukaan, shower kaca dan laundry bertumpuk.",
             "frame_index": 450
           }
         ],
         "panels": [
           {
             "area_ids": [
-              "bath-laundry-01"
+              "bath"
             ],
             "frame_index": 450
           },
           {
             "area_ids": [
-              "bath-laundry-01"
+              "bath"
             ],
             "frame_index": 501
           },
           {
             "area_ids": [
-              "bath-laundry-01"
+              "bath"
             ],
             "frame_index": 551
           }

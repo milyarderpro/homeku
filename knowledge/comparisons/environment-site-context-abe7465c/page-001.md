@@ -1,0 +1,5 @@
+# environment / site / context — 1
+
+| Nilai | Status | Referensi | Shot / tercatat | Sumber |
+| --- | --- | --- | --- | --- |
+| neighboring building partly visible on left | observed | 1 | 1 / 1 | [edh008 / shot-01](../../../references/edh008/analysis.md#shot-01) |

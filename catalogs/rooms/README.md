@@ -1,11 +1,49 @@
 # Ruang dan fungsi
 
-- [bathroom](bathroom-3486577c/README.md) · 1
-- [bathroom & laundry](bathroom-laundry-24d83b27/README.md) · 1
-- [bedroom](bedroom-a05e6feb/README.md) · 1
-- [entry](entry-923fe539/README.md) · 1
-- [exterior](exterior-a123a777/README.md) · 1
-- [kitchen](kitchen-3171d89a/README.md) · 1
-- [laundry](laundry-ba29c6b7/README.md) · 1
-- [living](living-a93fcdf7/README.md) · 1
-- [storage](storage-49a25f9f/README.md) · 1
+- [access](access-a0561fd6/README.md) · 2
+- [balcony](balcony-4095f603/README.md) · 4
+- [bathing](bathing-b8262e86/README.md) · 4
+- [bathroom](bathroom-3486577c/README.md) · 37
+- [bathroom & laundry](bathroom-laundry-24d83b27/README.md) · 9
+- [bedroom](bedroom-a05e6feb/README.md) · 39
+- [breakfast bar](breakfast-bar-5e8e4f84/README.md) · 1
+- [casual dining](casual-dining-0f444dfb/README.md) · 1
+- [circulation](circulation-70f19470/README.md) · 5
+- [clothing storage](clothing-storage-4b945763/README.md) · 1
+- [cooking](cooking-82bd81ea/README.md) · 2
+- [dining](dining-6e355234/README.md) · 4
+- [dressing room](dressing-room-1c3b3800/README.md) · 1
+- [entry](entry-923fe539/README.md) · 24
+- [entry & mudroom](entry-mudroom-ae578f99/README.md) · 1
+- [exterior](exterior-a123a777/README.md) · 50
+- [exterior & porch](exterior-porch-599dd7c3/README.md) · 2
+- [exterior & terrace](exterior-terrace-6dfa319d/README.md) · 2
+- [food preparation](food-preparation-2aed2fed/README.md) · 2
+- [front yard](front-yard-eb741896/README.md) · 2
+- [garden](garden-23eeb69c/README.md) · 11
+- [kitchen](kitchen-3171d89a/README.md) · 39
+- [kitchen & dining](kitchen-dining-914ae1c6/README.md) · 2
+- [laundry](laundry-ba29c6b7/README.md) · 15
+- [laundry & closet](laundry-closet-de7c0887/README.md) · 1
+- [laundry room](laundry-room-48800b15/README.md) · 1
+- [living](living-a93fcdf7/README.md) · 41
+- [living & dining & kitchen](living-dining-kitchen-e506a426/README.md) · 1
+- [living & kitchen](living-kitchen-bc649701/README.md) · 1
+- [loft bedroom](loft-bedroom-5e5eeab1/README.md) · 1
+- [lounging](lounging-f4aa79ea/README.md) · 1
+- [mudroom](mudroom-2a3b8383/README.md) · 1
+- [open plan living](open-plan-living-f5ba343a/README.md) · 1
+- [outdoor seating](outdoor-seating-00b30c8b/README.md) · 3
+- [patio](patio-67295d2e/README.md) · 1
+- [porch](porch-698131fa/README.md) · 19
+- [roof terrace](roof-terrace-946dc402/README.md) · 3
+- [rooftop terrace](rooftop-terrace-34f9160c/README.md) · 1
+- [showering](showering-c5f42ffa/README.md) · 1
+- [sleeping](sleeping-546f04bb/README.md) · 5
+- [staircase](staircase-bf1323d4/README.md) · 1
+- [terrace](terrace-3ff758e2/README.md) · 3
+- [toilet](toilet-74f7fd1c/README.md) · 4
+- [walk-in closet](walk-in-closet-ff8ef3f7/README.md) · 3
+- [wardrobe](wardrobe-7d4b47cf/README.md) · 1
+- [washbasin](washbasin-b8fba121/README.md) · 1
+- [washing](washing-fb9ee1dc/README.md) · 3

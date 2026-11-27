@@ -1,0 +1,44 @@
+# architecture — 15
+
+| Sumber | Subjek | Atribut | Nilai | Status | Catatan | Bukti |
+| --- | --- | --- | --- | --- | --- | --- |
+| [edh023 / shot-05](../../../references/edh023/analysis.md#shot-05) | bathroom | layout | long narrow bathroom with tub at back, vanity left and toilet right | observed | — | [F671](../../../video/edh023.mp4#t=22.366666667) |
+| [edh023 / shot-05](../../../references/edh023/analysis.md#shot-05) | wall | appearance | small sage-grey rectangular tiles and white cornice | observed | — | [F534](../../../video/edh023.mp4#t=17.8), [F671](../../../video/edh023.mp4#t=22.366666667) |
+| [edh023 / shot-05](../../../references/edh023/analysis.md#shot-05) | window | opening | tall central dark framed window above tub | observed | — | [F671](../../../video/edh023.mp4#t=22.366666667) |
+| [edh023 / shot-05](../../../references/edh023/analysis.md#shot-05) | floor | appearance | brown wood-look plank flooring | observed | — | [F671](../../../video/edh023.mp4#t=22.366666667) |
+| [edh024 / shot-01](../../../references/edh024/analysis.md#shot-01) | house | massing | stacked two-storey mass | observed | — | [F0](../../../video/edh024.mp4#t=0.0), [F88](../../../video/edh024.mp4#t=2.933333333) |
+| [edh024 / shot-01](../../../references/edh024/analysis.md#shot-01) | roof | shape | low-pitched roof with dark fascia and overhang | observed | — | [F0](../../../video/edh024.mp4#t=0.0), [F88](../../../video/edh024.mp4#t=2.933333333) |
+| [edh024 / shot-01](../../../references/edh024/analysis.md#shot-01) | balcony | configuration | front projecting balcony with dark railing | observed | — | [F0](../../../video/edh024.mp4#t=0.0), [F88](../../../video/edh024.mp4#t=2.933333333) |
+| [edh024 / shot-01](../../../references/edh024/analysis.md#shot-01) | window | opening | tall black-framed rectangular glazing | observed | — | [F0](../../../video/edh024.mp4#t=0.0), [F88](../../../video/edh024.mp4#t=2.933333333), [F170](../../../video/edh024.mp4#t=5.666666667) |
+| [edh024 / shot-01](../../../references/edh024/analysis.md#shot-01) | staircase | circulation | exterior right-side stair to upper doorway | observed | — | [F88](../../../video/edh024.mp4#t=2.933333333), [F170](../../../video/edh024.mp4#t=5.666666667) |
+| [edh024 / shot-01](../../../references/edh024/analysis.md#shot-01) | wall | appearance | off-white facade and stone-like stair wall | observed | — | [F88](../../../video/edh024.mp4#t=2.933333333), [F170](../../../video/edh024.mp4#t=5.666666667) |
+| [edh024 / shot-01](../../../references/edh024/analysis.md#shot-01) | stair-light | placement | warm integrated step lights | observed | — | [F88](../../../video/edh024.mp4#t=2.933333333), [F170](../../../video/edh024.mp4#t=5.666666667) |
+| [edh024 / shot-02](../../../references/edh024/analysis.md#shot-02) | fireplace | appearance | light stacked-stone appearance and wood mantel | observed | — | [F180](../../../video/edh024.mp4#t=6.0), [F279](../../../video/edh024.mp4#t=9.3) |
+| [edh024 / shot-02](../../../references/edh024/analysis.md#shot-02) | window | opening | tall black-grid glazing at right | observed | — | [F228](../../../video/edh024.mp4#t=7.6), [F279](../../../video/edh024.mp4#t=9.3) |
+| [edh024 / shot-02](../../../references/edh024/analysis.md#shot-02) | room | configuration | upper railing visible above seating | observed | — | [F279](../../../video/edh024.mp4#t=9.3) |
+| [edh024 / shot-02](../../../references/edh024/analysis.md#shot-02) | floor | appearance | warm wood plank appearance | observed | — | [F279](../../../video/edh024.mp4#t=9.3) |
+| [edh024 / shot-03](../../../references/edh024/analysis.md#shot-03) | kitchen | layout | island kitchen with rear range and side sink counter | uncertain | — | [F280](../../../video/edh024.mp4#t=9.333333333), [F326](../../../video/edh024.mp4#t=10.866666667) |
+| [edh024 / shot-03](../../../references/edh024/analysis.md#shot-03) | window | opening | black-grid window beside sink | observed | — | [F280](../../../video/edh024.mp4#t=9.333333333), [F326](../../../video/edh024.mp4#t=10.866666667) |
+| [edh024 / shot-03](../../../references/edh024/analysis.md#shot-03) | countertop | appearance | white veined stone-like surface | observed | — | [F280](../../../video/edh024.mp4#t=9.333333333), [F326](../../../video/edh024.mp4#t=10.866666667), [F371](../../../video/edh024.mp4#t=12.366666667) |
+| [edh024 / shot-03](../../../references/edh024/analysis.md#shot-03) | floor | appearance | wood plank appearance | observed | — | [F280](../../../video/edh024.mp4#t=9.333333333) |
+| [edh024 / shot-03](../../../references/edh024/analysis.md#shot-03) | cabinet | configuration | white upper cabinets including glazed doors; wood-look base cabinets | observed | — | [F280](../../../video/edh024.mp4#t=9.333333333), [F371](../../../video/edh024.mp4#t=12.366666667) |
+| [edh024 / shot-04](../../../references/edh024/analysis.md#shot-04) | window | opening | wide black-grid headboard window and side window | observed | — | [F372](../../../video/edh024.mp4#t=12.4), [F450](../../../video/edh024.mp4#t=15.0) |
+| [edh024 / shot-04](../../../references/edh024/analysis.md#shot-04) | ceiling | appearance | white ceiling with exposed wood-look beams | observed | — | [F450](../../../video/edh024.mp4#t=15.0) |
+| [edh024 / shot-04](../../../references/edh024/analysis.md#shot-04) | wall | appearance | muted olive accent wall | observed | — | [F372](../../../video/edh024.mp4#t=12.4), [F450](../../../video/edh024.mp4#t=15.0) |
+| [edh024 / shot-05](../../../references/edh024/analysis.md#shot-05) | bathroom | layout | walk-in shower with adjacent toilet and vanity | observed | — | [F451](../../../video/edh024.mp4#t=15.033333333), [F497](../../../video/edh024.mp4#t=16.566666667) |
+| [edh024 / shot-05](../../../references/edh024/analysis.md#shot-05) | shower | configuration | clear glass enclosure with low curb and built-in bench | observed | — | [F451](../../../video/edh024.mp4#t=15.033333333), [F542](../../../video/edh024.mp4#t=18.066666667) |
+| [edh024 / shot-05](../../../references/edh024/analysis.md#shot-05) | wall | appearance | white marble-like veined panels | observed | — | [F497](../../../video/edh024.mp4#t=16.566666667), [F542](../../../video/edh024.mp4#t=18.066666667) |
+| [edh024 / shot-05](../../../references/edh024/analysis.md#shot-05) | niche | configuration | stacked recessed storage niches | observed | — | [F497](../../../video/edh024.mp4#t=16.566666667), [F542](../../../video/edh024.mp4#t=18.066666667) |
+| [edh024 / shot-05](../../../references/edh024/analysis.md#shot-05) | window | opening | black-framed rectangular window beside toilet | observed | — | [F451](../../../video/edh024.mp4#t=15.033333333), [F542](../../../video/edh024.mp4#t=18.066666667) |
+| [edh025 / shot-01](../../../references/edh025/analysis.md#shot-01) | house | massing | two-level arched massing | observed | — | [F0](../../../video/edh025.mp4#t=0.0) |
+| [edh025 / shot-01](../../../references/edh025/analysis.md#shot-01) | roof | shape | barrel arch | observed | — | [F0](../../../video/edh025.mp4#t=0.0) |
+| [edh025 / shot-01](../../../references/edh025/analysis.md#shot-01) | window | opening | large black-framed arched glazing | observed | — | [F0](../../../video/edh025.mp4#t=0.0) |
+| [edh025 / shot-01](../../../references/edh025/analysis.md#shot-01) | stair | position | external stairs at screen right | observed | — | [F0](../../../video/edh025.mp4#t=0.0) |
+| [edh025 / shot-01](../../../references/edh025/analysis.md#shot-01) | balcony | configuration | black rail balcony above entry | observed | — | [F0](../../../video/edh025.mp4#t=0.0) |
+| [edh025 / shot-01](../../../references/edh025/analysis.md#shot-01) | facade | appearance | irregular stone and cream plaster appearance | observed | — | [F0](../../../video/edh025.mp4#t=0.0) |
+| [edh025 / shot-02](../../../references/edh025/analysis.md#shot-02) | fireplace | configuration | central stone-look fireplace and chimney | observed | — | [F155](../../../video/edh025.mp4#t=5.166666667) |
+| [edh025 / shot-02](../../../references/edh025/analysis.md#shot-02) | window | opening | arched glazing and round upper window | observed | — | [F155](../../../video/edh025.mp4#t=5.166666667) |
+| [edh025 / shot-02](../../../references/edh025/analysis.md#shot-02) | stair | position | right-side rising staircase | observed | — | [F155](../../../video/edh025.mp4#t=5.166666667) |
+| [edh025 / shot-02](../../../references/edh025/analysis.md#shot-02) | ceiling | appearance | exposed wood-look beams | observed | — | [F155](../../../video/edh025.mp4#t=5.166666667) |
+| [edh025 / shot-02](../../../references/edh025/analysis.md#shot-02) | floor | appearance | light plank floor | observed | — | [F155](../../../video/edh025.mp4#t=5.166666667) |
+| [edh025 / shot-03](../../../references/edh025/analysis.md#shot-03) | window | opening | arched window above sink | observed | — | [F350](../../../video/edh025.mp4#t=11.666666667) |

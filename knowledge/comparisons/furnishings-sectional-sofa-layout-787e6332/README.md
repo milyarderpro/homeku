@@ -1,5 +1,0 @@
-# furnishings / Sectional sofa / layout
-
-1 entri tercatat.
-
-- [Halaman 1](page-001.md)

@@ -1,5 +1,5 @@
 # bathroom & laundry
 
-1 entri tercatat.
+9 entri tercatat.
 
 - [Halaman 1](page-001.md)

@@ -1,0 +1,1624 @@
+{
+  "areas": [
+    {
+      "id": "exterior",
+      "label": "Exterior",
+      "functions": [
+        "entrance",
+        "porch",
+        "garden"
+      ],
+      "visible_intervals": [
+        {
+          "start_s": 0,
+          "end_s": 6.566666667
+        },
+        {
+          "start_s": 19.766666667,
+          "end_s": 21.666667
+        }
+      ]
+    },
+    {
+      "id": "living",
+      "label": "Living Room",
+      "functions": [
+        "living"
+      ],
+      "visible_intervals": [
+        {
+          "start_s": 6.566666667,
+          "end_s": 10.733333333
+        }
+      ]
+    },
+    {
+      "id": "kitchen",
+      "label": "Kitchen",
+      "functions": [
+        "kitchen"
+      ],
+      "visible_intervals": [
+        {
+          "start_s": 6.566666667,
+          "end_s": 11.766666667
+        }
+      ]
+    },
+    {
+      "id": "bedroom",
+      "label": "Bedroom",
+      "functions": [
+        "sleeping"
+      ],
+      "visible_intervals": [
+        {
+          "start_s": 11.766666667,
+          "end_s": 16.833333333
+        }
+      ]
+    },
+    {
+      "id": "bathroom",
+      "label": "Bathroom",
+      "functions": [
+        "bathroom"
+      ],
+      "visible_intervals": [
+        {
+          "start_s": 16.833333333,
+          "end_s": 19.766666667
+        }
+      ]
+    }
+  ],
+  "design": {
+    "name": "Compact Warm Modern House",
+    "house_type": {
+      "value": "Detached House",
+      "state": "uncertain",
+      "evidence": [
+        0,
+        98,
+        649
+      ]
+    },
+    "styles": {
+      "primary": {
+        "value": "Modern Minimalist",
+        "state": "uncertain",
+        "evidence": [
+          98,
+          196,
+          649
+        ],
+        "note": "Massa sederhana, garis atap horizontal, kontras bingkai hitam."
+      },
+      "influences": [
+        {
+          "value": "Transitional",
+          "state": "uncertain",
+          "evidence": [
+            197,
+            352,
+            505
+          ]
+        }
+      ],
+      "interior": [
+        {
+          "value": "Warm Modern",
+          "state": "uncertain",
+          "evidence": [
+            197,
+            504,
+            549
+          ]
+        },
+        {
+          "value": "Modern Farmhouse",
+          "state": "uncertain",
+          "evidence": [
+            352,
+            505
+          ],
+          "note": "Panel kabinet dan aksen hitam; bukan identifikasi gaya pasti."
+        }
+      ]
+    },
+    "size": {
+      "scale": {
+        "value": "compact",
+        "state": "uncertain",
+        "evidence": [
+          98,
+          197,
+          504
+        ]
+      },
+      "levels": {
+        "value": "Single-story visible mass",
+        "state": "observed",
+        "evidence": [
+          98,
+          649
+        ]
+      },
+      "footprint": {
+        "value": "Compact rectilinear mass",
+        "state": "uncertain",
+        "evidence": [
+          98,
+          649
+        ]
+      },
+      "proportions": {
+        "value": "Massa rendah dengan bukaan vertikal tinggi",
+        "state": "observed",
+        "evidence": [
+          98,
+          196
+        ]
+      },
+      "floor_area_m2": {
+        "min": 35,
+        "max": 65
+      }
+    },
+    "palette": [
+      {
+        "value": "Warm white",
+        "state": "observed",
+        "evidence": [
+          98
+        ],
+        "role": "Dominan",
+        "hex": "#DDD6C8"
+      },
+      {
+        "value": "Cream",
+        "state": "observed",
+        "evidence": [
+          197
+        ],
+        "role": "Dominan",
+        "hex": "#D5CABB"
+      },
+      {
+        "value": "Charcoal black",
+        "state": "observed",
+        "evidence": [
+          196
+        ],
+        "role": "Aksen",
+        "hex": "#252525"
+      },
+      {
+        "value": "Light oak",
+        "state": "observed",
+        "evidence": [
+          352
+        ],
+        "role": "Pendamping",
+        "hex": "#BDA485"
+      },
+      {
+        "value": "Rust brown",
+        "state": "observed",
+        "evidence": [
+          353
+        ],
+        "role": "Aksen",
+        "hex": "#9A5632"
+      },
+      {
+        "value": "Muted sage green",
+        "state": "observed",
+        "evidence": [
+          649
+        ],
+        "role": "Pendamping",
+        "hex": "#62734A"
+      }
+    ],
+    "features": [
+      {
+        "value": "Massa rendah bersudut siku, atap bertepi hitam dan kanopi masuk",
+        "state": "observed",
+        "evidence": [
+          98,
+          649
+        ],
+        "aspect": "massing"
+      },
+      {
+        "value": "Garis atap horizontal dengan overhang tipis",
+        "state": "observed",
+        "evidence": [
+          98,
+          649
+        ],
+        "aspect": "roof"
+      },
+      {
+        "value": "Pintu hitam di samping jendela grid tinggi; tangga pendek dari jalur taman",
+        "state": "observed",
+        "evidence": [
+          196,
+          649
+        ],
+        "aspect": "entrance"
+      },
+      {
+        "value": "Jendela grid hitam tinggi, jendela lengkung kamar mandi",
+        "state": "observed",
+        "evidence": [
+          196,
+          505
+        ],
+        "aspect": "openings"
+      },
+      {
+        "value": "Dinding tampak plester krem, aksen batu susun, kayu terang, bingkai hitam",
+        "state": "observed",
+        "evidence": [
+          196,
+          352
+        ],
+        "aspect": "material-hierarchy"
+      },
+      {
+        "value": "Living dan kitchen tersambung dalam satu lintasan; bedroom dan bathroom muncul pada cut terpisah",
+        "state": "observed",
+        "evidence": [
+          197,
+          275,
+          504,
+          505
+        ],
+        "aspect": "spatial-configuration"
+      },
+      {
+        "value": "Cahaya difus dari bukaan, lampu dinding, track light dan strip hangat",
+        "state": "observed",
+        "evidence": [
+          196,
+          197,
+          549
+        ],
+        "aspect": "lighting"
+      },
+      {
+        "value": "Hangat, kompak dan intim dengan kontras gelap-terang",
+        "state": "observed",
+        "evidence": [
+          197,
+          504
+        ],
+        "aspect": "atmosphere"
+      },
+      {
+        "value": "Pepohonan tinggi, rumput dan jalur masuk berpaving",
+        "state": "observed",
+        "evidence": [
+          0,
+          649
+        ],
+        "aspect": "environment"
+      }
+    ]
+  },
+  "id": "edh022",
+  "revision": 1,
+  "schema_version": "3.1",
+  "shots": [
+    {
+      "area_ids": [
+        "exterior"
+      ],
+      "camera": {
+        "description": "Kamera bergerak ke kanan melewati batang pohon, membuka bidang fasad sambil sedikit mendekat dan mengarahkan pandangan ke kiri; pendekatan ke teras menjadi dominan setelah pohon keluar dari kiri.",
+        "phases": [
+          {
+            "depth_direction": "IN",
+            "end_s": 4.0,
+            "evidence": [
+              0,
+              40,
+              80,
+              100,
+              115,
+              120
+            ],
+            "focus": "Fasad dan pohon foreground",
+            "notation": "Orbit Right (~15°–25°) + Mild Dolly-In (~1.2×) + Subtle Pan Left",
+            "observations": {
+              "depth": "Tinggi jendela kanan bertambah sekitar 1.2×; pembesaran sebagian terkait perubahan perspektif, tetapi teras dan jarak ke pohon mendukung pendekatan ringan.",
+              "rotation": "Sapuan rumah ke kanan saat badan menuju kanan mendukung kompensasi pan kiri. Besaran pan tidak dapat dipisah dari orbit tanpa kalibrasi; drift vertikal tidak cukup untuk Tilt.",
+              "translation": "Batang dekat bergeser kuat ke kiri sementara fasad bergerak ke kanan; sisi kiri menyempit dan bidang jendela kanan makin frontal, mendukung orbit badan ke kanan; truck lurus alternatif."
+            },
+            "start_s": 0
+          },
+          {
+            "depth_direction": "IN",
+            "end_s": 6.566666667,
+            "evidence": [
+              120,
+              140,
+              165,
+              185,
+              196
+            ],
+            "focus": "Tangga, pintu, jendela fasad",
+            "notation": "Accelerating Dolly-In (~1.3×–1.4×) + Subtle Orbit Right (Ease-Out)",
+            "observations": {
+              "depth": "Jendela kanan dan pintu tumbuh, tangga membesar lebih nyata menjelang akhir; perspektif menunjukkan maju, bukan sekadar zoom.",
+              "rotation": "Arah pandang relatif stabil pada teras, tidak ada pan atau tilt tambahan yang cukup kuat.",
+              "translation": "Pohon keluar kiri; perubahan sisi fasad berlanjut kecil lalu mereda; lintasan pendekatan sedikit melengkung, besar orbit sisa tidak dapat dipisahkan dari perubahan perspektif."
+            },
+            "start_s": 4.0
+          }
+        ],
+        "tempo": {
+          "description": "Gerak lateral cukup stabil pada awal, mereda saat pendekatan makin dominan; pembesaran bertambah pada bagian akhir.",
+          "label": "moderate"
+        }
+      },
+      "composition": {
+        "camera_position": "Di jalur depan, di luar taman",
+        "camera_direction": "Serong ke fasad dan pintu",
+        "view_angle": "oblique",
+        "camera_height": "Sekitar tinggi mata",
+        "camera_tilt": "Hampir datar",
+        "start_composition": "Wide, pohon di depan fasad",
+        "end_composition": "Lebih dekat ke tangga dan pintu",
+        "focus": "Fasad dan akses masuk",
+        "foreground": "Pohon, rumput, jalur",
+        "lighting": "Cahaya luar difus dan lampu teras hangat",
+        "depth": "Pohon dekat, jalur tengah, massa belakang",
+        "reveal": "Fasad terbuka setelah pohon bergeser",
+        "motion_compatibility": "Orbit membuka fasad sebelum pendekatan menekankan akses"
+      },
+      "design": [
+        {
+          "area_ids": [
+            "exterior"
+          ],
+          "architecture": {
+            "text": "Massa rendah berwarna krem dengan tepi atap hitam menjorok, kanopi teras rata, pintu hitam dan jendela tinggi bergrid. Tangga terang dengan lampu kecil menghubungkan teras ke jalur. Dinding rendah bertekstur batu membatasi teras.",
+            "facts": [
+              {
+                "value": "low rectilinear mass",
+                "state": "observed",
+                "evidence": [
+                  0,
+                  98,
+                  196
+                ],
+                "subject": "house",
+                "attribute": "massing",
+                "facet_roles": [
+                  "massing"
+                ]
+              },
+              {
+                "value": "flat-looking roof edge and overhang",
+                "state": "observed",
+                "evidence": [
+                  0,
+                  98,
+                  196
+                ],
+                "subject": "roof",
+                "attribute": "form",
+                "facet_roles": [
+                  "roof"
+                ]
+              },
+              {
+                "value": "warm cream smooth finish",
+                "state": "observed",
+                "evidence": [
+                  0,
+                  98,
+                  196
+                ],
+                "subject": "facade",
+                "attribute": "appearance"
+              },
+              {
+                "value": "tall black grid glazing",
+                "state": "observed",
+                "evidence": [
+                  0,
+                  98,
+                  196
+                ],
+                "subject": "window",
+                "attribute": "configuration",
+                "facet_roles": [
+                  "opening"
+                ]
+              },
+              {
+                "value": "short illuminated steps from path",
+                "state": "observed",
+                "evidence": [
+                  0,
+                  98,
+                  196
+                ],
+                "subject": "entry",
+                "attribute": "circulation",
+                "facet_roles": [
+                  "circulation"
+                ]
+              },
+              {
+                "value": "covered porch with low stone-look wall",
+                "state": "observed",
+                "evidence": [
+                  0,
+                  98,
+                  196
+                ],
+                "subject": "porch",
+                "attribute": "configuration",
+                "facet_roles": [
+                  "configuration"
+                ]
+              }
+            ]
+          },
+          "furnishings": {
+            "text": "Meja dan kursi kecil di teras; pot tanaman di sisi tangga, lampu dinding hangat.",
+            "facts": [
+              {
+                "value": "small table and chairs",
+                "state": "observed",
+                "evidence": [
+                  0,
+                  98,
+                  196
+                ],
+                "subject": "porch seating",
+                "attribute": "configuration"
+              },
+              {
+                "value": "beside steps and windows",
+                "state": "observed",
+                "evidence": [
+                  0,
+                  98,
+                  196
+                ],
+                "subject": "planters",
+                "attribute": "placement"
+              },
+              {
+                "value": "warm wall lighting",
+                "state": "observed",
+                "evidence": [
+                  0,
+                  98,
+                  196
+                ],
+                "subject": "wall sconces",
+                "attribute": "lighting"
+              }
+            ]
+          },
+          "environment": {
+            "text": "Rumput, jalur paving terang dan pohon tinggi mengapit fasad.",
+            "facts": [
+              {
+                "value": "lawn and tall trees",
+                "state": "observed",
+                "evidence": [
+                  0,
+                  98,
+                  196
+                ],
+                "subject": "landscape",
+                "attribute": "appearance"
+              },
+              {
+                "value": "light paving",
+                "state": "observed",
+                "evidence": [
+                  0,
+                  98,
+                  196
+                ],
+                "subject": "path",
+                "attribute": "appearance"
+              }
+            ]
+          }
+        }
+      ],
+      "end_s": 6.566666667,
+      "overviews": [
+        {
+          "frame_index": 98,
+          "area_ids": [
+            "exterior"
+          ],
+          "composition_summary": "Kamera dari jalur depan menghadap serong ke fasad pada tinggi mata; massa, atap, teras, pintu, tangga, rumput dan pepohonan terlihat dalam satu wide."
+        }
+      ],
+      "panels": [
+        {
+          "frame_index": 0,
+          "area_ids": [
+            "exterior"
+          ]
+        },
+        {
+          "frame_index": 98,
+          "area_ids": [
+            "exterior"
+          ]
+        },
+        {
+          "frame_index": 196,
+          "area_ids": [
+            "exterior"
+          ]
+        }
+      ],
+      "shot": "shot-01",
+      "start_s": 0.0,
+      "transition": "cut"
+    },
+    {
+      "area_ids": [
+        "living",
+        "kitchen"
+      ],
+      "camera": {
+        "description": "Maju menyusuri living menuju kitchen, dengan arah pandang relatif stabil pada awal lalu menyapu kiri menuju rak dan sink pada akhir.",
+        "phases": [
+          {
+            "depth_direction": "IN",
+            "end_s": 10.066666667,
+            "evidence": [
+              197,
+              237,
+              272,
+              287,
+              297,
+              302
+            ],
+            "focus": "Living menuju kitchen",
+            "notation": "Straight Dolly-In (~1.7×)",
+            "observations": {
+              "depth": "Tinggi kulkas dan rak dapur bertambah sekitar 1.7×; sofa dan meja keluar tepi lebih cepat daripada kabinet jauh.",
+              "rotation": "Bidang kabinet tetap hampir frontal; sapuan awal kecil dan dapat dijelaskan arah maju, tidak ada Tilt berkelanjutan.",
+              "translation": "Maju sepanjang lorong; sedikit drift kanan mungkin ada, tetapi tidak cukup memisahkan truck atau lintasan diagonal."
+            },
+            "start_s": 6.566666667
+          },
+          {
+            "depth_direction": "IN",
+            "end_s": 11.766666667,
+            "evidence": [
+              302,
+              307,
+              312,
+              317,
+              337,
+              352
+            ],
+            "focus": "Kabinet, rak terbuka dan sink",
+            "notation": "Dolly-In (~1.4×–1.5×) + Moderate Pan Left (~10°–15°)",
+            "observations": {
+              "depth": "Kulkas dan rak terus membesar; tanaman dekat keluar kanan, menunjukkan maju.",
+              "rotation": "Rak dan kulkas bergeser kanan walau maju, sementara area kiri kabinet makin dominan; mendukung pan kiri. Besaran sudut perkiraan visual; tidak terlihat tilt terpisah.",
+              "translation": "Translasi maju tetap dominan; pergeseran kecil badan tidak bisa dipisahkan dengan yakin dari pan."
+            },
+            "start_s": 10.066666667
+          }
+        ],
+        "tempo": {
+          "description": "Maju berkelanjutan; aliran visual lebih cepat ketika sofa dan tanaman lewat serta framing kitchen menyempit.",
+          "label": "moderate"
+        }
+      },
+      "composition": {
+        "camera_position": "Di sisi awal ruang living",
+        "camera_direction": "Ke ujung kitchen sepanjang ruang",
+        "view_angle": "frontal",
+        "camera_height": "Sekitar tinggi mata",
+        "camera_tilt": "Hampir datar",
+        "start_composition": "Wide living dan kitchen di belakang",
+        "end_composition": "Kabinet dan sink dominan",
+        "focus": "Lintasan living menuju kitchen",
+        "foreground": "Sofa kanan dan meja kiri",
+        "lighting": "Track light, downlight, jendela kanan dan strip kabinet",
+        "depth": "Sofa dekat, jalur tengah, kabinet jauh",
+        "reveal": "Sofa keluar framing, detail kitchen terbuka",
+        "motion_compatibility": "Dolly-In menyusuri ruang lalu pan kiri menekankan sink"
+      },
+      "design": [
+        {
+          "area_ids": [
+            "living"
+          ],
+          "architecture": {
+            "text": "Ruang memanjang terbuka ke dapur, plafon rata dengan track light hitam dan downlight; bukaan di sisi kanan dengan tirai panjang. Lantai papan tampak kayu terang.",
+            "facts": [
+              {
+                "value": "open-plan connection to kitchen",
+                "state": "observed",
+                "evidence": [
+                  197,
+                  275
+                ],
+                "subject": "living room",
+                "attribute": "layout",
+                "facet_roles": [
+                  "layout",
+                  "circulation"
+                ]
+              },
+              {
+                "value": "side glazing with full-height curtains",
+                "state": "observed",
+                "evidence": [
+                  197,
+                  237
+                ],
+                "subject": "window",
+                "attribute": "appearance",
+                "facet_roles": [
+                  "opening"
+                ]
+              },
+              {
+                "value": "black track lighting and recessed lights",
+                "state": "observed",
+                "evidence": [
+                  197,
+                  275
+                ],
+                "subject": "ceiling",
+                "attribute": "lighting"
+              },
+              {
+                "value": "light wood-look planks",
+                "state": "observed",
+                "evidence": [
+                  197,
+                  275
+                ],
+                "subject": "floor",
+                "attribute": "appearance"
+              }
+            ]
+          },
+          "furnishings": {
+            "text": "Sofa krem di kanan menghadap sisi kiri, bantal krem dan karat, selimut rajut, karpet motif garis dan pot tanaman; rak kayu melayang di sisi jendela.",
+            "facts": [
+              {
+                "value": "right-side cream sofa with rust cushions",
+                "state": "observed",
+                "evidence": [
+                  197,
+                  275
+                ],
+                "subject": "sofa",
+                "attribute": "placement"
+              },
+              {
+                "value": "patterned striped rug",
+                "state": "observed",
+                "evidence": [
+                  197,
+                  237
+                ],
+                "subject": "rug",
+                "attribute": "appearance"
+              },
+              {
+                "value": "floating wood-look shelves beside window",
+                "state": "observed",
+                "evidence": [
+                  197,
+                  275
+                ],
+                "subject": "shelves",
+                "attribute": "placement"
+              },
+              {
+                "value": "beside sofa near kitchen",
+                "state": "observed",
+                "evidence": [
+                  237,
+                  302
+                ],
+                "subject": "plant",
+                "attribute": "placement"
+              }
+            ]
+          },
+          "environment": {
+            "text": "Cahaya difus dari jendela kanan; luar tidak terbaca jelas.",
+            "facts": [
+              {
+                "value": "from right-side window",
+                "state": "observed",
+                "evidence": [
+                  197,
+                  275
+                ],
+                "subject": "daylight",
+                "attribute": "direction"
+              }
+            ]
+          }
+        },
+        {
+          "area_ids": [
+            "kitchen"
+          ],
+          "architecture": {
+            "text": "Kabinet panel krem berjajar di dinding ujung, backsplash ubin persegi panjang terang, meja kerja tampak kayu. Kulkas hitam berada di kanan. Area meja di sisi kiri hanya sebagian terlihat; sambungan tidak jelas.",
+            "facts": [
+              {
+                "value": "single visible wall of cabinetry",
+                "state": "observed",
+                "evidence": [
+                  275,
+                  352
+                ],
+                "subject": "kitchen",
+                "attribute": "layout",
+                "facet_roles": [
+                  "layout"
+                ]
+              },
+              {
+                "value": "wood-look worktop",
+                "state": "observed",
+                "evidence": [
+                  322,
+                  352
+                ],
+                "subject": "counter",
+                "attribute": "appearance"
+              },
+              {
+                "value": "light rectangular subway tile",
+                "state": "observed",
+                "evidence": [
+                  322,
+                  352
+                ],
+                "subject": "backsplash",
+                "attribute": "appearance"
+              },
+              {
+                "value": "island or peninsula unconfirmed",
+                "state": "uncertain",
+                "evidence": [
+                  197,
+                  237
+                ],
+                "subject": "side counter",
+                "attribute": "configuration",
+                "facet_roles": [
+                  "configuration"
+                ]
+              }
+            ]
+          },
+          "furnishings": {
+            "text": "Kabinet atas-bawah berpintu panel dengan gagang gelap, rak terbuka kayu di antara kabinet atas, sink dan keran hitam, kulkas tinggi hitam, bangku di meja sisi kiri.",
+            "facts": [
+              {
+                "value": "cream paneled upper and lower storage",
+                "state": "observed",
+                "evidence": [
+                  275,
+                  352
+                ],
+                "subject": "cabinet",
+                "attribute": "configuration"
+              },
+              {
+                "value": "between upper cupboards",
+                "state": "observed",
+                "evidence": [
+                  322,
+                  352
+                ],
+                "subject": "open shelving",
+                "attribute": "placement"
+              },
+              {
+                "value": "under upper storage on back counter",
+                "state": "observed",
+                "evidence": [
+                  322,
+                  352
+                ],
+                "subject": "sink",
+                "attribute": "placement"
+              },
+              {
+                "value": "tall black unit at right end",
+                "state": "observed",
+                "evidence": [
+                  275,
+                  352
+                ],
+                "subject": "refrigerator",
+                "attribute": "placement"
+              },
+              {
+                "value": "along left counter",
+                "state": "observed",
+                "evidence": [
+                  197,
+                  237
+                ],
+                "subject": "stools",
+                "attribute": "placement"
+              }
+            ]
+          },
+          "environment": {
+            "text": "Lampu strip hangat di bawah kabinet dan cahaya sisi kanan.",
+            "facts": [
+              {
+                "value": "under-cabinet strip and side daylight",
+                "state": "observed",
+                "evidence": [
+                  275,
+                  352
+                ],
+                "subject": "lighting",
+                "attribute": "source"
+              }
+            ]
+          }
+        }
+      ],
+      "end_s": 11.766666667,
+      "overviews": [
+        {
+          "frame_index": 197,
+          "area_ids": [
+            "living",
+            "kitchen"
+          ],
+          "composition_summary": "Kamera dari awal living menghadap ke kabinet ujung; wide mencakup sofa kanan, meja dan bangku kiri, karpet, jalur tengah dan kitchen."
+        },
+        {
+          "frame_index": 322,
+          "area_ids": [
+            "kitchen"
+          ],
+          "composition_summary": "Kamera dekat ujung living menghadap hampir frontal ke kabinet; meja kerja, rak, kulkas dan bukaan samping menjadi cakupan dapur."
+        }
+      ],
+      "panels": [
+        {
+          "frame_index": 197,
+          "area_ids": [
+            "living",
+            "kitchen"
+          ]
+        },
+        {
+          "frame_index": 237,
+          "area_ids": [
+            "living",
+            "kitchen"
+          ],
+          "label": "Open-Plan Connection"
+        },
+        {
+          "frame_index": 302,
+          "area_ids": [
+            "living",
+            "kitchen"
+          ],
+          "label": "Kitchen Approach"
+        },
+        {
+          "frame_index": 352,
+          "area_ids": [
+            "kitchen"
+          ]
+        }
+      ],
+      "shot": "shot-02",
+      "start_s": 6.566666667,
+      "transition": "cut"
+    },
+    {
+      "area_ids": [
+        "bedroom"
+      ],
+      "camera": {
+        "description": "Sapuan kiri dari framing dekat ranjang membuka nakas dan sisi kiri, kemudian kamera mundur sampai terlihat cakupan kamar yang lebih luas.",
+        "phases": [
+          {
+            "depth_direction": "NO IN/OUT",
+            "end_s": 13.266666667,
+            "evidence": [
+              353,
+              368,
+              378,
+              388,
+              393,
+              398
+            ],
+            "focus": "Headboard, jendela dan nakas kiri",
+            "notation": "Moderate Pan Left (~15°–20°)",
+            "observations": {
+              "depth": "Lebar jendela hampir tetap; belum ada bukti perubahan kedalaman yang kuat.",
+              "rotation": "Jendela dan ranjang bergeser kanan dengan skala relatif tetap; pan kiri dominan, sedikit perubahan perspektif bisa menunjukkan orbit/truck kecil, tidak pasti.",
+              "translation": "Nakas dan dinding kiri masuk; translasi lateral kecil mungkin tetapi tidak terpisah meyakinkan dari sapuan."
+            },
+            "start_s": 11.766666667
+          },
+          {
+            "depth_direction": "OUT",
+            "end_s": 14.433333333,
+            "evidence": [
+              398,
+              403,
+              408,
+              418,
+              428,
+              433
+            ],
+            "focus": "Nakas, ranjang dan bukaan kiri",
+            "notation": "Dolly-Out (~1.1×) + Mild Pan Left (Ease-Out)",
+            "observations": {
+              "depth": "Jendela mulai mengecil, sisi lemari dan bagian bawah nakas terbuka; awal mundur gradual.",
+              "rotation": "Jendela masih bergeser kanan lalu stabil; sapuan kiri mereda; sudut sisa kecil dan tidak dapat dipisahkan secara andal.",
+              "translation": "Badan mulai mundur; sedikit komponen lateral tidak terukur terpisah."
+            },
+            "start_s": 13.266666667
+          },
+          {
+            "depth_direction": "OUT",
+            "end_s": 16.833333333,
+            "evidence": [
+              433,
+              448,
+              468,
+              488,
+              504
+            ],
+            "focus": "Cakupan kamar tidur",
+            "notation": "Straight Dolly-Out (~1.4×)",
+            "observations": {
+              "depth": "Lebar jendela turun dari sekitar 105 ke 76 pada lembar pembanding; ranjang dan nakas mengecil dan plafon serta sisi ruangan terbuka.",
+              "rotation": "Arah pandang relatif stabil; sedikit perubahan vertikal/proyeksi tidak cukup untuk Tilt, orbit tidak meyakinkan.",
+              "translation": "Mundur dari ranjang sepanjang ruang; bidang dekat kiri terbuka lebih banyak."
+            },
+            "start_s": 14.433333333
+          }
+        ],
+        "tempo": {
+          "description": "Sapuan awal jelas, lalu berpadu mundur; perubahan arah pandang mereda dan pelebaran framing berlanjut stabil.",
+          "label": "moderate"
+        }
+      },
+      "composition": {
+        "camera_position": "Dekat kaki ranjang",
+        "camera_direction": "Ke jendela belakang",
+        "view_angle": "frontal",
+        "camera_height": "Sekitar tinggi mata",
+        "camera_tilt": "Hampir datar",
+        "start_composition": "Ranjang dan jendela memenuhi bingkai",
+        "end_composition": "Wide menampilkan sisi ruang, plafon dan ranjang",
+        "focus": "Ranjang dan jendela",
+        "foreground": "Selimut rajut",
+        "lighting": "Cahaya tersaring blind dan lampu gantung hangat",
+        "depth": "Ranjang dekat, jendela belakang",
+        "reveal": "Meja samping dan dinding kanan terbuka",
+        "motion_compatibility": "Pan kiri kemudian Dolly-Out membuka volume"
+      },
+      "design": [
+        {
+          "area_ids": [
+            "bedroom"
+          ],
+          "architecture": {
+            "text": "Kamar sempit memanjang; jendela grid gelap dengan blind dan tirai krem di belakang ranjang, AC di atasnya. Plafon bertingkat dangkal dengan downlight; panel dinding terang di sisi kanan.",
+            "facts": [
+              {
+                "value": "bed centered toward rear window",
+                "state": "observed",
+                "evidence": [
+                  353,
+                  504
+                ],
+                "subject": "bedroom",
+                "attribute": "layout",
+                "facet_roles": [
+                  "layout"
+                ]
+              },
+              {
+                "value": "black framed window with blind and curtains",
+                "state": "observed",
+                "evidence": [
+                  353,
+                  504
+                ],
+                "subject": "window",
+                "attribute": "appearance",
+                "facet_roles": [
+                  "opening"
+                ]
+              },
+              {
+                "value": "shallow tray ceiling with recessed lights",
+                "state": "observed",
+                "evidence": [
+                  504
+                ],
+                "subject": "ceiling",
+                "attribute": "configuration",
+                "facet_roles": [
+                  "configuration"
+                ]
+              }
+            ]
+          },
+          "furnishings": {
+            "text": "Ranjang menghadap kamera dengan linen putih, bantal rust dan hitam, selimut rajut krem. Meja samping berlaci di kiri, lampu gantung hangat, dekorasi rumput kering, karya bingkai di kanan.",
+            "facts": [
+              {
+                "value": "white bedding with rust and dark cushions",
+                "state": "observed",
+                "evidence": [
+                  353,
+                  504
+                ],
+                "subject": "bed",
+                "attribute": "appearance"
+              },
+              {
+                "value": "left of bed with drawers",
+                "state": "observed",
+                "evidence": [
+                  429,
+                  504
+                ],
+                "subject": "nightstand",
+                "attribute": "placement"
+              },
+              {
+                "value": "beside bed",
+                "state": "observed",
+                "evidence": [
+                  353,
+                  504
+                ],
+                "subject": "pendant",
+                "attribute": "placement"
+              },
+              {
+                "value": "right wall",
+                "state": "observed",
+                "evidence": [
+                  504
+                ],
+                "subject": "wall art",
+                "attribute": "placement"
+              },
+              {
+                "value": "above window",
+                "state": "observed",
+                "evidence": [
+                  353,
+                  504
+                ],
+                "subject": "air conditioner",
+                "attribute": "placement"
+              }
+            ]
+          },
+          "environment": {
+            "text": "Cahaya jendela belakang tersaring blind, lampu gantung memberi aksen hangat.",
+            "facts": [
+              {
+                "value": "filtered rear daylight and warm pendants",
+                "state": "observed",
+                "evidence": [
+                  353,
+                  504
+                ],
+                "subject": "lighting",
+                "attribute": "source"
+              }
+            ]
+          }
+        }
+      ],
+      "end_s": 16.833333333,
+      "overviews": [
+        {
+          "frame_index": 504,
+          "area_ids": [
+            "bedroom"
+          ],
+          "composition_summary": "Kamera mundur dekat akses kamar, menghadap ranjang dan jendela belakang; wide memperlihatkan plafon, sisi kanan, meja samping kiri dan ranjang."
+        }
+      ],
+      "panels": [
+        {
+          "frame_index": 353,
+          "area_ids": [
+            "bedroom"
+          ]
+        },
+        {
+          "frame_index": 429,
+          "area_ids": [
+            "bedroom"
+          ]
+        },
+        {
+          "frame_index": 504,
+          "area_ids": [
+            "bedroom"
+          ]
+        }
+      ],
+      "shot": "shot-03",
+      "start_s": 11.766666667,
+      "transition": "cut"
+    },
+    {
+      "area_ids": [
+        "bathroom"
+      ],
+      "camera": {
+        "description": "Mendekat ringan sambil menyapu kiri dari vanity ke toilet dan jendela lengkung.",
+        "phases": [
+          {
+            "depth_direction": "IN",
+            "end_s": 19.766666667,
+            "evidence": [
+              505,
+              525,
+              549,
+              570,
+              592
+            ],
+            "focus": "Toilet, kabinet dan jendela lengkung",
+            "notation": "Mild Dolly-In (~1.15×–1.2×) + Accelerating Pan Left (~10°–15°)",
+            "observations": {
+              "depth": "Toilet dan kabinet membesar ringan, jendela dekat membuka lebih kuat; mendukung pendekatan ringan, zoom kecil alternatif.",
+              "rotation": "Toilet, rak dan cermin bergerak kanan, bidang jendela kiri makin terbuka. Pan kiri meningkat; tidak terlihat tilt sengaja.",
+              "translation": "Partisi shower dekat keluar kanan; perubahan hubungan jendela kiri terhadap kabinet kecil; arah badan lateral tidak cukup jelas untuk Truck atau Orbit."
+            },
+            "start_s": 16.833333333
+          }
+        ],
+        "tempo": {
+          "description": "Pembesaran ringan relatif konstan; sapuan horizontal menguat dari awal ke tengah dan akhir.",
+          "label": "moderate"
+        }
+      },
+      "composition": {
+        "camera_position": "Di sisi akses kamar mandi",
+        "camera_direction": "Ke toilet, vanity dan cermin",
+        "view_angle": "frontal",
+        "camera_height": "Sekitar tinggi mata",
+        "camera_tilt": "Hampir datar",
+        "start_composition": "Wide mencakup partisi shower kanan",
+        "end_composition": "Jendela dan kabinet toilet dominan",
+        "focus": "Toilet, vanity dan jendela",
+        "foreground": "Partisi shower di kanan",
+        "lighting": "Cahaya jendela kiri dan ceruk hangat",
+        "depth": "Peralatan dekat, dinding belakang",
+        "reveal": "Partisi keluar kanan saat sapuan kiri",
+        "motion_compatibility": "Dolly-In ringan dan pan kiri mengutamakan jendela"
+      },
+      "design": [
+        {
+          "area_ids": [
+            "bathroom"
+          ],
+          "architecture": {
+            "text": "Kamar mandi sempit dengan jendela lengkung berbingkai hitam di kiri, dinding krem dan partisi shower grid hitam di kanan. Cermin lengkung mengulang bentuk jendela.",
+            "facts": [
+              {
+                "value": "arched black-frame window",
+                "state": "observed",
+                "evidence": [
+                  505,
+                  592
+                ],
+                "subject": "window",
+                "attribute": "shape",
+                "facet_roles": [
+                  "opening"
+                ]
+              },
+              {
+                "value": "black grid glass partition on right",
+                "state": "observed",
+                "evidence": [
+                  505,
+                  549
+                ],
+                "subject": "shower partition",
+                "attribute": "configuration",
+                "facet_roles": [
+                  "configuration"
+                ]
+              },
+              {
+                "value": "toilet left, vanity right, shower partition to right",
+                "state": "observed",
+                "evidence": [
+                  505,
+                  549
+                ],
+                "subject": "bathroom",
+                "attribute": "layout",
+                "facet_roles": [
+                  "layout"
+                ]
+              }
+            ]
+          },
+          "furnishings": {
+            "text": "Toilet putih di kiri kabinet vanity panel krem dengan basin kotak dan keran hitam. Kabinet tinggi panel lengkung dan ceruk bercahaya di atas toilet. Cermin lengkung hitam dan lampu gantung di atas vanity.",
+            "facts": [
+              {
+                "value": "left below tall cabinet",
+                "state": "observed",
+                "evidence": [
+                  505,
+                  592
+                ],
+                "subject": "toilet",
+                "attribute": "placement"
+              },
+              {
+                "value": "cream paneled cabinet with rectangular basin",
+                "state": "observed",
+                "evidence": [
+                  505,
+                  549
+                ],
+                "subject": "vanity",
+                "attribute": "configuration"
+              },
+              {
+                "value": "arched black frame",
+                "state": "observed",
+                "evidence": [
+                  505,
+                  549
+                ],
+                "subject": "mirror",
+                "attribute": "shape"
+              },
+              {
+                "value": "upper arched cabinet with lit open niches",
+                "state": "observed",
+                "evidence": [
+                  505,
+                  592
+                ],
+                "subject": "storage",
+                "attribute": "configuration"
+              },
+              {
+                "value": "pendant and niche strip",
+                "state": "observed",
+                "evidence": [
+                  505,
+                  549
+                ],
+                "subject": "lighting",
+                "attribute": "source"
+              }
+            ]
+          },
+          "environment": {
+            "text": "Cahaya dari jendela kiri dan lampu hangat pada ceruk serta bawah vanity; lingkungan luar tidak jelas.",
+            "facts": [
+              {
+                "value": "left window",
+                "state": "observed",
+                "evidence": [
+                  505,
+                  592
+                ],
+                "subject": "daylight",
+                "attribute": "direction"
+              }
+            ]
+          }
+        }
+      ],
+      "end_s": 19.766666667,
+      "overviews": [
+        {
+          "frame_index": 505,
+          "area_ids": [
+            "bathroom"
+          ],
+          "composition_summary": "Kamera di akses menghadap dinding belakang; wide mencakup jendela lengkung kiri, toilet, vanity dan partisi shower kanan."
+        }
+      ],
+      "panels": [
+        {
+          "frame_index": 505,
+          "area_ids": [
+            "bathroom"
+          ]
+        },
+        {
+          "frame_index": 549,
+          "area_ids": [
+            "bathroom"
+          ]
+        },
+        {
+          "frame_index": 592,
+          "area_ids": [
+            "bathroom"
+          ]
+        }
+      ],
+      "shot": "shot-04",
+      "start_s": 16.833333333,
+      "transition": "cut"
+    },
+    {
+      "area_ids": [
+        "exterior"
+      ],
+      "camera": {
+        "description": "Mundur pelan dari teras dengan pergeseran sudut kecil ke kiri sehingga halaman dan sisi kiri kembali terbuka.",
+        "phases": [
+          {
+            "depth_direction": "OUT",
+            "end_s": 21.666667,
+            "evidence": [
+              593,
+              608,
+              622,
+              638,
+              649
+            ],
+            "focus": "Fasad, tangga dan halaman",
+            "notation": "Gentle Dolly-Out (~1.15×) + Subtle Orbit Left (~5°–10°)",
+            "observations": {
+              "depth": "Jendela kanan dan tangga mengecil sekitar 1.15×, bidang halaman dan jalur depan terbuka; perspektif mendukung mundur.",
+              "rotation": "Fasad relatif stabil di tengah; pan kompensasi terpisah tidak dapat dibuktikan, tidak ada Tilt yang jelas.",
+              "translation": "Sisi kiri rumah terbuka kembali dan orientasi tepi atap berubah sedikit; orbit kiri kecil lebih masuk akal daripada zoom murni; diagonal mundur alternatif."
+            },
+            "start_s": 19.766666667
+          }
+        ],
+        "tempo": {
+          "description": "Gerak mundur ringan, hampir konstan dan sapuan sudut kecil selama shot pendek.",
+          "label": "slow"
+        }
+      },
+      "composition": {
+        "camera_position": "Dekat jalur masuk depan",
+        "camera_direction": "Serong ke teras dan fasad",
+        "view_angle": "oblique",
+        "camera_height": "Sekitar tinggi mata",
+        "camera_tilt": "Hampir datar",
+        "start_composition": "Teras dan pintu cukup dekat",
+        "end_composition": "Wide fasad dan halaman",
+        "focus": "Fasad dan akses",
+        "foreground": "Tangga dan jalur",
+        "lighting": "Cahaya difus luar dengan lampu aksen",
+        "depth": "Jalur dekat, teras tengah, pepohonan belakang",
+        "reveal": "Halaman dan jalur semakin luas",
+        "motion_compatibility": "Dolly-Out dengan orbit kecil membuka konteks tapak"
+      },
+      "design": [
+        {
+          "area_ids": [
+            "exterior"
+          ],
+          "architecture": {
+            "text": "Massa rendah berwarna krem dengan tepi atap hitam menjorok, kanopi teras rata, pintu hitam dan jendela tinggi bergrid. Tangga terang dengan lampu kecil menghubungkan teras ke jalur. Dinding rendah bertekstur batu membatasi teras.",
+            "facts": [
+              {
+                "value": "low rectilinear mass",
+                "state": "observed",
+                "evidence": [
+                  593,
+                  622,
+                  649
+                ],
+                "subject": "house",
+                "attribute": "massing",
+                "facet_roles": [
+                  "massing"
+                ]
+              },
+              {
+                "value": "flat-looking roof edge and overhang",
+                "state": "observed",
+                "evidence": [
+                  593,
+                  622,
+                  649
+                ],
+                "subject": "roof",
+                "attribute": "form",
+                "facet_roles": [
+                  "roof"
+                ]
+              },
+              {
+                "value": "warm cream smooth finish",
+                "state": "observed",
+                "evidence": [
+                  593,
+                  622,
+                  649
+                ],
+                "subject": "facade",
+                "attribute": "appearance"
+              },
+              {
+                "value": "tall black grid glazing",
+                "state": "observed",
+                "evidence": [
+                  593,
+                  622,
+                  649
+                ],
+                "subject": "window",
+                "attribute": "configuration",
+                "facet_roles": [
+                  "opening"
+                ]
+              },
+              {
+                "value": "short illuminated steps from path",
+                "state": "observed",
+                "evidence": [
+                  593,
+                  622,
+                  649
+                ],
+                "subject": "entry",
+                "attribute": "circulation",
+                "facet_roles": [
+                  "circulation"
+                ]
+              },
+              {
+                "value": "covered porch with low stone-look wall",
+                "state": "observed",
+                "evidence": [
+                  593,
+                  622,
+                  649
+                ],
+                "subject": "porch",
+                "attribute": "configuration",
+                "facet_roles": [
+                  "configuration"
+                ]
+              }
+            ]
+          },
+          "furnishings": {
+            "text": "Meja dan kursi kecil di teras; pot tanaman di sisi tangga, lampu dinding hangat.",
+            "facts": [
+              {
+                "value": "small table and chairs",
+                "state": "observed",
+                "evidence": [
+                  593,
+                  622,
+                  649
+                ],
+                "subject": "porch seating",
+                "attribute": "configuration"
+              },
+              {
+                "value": "beside steps and windows",
+                "state": "observed",
+                "evidence": [
+                  593,
+                  622,
+                  649
+                ],
+                "subject": "planters",
+                "attribute": "placement"
+              },
+              {
+                "value": "warm wall lighting",
+                "state": "observed",
+                "evidence": [
+                  593,
+                  622,
+                  649
+                ],
+                "subject": "wall sconces",
+                "attribute": "lighting"
+              }
+            ]
+          },
+          "environment": {
+            "text": "Rumput, jalur paving terang dan pohon tinggi mengapit fasad.",
+            "facts": [
+              {
+                "value": "lawn and tall trees",
+                "state": "observed",
+                "evidence": [
+                  593,
+                  622,
+                  649
+                ],
+                "subject": "landscape",
+                "attribute": "appearance"
+              },
+              {
+                "value": "light paving",
+                "state": "observed",
+                "evidence": [
+                  593,
+                  622,
+                  649
+                ],
+                "subject": "path",
+                "attribute": "appearance"
+              }
+            ]
+          }
+        }
+      ],
+      "end_s": 21.666667,
+      "overviews": [
+        {
+          "frame_index": 649,
+          "area_ids": [
+            "exterior"
+          ],
+          "composition_summary": "Kamera menjauh di jalur depan, menghadap serong fasad; wide mencakup massa, atap, teras, tangga, halaman dan pohon."
+        }
+      ],
+      "panels": [
+        {
+          "frame_index": 593,
+          "area_ids": [
+            "exterior"
+          ]
+        },
+        {
+          "frame_index": 622,
+          "area_ids": [
+            "exterior"
+          ]
+        },
+        {
+          "frame_index": 649,
+          "area_ids": [
+            "exterior"
+          ]
+        }
+      ],
+      "shot": "shot-05",
+      "start_s": 19.766666667,
+      "transition": "end"
+    }
+  ],
+  "notes": "Luas 35–65 m² hanya perkiraan visual kasar dari skala furnitur dan massa; denah, dimensi, material fisik dan keterhubungan antar-cut tidak terverifikasi. Warna HEX perkiraan tampilan dengan pengaruh pencahayaan. Living–Kitchen terlihat kontinu; kamar dan kamar mandi tidak dapat dipastikan posisi fisiknya terhadap ruang lain. Notasi kamera dan ketidakpastian Fase 2 dipertahankan sesuai persetujuan."
+}

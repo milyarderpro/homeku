@@ -1,7 +1,7 @@
 {
   "audit": {
     "ai": {
-      "model": "Codex (GPT-6)",
+      "model": "GPT-6.2",
       "model_build": null,
       "provider": "OpenAI"
     },
@@ -371,80 +371,10 @@
         "viewed_frame_indices": [
           501
         ]
-      },
-      {
-        "end_s": 2.133333333,
-        "mode": "frame-by-frame",
-        "reason": "Periksa frame rujukan profil dan bukti batas fase pada MP4 sumber.",
-        "sampling_fps": null,
-        "selected_frame_indices": [
-          63
-        ],
-        "shot_id": "shot-01",
-        "start_s": 2.1,
-        "viewed_frame_indices": [
-          63
-        ]
-      },
-      {
-        "end_s": 2.233333333,
-        "mode": "frame-by-frame",
-        "reason": "Periksa frame rujukan profil dan bukti batas fase pada MP4 sumber.",
-        "sampling_fps": null,
-        "selected_frame_indices": [
-          66
-        ],
-        "shot_id": "shot-01",
-        "start_s": 2.2,
-        "viewed_frame_indices": [
-          66
-        ]
-      },
-      {
-        "end_s": 2.8,
-        "mode": "frame-by-frame",
-        "reason": "Periksa frame rujukan profil dan bukti batas fase pada MP4 sumber.",
-        "sampling_fps": null,
-        "selected_frame_indices": [
-          83
-        ],
-        "shot_id": "shot-01",
-        "start_s": 2.766666667,
-        "viewed_frame_indices": [
-          83
-        ]
-      },
-      {
-        "end_s": 13.033333333,
-        "mode": "frame-by-frame",
-        "reason": "Periksa frame rujukan profil dan bukti batas fase pada MP4 sumber.",
-        "sampling_fps": null,
-        "selected_frame_indices": [
-          390
-        ],
-        "shot_id": "shot-04",
-        "start_s": 13.0,
-        "viewed_frame_indices": [
-          390
-        ]
-      },
-      {
-        "end_s": 13.7,
-        "mode": "frame-by-frame",
-        "reason": "Periksa frame rujukan profil dan bukti batas fase pada MP4 sumber.",
-        "sampling_fps": null,
-        "selected_frame_indices": [
-          410
-        ],
-        "shot_id": "shot-04",
-        "start_s": 13.666666667,
-        "viewed_frame_indices": [
-          410
-        ]
       }
     ],
-    "limitations": "Besaran gerakan, luas dan HEX merupakan estimasi visual. Urutan cut tidak memperlihatkan sambungan fisik antarruang.",
-    "method": "Audit ulang MP4 sumber oleh Codex. Empat cut diverifikasi pada frame native. Seluruh shot diperiksa pada baseline 6 FPS, dengan pendalaman batas fase eksterior, perbandingan skala ruang tamu dan kamar mandi, serta pemeriksaan frame rujukan profil dan panel. Desain revisi aktif dipakai sebagai dasar dan dicocokkan kembali dengan gambar.",
+    "limitations": "Perkiraan skala dan sudut kamera visual, bukan pose 3D; luas lantai perkiraan kasar tanpa denah atau kalibrasi; material, gaya dan kontinuitas fisik tidak dapat dipastikan dari edit video.",
+    "method": "Audit visual baseline 6 FPS, midpoint dan frame native batas; empat cut dikonfirmasi; 123 frame diperiksa. Kamera dari checkpoint Fase 2 yang disetujui, desain dan pemilihan panel berdasarkan lembar visual sumber.",
     "reviewed_ranges": [
       {
         "end_s": 4.733333333,
@@ -495,77 +425,65 @@
         "end_s": 16.733333333,
         "mode": "frame-by-frame",
         "start_s": 16.7
-      },
-      {
-        "end_s": 2.133333333,
-        "mode": "frame-by-frame",
-        "start_s": 2.1
-      },
-      {
-        "end_s": 2.233333333,
-        "mode": "frame-by-frame",
-        "start_s": 2.2
-      },
-      {
-        "end_s": 2.8,
-        "mode": "frame-by-frame",
-        "start_s": 2.766666667
-      },
-      {
-        "end_s": 13.033333333,
-        "mode": "frame-by-frame",
-        "start_s": 13.0
-      },
-      {
-        "end_s": 13.7,
-        "mode": "frame-by-frame",
-        "start_s": 13.666666667
       }
     ]
   },
-  "audit_sha256": "a99d0c6f859e1459a5a03770bbe617ad0f0eb0e427df877da90051c17f81d5ae",
+  "audit_sha256": "f0b3f9c9f2dfe0fedb3aaf89f3f5f84a4a548532c898bbdd1d3f29da08522a57",
   "contract_version": "3.1",
   "frames": {
     "0": 0.0,
-    "110": 3.666666667,
+    "105": 3.5,
+    "120": 4.0,
+    "135": 4.5,
     "141": 4.7,
     "142": 4.733333333,
+    "15": 0.5,
+    "157": 5.233333333,
     "177": 5.9,
+    "192": 6.4,
     "196": 6.533333333,
-    "207": 6.9,
-    "222": 7.4,
+    "212": 7.066666667,
+    "232": 7.733333333,
     "248": 8.266666667,
     "249": 8.3,
+    "259": 8.633333333,
     "279": 9.3,
+    "294": 9.8,
     "298": 9.933333333,
     "30": 1.0,
-    "319": 10.633333333,
+    "314": 10.466666667,
+    "329": 10.966666667,
     "346": 11.533333333,
     "347": 11.566666667,
-    "372": 12.4,
-    "390": 13.0,
+    "362": 12.066666667,
+    "377": 12.566666667,
+    "397": 13.233333333,
     "398": 13.266666667,
-    "410": 13.666666667,
+    "40": 1.333333333,
+    "412": 13.733333333,
+    "432": 14.4,
     "449": 14.966666667,
+    "45": 1.5,
     "450": 15.0,
-    "475": 15.833333333,
-    "485": 16.166666667,
-    "500": 16.666666667,
+    "465": 15.5,
+    "480": 16.0,
+    "495": 16.5,
     "501": 16.7,
-    "520": 17.333333333,
-    "525": 17.5,
+    "515": 17.166666667,
+    "535": 17.833333333,
+    "55": 1.833333333,
     "551": 18.366666667,
-    "60": 2.0,
-    "63": 2.1,
-    "66": 2.2,
+    "65": 2.166666667,
     "71": 2.366666667,
-    "83": 2.766666667
+    "75": 2.5,
+    "80": 2.666666667,
+    "90": 3.0
   },
   "id": "edh001",
   "media": [
     {
       "blocks": [],
-      "height": 1696,
+      "height": 1705,
       "kind": "shot-collage",
       "panels": [
         {
@@ -575,7 +493,7 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s01-panel-01"
         },
         {
@@ -585,7 +503,7 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s01-panel-02"
         },
         {
@@ -595,17 +513,17 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s01-panel-03"
         }
       ],
       "path": "media/shot-01.jpg",
-      "sha256": "519f52383910e76d6992f43cec45e75c59c9309ff5275d0635bad15344bcb92a",
+      "sha256": "98466d4edc5ad8c9f2dd83120ea4d099468c2273049a56cb76dc150f72f33874",
       "width": 2280
     },
     {
       "blocks": [],
-      "height": 1639,
+      "height": 1705,
       "kind": "shot-collage",
       "panels": [
         {
@@ -615,7 +533,7 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s02-panel-01"
         },
         {
@@ -625,7 +543,7 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s02-panel-02"
         },
         {
@@ -635,17 +553,17 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s02-panel-03"
         }
       ],
       "path": "media/shot-02.jpg",
-      "sha256": "931b8f46373b7c02df4078aba8361d61b0e9e970f53889f49fa05784409658ea",
+      "sha256": "bd1c2e939e1eee3feebb7867cf63c2ebb072e0bad7c1f9753bf1e1c06c769268",
       "width": 2280
     },
     {
       "blocks": [],
-      "height": 1696,
+      "height": 1639,
       "kind": "shot-collage",
       "panels": [
         {
@@ -655,7 +573,7 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s03-panel-01"
         },
         {
@@ -665,7 +583,7 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s03-panel-02"
         },
         {
@@ -675,17 +593,17 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s03-panel-03"
         }
       ],
       "path": "media/shot-03.jpg",
-      "sha256": "a4a1b27118d5d4f5d4fbbc1afb0ea7e52a079f9a367a62efd4f0b4afa1413ade",
+      "sha256": "37e227939d1394578b203e19219d4d9b1a5047eab5b1efa7f8d1ad33dfdbae3c",
       "width": 2280
     },
     {
       "blocks": [],
-      "height": 1639,
+      "height": 1702,
       "kind": "shot-collage",
       "panels": [
         {
@@ -695,7 +613,7 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s04-panel-01"
         },
         {
@@ -705,7 +623,7 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s04-panel-02"
         },
         {
@@ -715,12 +633,12 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s04-panel-03"
         }
       ],
       "path": "media/shot-04.jpg",
-      "sha256": "44c216b5a21f1422d5a2721c640fdc423e02f620434a01064fd9412fc296cc20",
+      "sha256": "e4edf8b1dc86d2d9ab4a9dd54cb927e5bc693ea52165014eac3a9d487431ccc5",
       "width": 2280
     },
     {
@@ -735,7 +653,7 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s05-panel-01"
         },
         {
@@ -745,7 +663,7 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s05-panel-02"
         },
         {
@@ -755,12 +673,12 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s05-panel-03"
         }
       ],
       "path": "media/shot-05.jpg",
-      "sha256": "a38c85fcf64cad6e01ba7ec2819bb87776ea005ed565482857e943647fa01bb9",
+      "sha256": "303cc59884d9413615ec67cd997e68a8a5009a03165eec65da9b27f0052a811c",
       "width": 2280
     },
     {
@@ -775,7 +693,7 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s01-overview-01"
         },
         {
@@ -785,7 +703,7 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s02-overview-01"
         },
         {
@@ -795,7 +713,7 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s03-overview-01"
         },
         {
@@ -805,7 +723,7 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s04-overview-01"
         },
         {
@@ -815,12 +733,12 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s05-overview-01"
         }
       ],
       "path": "media/overview.jpg",
-      "sha256": "596b3199aaf33370284dd19a6516d8d417cd9d9089acda943fb0ba4396b76f34",
+      "sha256": "8074991c4c5bf755f2b5d3e6ae550f420eba7df4814922a966c873f34684e517",
       "width": 3780
     },
     {
@@ -830,7 +748,7 @@
             0,
             132,
             2280,
-            1696
+            1705
           ],
           "derived_from": "media/shot-01.jpg",
           "shot_id": "shot-01"
@@ -838,9 +756,9 @@
         {
           "bbox": [
             0,
-            1888,
+            1897,
             2280,
-            1639
+            1705
           ],
           "derived_from": "media/shot-02.jpg",
           "shot_id": "shot-02"
@@ -848,9 +766,9 @@
         {
           "bbox": [
             0,
-            3587,
+            3662,
             2280,
-            1696
+            1639
           ],
           "derived_from": "media/shot-03.jpg",
           "shot_id": "shot-03"
@@ -858,9 +776,9 @@
         {
           "bbox": [
             0,
-            5343,
+            5361,
             2280,
-            1639
+            1702
           ],
           "derived_from": "media/shot-04.jpg",
           "shot_id": "shot-04"
@@ -868,7 +786,7 @@
         {
           "bbox": [
             0,
-            7042,
+            7123,
             2280,
             1639
           ],
@@ -876,7 +794,7 @@
           "shot_id": "shot-05"
         }
       ],
-      "height": 8681,
+      "height": 8762,
       "kind": "storyboard",
       "panels": [
         {
@@ -886,7 +804,7 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s01-panel-01"
         },
         {
@@ -896,7 +814,7 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s01-panel-02"
         },
         {
@@ -906,132 +824,132 @@
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s01-panel-03"
         },
         {
           "bbox": [
             30,
-            2029,
+            2038,
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s02-panel-01"
         },
         {
           "bbox": [
             780,
-            2029,
+            2038,
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s02-panel-02"
         },
         {
           "bbox": [
             1530,
-            2029,
+            2038,
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s02-panel-03"
         },
         {
           "bbox": [
             30,
-            3728,
+            3803,
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s03-panel-01"
         },
         {
           "bbox": [
             780,
-            3728,
+            3803,
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s03-panel-02"
         },
         {
           "bbox": [
             1530,
-            3728,
+            3803,
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s03-panel-03"
         },
         {
           "bbox": [
             30,
-            5484,
+            5502,
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s04-panel-01"
         },
         {
           "bbox": [
             780,
-            5484,
+            5502,
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s04-panel-02"
         },
         {
           "bbox": [
             1530,
-            5484,
+            5502,
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s04-panel-03"
         },
         {
           "bbox": [
             30,
-            7183,
+            7264,
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s05-panel-01"
         },
         {
           "bbox": [
             780,
-            7183,
+            7264,
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s05-panel-02"
         },
         {
           "bbox": [
             1530,
-            7183,
+            7264,
             720,
             1280
           ],
-          "scale": 1.0,
+          "scale": 1,
           "selection_id": "s05-panel-03"
         }
       ],
       "path": "media/storyboard.jpg",
-      "sha256": "5f44bf318d93df0349e43603938ffe14273acbc69f9ed1d209da0e0dcac28a2d",
+      "sha256": "a38b08b65ec0be7a190c8040734527246b16fb390543b90b651f850d6131c226",
       "width": 2280
     }
   ],
@@ -1043,16 +961,16 @@
     "format_version": "3.1",
     "jpeg_quality": 91,
     "layout_sha256": "8d7f59138e617569a2986a8f2bf35ef3609344efa088366ec77b171e25b10a3f",
-    "overview_scale": 1.0,
-    "panel_scale": 1.0,
-    "storyboard_scale": 1.0,
+    "overview_scale": 1,
+    "panel_scale": 1,
+    "storyboard_scale": 1,
     "template_sha256": "66a15912eb9782b1823ba9aa4dc00e190c2a67787c716979bc1614503266e1b5"
   },
-  "revision": 3,
+  "revision": 4,
   "selections": [
     {
       "area_ids": [
-        "exterior-01"
+        "exterior"
       ],
       "frame_index": 0,
       "id": "s01-panel-01",
@@ -1064,7 +982,7 @@
     },
     {
       "area_ids": [
-        "exterior-01"
+        "exterior"
       ],
       "frame_index": 71,
       "id": "s01-panel-02",
@@ -1076,7 +994,7 @@
     },
     {
       "area_ids": [
-        "exterior-01"
+        "exterior"
       ],
       "frame_index": 141,
       "id": "s01-panel-03",
@@ -1088,7 +1006,7 @@
     },
     {
       "area_ids": [
-        "exterior-01"
+        "exterior"
       ],
       "frame_index": 0,
       "id": "s01-overview-01",
@@ -1100,7 +1018,7 @@
     },
     {
       "area_ids": [
-        "living-01"
+        "living"
       ],
       "frame_index": 142,
       "id": "s02-panel-01",
@@ -1112,7 +1030,7 @@
     },
     {
       "area_ids": [
-        "living-01"
+        "living"
       ],
       "frame_index": 196,
       "id": "s02-panel-02",
@@ -1124,7 +1042,7 @@
     },
     {
       "area_ids": [
-        "living-01"
+        "living"
       ],
       "frame_index": 248,
       "id": "s02-panel-03",
@@ -1136,7 +1054,7 @@
     },
     {
       "area_ids": [
-        "living-01"
+        "living"
       ],
       "frame_index": 248,
       "id": "s02-overview-01",
@@ -1148,7 +1066,7 @@
     },
     {
       "area_ids": [
-        "kitchen-01"
+        "kitchen"
       ],
       "frame_index": 249,
       "id": "s03-panel-01",
@@ -1160,7 +1078,7 @@
     },
     {
       "area_ids": [
-        "kitchen-01"
+        "kitchen"
       ],
       "frame_index": 298,
       "id": "s03-panel-02",
@@ -1172,7 +1090,7 @@
     },
     {
       "area_ids": [
-        "kitchen-01"
+        "kitchen"
       ],
       "frame_index": 346,
       "id": "s03-panel-03",
@@ -1184,7 +1102,7 @@
     },
     {
       "area_ids": [
-        "kitchen-01"
+        "kitchen"
       ],
       "frame_index": 249,
       "id": "s03-overview-01",
@@ -1196,7 +1114,7 @@
     },
     {
       "area_ids": [
-        "bedroom-01"
+        "bedroom"
       ],
       "frame_index": 347,
       "id": "s04-panel-01",
@@ -1208,7 +1126,7 @@
     },
     {
       "area_ids": [
-        "bedroom-01"
+        "bedroom"
       ],
       "frame_index": 398,
       "id": "s04-panel-02",
@@ -1220,7 +1138,7 @@
     },
     {
       "area_ids": [
-        "bedroom-01"
+        "bedroom"
       ],
       "frame_index": 449,
       "id": "s04-panel-03",
@@ -1232,7 +1150,7 @@
     },
     {
       "area_ids": [
-        "bedroom-01"
+        "bedroom"
       ],
       "frame_index": 449,
       "id": "s04-overview-01",
@@ -1244,7 +1162,7 @@
     },
     {
       "area_ids": [
-        "bath-laundry-01"
+        "bath"
       ],
       "frame_index": 450,
       "id": "s05-panel-01",
@@ -1256,7 +1174,7 @@
     },
     {
       "area_ids": [
-        "bath-laundry-01"
+        "bath"
       ],
       "frame_index": 501,
       "id": "s05-panel-02",
@@ -1268,7 +1186,7 @@
     },
     {
       "area_ids": [
-        "bath-laundry-01"
+        "bath"
       ],
       "frame_index": 551,
       "id": "s05-panel-03",
@@ -1280,7 +1198,7 @@
     },
     {
       "area_ids": [
-        "bath-laundry-01"
+        "bath"
       ],
       "frame_index": 450,
       "id": "s05-overview-01",
@@ -1304,7 +1222,7 @@
     "width": 720
   },
   "supersedes": {
-    "content_sha256": "04c620f3f1c3e8c5f89b13755ea9ee180f5ce234b22b97eef1d0d3f00d0c0a11",
-    "revision": 2
+    "content_sha256": "2abf41457292f648ffccc5e948a2ff2b24ed1467a3fb383d36e447b7cfdd3db0",
+    "revision": 3
   }
 }
